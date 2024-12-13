@@ -16,25 +16,33 @@ export function Header() {
           </Link>
         </nav>
       </div>
-      <div className="flex items-center relative group mr-16">
-        <div className="text-black hover:text-gray-800 font-semibold cursor-pointer text-base px-2 py-1 rounded-md hover:bg-gray-100 transition-colors">
-          Help
-        </div>
-        {/* Dropdown menu */}
-        <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
-          <div className="py-1">
-            <Link 
-              to="/help/continue-setup" 
-              className="block px-5 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
-            >
-              Continue Setup
-            </Link>
-            <Link 
-              to="/help/copilot-setup" 
-              className="block px-5 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
-            >
-              CoPilot Setup
-            </Link>
+      <div className="flex items-center gap-4 mr-16">
+        <Link 
+          to="/certificates"
+          className="text-black hover:text-gray-800 font-semibold cursor-pointer text-base px-2 py-1 rounded-md hover:bg-gray-100 transition-colors"
+        >
+          Certificate Download
+        </Link>
+        <div className="flex items-center relative group">
+          <div className="text-black hover:text-gray-800 font-semibold cursor-pointer text-base px-2 py-1 rounded-md hover:bg-gray-100 transition-colors">
+            Help
+          </div>
+          {/* Dropdown menu */}
+          <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
+            <div className="py-1">
+              <Link 
+                to="/help/continue-setup" 
+                className="block px-5 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+              >
+                Continue Setup
+              </Link>
+              <Link 
+                to="/help/copilot-setup" 
+                className="block px-5 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+              >
+                CoPilot Setup
+              </Link>
+            </div>
           </div>
         </div>
       </div>
