@@ -190,7 +190,7 @@ export function Certificates() {
       </Card>
 
       <Card className="p-6 mb-8 bg-white shadow-lg border-2 border-gray-100">
-        <h2 className="text-xl font-semibold mb-6">Certificate Management</h2>
+        <h2 className="text-xl font-semibold mb-6">Installation</h2>
         
         {/* OS Selection Tabs */}
         <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
