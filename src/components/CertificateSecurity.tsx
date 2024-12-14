@@ -1,7 +1,7 @@
 import { Card } from "./ui/card";
 
 const SecurityShieldIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-gray-600">
+  <svg viewBox="0 0 24 24" className="w-16 h-16 text-teal-600">
     <path
       fill="none"
       stroke="currentColor"
@@ -22,7 +22,7 @@ const SecurityShieldIcon = () => (
 );
 
 const KeySecurityIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-gray-600">
+  <svg viewBox="0 0 24 24" className="w-16 h-16 text-teal-600">
     <path
       fill="none"
       stroke="currentColor"
@@ -35,7 +35,7 @@ const KeySecurityIcon = () => (
 );
 
 const OpenSourceIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-gray-600">
+  <svg viewBox="0 0 24 24" className="w-16 h-16 text-teal-600">
     <circle
       cx="12"
       cy="12"
@@ -59,7 +59,7 @@ const OpenSourceIcon = () => (
 
 export function CertificateSecurity() {
   return (
-    <div className="max-w-4xl mx-auto h-[calc(100vh-4rem)] overflow-y-auto px-4 pr-6">
+    <div className="max-w-4xl mx-auto h-[calc(100vh-4rem)] overflow-y-auto px-4 pr-6 pb-12">
       <h1 className="text-3xl font-bold mb-8">Certificate Security</h1>
 
       <Card className="p-6 mb-8 bg-white shadow-lg border-2 border-gray-100">
@@ -70,7 +70,7 @@ export function CertificateSecurity() {
         <p className="text-gray-700 mb-4">
           Security is a top priority for us. We have designed CodeGates local certificate management with security in mind, balanced against ease of use.
         </p>
-        <p>We will always seek to improve and balance security, privacy and usability as best as we can</p>
+        <p className="text-gray-700">We will always seek to improve and balance security, privacy and usability as best as we can</p>
       </Card>
 
       <Card className="p-6 mb-8 bg-white shadow-lg border-2 border-gray-100">
@@ -89,7 +89,7 @@ export function CertificateSecurity() {
           <div>
             <h3 className="font-semibold text-lg mb-2">High-Strength Encryption with 4096-bit RSA Keys</h3>
             <p className="text-gray-700 mb-2">
-              CodeGate utilizes 4096-bit RSA keys for Certificate Authority operations, providing enhanced security compared to the standard 2048-bit keys. The increased key length significantly reduces the risk of brute-force attacks, ensuring long-term protection for your data.
+              CodeGate utilizes 4096-bit RSA keys for Certificate Authority operations, providing enhanced security compared to the standard 2048-bit keys. The increased key length significantly reduces the risk of brute-force attacks, ensuring long-term protection for your data. We use 2048 for the server certs to balance in performance.
             </p>
           </div>
 
@@ -115,20 +115,17 @@ export function CertificateSecurity() {
         </div>
         <h2 className="text-xl font-semibold mb-4">Open Source and Community Engagement</h2>
         <div className="space-y-4">
-        <p className="text-gray-700">
+          <p className="text-gray-700">
             Security has been a fundamental consideration throughout the development of CodeGate. Our comprehensive approach ensures that your development environment remains secure without sacrificing functionality or performance.
           </p>
           <p className="text-gray-700">
             We believe in transparency and continuous improvement. By making our code open source, we invite the global security community to review, audit, and contribute to enhancing our security measures.
           </p>
           <p className="text-gray-700">
-            Our commitment to security is reinforced by our open-source approach. By openly sharing our code, we enable security researchers and developers to collaborate, identify potential vulnerabilities, and contribute to the robustness of CodeGate.
+            If you discover a security vulnerability or have suggestions for improvement, please reach out to us at <a href="mailto:security@stacklok.com" className="text-blue-600 hover:text-blue-700 underline">security@stacklok.com</a>. Your contributions help us maintain the highest security standards.
           </p>
           <p className="text-gray-700">
-            If you discover a security vulnerability or have suggestions for improvement, please reach out to us at <a href="mailto:security@stacklok.com" className="text-blue-600 underline">security@stacklok.com</a>. Your contributions help us maintain the highest security standards.
-          </p>
-          <p className="text-gray-700">
-            Explore our codebase on <a href="https://github.com/stacklok/codegate" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">GitHub</a> and join our community in making CodeGate secure and reliable for everyone.
+            Explore our codebase on <a href="https://github.com/stacklok/codegate" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">GitHub</a> and join our community in making CodeGate secure and reliable for everyone.
           </p>
         </div>
       </Card>

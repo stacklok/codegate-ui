@@ -137,7 +137,7 @@ export function Certificates() {
   const currentSteps = steps[activeOS][activeAction];
 
   return (
-    <div className="max-w-4xl mx-auto h-[calc(100vh-4rem)] overflow-y-auto px-4 pr-6">
+    <div className="max-w-4xl mx-auto h-[calc(100vh-4rem)] overflow-y-auto px-4 pr-6 pb-12">
       <h1 className="text-3xl font-bold mb-8">Certificates</h1>
       
       <Card className="p-6 mb-8 bg-white shadow-lg border-2 border-teal-100">
@@ -181,7 +181,7 @@ export function Certificates() {
         <div className="mt-6 flex justify-start">
           <Link 
             to="/certificates/security" 
-            className="inline-flex items-center px-4 py-2 bg-gray-50 text-gray-700 hover:bg-gray-100 rounded-md transition-colors border border-gray-200 shadow-sm"
+            className="inline-flex items-center px-4 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-md transition-colors border border-teal-200 shadow-sm"
           >
             <span className="mr-2">Learn More</span>
             <ArrowIcon />
@@ -190,7 +190,7 @@ export function Certificates() {
       </Card>
 
       <Card className="p-6 mb-8 bg-white shadow-lg border-2 border-gray-100">
-        <h2 className="text-xl font-semibold mb-6">Installation</h2>
+        <h2 className="text-xl font-semibold mb-6">Certificate Management</h2>
         
         {/* OS Selection Tabs */}
         <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
@@ -198,7 +198,7 @@ export function Certificates() {
             onClick={() => setActiveOS('macos')}
             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               activeOS === 'macos'
-                ? 'bg-white text-gray-700 shadow-sm'
+                ? 'bg-white text-teal-700 shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -208,7 +208,7 @@ export function Certificates() {
             onClick={() => setActiveOS('windows')}
             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               activeOS === 'windows'
-                ? 'bg-white text-gray-700 shadow-sm'
+                ? 'bg-white text-teal-700 shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -218,7 +218,7 @@ export function Certificates() {
             onClick={() => setActiveOS('linux')}
             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               activeOS === 'linux'
-                ? 'bg-white text-gray-700 shadow-sm'
+                ? 'bg-white text-teal-700 shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -232,7 +232,7 @@ export function Certificates() {
             onClick={() => setActiveAction('install')}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
               activeAction === 'install'
-                ? 'border-gray-200 bg-gray-100 text-gray-700'
+                ? 'border-teal-200 bg-teal-50 text-teal-700'
                 : 'border-gray-200 text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -242,7 +242,7 @@ export function Certificates() {
             onClick={() => setActiveAction('remove')}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
               activeAction === 'remove'
-                ? 'border-gray-200 bg-gray-50 text-gray-700'
+                ? 'border-teal-200 bg-teal-50 text-teal-700'
                 : 'border-gray-200 text-gray-500 hover:text-gray-700'
             }`}
           >
