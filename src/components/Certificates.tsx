@@ -1,5 +1,6 @@
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import { Link } from "react-router-dom";
 
 export function Certificates() {
   const handleDownload = () => {
@@ -13,7 +14,7 @@ export function Certificates() {
 
   return (
     <div className="max-w-4xl mx-auto h-[calc(100vh-4rem)] overflow-y-auto px-4 pr-6">
-      <h1 className="text-3xl font-bold mb-8">Certificate Download</h1>
+      <h1 className="text-3xl font-bold mb-8">CodeGate Certificates</h1>
       
       <Card className="p-6 mb-8 bg-white shadow-lg border-2 border-teal-100">
         <div className="flex items-start gap-6">
@@ -25,7 +26,7 @@ export function Certificates() {
           <div className="flex-grow">
             <h2 className="text-xl font-semibold mb-2">CodeGate SSL Certificate</h2>
             <p className="text-gray-600 mb-4">
-              This certificate allows CodeGate to act as a proxy for certain software such as CoPilot.
+              This certificate allows CodeGate to act as a secure proxy for software such as CoPilot.
             </p>
             <Button
               onClick={handleDownload}
@@ -60,6 +61,27 @@ export function Certificates() {
             </svg>
             <p className="text-gray-700"><strong>No External Communications:</strong> CodeGate is designed with no capability to call home or communicate with external servers, outside of those requested by the IDE or Agent.</p>
           </div>
+        </div>
+        <div className="mt-6 flex justify-start">
+          <Link 
+            to="/certificates/security" 
+            className="inline-flex items-center px-4 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-md transition-colors border border-teal-200 shadow-sm"
+          >
+            <span className="mr-2">Learn More</span>
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
         </div>
       </Card>
 
