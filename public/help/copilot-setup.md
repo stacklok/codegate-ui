@@ -19,7 +19,7 @@ Before you begin, make sure you have the following:
 
 To enable CodeGate, you’ll need to install its Certificate Authority (CA) into your operating system’s trust store.
 
-See [Certicates](/certificates) for a full details.
+See the [Certificates Page](/certificates) for a full details.
 
 ### Configure CoPilot Settings to Use CodeGate
 
