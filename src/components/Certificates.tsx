@@ -101,7 +101,10 @@ export function Certificates() {
         "Add the certificate to the System keychain",
         "Double-click the imported certificate",
         'Expand the "Trust" section',
-        'Set "When using this certificate" to "Always Trust"',
+        'Set "When using this certificate" to "Custom Settings"',
+        'Set "Secure Sockets Layer" to "Always Trust"',
+        'Set "X.509 Basic Policy" to "Always Trust"',
+        "Alternatively, you can run `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain codegate_ca.crt`",
       ],
       remove: [
         "Open Keychain Access",

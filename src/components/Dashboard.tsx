@@ -216,31 +216,7 @@ export function Dashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {[
-              {
-                alert_id: " 1",
-                trigger_type: "codegate-secret",
-                trigger_string:
-                  "COPY package*.json tailwind.config.ts postcss.config.js tsconfig*.json components*.json vite.config.ts index.html ./",
-                code_snippet: {code:`export default defineConfig({
-                  plugins: [react()],
-                  base: "/",
-                  build: {
-                    outDir: "dist",
-                    rollupOptions: {
-                      input: "./index.html",
-                    },
-                  },
-                  resolve: {
-                    alias: {
-                      "@": path.resolve(__dirname, "./src"),
-                    },
-                  },
-                  assetsInclude: ['**/*.md'],
-                });`},
-                timestamp: new Date().getTime(),
-              },
-            ].map((alert) => (
+            {filteredAlerts.map((alert) => (
               <TableRow key={alert.alert_id} className="h-20">
                 <TableCell className="truncate">{alert.trigger_type}</TableCell>
                 <TableCell className="overflow-auto whitespace-nowrap max-w-80">
