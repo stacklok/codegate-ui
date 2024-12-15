@@ -96,3 +96,8 @@ You can now start using Continue as before, but with the added benefit
 extra privacy and control over your data.
 
 ![Continue Window](./images/continue-two.png)
+
+## Support
+
+Any issuess , please ask for support on the Continue [CodeGate Discussions](https://github.com/stacklok/codegate/discussions/categories/continue) page.
+

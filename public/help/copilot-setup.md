@@ -2,7 +2,6 @@
 
 Welcome to the setup guide for configuring CoPilot integration with **CodeGate**. 
 
-
 ---
 
 ## 📋 Prerequisites
@@ -20,37 +19,7 @@ Before you begin, make sure you have the following:
 
 To enable CodeGate, you’ll need to install its Certificate Authority (CA) into your operating system’s trust store.
 
-> **Why is this needed?**  
-> The CodeGate CA allows your machine to securely intercept and modify traffic between GitHub CoPilot and your IDE.  
-> ✨ **Don’t worry!** The decrypted traffic stays on your local machine and never leaves.
-
-
-#### 🍎 **For MacOS Users**
-
-Run the following command in your terminal to install the CA:
-
-```bash
-sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain codegate_volume/certs/ca.crt
-```
-
-#### 🖥️ For Windows Users
-
-Use this PowerShell command:
-
-```Powershell
-Import-Certificate -FilePath "certs\\ca.crt" -CertStoreLocation Cert:\\LocalMachine\\Root
-```
-
-#### 🐧 For Linux Users
-
-Run these commands to install the CA:
-
-```bash
-sudo cp certs/ca.crt /usr/local/share/ca-certificates/codegate.crt
-sudo update-ca-certificates
-```
-
-    Note: You might need to restart your IDE after adding the certicates
+See [Certicates](/certificates) for a full details.
 
 ### Configure CoPilot Settings to Use CodeGate
 
@@ -72,8 +41,17 @@ settings (Ctrl+Shift+P) + "Preferences: Open User Settings (JSON)":
 
 > **_NOTE:_**  CoPilot may need a refresh after creating the proxy config. Restart VS-Code or open the command palate (Ctrl+Shift+P) and select "Developer: Reload Window".
 
-### Start Coding with the Privacy Protections and Security of CodeGate in place
+### Verify it works
 
-That’s it—you’re all set! 
+In the bottom right section of VScode you will see a small CoPilot avatar. It
+should look like the following:
 
-Go forth and build something amazing! 🚀✨
+![Picture of CoPilot Success, no exclamation mark](./images/copilot-success.png)
+
+If there is any sort of failure, you will see the following:
+
+![Picture of CoPilot Failure, has an exclamation mark](./images/copilot-fail.png)
+
+If you experience a failure, click on the CoPilot avatar and select "Show Diagnostics"
+, copy the text and post it to the CoPilot [CodeGate Discussions](https://github.com/stacklok/codegate/discussions/categories/copilot)
+
