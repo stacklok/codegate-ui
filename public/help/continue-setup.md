@@ -122,7 +122,7 @@ Continue chat and type "codegate-version". You should receive a response like
 You can now start using Continue as before, but with the added benefit extra
 privacy and control over your data.
 
-![Continue chat](./images/continue-two.png)
+![Continue chat](./images/continue-chat.png)
 
 ## Next steps
 
