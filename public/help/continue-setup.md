@@ -37,17 +37,11 @@ icon in the Activity Bar.
 
 To configure Continue to send requests through CodeGate:
 
-1. Configure the [chat](https://docs.continue.dev/chat/model-setup) and
-   [autocomplete](https://docs.continue.dev/autocomplete/model-setup) settings
-   in Continue for your desired AI model(s).
+1. Configure the [chat](https://docs.continue.dev/chat/model-setup) and [autocomplete](https://docs.continue.dev/autocomplete/model-setup) settings in Continue for your desired AI model(s).
 
-1. Open the Continue [configuration file](https://docs.continue.dev/reference),
-   "~/.continue/config.json". You can edit this file directly or access it from
-   the gear icon ("Configure Continue") in the Continue chat interface.
+2. Open the Continue [configuration file](https://docs.continue.dev/reference), "~/.continue/config.json". You can edit this file directly or access it from the gear icon ("Configure Continue") in the Continue chat interface. ![Continue extension settings](./images/continue-config-light.webp)
 
-   ![Continue extension settings](./images/continue-config-light.webp)
-
-1. Add the "apiBase" property to the "models" entry (chat) and
+3. Add the "apiBase" property to the "models" entry (chat) and
    "tabAutocompleteModel" (autocomplete) sections of the configuration file.
    This tells Continue to use the CodeGate CodeGate container running locally on
    your system as the base URL for your LLM API, instead of the default.
@@ -59,7 +53,7 @@ To configure Continue to send requests through CodeGate:
    Replace /PROVIDER with one of: /anthropic, /ollama, /openai, or /vllm to
    match your LLM provider.
 
-1. Save the configuration file.
+4. Save the configuration file.
 
 ### Examples
 

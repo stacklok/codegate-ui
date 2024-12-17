@@ -1,32 +1,14 @@
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
-import { tv } from "tailwind-variants";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ClipboardCopy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const markdown = tv({
-  base: "prose max-w-full",
-  variants: {
-    fontSize: {
-      sm: "prose-sm",
-      base: "prose-base",
-      lg: "prose-lg",
-      xl: "prose-xl",
-      "2xl": "prose-2xl",
-    },
-  },
-  defaultVariants: {
-    fontSize: "base",
-  },
-});
-
 interface Props {
   children: string;
   className?: string;
-  fontSize?: keyof typeof markdown.variants.fontSize;
 }
 
 const customStyle = {
@@ -44,7 +26,7 @@ const customStyle = {
   },
 };
 
-export function Markdown({ children, fontSize, className = "" }: Props) {
+export function Markdown({ children, className = "" }: Props) {
   return (
     <ReactMarkdown
       components={{
@@ -118,20 +100,6 @@ export function Markdown({ children, fontSize, className = "" }: Props) {
             </SyntaxHighlighter>
           );
         },
-        pre({ children }) {
-          return <div className="relative group">{children}</div>;
-        },
-        h1({ children }) {
-          return <h1 className="text-3xl font-bold mb-6">{children}</h1>;
-        },
-        h2({ children }) {
-          return (
-            <h2 className="text-2xl font-semibold mt-8 mb-4">{children}</h2>
-          );
-        },
-        h3({ children }) {
-          return <h3 className="text-xl font-medium mt-6 mb-3">{children}</h3>;
-        },
         p({ children }) {
           return (
             <p className={cn("text-gray-600 leading-relaxed mb-4", className)}>
@@ -139,14 +107,10 @@ export function Markdown({ children, fontSize, className = "" }: Props) {
             </p>
           );
         },
-        ul({ children }) {
-          return (
-            <ul className="list-disc list-inside mb-4 space-y-2">{children}</ul>
-          );
+        pre({ children }) {
+          return <div className="not-prose">{children}</div>;
         },
-        li({ children }) {
-          return <li className="text-gray-600">{children}</li>;
-        },
+
         a({ children, ...props }) {
           return (
             <a
@@ -163,7 +127,7 @@ export function Markdown({ children, fontSize, className = "" }: Props) {
         },
       }}
       remarkPlugins={[remarkGfm]}
-      className={markdown({ fontSize, className })}
+      className={className}
     >
       {children}
     </ReactMarkdown>

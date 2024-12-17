@@ -76,7 +76,8 @@ export function CertificateSecurity() {
             of use.
           </p>
           <p className="text-gray-700">
-            We always seek to improve and balance security, privacy, and usability.
+            We always seek to improve and balance security, privacy, and
+            usability.
           </p>
         </Card>
 
@@ -91,8 +92,8 @@ export function CertificateSecurity() {
                 Per-domain certificate generation
               </h3>
               <p className="text-gray-700 mb-2">
-                Instead of using wildcard certificates, CodeGate generates
-                a unique certificate for each domain. This approach minimizes
+                Instead of using wildcard certificates, CodeGate generates a
+                unique certificate for each domain. This approach minimizes
                 security risks by limiting the impact of any single certificate
                 compromise.
               </p>
@@ -117,9 +118,9 @@ export function CertificateSecurity() {
                 Secure SSL/TLS configuration
               </h3>
               <p className="text-gray-700 mb-2">
-                CodeGate's SSL context is configured to enforce the latest security
-                standards, including strong cipher suites and disabling outdated
-                protocols. This ensures secure and efficient encrypted
+                CodeGate's SSL context is configured to enforce the latest
+                security standards, including strong cipher suites and disabling
+                outdated protocols. This ensures secure and efficient encrypted
                 communications.
               </p>
             </div>
@@ -162,7 +163,7 @@ export function CertificateSecurity() {
               improvement, please reach out to us at{" "}
               <a
                 href="mailto:security@stacklok.com"
-                className="text-blue-600 hover:text-blue-700 underline"
+                className="text-blue-600 hover:text-blue-800 underline"
               >
                 security@stacklok.com
               </a>
@@ -175,7 +176,7 @@ export function CertificateSecurity() {
                 href="https://github.com/stacklok/codegate"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-700 underline"
+                className="text-blue-600 hover:text-blue-800 underline"
               >
                 GitHub
               </a>{" "}
