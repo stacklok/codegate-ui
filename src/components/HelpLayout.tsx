@@ -31,7 +31,7 @@ export function HelpLayout() {
               to="/help/copilot-setup"
               className={linkClass('/help/copilot-setup')}
             >
-              CoPilot Setup
+              Copilot Setup
             </Link>
           </nav>
         </aside>

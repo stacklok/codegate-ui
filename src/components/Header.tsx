@@ -54,7 +54,7 @@ export function Header() {
                 to="/help/copilot-setup"
                 className="block px-5 py-3 text-gray-700 hover:bg-blue-50"
               >
-                CoPilot Setup
+                Copilot Setup
               </Link>
             </div>
           </div>

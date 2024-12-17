@@ -1,57 +1,101 @@
-# 🤖 CoPilot Setup Guide
+# Quick setup - GitHub Copilot with VS Code
 
-Welcome to the setup guide for configuring CoPilot integration with **CodeGate**. 
+For complete documentation, see:
 
----
+- [Quickstart guide - GitHub Copilot](https://docs.codegate.ai/quickstart)
+- [Use CodeGate with GitHub Copilot](https://docs.codegate.ai/how-to/use-with-copilot)
 
-## 📋 Prerequisites
+## Prerequisites
 
-Before you begin, make sure you have the following:
-- ✅ An active GitHub account
-- ✅ A GitHub CoPilot subscription
-- ✅ A CodeGate account
+- An active GitHub account with a Copilot subscription
+- Visual Studio Code with the Copilot extension installed
 
----
+CodeGate works as an HTTP proxy to intercept and modify traffic between GitHub
+Copilot and your IDE. You must run the CodeGate container with port 8990 mapped
+and a persistent volume. If you did not launch it this way, stop and re-start
+with the required settings:
 
-## 🛠️ Setup Instructions
+```bash
+docker stop codegate && docker rm codegate
 
-### Install the CodeGate CA
+docker run --name codegate -d -p 8989:8989 -p 9090:80 -p 8990:8990 --mount type=volume,src=codegate_volume,dst=/app/codegate_volume ghcr.io/stacklok/codegate:latest
+```
 
-To enable CodeGate, you’ll need to install its Certificate Authority (CA) into your operating system’s trust store.
+## Trust the CodeGate CA certificate
 
-See the [Certificates Page](/certificates) for a full details.
+To establish a secure end-to-end connection between your IDE and CodeGate, you
+need to install CodeGate's generated CA certificate to your trust store.
+Decrypted traffic stays on your local machine and never leaves the CodeGate
+container unencrypted.
 
-### Configure CoPilot Settings to Use CodeGate
+See the [Certificates page](/certificates) for full details and installation
+instructions.
 
-Update your CoPilot configuration to use CodeGate as a proxy. Add the following
-settings (Ctrl+Shift+P) + "Preferences: Open User Settings (JSON)":
+### Configure VS Code to proxy traffic through CodeGate
+
+Update your VS Code configuration to use CodeGate as a proxy.
+
+In VS Code, open the Command Palette (Cmd+Shift+P on macOS or Ctrl+Shift+P on
+Windows) and search for the **Preferences: Open User Settings (JSON)** command.
+
+Append the following settings to your configuration file (settings.json):
 
 ```json
 {
+  // ... Existing settings ... //
+
+  // Note: you may need to add a comma after the last line of your existing settings if not already present
+
   "http.proxy": "https://localhost:8990",
   "http.proxyStrictSSL": true,
   "http.proxySupport": "on",
+  "http.systemCertificates": true,
   "github.copilot.advanced": {
     "debug.useNodeFetcher": true,
     "debug.useElectronFetcher": true,
     "debug.testOverrideProxyUrl": "https://localhost:8990",
-    "debug.overrideProxyUrl": "https://localhost:8990",
+    "debug.overrideProxyUrl": "https://localhost:8990"
   }
 }
 ```
 
-> **_NOTE:_**  CoPilot may need a refresh after creating the proxy config. Restart VS-Code or open the command palate (Ctrl+Shift+P) and select "Developer: Reload Window".
+> **Note:** Restart VS Code or open the Command Palette (Ctrl+Shift+P) and
+> select **Developer: Reload Window**.
 
-### Verify it works
+## Verify configuration
 
-In the bottom right section of VScode you will see a small CoPilot avatar. It
-should look like the following:
+In the bottom right section of VS Code you will see a small Copilot avatar:
 
-![Picture of CoPilot Success, no exclamation mark](./images/copilot-success.png)
+![Picture of Copilot success, no exclamation mark](./images/copilot-success.png)
 
-If there is any sort of failure, you will see the following:
+If there is an error, an exclamation icon appears over the avatar:
 
-![Picture of CoPilot Failure, has an exclamation mark](./images/copilot-fail.png)
+![Picture of Copilot error, with an exclamation mark](./images/copilot-fail.png)
 
-If you experience a failure, click on the CoPilot avatar and select "Show Diagnostics"
-, copy the text and post it to the CoPilot [CodeGate Discussions](https://github.com/stacklok/codegate/discussions/categories/copilot)
+If you encounter an error, click on the Copilot avatar and select "Show
+Diagnostics". Post the text to the Copilot section of
+[CodeGate discussions](https://github.com/stacklok/codegate/discussions/categories/copilot)
+
+To verify that CodeGate is receiving Copilot traffic as expected, open the
+Copilot chat and type "What do you know about CodeGate?". You should receive a
+response that starts like this:
+
+```plain title="Copilot chat"
+CodeGate is a security-focused AI assistant designed to help with software
+security, package analysis, and providing guidance on secure coding practices.
+
+...
+```
+
+## Next steps
+
+Explore the full [CodeGate docs](https://docs.codegate.ai), join the
+[community Discord server](https://discord.gg/stacklok) to chat about the
+project, and get involved on the
+[GitHub repo](https://github.com/stacklok/codegate)!
+
+## Support
+
+If you need help, please ask for support on the Copilot section of
+[CodeGate discussions](https://github.com/stacklok/codegate/discussions/categories/copilot)
+or in the #codegate channel on [Discord](https://discord.gg/stacklok).

@@ -6,7 +6,7 @@ const routes = [
   { path: "/certificates/security", breadcrumb: "Certificate Security" },
   { path: "/certificates", breadcrumb: "Certificate Download" },
   { path: "/help/continue-setup", breadcrumb: "Continue Setup" },
-  { path: "/help/copilot-setup", breadcrumb: "CoPilot Setup" },
+  { path: "/help/copilot-setup", breadcrumb: "Copilot Setup" },
   { path: "/prompt/", breadcrumb: "Dashboard" },
   { path: "/", breadcrumb: "" },
 ];

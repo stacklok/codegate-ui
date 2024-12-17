@@ -91,51 +91,51 @@ export function Certificates() {
       install: [
         "Double-click the downloaded certificate file",
         "Keychain Access will open automatically",
-        "Add the certificate to the System keychain",
+        'Add the certificate to the "login" keychain',
         "Double-click the imported certificate",
         'Expand the "Trust" section',
         'Set "When using this certificate" to "Custom Settings"',
         'Set "Secure Sockets Layer" to "Always Trust"',
         'Set "X.509 Basic Policy" to "Always Trust"',
-        "Alternatively, you can run `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain codegate_ca.crt`",
+        "Alternatively, you can run `security add-trusted-cert -r trustRoot -k ~/Library/Keychains/login.keychain codegate.crt`",
       ],
       remove: [
-        "Open Keychain Access",
-        "Select the System keychain",
-        "Find the CodeGate certificate",
+        "Open the Keychain Access app",
+        "Select the login keychain",
+        'Find the "CodeGate CA" certificate',
         'Right-click and select "Delete"',
         "Confirm the deletion when prompted",
+        'Alternatively, you can run `security delete-certificate -c "CodeGate CA" -t ~/Library/Keychains/login.keychain`'
       ],
     },
     windows: {
       install: [
         "Double-click the downloaded certificate file",
         'Click "Install Certificate"',
-        'Select "Local Machine" and click Next',
+        'Select "Current User" and click Next',
         'Choose "Place all certificates in the following store"',
         'Click "Browse" and select "Trusted Root Certification Authorities"',
         'Click "Next" and then "Finish"',
       ],
       remove: [
-        'Open "Run" (Windows + R)',
+        'Open "Run" (Win + R)',
         "Type `certmgr.msc` and press Enter",
         'Navigate to "Trusted Root Certification Authorities" → "Certificates"',
-        "Find the CodeGate certificate",
+        'Find the "CodeGate CA" certificate',
         'Right-click and select "Delete"',
         "Confirm the deletion when prompted",
       ],
     },
     linux: {
       install: [
-        "Copy the certificate to `/usr/local/share/ca-certificates/`",
-        "Rename it to have a `.crt` extension",
-        "Run: `sudo update-ca-certificates`",
-        "Restart your browser",
+        "Copy the certificate to `/usr/local/share/ca-certificates/codegate.crt` (Ubuntu/Debian) or `/etc/pki/ca-trust/source/anchors/codegate.pem` (RHEL/Fedora)",
+        "Run `sudo update-ca-certificates` (Ubuntu/Debian) or `sudo update-ca-trust` (RHEL/Fedora)",
+        "Restart your IDE",
       ],
       remove: [
-        "Remove the certificate from `/usr/local/share/ca-certificates/`",
-        "Run: `sudo update-ca-certificates --fresh`",
-        "Restart your browser",
+        "Delete the certificate file from `/usr/local/share/ca-certificates/` (Ubuntu/Debian) or `/etc/pki/ca-trust/source/anchors/` (RHEL/Fedora)",
+        "Run `sudo update-ca-certificates --fresh` (Ubuntu/Debian) or `sudo update-ca-trust` (RHEL/Fedora)",
+        "Restart your IDE",
       ],
     },
   };
@@ -153,17 +153,17 @@ export function Certificates() {
           </div>
           <div className="flex-grow">
             <h2 className="text-xl font-semibold mb-2">
-              CodeGate SSL Certificate
+              CodeGate CA certificate
             </h2>
             <p className="text-gray-600 mb-4">
-              This certificate allows CodeGate to act as a proxy for certain
-              software such as CoPilot.
+              This certificate allows CodeGate to act as a secure proxy for
+              integrations such as GitHub Copilot.
             </p>
             <Button
               onClick={handleDownload}
               className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md transition-colors"
             >
-              Download Certificate
+              Download certificate
             </Button>
           </div>
         </div>
@@ -177,7 +177,7 @@ export function Certificates() {
           <div className="flex gap-3">
             <CheckIcon />
             <p className="text-gray-700">
-              <strong>Local Only:</strong> CodeGate runs entirely on your
+              <strong>Local-only:</strong> CodeGate runs entirely on your
               machine within an isolated container, ensuring all data processing
               stays local without any external transmissions.
             </p>
@@ -186,8 +186,8 @@ export function Certificates() {
           <div className="flex gap-3">
             <CheckIcon />
             <p className="text-gray-700">
-              <strong>Secure Certificate Handling:</strong> This custom CA is
-              locally generated and managed, the developers of CodeGate have no
+              <strong>Secure certificate handling:</strong> this custom CA is
+              locally generated and managed. CodeGate developers have no
               access to it.
             </p>
           </div>
@@ -195,7 +195,7 @@ export function Certificates() {
           <div className="flex gap-3">
             <CheckIcon />
             <p className="text-gray-700">
-              <strong>No External Communications:</strong> CodeGate is designed
+              <strong>No external communications:</strong> CodeGate is designed
               with no capability to call home or communicate with external
               servers, outside of those requested by the IDE or Agent.
             </p>
@@ -206,7 +206,7 @@ export function Certificates() {
             to="/certificates/security"
             className="inline-flex items-center px-4 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-md transition-colors border border-teal-200 shadow-sm"
           >
-            <span className="mr-2">Learn More</span>
+            <span className="mr-2">Learn more</span>
             <ArrowIcon />
           </Link>
         </div>
@@ -259,7 +259,7 @@ export function Certificates() {
                 : "border-gray-200 text-gray-500 hover:text-gray-700"
             }`}
           >
-            Install Certificate
+            Install certificate
           </button>
           <button
             onClick={() => setActiveAction("remove")}
@@ -269,7 +269,7 @@ export function Certificates() {
                 : "border-gray-200 text-gray-500 hover:text-gray-700"
             }`}
           >
-            Remove Certificate
+            Remove certificate
           </button>
         </div>
 

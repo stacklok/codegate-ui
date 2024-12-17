@@ -71,13 +71,12 @@ export function CertificateSecurity() {
             Robust Certificate Security
           </h2>
           <p className="text-gray-700 mb-4">
-            Security is a top priority for us. We have designed CodeGates local
+            Security is a top priority for us. We have designed CodeGate's local
             certificate management with security in mind, balanced against ease
             of use.
           </p>
           <p className="text-gray-700">
-            We will always seek to improve and balance security, privacy and
-            usability as best as we can
+            We always seek to improve and balance security, privacy, and usability.
           </p>
         </Card>
 
@@ -85,15 +84,15 @@ export function CertificateSecurity() {
           <div className="flex justify-center mb-4">
             <KeySecurityIcon />
           </div>
-          <h2 className="text-xl font-semibold mb-4">Key Security Features</h2>
+          <h2 className="text-xl font-semibold mb-4">Key security features</h2>
           <div className="space-y-6">
             <div>
               <h3 className="font-semibold text-lg mb-2">
-                Per-Domain Certificate Generation
+                Per-domain certificate generation
               </h3>
               <p className="text-gray-700 mb-2">
                 Instead of using wildcard certificates, CodeGate generates
-                unique certificates for each domain. This approach minimizes
+                a unique certificate for each domain. This approach minimizes
                 security risks by limiting the impact of any single certificate
                 compromise.
               </p>
@@ -101,24 +100,24 @@ export function CertificateSecurity() {
 
             <div>
               <h3 className="font-semibold text-lg mb-2">
-                High-Strength Encryption with 4096-bit RSA Keys
+                High-strength encryption with 4096-bit RSA keys
               </h3>
               <p className="text-gray-700 mb-2">
-                CodeGate utilizes 4096-bit RSA keys for Certificate Authority
-                operations, providing enhanced security compared to the standard
+                CodeGate utilizes 4096-bit RSA keys for certificate authority
+                operations, providing enhanced security compared to standard
                 2048-bit keys. The increased key length significantly reduces
                 the risk of brute-force attacks, ensuring long-term protection
-                for your data. We use 2048 for the server certs to balance in
-                performance.
+                for your data. To balance performance, 2048-bit keys are used
+                for server certificates.
               </p>
             </div>
 
             <div>
               <h3 className="font-semibold text-lg mb-2">
-                Secure SSL/TLS Configuration
+                Secure SSL/TLS configuration
               </h3>
               <p className="text-gray-700 mb-2">
-                Our SSL context is configured to enforce the latest security
+                CodeGate's SSL context is configured to enforce the latest security
                 standards, including strong cipher suites and disabling outdated
                 protocols. This ensures secure and efficient encrypted
                 communications.
@@ -127,12 +126,12 @@ export function CertificateSecurity() {
 
             <div>
               <h3 className="font-semibold text-lg mb-2">
-                Certificate Caching and Management
+                Certificate caching and management
               </h3>
               <p className="text-gray-700 mb-2">
                 Certificates are cached efficiently to optimize performance
                 without compromising security. Additionally, mechanisms are in
-                place to manage certificate lifecycles and prevent resource
+                place to manage certificate lifecycle and prevent resource
                 exhaustion.
               </p>
             </div>
@@ -144,7 +143,7 @@ export function CertificateSecurity() {
             <OpenSourceIcon />
           </div>
           <h2 className="text-xl font-semibold mb-4">
-            Open Source and Community Engagement
+            Open source and community engagement
           </h2>
           <div className="space-y-4">
             <p className="text-gray-700">
@@ -180,8 +179,8 @@ export function CertificateSecurity() {
               >
                 GitHub
               </a>{" "}
-              and join our community in making CodeGate secure and reliable for
-              everyone.
+              and join our community to help ensure CodeGate is secure and
+              reliable for everyone.
             </p>
           </div>
         </Card>
