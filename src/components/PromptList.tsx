@@ -12,6 +12,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const { currentPromptId, setCurrentPromptId } = usePromptsStore();
 
   const groupedPrompts = groupPromptsByRelativeDate(prompts);
+
   return (
     <div className="mx-2">
       {Object.entries(groupedPrompts).map(([group, prompts]) => (

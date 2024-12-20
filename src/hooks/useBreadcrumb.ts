@@ -1,4 +1,4 @@
-import { extractTitleFromMessage } from "@/lib/utils";
+import { extractTitleFromMessage, sanitizeQuestionPrompt } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
 import { usePromptsStore } from "./usePromptsStore";
 
@@ -20,7 +20,12 @@ export function useBreadcrumb() {
     try {
       const chat = prompts.find((prompt) => prompt.chat_id === currentPromptId);
       const title = chat?.question_answers?.[0].question.message ?? "";
-      return extractTitleFromMessage(title) ?? "";
+
+      const sanitized = sanitizeQuestionPrompt({
+        question: title,
+        answer: chat?.question_answers?.[0]?.answer?.message ?? "",
+      });
+      return extractTitleFromMessage(sanitized) ?? "";
     } catch {
       return "";
     }

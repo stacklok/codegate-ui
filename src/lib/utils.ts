@@ -13,6 +13,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function extractTitleFromMessage(message: string) {
+  if (message.includes("review codegate")) {
+    console.log("message is");
+    console.log(JSON.stringify(message, null, 2));
+  }
   try {
     const regex = /^(.*)```[\s\S]*?```(.*)$/s;
     const match = message.match(regex);
@@ -20,7 +24,6 @@ export function extractTitleFromMessage(message: string) {
     if (match) {
       const beforeMarkdown = match[1].trim();
       const afterMarkdown = match[2].trim();
-
       const title = beforeMarkdown || afterMarkdown;
       return title;
     }
@@ -121,12 +124,25 @@ export function sanitizeQuestionPrompt({
   answer: string;
 }) {
   try {
+    // Check if 'answer' is truthy; if so, try to find and return the text after "Query:"
     if (answer) {
-      return question.split("Query:").pop() ?? "";
+      const index = question.indexOf("Query:");
+      if (index !== -1) {
+        // Return the substring starting right after the first occurrence of "Query:"
+        // Adding the length of "Query:" to the index to start after it
+        return question.substring(index + "Query:".length).trim();
+      } else {
+        // If there is no "Query:" in the string, log the condition and return an empty string
+        console.log("No 'Query:' found in the question.");
+        return "";
+      }
+    } else {
+      // If 'answer' is not provided or falsy, return the original question
+      return question;
     }
-
-    return question;
-  } catch {
+  } catch (error) {
+    // Log the error and return the original question as a fallback
+    console.error("Error processing the question:", error);
     return question;
   }
 }
