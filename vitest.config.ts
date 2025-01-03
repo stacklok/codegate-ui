@@ -11,8 +11,9 @@ export default defineConfig({
     },
   },
   test: {
-    environment: "node",
-    setupFiles: "setupTests.ts",
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./vitest.setup.ts",
     exclude: [
       "**/node_modules/**",
       "**/dist/**",
@@ -42,10 +43,10 @@ export default defineConfig({
         "src/types/**/*.{ts,tsx}",
       ],
       thresholds: {
-        branches: 42.63,
-        functions: 51.48,
-        lines: 56.17,
-        statements: 55.21,
+        branches: 60,
+        functions: 60,
+        lines: 60,
+        statements: 60,
       },
       enabled: false,
       provider: "istanbul",
