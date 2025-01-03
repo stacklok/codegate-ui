@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# testing
+/coverage
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
