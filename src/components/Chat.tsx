@@ -27,7 +27,7 @@ export function Chat() {
     <div className="w-[calc(100vw-18rem)]">
       <ChatMessageList>
         {(chat?.question_answers ?? []).map(({ question, answer }, index) => (
-          <div key={index} className="flex flex-col w-full h-full p-4 gap-6">
+          <div key={index} className="flex flex-col w-full h-full gap-6">
             <ChatBubble variant="sent">
               <ChatBubbleAvatar fallback="User" className="w-14" />
               <ChatBubbleMessage variant="sent" className="bg-zinc-700">
