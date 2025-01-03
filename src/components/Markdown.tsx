@@ -4,6 +4,32 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { cn } from "@/lib/utils";
 import { CopyToClipboard } from "./CopyToClipboard";
+import hljs from "highlight.js";
+
+const LANGUAGES_SUBSET_DETECTION = [
+  "c",
+  "cpp",
+  "csharp",
+  "css",
+  "elixir",
+  "go",
+  "groovy",
+  "haskell",
+  "html",
+  "java",
+  "javascript",
+  "json",
+  "kotlin",
+  "markdown",
+  "php",
+  "python",
+  "ruby",
+  "rust",
+  "scala",
+  "sql",
+  "typescript",
+  "yaml",
+];
 
 interface Props {
   children: string;
@@ -12,85 +38,58 @@ interface Props {
 
 const customStyle = {
   ...oneDark,
+  'code[class*="language-"]': {
+    ...oneDark['code[class*="language-"]'],
+    background: "none",
+  },
   'pre[class*="language-"]': {
     ...oneDark['pre[class*="language-"]'],
-    whiteSpace: "pre-wrap",
     background: "#1a1b26",
     padding: "1.5rem",
     borderRadius: "0.5rem",
-    margin: "1.5rem 0",
-    fontSize: "10px",
-    width: "80%", // Ensure the block takes full width
+    width: "100%",
     position: "relative",
+    boxSizing: "border-box",
   },
 };
-
 export function Markdown({ children, className = "" }: Props) {
+  SyntaxHighlighter.supportedLanguages = LANGUAGES_SUBSET_DETECTION;
   return (
     <ReactMarkdown
       components={{
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        code({ className, children, ...props }: any) {
+        code({ className, children, ...props }) {
+          const detectedLanguage =
+            hljs.highlightAuto(children, LANGUAGES_SUBSET_DETECTION).language ??
+            "plaintext";
           const match = /language-(\w+)/.exec(className || "");
-          const inline = !match;
-          return !inline ? (
-            <div className="relative group w-full ml-0 px-4">
+          const language = match ? match[1] : detectedLanguage;
+          return (
+            <div className="relative group w-full ml-0 my-4">
               <SyntaxHighlighter
-                style={{
-                  ...customStyle,
-                  'pre[class*="language-"]': {
-                    ...oneDark['pre[class*="language-"]'],
-                    background: "#1a1b26",
-                    fontSize: "10x",
-                    whiteSpace: "pre-wrap",
-                    padding: "1.5rem",
-                    borderRadius: "0.5rem",
-                    margin: "1.5rem 0",
-                    position: "relative", // Critical for clipboard positioning
-                    width: "100%", // Ensure full width of parent container
-                    boxSizing: "border-box", // Prevent padding overflow
-                  },
-                }}
-                language={match[1]}
+                style={customStyle}
+                supportedLanguages={LANGUAGES_SUBSET_DETECTION}
+                language={language}
                 PreTag="div"
-                className="rounded-lg overflow-hidden shadow-lg text-sm"
-                showLineNumbers={false}
-                wrapLines={true}
+                className="rounded-lg overflow-hidden shadow-lg text-sm my-6 whitespace-normal"
+                wrapLines
                 {...props}
               >
                 {String(children).replace(/\n$/, "")}
               </SyntaxHighlighter>
-              <CopyToClipboard text={String(children).replace(/\n$/, "")} />
+              {match && (
+                <CopyToClipboard text={String(children).replace(/\n$/, "")} />
+              )}
             </div>
-          ) : (
-            <SyntaxHighlighter
-              style={{
-                ...customStyle,
-                'pre[class*="language-"]': {
-                  ...oneDark['pre[class*="language-"]'],
-                  fontSize: "10x",
-                  whiteSpace: "pre-wrap",
-                  padding: "1.5rem",
-                  borderRadius: "0.5rem",
-                  margin: "1.5rem 0",
-                  position: "relative", // Critical for clipboard positioning
-                  width: "100%", // Ensure full width of parent container
-                  boxSizing: "border-box", // Prevent padding overflow
-                },
-              }}
-              PreTag="div"
-              className="rounded-lg overflow-hidden shadow-lg text-sm"
-              showLineNumbers={false}
-              wrapLines={true}
-              {...props}
-            >
-              {children}
-            </SyntaxHighlighter>
           );
         },
         p({ children }) {
           return (
-            <p className={cn("text-gray-600 leading-relaxed mb-4", className)}>
+            <p
+              className={cn(
+                "text-gray-600 leading-relaxed mt-6 mb-3",
+                className,
+              )}
+            >
               {children}
             </p>
           );
