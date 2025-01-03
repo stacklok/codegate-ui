@@ -12,7 +12,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    // setupFiles: "setupTests.ts",
+    setupFiles: "setupTests.ts",
     exclude: [
       "**/node_modules/**",
       "**/dist/**",
