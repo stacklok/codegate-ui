@@ -18,7 +18,7 @@ with the required settings:
 ```bash
 docker stop codegate && docker rm codegate
 
-docker run --name codegate -d -p 8989:8989 -p 9090:80 -p 8990:8990 --mount type=volume,src=codegate_volume,dst=/app/codegate_volume ghcr.io/stacklok/codegate:latest
+docker run --name codegate -d -p 8989:8989 -p 9090:9090 -p 8990:8990 --mount type=volume,src=codegate_volume,dst=/app/codegate_volume ghcr.io/stacklok/codegate:latest
 ```
 
 ## Trust the CodeGate CA certificate
