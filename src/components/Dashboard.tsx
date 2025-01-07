@@ -65,13 +65,15 @@ const wrapObjectOutput = (input: string | MaliciousPkgType | null) => {
   const isObject = /\{"/.test(input);
   if (isObject) {
     return (
-      <pre className="max-h-40 overflow-y-auto whitespace-pre-wrap bg-gray-100 p-2">
+      <pre className="max-h-40 overflow-y-auto whitespace-pre-wrap bg-secondary p-2">
         <code>{input}</code>
       </pre>
     );
   }
   return (
-    <Markdown className="bg-gray-100 overflow-auto w-fit p-1">{input}</Markdown>
+    <Markdown className="bg-secondary rounded-lg overflow-auto w-fit p-1">
+      {input}
+    </Markdown>
   );
 };
 
@@ -119,7 +121,7 @@ export function Dashboard() {
       setSearchParams(searchParams);
       toggleMaliciousFilter(isChecked);
     },
-    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter]
+    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter],
   );
 
   const handleSearch = useCallback(
@@ -135,7 +137,7 @@ export function Dashboard() {
       }
       setSearchParams(searchParams);
     },
-    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter]
+    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter],
   );
 
   return (
