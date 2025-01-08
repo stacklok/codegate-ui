@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
-import mockedPrompts from "@/mocks/msw/fixtures/GetMessages.json";
-import mockedAlerts from "@/mocks/msw/fixtures/GetAlerts.json";
+import mockedPrompts from "@/mocks/msw/fixtures/GET_MESSAGES.json";
+import mockedAlerts from "@/mocks/msw/fixtures/GET_ALERTS.json";
 
 export const handlers = [
   http.get("*/dashboard/messages", () => {
