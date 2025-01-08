@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { screen } from "@testing-library/react";
 import { PromptList } from "../PromptList";
-import mockedPrompts from "@/mocks/msw/fixtures/GetMessages.json";
+import mockedPrompts from "@/mocks/msw/fixtures/GET_MESSAGES.json";
 import { render } from "@/lib/test-utils";
 
 describe("PromptList", () => {

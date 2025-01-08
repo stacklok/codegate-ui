@@ -53,7 +53,6 @@ const customStyle = {
   },
 };
 export function Markdown({ children, className = "" }: Props) {
-  SyntaxHighlighter.supportedLanguages = LANGUAGES_SUBSET_DETECTION;
   return (
     <ReactMarkdown
       components={{
@@ -64,10 +63,12 @@ export function Markdown({ children, className = "" }: Props) {
           const match = /language-(\w+)/.exec(className || "");
           const language = match ? match[1] : detectedLanguage;
           return (
-            <div className="relative group w-full ml-0 my-4">
+            <div
+              className="relative group w-full ml-0 my-4"
+              data-testid="syntax-highlighter"
+            >
               <SyntaxHighlighter
                 style={customStyle}
-                supportedLanguages={LANGUAGES_SUBSET_DETECTION}
                 language={language}
                 PreTag="div"
                 className="rounded-lg overflow-hidden shadow-lg text-sm my-6 whitespace-normal"
