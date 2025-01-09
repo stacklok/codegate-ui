@@ -11,3 +11,8 @@ jobs:
     name: Static Checks
     uses: ./.github/workflows/_static-checks.yml
     secrets: inherit
+
+  unit-tests:
+    name: Unit Tests
+    uses: ./.github/workflows/_unit-tests.yml
+    secrets: inherit
