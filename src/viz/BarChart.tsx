@@ -14,7 +14,7 @@ export function BarChart({
 
   if (loading) {
     return (
-      <Card className="h-full">
+      <Card className="h-full" data-testid="security-issues-barchart">
         <CardHeader>
           <CardTitle>Security issues detected</CardTitle>
         </CardHeader>
@@ -34,7 +34,7 @@ export function BarChart({
 
   if (sortedTagCounts.length === 0) {
     return (
-      <Card className="h-full">
+      <Card className="h-full" data-testid="security-issues-barchart">
         <CardHeader>
           <CardTitle>Security issues detected</CardTitle>
         </CardHeader>
@@ -48,7 +48,7 @@ export function BarChart({
   }
 
   return (
-    <Card className="h-full">
+    <Card className="h-full" data-testid="security-issues-barchart">
       <CardHeader>
         <CardTitle>Security issues detected</CardTitle>
       </CardHeader>
@@ -67,7 +67,12 @@ export function BarChart({
                   }}
                 ></div>
               </div>
-              <span className="text-sm font-medium text-gray-700">{count}</span>
+              <span
+                className="text-sm font-medium text-gray-700"
+                data-testid={`${tag}-count`}
+              >
+                {count}
+              </span>
             </div>
           ))}
         </div>

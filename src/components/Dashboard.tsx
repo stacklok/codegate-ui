@@ -65,7 +65,7 @@ const wrapObjectOutput = (input: string | MaliciousPkgType | null) => {
   const isObject = /\{"/.test(input);
   if (isObject) {
     return (
-      <pre className="max-h-40 overflow-y-auto whitespace-pre-wrap bg-secondary p-2">
+      <pre className="max-h-40 overflow-y-auto whitespace-pre-wrap rounded-lg bg-secondary p-2">
         <code>{input}</code>
       </pre>
     );
@@ -159,7 +159,7 @@ export function Dashboard() {
       <div className="flex mb-2 mx-2 justify-between w-[calc(100vw-20rem)]">
         <div className="flex gap-2 items-center">
           <h2 className="font-bold font-lg">All Alerts</h2>
-          <Badge>{filteredAlerts.length}</Badge>
+          <Badge data-testid="alerts-count">{filteredAlerts.length}</Badge>
         </div>
 
         <div className="flex items-center gap-8">

@@ -21,7 +21,7 @@ const generateTypeColors = (data: MaliciousPkgType[]) => {
 
 const getChartData = (
   data: MaliciousPkgType[],
-  typeColors: Record<string, string>
+  typeColors: Record<string, string>,
 ) => {
   const typeCounts: Record<string, number> = {};
   data.forEach((pkg) => {
@@ -55,20 +55,20 @@ export function PieChart({ data, loading }: PieChartProps) {
   const typeColors = React.useMemo(() => generateTypeColors(data), [data]);
   const chartConfig = React.useMemo(
     () => getChartConfig(typeColors),
-    [typeColors]
+    [typeColors],
   );
   const chartData = React.useMemo(
     () => getChartData(data, typeColors),
-    [data, typeColors]
+    [data, typeColors],
   );
   const totalMalicious = React.useMemo(
     () => chartData.reduce((acc, curr) => acc + curr.value, 0),
-    [chartData]
+    [chartData],
   );
 
   if (loading) {
     return (
-      <Card className="h-full">
+      <Card className="h-full" data-testid="malicious-piechart">
         <CardHeader>
           <CardTitle>Malicious packages by type</CardTitle>
         </CardHeader>
@@ -83,7 +83,7 @@ export function PieChart({ data, loading }: PieChartProps) {
 
   if (data.length === 0) {
     return (
-      <Card className="h-full">
+      <Card className="h-full" data-testid="malicious-piechart">
         <CardHeader>
           <CardTitle>Malicious packages by type</CardTitle>
         </CardHeader>
@@ -97,7 +97,7 @@ export function PieChart({ data, loading }: PieChartProps) {
   }
 
   return (
-    <Card className="h-full">
+    <Card className="h-full" data-testid="malicious-piechart">
       <CardHeader className="items-center pb-0">
         <CardTitle>Malicious packages by type</CardTitle>
       </CardHeader>
@@ -106,7 +106,7 @@ export function PieChart({ data, loading }: PieChartProps) {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[240px]"
         >
-          <PieChartUI>
+          <PieChartUI width={400} height={300}>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}

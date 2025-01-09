@@ -38,7 +38,7 @@ const aggregateAlertsByDate = (alerts: { timestamp: string }[]) => {
   }, dateMap);
 
   return Object.values(dateMap).sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
 };
 
@@ -66,7 +66,10 @@ export function LineChart({
         </CardHeader>
         <CardContent>
           {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="flex w-full items-center justify-around mb-4">
+            <div
+              key={index}
+              className="flex w-full items-center justify-around mb-4"
+            >
               <Skeleton key={index} className="w-full h-3" />
             </div>
           ))}
@@ -76,7 +79,7 @@ export function LineChart({
   }
 
   return (
-    <Card className="h-full">
+    <Card className="h-full" data-testid="linechart">
       <CardHeader>
         <CardTitle>Alerts by date</CardTitle>
       </CardHeader>
@@ -86,6 +89,7 @@ export function LineChart({
             accessibilityLayer
             data={chartData}
             height={300}
+            width={500}
             margin={{
               top: 20,
               left: 12,
