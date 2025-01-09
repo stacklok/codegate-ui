@@ -58,7 +58,7 @@ function mockAlertsWithMaliciousPkg() {
               {
                 question: {
                   message:
-                    '\n\n```py testing_file.py (1-15)\nimport invokehttp\nimport fastapi\nfrom fastapi import FastAPI, Request, Response, HTTPException\nimport numpy\n\n\n@app.route("/providers", methods=["GET"])\ndef get_providers():\n    return jsonify([provider.to_dict() for provider in registry.providers])\n\nGITHUB_TOKEN="ghp_apiToke"\n\nif __name__ == "__main__":\n    app.run()\n\n```\nare there malicious?',
+                    '\n\n```py testing_file.py (1-15)\nimport invokehttp\nimport fastapi\nfrom fastapi import FastAPI, Request, Response, HTTPException\nimport numpy\n\n\n@app.route("/providers", methods=["GET"])\ndef get_providers():\n    return jsonify([provider.to_dict() for provider in registry.providers])\n\nGITHUB_TOKEN="ghp_token"\n\nif __name__ == "__main__":\n    app.run()\n\n```\nare there malicious?',
                   timestamp: "2024-12-09T17:50:04.418017Z",
                   message_id: "fa53ba0d-4fb0-4770-a563-88e504af621f",
                 },
