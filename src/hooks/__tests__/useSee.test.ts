@@ -2,6 +2,10 @@ import { renderHook, act } from "@testing-library/react";
 import { vi } from "vitest";
 import { useSse } from "../useSse";
 
+vi.mock("react-router-dom", () => ({
+  useLocation: vi.fn(() => ({ pathname: "/" })),
+}));
+
 const mockSendNotification = vi.fn();
 vi.mock("../useBrowserNotification", () => ({
   useBrowserNotification: vi.fn(() => {
@@ -40,10 +44,6 @@ let originalEventSource: typeof EventSource;
 
 describe("useSse", () => {
   beforeAll(() => {
-    vi.mock("react-router-dom", () => ({
-      useLocation: vi.fn(() => ({ pathname: "/" })),
-    }));
-
     vi.useFakeTimers();
     originalEventSource = global.EventSource;
     global.EventSource = MockEventSource as unknown as typeof EventSource;
