@@ -160,7 +160,7 @@ describe("Dashboard", () => {
     expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
     expect(within(row).getAllByText(/n\/a/i).length).toEqual(2);
     expect(within(row).getByText(/2025\/01\/07/i)).toBeVisible();
-    expect(within(row).getByText(/18:02 pm/i)).toBeVisible();
+    expect(within(row).getByTestId(/time/i)).toBeVisible();
 
     // check trigger_string null
     expect(

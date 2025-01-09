@@ -240,10 +240,10 @@ export function Dashboard() {
                   )}
                 </TableCell>
                 <TableCell className="truncate">
-                  <div>
+                  <div data-testid="date">
                     {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
                   </div>
-                  <div>
+                  <div data-testid="time">
                     {format(new Date(alert.timestamp ?? ""), "HH:mm a")}
                   </div>
                 </TableCell>
