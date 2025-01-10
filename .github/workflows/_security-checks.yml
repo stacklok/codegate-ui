@@ -1,6 +1,8 @@
 name: Security Checks
 on:
   workflow_call:
+permissions:
+  contents: read    
 jobs:
   trivy:
     name: Trivy
