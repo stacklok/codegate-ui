@@ -17,7 +17,5 @@ export function useBrowserNotification() {
     requestPermission();
   }, []);
 
-
-
   return { sendNotification };
 }
