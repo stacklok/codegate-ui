@@ -56,7 +56,7 @@ describe("Chat", () => {
     ).toBeVisible();
     const syntaxHighlighter = screen.getAllByTestId("syntax-highlighter");
     expect(syntaxHighlighter).toHaveLength(3);
-    const tsCodeSnippet = syntaxHighlighter[0];
+    const tsCodeSnippet = syntaxHighlighter[0] as HTMLElement;
     expect(
       within(tsCodeSnippet)
         .getByRole("code")

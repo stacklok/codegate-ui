@@ -1,6 +1,8 @@
 import { create } from "zustand";
-import { AlertState, MaliciousPkgType } from "../types";
-import { getAlerts } from "@/service";
+import { AlertState, MaliciousPkgType, TriggerType } from "../types";
+import { serverApi } from "@/api/service";
+import { AlertConversation } from "@/api/generated/types.gen";
+import { getMaliciousPackage } from "@/lib/utils";
 
 export const useAlertsStore = create<AlertState>((set, get) => ({
   alerts: [],
@@ -10,17 +12,26 @@ export const useAlertsStore = create<AlertState>((set, get) => ({
   search: "",
   fetchAlerts: async () => {
     set({ loading: true });
-    const alerts = await getAlerts();
-    set({
-      alerts: alerts
+    const { getAlertsDashboardAlertsGet } = await serverApi();
+    const { data } = await getAlertsDashboardAlertsGet();
+    if (data !== undefined) {
+      const alerts = data
+        .filter((alert): alert is AlertConversation => alert !== null)
         .filter((alert) => alert.trigger_category === "critical")
         .filter((alert) =>
-          alert.conversation.question_answers.every(
+          alert?.conversation.question_answers.every(
             (item) => item.answer && item.question,
           ),
-        ),
-      loading: false,
-    });
+        );
+
+      set({
+        alerts,
+        loading: false,
+      });
+    } else {
+      set({ alerts: [], loading: false });
+    }
+
     get().updateFilteredAlerts();
   },
   setSearch: (search: string) => {
@@ -36,7 +47,11 @@ export const useAlertsStore = create<AlertState>((set, get) => ({
     const filteredAlerts = isActive
       ? alerts
           .filter((item) => typeof item.trigger_string === "object")
-          .filter((item) => item.trigger_type === "codegate-context-retriever")
+          .filter(
+            (item) =>
+              (item.trigger_type as TriggerType) ===
+              "codegate-context-retriever",
+          )
       : alerts;
 
     set({ filteredAlerts });
@@ -46,14 +61,23 @@ export const useAlertsStore = create<AlertState>((set, get) => ({
     const filteredAlerts = search
       ? alerts
           .filter((alert) => {
+            const maliciousPkg = getMaliciousPackage(alert.trigger_string);
             const maliciousPkgName =
-              typeof alert.trigger_string === "object"
-                ? alert.trigger_string?.type
-                : alert.trigger_string;
+              typeof maliciousPkg === "object"
+                ? maliciousPkg?.type
+                : maliciousPkg;
+
+            // typeof alert.trigger_string === "object"
+            //   ? alert.trigger_string?.type
+            //   : alert.trigger_string;
             const maliciousPkgType =
-              typeof alert.trigger_string === "object"
-                ? alert.trigger_string?.name
-                : alert.trigger_string;
+              typeof maliciousPkg === "object"
+                ? maliciousPkg?.name
+                : maliciousPkg;
+
+            // typeof alert.trigger_string === "object"
+            //   ? alert.trigger_string?.name
+            //   : alert.trigger_string;
 
             return (
               maliciousPkgName?.toLowerCase().includes(search) ||

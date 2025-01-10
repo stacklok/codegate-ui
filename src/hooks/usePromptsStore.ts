@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { PromptState } from "../types";
-import { getPrompts } from "@/service";
+import { serverApi } from "@/api/service";
 
 export const usePromptsStore = create<PromptState>((set) => ({
   prompts: [],
@@ -9,12 +9,20 @@ export const usePromptsStore = create<PromptState>((set) => ({
   setCurrentPromptId: (id: string) => set({ currentPromptId: id }),
   fetchPrompts: async () => {
     set({ loading: true });
-    const prompts = await getPrompts();
-    set({
-      prompts: prompts.filter((prompt) =>
-        prompt.question_answers?.every((item) => item.answer && item.question),
-      ),
-      loading: false,
-    });
+    const { getMessagesDashboardMessagesGet } = await serverApi();
+    const { data } = await getMessagesDashboardMessagesGet();
+
+    if (data !== undefined) {
+      set({
+        prompts: data.filter((prompt) =>
+          prompt.question_answers?.every(
+            (item) => item.answer && item.question,
+          ),
+        ),
+        loading: false,
+      });
+    } else {
+      set({ prompts: [], loading: false });
+    }
   },
 }));

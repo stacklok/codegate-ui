@@ -154,7 +154,7 @@ describe("Dashboard", () => {
     ).toBeVisible();
     expect(screen.getByRole("searchbox")).toBeVisible();
 
-    const row = screen.getAllByRole("row")[1];
+    const row = screen.getAllByRole("row")[1] as HTMLElement;
 
     expect(within(row).getByText(/ghp_token/i)).toBeVisible();
     expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
@@ -164,7 +164,8 @@ describe("Dashboard", () => {
 
     // check trigger_string null
     expect(
-      within(screen.getAllByRole("row")[2]).getAllByText(/n\/a/i).length,
+      within(screen.getAllByRole("row")[2] as HTMLElement).getAllByText(/n\/a/i)
+        .length,
     ).toEqual(3);
   });
 
@@ -270,7 +271,7 @@ describe("Dashboard", () => {
     await waitFor(() =>
       expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("1"),
     );
-    const row = screen.getAllByRole("row")[1];
+    const row = screen.getAllByRole("row")[1] as HTMLElement;
     expect(within(row).getByText(/ghp_token/i)).toBeVisible();
     expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
   });

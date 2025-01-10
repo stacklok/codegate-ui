@@ -15,7 +15,6 @@ import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
 import { useAlertsStore } from "@/hooks/useAlertsStore";
 import { Markdown } from "./Markdown";
-import { MaliciousPkgType } from "@/types";
 import { PieChart } from "@/viz/PieChart";
 import { Switch } from "./ui/switch";
 import {
@@ -25,55 +24,46 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { useSearchParams } from "react-router-dom";
+import { AlertConversation } from "@/api/generated";
+import { getMaliciousPackage } from "@/lib/utils";
 
-const wrapObjectOutput = (input: string | MaliciousPkgType | null) => {
-  if (typeof input === "object" && input !== null) {
-    if (!input.type || !input.name) return null;
+const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
+  const data = getMaliciousPackage(input);
+  if (data === null) return "N/A";
+  if (typeof data === "string") {
     return (
-      <div className="max-h-40 w-fit overflow-y-auto whitespace-pre-wrap p-2">
-        <label className="font-medium">Package:</label>
-        &nbsp;
-        <a
-          href={`https://www.insight.stacklok.com/report/${input.type}/${input.name}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
-        >
-          {input.type}/{input.name}
-        </a>
-        {input.status && (
-          <>
-            <br />
-            <label className="font-medium">Status:</label> {input.status}
-          </>
-        )}
-        {input.description && (
-          <>
-            <br />
-            <label className="font-medium">Description:</label>{" "}
-            {input.description}
-          </>
-        )}
-      </div>
+      <Markdown className="bg-secondary rounded-lg overflow-auto w-fit p-1">
+        {data}
+      </Markdown>
     );
   }
+  if (!data.type || !data.name) return "N/A";
 
-  if (input === null) {
-    return "N/A";
-  }
-
-  const isObject = /\{"/.test(input);
-  if (isObject) {
-    return (
-      <pre className="max-h-40 overflow-y-auto whitespace-pre-wrap rounded-lg bg-secondary p-2">
-        <code>{input}</code>
-      </pre>
-    );
-  }
   return (
-    <Markdown className="bg-secondary rounded-lg overflow-auto w-fit p-1">
-      {input}
-    </Markdown>
+    <div className="max-h-40 w-fit overflow-y-auto whitespace-pre-wrap p-2">
+      <label className="font-medium">Package:</label>
+      &nbsp;
+      <a
+        href={`https://www.insight.stacklok.com/report/${data.type}/${data.name}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 hover:underline"
+      >
+        {data.type}/{data.name}
+      </a>
+      {data.status && (
+        <>
+          <br />
+          <label className="font-medium">Status:</label> {data.status}
+        </>
+      )}
+      {data.description && (
+        <>
+          <br />
+          <label className="font-medium">Description:</label> {data.description}
+        </>
+      )}
+    </div>
   );
 };
 

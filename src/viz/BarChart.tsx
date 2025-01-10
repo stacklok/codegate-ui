@@ -1,14 +1,14 @@
+import { AlertConversation } from "@/api/generated/types.gen";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAllIssues } from "@/lib/utils";
-import { Alert } from "@/types";
 
 export function BarChart({
   data,
   loading,
 }: {
   loading: boolean;
-  data: Alert[];
+  data: AlertConversation[];
 }) {
   const { maxCount, sortedTagCounts } = getAllIssues(data);
 

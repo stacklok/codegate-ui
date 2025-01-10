@@ -1,4 +1,3 @@
-import { Prompt } from "../types";
 import { Link } from "react-router-dom";
 import {
   extractTitleFromMessage,
@@ -7,8 +6,9 @@ import {
 } from "@/lib/utils";
 import { usePromptsStore } from "@/hooks/usePromptsStore";
 import clsx from "clsx";
+import { Conversation } from "@/api/generated";
 
-export function PromptList({ prompts }: { prompts: Prompt[] }) {
+export function PromptList({ prompts }: { prompts: Conversation[] }) {
   const { currentPromptId, setCurrentPromptId } = usePromptsStore();
 
   const groupedPrompts = groupPromptsByRelativeDate(prompts);
@@ -30,7 +30,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                   )}
                 >
                   {extractTitleFromMessage(
-                    prompt.question_answers?.[0].question?.message
+                    prompt.question_answers?.[0]?.question?.message
                       ? sanitizeQuestionPrompt({
                           question:
                             prompt.question_answers?.[0].question.message,

@@ -1,4 +1,5 @@
-import { Alert, Prompt } from "@/types";
+import { AlertConversation, Conversation } from "@/api/generated/types.gen";
+import { MaliciousPkgType, TriggerType } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { isToday, isYesterday } from "date-fns";
 import { twMerge } from "tailwind-merge";
@@ -17,9 +18,9 @@ export function extractTitleFromMessage(message: string) {
     const regex = /^(.*)```[\s\S]*?```(.*)$/s;
     const match = message.match(regex);
 
-    if (match) {
-      const beforeMarkdown = match[1].trim();
-      const afterMarkdown = match[2].trim();
+    if (match !== null && match !== undefined) {
+      const beforeMarkdown = match[1]?.trim();
+      const afterMarkdown = match[2]?.trim();
       const title = beforeMarkdown || afterMarkdown;
       return title;
     }
@@ -49,7 +50,7 @@ function getGroup(differenceInMs: number, promptDate: Date): string {
   return "Beyond 30 days";
 }
 
-export function groupPromptsByRelativeDate(prompts: Prompt[]) {
+export function groupPromptsByRelativeDate(prompts: Conversation[]) {
   const promptsSorted = prompts.sort(
     (a, b) =>
       new Date(b.conversation_timestamp).getTime() -
@@ -67,19 +68,19 @@ export function groupPromptsByRelativeDate(prompts: Prompt[]) {
         groups[group] = [];
       }
 
-      groups[group].push(prompt);
+      (groups[group] ?? []).push(prompt);
       return groups;
     },
-    {} as Record<string, Prompt[]>,
+    {} as Record<string, Conversation[]>,
   );
 
   return grouped;
 }
 
-export function getAllIssues(alerts: Alert[]) {
+export function getAllIssues(alerts: AlertConversation[]) {
   const groupedTriggerCounts = alerts.reduce<Record<string, number>>(
     (acc, alert) => {
-      const triggerType = alert.trigger_type;
+      const triggerType: TriggerType = alert.trigger_type;
       if (triggerType) {
         acc[triggerType] = (acc[triggerType] || 0) + 1;
       }
@@ -139,4 +140,18 @@ export function sanitizeQuestionPrompt({
     console.error("Error processing the question:", error);
     return question;
   }
+}
+
+export function getMaliciousPackage(
+  value: AlertConversation["trigger_string"],
+): string | (MaliciousPkgType & { [key: string]: string }) | null {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (typeof value === "object" && value !== null) {
+    return value as MaliciousPkgType;
+  }
+
+  return null;
 }

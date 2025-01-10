@@ -69,7 +69,7 @@ describe("useSse", () => {
     const instance = MockEventSource.instances[0];
     expect(instance).toBeDefined();
 
-    expect(instance.onmessage).toBeDefined();
+    expect(instance?.onmessage).toBeDefined();
 
     act(() => {
       MockEventSource.triggerMessage("new alert detected");

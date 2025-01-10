@@ -15,9 +15,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-import { Alert } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AlertConversation } from "@/api/generated/types.gen";
 
 const aggregateAlertsByDate = (alerts: { timestamp: string }[]) => {
   const dateMap: Record<string, { date: string; alerts: number }> = {};
@@ -32,7 +31,7 @@ const aggregateAlertsByDate = (alerts: { timestamp: string }[]) => {
     if (!acc[formattedDate]) {
       acc[formattedDate] = { date: formattedDate, alerts: 0 };
     }
-    acc[formattedDate].alerts += 1;
+    (acc[formattedDate] as { alerts: number }).alerts += 1;
 
     return acc;
   }, dateMap);
@@ -53,7 +52,7 @@ export function LineChart({
   data,
   loading,
 }: {
-  data: Alert[];
+  data: AlertConversation[];
   loading: boolean;
 }) {
   const chartData = aggregateAlertsByDate(data);
