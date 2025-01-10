@@ -1,0 +1,297 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/dashboard/messages": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Messages",
+        "description": "Get all the messages from the database and return them as a list of conversations.",
+        "operationId": "get_messages_dashboard_messages_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Conversation"
+                  },
+                  "type": "array",
+                  "title": "Response Get Messages Dashboard Messages Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/alerts": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Alerts",
+        "description": "Get all the messages from the database and return them as a list of conversations.",
+        "operationId": "get_alerts_dashboard_alerts_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/AlertConversation"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "title": "Response Get Alerts Dashboard Alerts Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/alerts_notification": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Stream Sse",
+        "description": "Send alerts event",
+        "operationId": "stream_sse_dashboard_alerts_notification_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlertConversation": {
+        "properties": {
+          "conversation": {
+            "$ref": "#/components/schemas/Conversation"
+          },
+          "alert_id": {
+            "type": "string",
+            "title": "Alert Id"
+          },
+          "code_snippet": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeSnippet"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trigger_string": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trigger String"
+          },
+          "trigger_type": {
+            "type": "string",
+            "title": "Trigger Type"
+          },
+          "trigger_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trigger Category"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation",
+          "alert_id",
+          "code_snippet",
+          "trigger_string",
+          "trigger_type",
+          "trigger_category",
+          "timestamp"
+        ],
+        "title": "AlertConversation",
+        "description": "Represents an alert with it's respective conversation."
+      },
+      "ChatMessage": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          },
+          "message_id": {
+            "type": "string",
+            "title": "Message Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "timestamp",
+          "message_id"
+        ],
+        "title": "ChatMessage",
+        "description": "Represents a chat message."
+      },
+      "CodeSnippet": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "filepath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filepath"
+          },
+          "libraries": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Libraries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "language",
+          "filepath"
+        ],
+        "title": "CodeSnippet"
+      },
+      "Conversation": {
+        "properties": {
+          "question_answers": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionAnswer"
+            },
+            "type": "array",
+            "title": "Question Answers"
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "chat_id": {
+            "type": "string",
+            "title": "Chat Id"
+          },
+          "conversation_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Conversation Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question_answers",
+          "provider",
+          "type",
+          "chat_id",
+          "conversation_timestamp"
+        ],
+        "title": "Conversation",
+        "description": "Represents a conversation."
+      },
+      "QuestionAnswer": {
+        "properties": {
+          "question": {
+            "$ref": "#/components/schemas/ChatMessage"
+          },
+          "answer": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChatMessage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "question",
+          "answer"
+        ],
+        "title": "QuestionAnswer",
+        "description": "Represents a question and answer pair."
+      }
+    }
+  }
+}

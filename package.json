@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "generate-client": "npm run fetch-openapi-schema && npm run openapi-ts",
+    "fetch-openapi-schema": "curl https://raw.githubusercontent.com/stacklok/codegate/refs/heads/main/api/openapi.json > src/api/openapi.json",
+    "openapi-ts": "openapi-ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "prepare": "husky",
@@ -15,6 +18,7 @@
     "type-check": "tsc --noEmit -p ./tsconfig.app.json"
   },
   "dependencies": {
+    "@hey-api/client-fetch": "^0.6.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.4",
     "@radix-ui/react-select": "^2.1.4",
@@ -44,6 +48,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@hey-api/openapi-ts": "^0.61.2",
     "@tailwindcss/typography": "^0.5.15",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",

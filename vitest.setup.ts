@@ -4,6 +4,7 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterEach, expect, beforeAll, afterAll, vi } from "vitest";
 import failOnConsole from "vitest-fail-on-console";
+import { client } from "./src/api/generated/sdk.gen";
 
 class MockEventSource {
   onmessage: ((event: MessageEvent) => void) | null = null;
@@ -28,6 +29,11 @@ afterEach(() => {
 beforeAll(() => {
   server.listen({
     onUnhandledRequest: "error",
+  });
+
+  client.setConfig({
+    baseUrl: "https://mock.codegate.ai",
+    fetch,
   });
 
   global.window.matchMedia = vi.fn().mockImplementation((query) => ({

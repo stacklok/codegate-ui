@@ -1,5 +1,7 @@
+import { AlertConversation, Conversation } from "./api/generated";
+
 export type PromptState = {
-  prompts: Prompt[];
+  prompts: Conversation[];
   loading: boolean;
   currentPromptId: string;
   setCurrentPromptId: (id: string) => void;
@@ -7,8 +9,8 @@ export type PromptState = {
 };
 
 export type AlertState = {
-  alerts: Alert[];
-  filteredAlerts: Alert[];
+  alerts: AlertConversation[];
+  filteredAlerts: AlertConversation[];
   loading: boolean;
   isMaliciousFilterActive: boolean;
   search: string;
@@ -27,51 +29,9 @@ export type TriggerType =
   | "codegate-secrets"
   | string;
 
-export type SystemType = {
-  provider: string;
-  type: string;
-  chat_id: string;
-  conversation_timestamp: string;
-};
-
-export type CodeSnippet = {
-  language: string | null;
-  filepath: string;
-  code: string;
-};
-
-export type Prompt = SystemType & {
-  question_answers?: Chat[];
-};
-
 export type MaliciousPkgType = {
   name: string;
   type: string;
   status: string;
   description: string;
-};
-
-export type Alert = {
-  conversation: {
-    question_answers: Chat[];
-  } & SystemType;
-  alert_id: string;
-  code_snippet: CodeSnippet | null;
-  trigger_string: string | MaliciousPkgType | null;
-  trigger_type: TriggerType;
-  trigger_category: "info" | "critical";
-  timestamp: string;
-};
-
-export type Chat = {
-  question: {
-    message: string;
-    timestamp: string;
-    message_id: string;
-  } | null;
-  answer: {
-    message: string;
-    timestamp: string;
-    message_id: string;
-  } | null;
 };
