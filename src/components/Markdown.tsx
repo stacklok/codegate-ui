@@ -57,6 +57,7 @@ export function Markdown({ children, className = "" }: Props) {
     <ReactMarkdown
       components={{
         code({ className, children, ...props }) {
+          if (!children) return null;
           const detectedLanguage =
             hljs.highlightAuto(children, LANGUAGES_SUBSET_DETECTION).language ??
             "plaintext";
