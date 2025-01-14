@@ -111,6 +111,8 @@ function ErrorUI() {
         <a
           className="underline text-gray-700"
           href="https://discord.gg/stacklok"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           Discord
         </a>{" "}
@@ -118,6 +120,8 @@ function ErrorUI() {
         <a
           className="underline text-gray-700"
           href="https://github.com/stacklok/codegate/issues/new"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           Github issue
         </a>
