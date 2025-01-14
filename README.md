@@ -13,7 +13,13 @@ security insights and activity, including:
 
 ## Setting up local development environment
 
-To install all dependencies for your local development environment (environment variable `VITE_BASE_API_URL="http://localhost:8989"` for API base url), run
+To run a local development environment, start by running a copy of the CodeGate
+[application](https://github.com/stacklok/codegate/blob/main/docs/development.md)
+or [container](https://docs.codegate.ai/how-to/install). The UI will connect to
+the API endpoint at `http://localhost:8989` by default. To change this, set the
+`VITE_BASE_API_URL` environment variable.
+
+Install all dependencies and run a dev server:
 
 ```bash
 npm install
