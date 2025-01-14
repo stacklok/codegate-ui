@@ -189,7 +189,7 @@ export function Dashboard() {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <Table>
+        <Table data-testid="alerts-table">
           <TableHeader>
             <TableRow>
               <TableHead className="w-[150px]">Trigger Type</TableHead>

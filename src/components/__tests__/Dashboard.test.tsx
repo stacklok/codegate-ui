@@ -154,19 +154,21 @@ describe("Dashboard", () => {
     ).toBeVisible();
     expect(screen.getByRole("searchbox")).toBeVisible();
 
-    const row = screen.getAllByRole("row")[1] as HTMLElement;
+    const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
+      "row",
+    )[1] as HTMLElement;
+    const secondRow = within(screen.getByTestId("alerts-table")).getAllByRole(
+      "row",
+    )[2] as HTMLElement;
 
-    expect(within(row).getByText(/ghp_token/i)).toBeVisible();
-    expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
-    expect(within(row).getAllByText(/n\/a/i).length).toEqual(2);
-    expect(within(row).getByText(/2025\/01\/07/i)).toBeVisible();
-    expect(within(row).getByTestId(/time/i)).toBeVisible();
+    expect(within(firstRow).getByText(/ghp_token/i)).toBeVisible();
+    expect(within(firstRow).getByText(/codegate-secrets/i)).toBeVisible();
+    expect(within(firstRow).getAllByText(/n\/a/i).length).toEqual(2);
+    expect(within(firstRow).getByText(/2025\/01\/07/i)).toBeVisible();
+    expect(within(firstRow).getByTestId(/time/i)).toBeVisible();
 
     // check trigger_string null
-    expect(
-      within(screen.getAllByRole("row")[2] as HTMLElement).getAllByText(/n\/a/i)
-        .length,
-    ).toEqual(3);
+    expect(within(secondRow).getAllByText(/n\/a/i).length).toEqual(3);
   });
 
   it("should render malicious pkg", async () => {
@@ -271,7 +273,9 @@ describe("Dashboard", () => {
     await waitFor(() =>
       expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("1"),
     );
-    const row = screen.getAllByRole("row")[1] as HTMLElement;
+    const row = within(screen.getByTestId("alerts-table")).getAllByRole(
+      "row",
+    )[1] as HTMLElement;
     expect(within(row).getByText(/ghp_token/i)).toBeVisible();
     expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
   });
