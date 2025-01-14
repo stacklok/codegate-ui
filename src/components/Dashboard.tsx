@@ -21,6 +21,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useSearchParams } from "react-router-dom";
 import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
+import { CardHealth } from "@/features/dashboard/components/card-health";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
@@ -128,6 +129,7 @@ export function Dashboard() {
   return (
     <div className="flex-col">
       <div className="flex flex-wrap items-center gap-4 w-full">
+        <CardHealth />
         <div className="min-w-80 w-1/3 h-60">
           <BarChart data={alerts} loading={loading} />
         </div>
