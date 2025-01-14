@@ -1,5 +1,7 @@
 # CodeGate Dashboard
 
+[![Coverage Status](https://coveralls.io/repos/github/stacklok/codegate-ui/badge.svg?branch=main)](https://coveralls.io/github/stacklok/codegate-ui?branch=main)
+
 This repository contains the [CodeGate](https://github.com/stacklok/codegate)
 dashboard user interface. The dashboard presents information about CodeGate's
 security insights and activity, including:
