@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useSearchParams } from "react-router-dom";
 import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
-import { CardCodegateStatus } from "@/features/dashboard/components/card-health";
+import { CardCodegateStatus } from "@/features/dashboard/components/card-codegate-status";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
