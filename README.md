@@ -1,16 +1,17 @@
-# CodeGate UI Dashboard
+# CodeGate Dashboard
 
-[CodeGate](https://github.com/stacklok/codegate) UI Dashboard with some information about the security insights:
-- History prompts
-- Chat conversations
-- Secrets alerts
-- Malicious Packages
-- Alerts trend
-- Alerts table
+This repository contains the [CodeGate](https://github.com/stacklok/codegate)
+dashboard user interface. The dashboard presents information about CodeGate's
+security insights and activity, including:
+
+- Prompt and chat conversation history
+- Security alert counts and daily trend
+- Alert history with secrets and package risks detected by CodeGate
+- CA certificate download and installation instructions
 
 ## Setting up local development environment
 
-To install all dependencies for your local development environment (endpoint on `http://localhost:8989`), run
+To install all dependencies for your local development environment (environment variable `VITE_BASE_API_URL="http://localhost:8989"` for API base url), run
 
 ```bash
 npm install
@@ -23,7 +24,8 @@ Run the development server using:
 ```bash
 npm run dev
 ```
-Open http://localhost:5173 on your browser to see the dashboard
+
+Open <http://localhost:5173> on your browser to see the dashboard
 
 ## Build production
 
