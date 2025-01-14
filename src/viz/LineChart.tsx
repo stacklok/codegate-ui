@@ -82,8 +82,8 @@ export function LineChart({
       <CardHeader>
         <CardTitle>Alerts by date</CardTitle>
       </CardHeader>
-      <CardContent className="h-full">
-        <ChartContainer config={chartConfig}>
+      <CardContent>
+        <ChartContainer config={chartConfig} className="min-h-[10rem]">
           <LineChartsUI
             accessibilityLayer
             data={chartData}

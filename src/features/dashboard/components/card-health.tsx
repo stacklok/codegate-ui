@@ -2,12 +2,11 @@ import { client } from "@/api/generated";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TableRow, TableBody, TableCell, Table } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
-import { Check, CheckCheck, CheckCircle, CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, LoaderCircle } from "lucide-react";
 
 enum Status {
-  HEALTHY = "Healthy",
-  LOADING = "Loading",
-  NOT_REACHABLE = "Not reachable",
+  CONNECTED = "Connected",
+  NOT_CONNECTED = "Not connected",
 }
 
 type HealthResp = { status: "healthy" | null } | null;
@@ -18,8 +17,8 @@ const getStatus = async (): Promise<Status> => {
     throwOnError: true,
   });
 
-  if (status.data?.status === "healthy") return Status.HEALTHY;
-  return Status.NOT_REACHABLE;
+  if (status.data?.status === "healthy") return Status.CONNECTED;
+  return Status.NOT_CONNECTED;
 };
 
 const useStatus = () =>
@@ -37,22 +36,17 @@ const useStatus = () =>
 
 const StatusText = ({ status }: { status: Status }) => {
   switch (status) {
-    case Status.HEALTHY:
+    case Status.CONNECTED:
       return (
-        <div className="flex gap-2 items-center">
-          {Status.HEALTHY} <Check className="size-4" />
+        <div className="flex gap-2 items-center text-green-600 justify-end">
+          {Status.CONNECTED} <CheckCircle2 className="size-4" />
         </div>
       );
-    case Status.LOADING:
+    case Status.NOT_CONNECTED:
       return (
-        <div className="flex gap-2 items-center">
-          {Status.LOADING} <CheckCircle className="size-4" />
-        </div>
-      );
-    case Status.NOT_REACHABLE:
-      return (
-        <div className="flex gap-2 items-center">
-          {Status.NOT_REACHABLE} <XCircle className="size-4" />
+        <div className="flex gap-2 items-center text-gray-600 justify-end overflow-hidden">
+          {Status.NOT_CONNECTED}{" "}
+          <LoaderCircle className="size-4 animate-spin" />
         </div>
       );
     default: {
@@ -61,26 +55,22 @@ const StatusText = ({ status }: { status: Status }) => {
   }
 };
 
-export function CardHealth() {
-  const { data: status, error: statusError } = useStatus();
+export function CardCodegateStatus() {
+  const { data: status } = useStatus();
 
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>System health</CardTitle>
+        <CardTitle>CodeGate Status</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableBody>
-            <TableRow>
-              <TableCell className="truncate">System health</TableCell>
-              <TableCell className="text-end">
-                {status ? <StatusText status={status} /> : "Error"}
+            <TableRow className="hover:transparent">
+              <TableCell className="pl-0">CodeGate server</TableCell>
+              <TableCell className="pr-0 text-end">
+                <StatusText status={status ?? Status.NOT_CONNECTED} />
               </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="truncate">CA certificate</TableCell>
-              <TableCell className="text-end">Trusted</TableCell>
             </TableRow>
           </TableBody>
         </Table>
