@@ -88,7 +88,7 @@ export function Markdown({ children, className = "" }: Props) {
           return (
             <p
               className={cn(
-                "text-gray-600 leading-relaxed mt-6 mb-3",
+                "text-secondary leading-relaxed mt-6 mb-3",
                 className,
               )}
             >

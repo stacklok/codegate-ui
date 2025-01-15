@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Label, Pie, PieChart as PieChartUI } from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit-mono";
 import {
   ChartConfig,
   ChartContainer,
@@ -11,10 +11,18 @@ import {
 import { MaliciousPkgType } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const COLORS = [
+  "var(--brand-700)",
+  "var(--brand-800)",
+  "var(--brand-900)",
+  "var(--brand-950)",
+] as const
+
 const generateTypeColors = (data: MaliciousPkgType[]) => {
   const uniqueTypes = Array.from(new Set(data.map((pkg) => pkg.type)));
   return uniqueTypes.reduce<Record<string, string>>((acc, type, index) => {
-    acc[type] = `hsl(var(--chart-${index + 1}))`;
+    const colorIndex = index > COLORS.length -1 ? COLORS.length -1 : index
+    acc[type] = COLORS[colorIndex] as string
     return acc;
   }, {});
 };
@@ -31,7 +39,7 @@ const getChartData = (
   return Object.entries(typeCounts).map(([type, count]) => ({
     name: type,
     value: count,
-    fill: typeColors[type] || "hsl(var(--chart-default))",
+    fill: typeColors[type] || "hsl(var(--brand-700))",
   }));
 };
 
@@ -72,11 +80,11 @@ export function PieChart({ data, loading }: PieChartProps) {
         <CardHeader>
           <CardTitle>Malicious packages by type</CardTitle>
         </CardHeader>
-        <CardContent className="flex justify-center">
+        <CardBody className="flex justify-center">
           <div className="w-[220px] h-[220px] flex justify-center">
             <Skeleton className="h-40 w-40 rounded-full" />
           </div>
-        </CardContent>
+        </CardBody>
       </Card>
     );
   }
@@ -87,21 +95,21 @@ export function PieChart({ data, loading }: PieChartProps) {
         <CardHeader>
           <CardTitle>Malicious packages by type</CardTitle>
         </CardHeader>
-        <CardContent className="flex justify-center">
+        <CardBody className="flex justify-center">
           <div className="bg-gray-100 rounded-full flex items-center justify-center h-40 w-40 font-bold text-lg">
             N/A
           </div>
-        </CardContent>
+        </CardBody>
       </Card>
     );
   }
 
   return (
     <Card className="h-full" data-testid="malicious-piechart">
-      <CardHeader className="items-center pb-0">
+      <CardHeader className="items-center">
         <CardTitle>Malicious packages by type</CardTitle>
       </CardHeader>
-      <CardContent className="mt-[-1em]">
+      <CardBody className="mt-[-1em]">
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[240px]"
@@ -118,6 +126,8 @@ export function PieChart({ data, loading }: PieChartProps) {
               innerRadius={60}
               outerRadius={80}
               strokeWidth={5}
+              fill="red"
+
             >
               <Label
                 content={({ viewBox }) => {
@@ -132,16 +142,16 @@ export function PieChart({ data, loading }: PieChartProps) {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-gray-900 text-3xl font-bold"
                         >
                           {totalMalicious}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
+                          className="fill-gray-900"
                         >
-                          Packages
+                          {totalMalicious > 1 ? "packages" : "package"}
                         </tspan>
                       </text>
                     );
@@ -151,7 +161,7 @@ export function PieChart({ data, loading }: PieChartProps) {
             </Pie>
           </PieChartUI>
         </ChartContainer>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 }

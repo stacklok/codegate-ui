@@ -8,7 +8,7 @@ import {
   XAxis,
 } from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit-mono";
 import {
   ChartConfig,
   ChartContainer,
@@ -66,7 +66,7 @@ export function LineChart({
         <CardHeader>
           <CardTitle>Alerts by date</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardBody>
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={index}
@@ -75,7 +75,7 @@ export function LineChart({
               <Skeleton key={index} className="w-full h-3" />
             </div>
           ))}
-        </CardContent>
+        </CardBody>
       </Card>
     );
   }
@@ -85,7 +85,7 @@ export function LineChart({
       <CardHeader>
         <CardTitle>Alerts by date</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardBody>
         <ChartContainer config={chartConfig} className="min-h-[10rem]">
           <LineChartsUI
             accessibilityLayer
@@ -133,7 +133,7 @@ export function LineChart({
             </Line>
           </LineChartsUI>
         </ChartContainer>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 }

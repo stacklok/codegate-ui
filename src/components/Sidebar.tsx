@@ -37,7 +37,7 @@ export function Sidebar({
   }
 
   return (
-    <SidebarUI side="left" className="border-r-blue-200">
+    <SidebarUI side="left" className="border-r-gray-200">
       <SidebarHeader className="bg-teal-25 py-6 pb-3 text-sm font-bold px-4">
         History Prompts
       </SidebarHeader>

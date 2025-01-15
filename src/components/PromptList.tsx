@@ -17,7 +17,7 @@ export function PromptList({ prompts }: { prompts: Conversation[] }) {
     <div className="mx-2">
       {Object.entries(groupedPrompts).map(([group, prompts]) => (
         <div key={group} className="mb-3">
-          <h2 className="font-bold text-sm text-gray-700 mb-2 mt-6">{group}</h2>
+          <h2 className="font-bold text-sm text-secondary mb-2 mt-6">{group}</h2>
           <ul className="space-y-2">
             {prompts.map((prompt) => (
               <li key={prompt.chat_id} className="flex items-center p-1 w-full">
@@ -25,7 +25,7 @@ export function PromptList({ prompts }: { prompts: Conversation[] }) {
                   onClick={() => setCurrentPromptId(prompt.chat_id)}
                   to={`/prompt/${prompt.chat_id}`}
                   className={clsx(
-                    `text-gray-800 text-sm truncate hover:text-gray-500`,
+                    `text-secondary text-sm truncate hover:text-gray-500`,
                     { "font-bold": currentPromptId === prompt.chat_id },
                   )}
                 >

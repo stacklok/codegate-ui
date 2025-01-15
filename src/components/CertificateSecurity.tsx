@@ -1,7 +1,7 @@
-import { Card } from "./ui/card";
+import { Card } from "@stacklok/ui-kit-mono"
 
 const SecurityShieldIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-teal-600">
+  <svg viewBox="0 0 24 24" className="w-16 h-16 text-brand-700">
     <path
       fill="none"
       stroke="currentColor"
@@ -22,7 +22,7 @@ const SecurityShieldIcon = () => (
 );
 
 const KeySecurityIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-teal-600">
+  <svg viewBox="0 0 24 24" className="w-16 h-16 text-brand-700">
     <path
       fill="none"
       stroke="currentColor"
@@ -35,7 +35,7 @@ const KeySecurityIcon = () => (
 );
 
 const OpenSourceIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-teal-600">
+  <svg viewBox="0 0 24 24" className="w-16 h-16 text-brand-700">
     <circle
       cx="12"
       cy="12"
@@ -70,12 +70,12 @@ export function CertificateSecurity() {
           <h2 className="text-xl font-semibold mb-4">
             Robust Certificate Security
           </h2>
-          <p className="text-gray-700 mb-4">
+          <p className="text-secondary mb-4">
             Security is a top priority for us. We have designed CodeGate's local
             certificate management with security in mind, balanced against ease
             of use.
           </p>
-          <p className="text-gray-700">
+          <p className="text-secondary">
             We always seek to improve and balance security, privacy, and
             usability.
           </p>
@@ -91,7 +91,7 @@ export function CertificateSecurity() {
               <h3 className="font-semibold text-lg mb-2">
                 Per-domain certificate generation
               </h3>
-              <p className="text-gray-700 mb-2">
+              <p className="text-secondary mb-2">
                 Instead of using wildcard certificates, CodeGate generates a
                 unique certificate for each domain. This approach minimizes
                 security risks by limiting the impact of any single certificate
@@ -103,7 +103,7 @@ export function CertificateSecurity() {
               <h3 className="font-semibold text-lg mb-2">
                 High-strength encryption with 4096-bit RSA keys
               </h3>
-              <p className="text-gray-700 mb-2">
+              <p className="text-secondary mb-2">
                 CodeGate utilizes 4096-bit RSA keys for certificate authority
                 operations, providing enhanced security compared to standard
                 2048-bit keys. The increased key length significantly reduces
@@ -117,7 +117,7 @@ export function CertificateSecurity() {
               <h3 className="font-semibold text-lg mb-2">
                 Secure SSL/TLS configuration
               </h3>
-              <p className="text-gray-700 mb-2">
+              <p className="text-secondary mb-2">
                 CodeGate's SSL context is configured to enforce the latest
                 security standards, including strong cipher suites and disabling
                 outdated protocols. This ensures secure and efficient encrypted
@@ -129,7 +129,7 @@ export function CertificateSecurity() {
               <h3 className="font-semibold text-lg mb-2">
                 Certificate caching and management
               </h3>
-              <p className="text-gray-700 mb-2">
+              <p className="text-secondary mb-2">
                 Certificates are cached efficiently to optimize performance
                 without compromising security. Additionally, mechanisms are in
                 place to manage certificate lifecycle and prevent resource
@@ -147,18 +147,18 @@ export function CertificateSecurity() {
             Open source and community engagement
           </h2>
           <div className="space-y-4">
-            <p className="text-gray-700">
+            <p className="text-secondary">
               Security has been a fundamental consideration throughout the
               development of CodeGate. Our comprehensive approach ensures that
               your development environment remains secure without sacrificing
               functionality or performance.
             </p>
-            <p className="text-gray-700">
+            <p className="text-secondary">
               We believe in transparency and continuous improvement. By making
               our code open source, we invite the global security community to
               review, audit, and contribute to enhancing our security measures.
             </p>
-            <p className="text-gray-700">
+            <p className="text-secondary">
               If you discover a security vulnerability or have suggestions for
               improvement, please reach out to us at{" "}
               <a
@@ -170,7 +170,7 @@ export function CertificateSecurity() {
               . Your contributions help us maintain the highest security
               standards.
             </p>
-            <p className="text-gray-700">
+            <p className="text-secondary">
               Explore our codebase on{" "}
               <a
                 href="https://github.com/stacklok/codegate"

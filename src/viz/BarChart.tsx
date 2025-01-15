@@ -1,5 +1,5 @@
 import { AlertConversation } from "@/api/generated/types.gen";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit-mono";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAllIssues } from "@/lib/utils";
 
@@ -18,7 +18,7 @@ export function BarChart({
         <CardHeader>
           <CardTitle>Security issues detected</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardBody>
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={index}
@@ -27,7 +27,7 @@ export function BarChart({
               <Skeleton key={index} className="w-full h-3" />
             </div>
           ))}
-        </CardContent>
+        </CardBody>
       </Card>
     );
   }
@@ -35,40 +35,40 @@ export function BarChart({
   if (sortedTagCounts.length === 0) {
     return (
       <Card className="h-full" data-testid="security-issues-barchart">
-        <CardHeader>
+        <CardHeader className="shrink-0">
           <CardTitle>Security issues detected</CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center h-2/3">
+        <CardBody className="flex items-center h-2/3">
           <div className="bg-gray-100 w-full flex items-center justify-center h-full font-bold text-lg">
             N/A
           </div>
-        </CardContent>
+        </CardBody>
       </Card>
     );
   }
 
   return (
     <Card className="h-full" data-testid="security-issues-barchart">
-      <CardHeader>
+        <CardHeader className="shrink-0">
         <CardTitle>Security issues detected</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardBody>
         <div className="space-y-3 max-h-[270px] overflow-y-auto">
           {sortedTagCounts.map(([tag, count], index) => (
             <div key={index} className="flex items-center space-x-4">
-              <span className="w-2/4 text-sm font-medium text-gray-700 truncate">
+              <span className="w-2/4 text-sm font-medium text-secondary truncate">
                 {tag}
               </span>
               <div className="flex-1 h-4 bg-gray-200 rounded-lg overflow-hidden">
                 <div
-                  className="h-full bg-blue-500 rounded-lg"
+                  className="h-full bg-brand-700 rounded-lg"
                   style={{
                     width: `${(count / maxCount) * 100}%`,
                   }}
                 ></div>
               </div>
               <span
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-secondary"
                 data-testid={`${tag}-count`}
               >
                 {count}
@@ -76,7 +76,7 @@ export function BarChart({
             </div>
           ))}
         </div>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 }

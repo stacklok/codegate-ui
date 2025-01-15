@@ -8,21 +8,21 @@ import {
   Table,
 } from "./ui/table";
 import { format } from "date-fns";
+import { Input, SearchField } from "@stacklok/ui-kit-mono";
 import { Badge } from "./ui/badge";
-import { Input } from "./ui/input";
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
 import { useAlertsStore } from "@/hooks/useAlertsStore";
 import { Markdown } from "./Markdown";
 import { PieChart } from "@/viz/PieChart";
-import { Switch } from "./ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Switch } from "@stacklok/ui-kit-mono";
+import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit-mono";
 import { useSearchParams } from "react-router-dom";
 import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
 import { CardCodegateStatus } from "@/features/dashboard/components/card-codegate-status";
-
+import { Search } from "lucide-react";
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
   if (data === null) return "N/A";
@@ -107,7 +107,7 @@ export function Dashboard() {
       setSearchParams(searchParams);
       toggleMaliciousFilter(isChecked);
     },
-    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter],
+    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter]
   );
 
   const handleSearch = useCallback(
@@ -123,7 +123,7 @@ export function Dashboard() {
       }
       setSearchParams(searchParams);
     },
-    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter],
+    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter]
   );
 
   return (
@@ -145,47 +145,27 @@ export function Dashboard() {
 
         <div className="flex items-center gap-8">
           <div className="flex items-center space-x-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="airplane-mode"
-                    checked={isMaliciousFilterActive}
-                    onCheckedChange={handleToggleFilter}
-                  />
-                  <label htmlFor="airplane-mode" className="text-sm">
-                    Malicious Packages
-                  </label>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Filter by malicious packages</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-          <Input
-            icon={
-              <svg
-                width="20px"
-                height="20px"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <TooltipTrigger>
+              <Switch
+                id="airplane-mode"
+                isSelected={isMaliciousFilterActive}
+                onChange={handleToggleFilter}
               >
-                <path
-                  d="M21 21L17.5001 17.5M20 11.5C20 16.1944 16.1944 20 11.5 20C6.80558 20 3 16.1944 3 11.5C3 6.80558 6.80558 3 11.5 3C16.1944 3 20 6.80558 20 11.5Z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            }
+                Malicious Packages
+              </Switch>
+
+              <Tooltip>
+                <p>Filter by malicious packages</p>
+              </Tooltip>
+            </TooltipTrigger>
+          </div>
+          <SearchField
             type="text"
             value={search}
-            placeholder="Search..."
-            onChange={(e) => handleSearch(e.target.value.toLowerCase().trim())}
-          />
+            onChange={(value) => handleSearch(value.toLowerCase().trim())}
+          >
+            <Input placeholder="Search..." icon={<Search />} />
+          </SearchField>
         </div>
       </div>
       <div className="overflow-x-auto">

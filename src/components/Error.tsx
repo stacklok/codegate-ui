@@ -1,6 +1,6 @@
 import { CircleAlert } from "lucide-react";
 import { Header } from "./Header";
-import { Card } from "./ui/card";
+import { Card } from "@stacklok/ui-kit-mono";
 
 export function Error() {
   return (
@@ -11,13 +11,13 @@ export function Error() {
       <div className="h-24 flex flex-col flex-1 justify-center">
         <Card className="p-8 flex flex-col items-center">
           <CircleAlert className="text-red-600 mb-2 size-16" />
-          <div className="text-xl font-semibold text-gray-600 text-center">
+          <div className="text-xl font-semibold text-secondary text-center">
             An error occurred
           </div>
-          <div className="text-md mb-4 text-gray-600 text-center text-balance">
+          <div className="text-md mb-4 text-secondary text-center text-balance">
             If this issue persists, please reach out to us on{" "}
             <a
-              className="underline text-gray-700"
+              className="underline text-secondary"
               href="https://discord.gg/stacklok"
               rel="noopener noreferrer"
               target="_blank"
@@ -26,7 +26,7 @@ export function Error() {
             </a>{" "}
             or open a new{" "}
             <a
-              className="underline text-gray-700"
+              className="underline text-secondary"
               href="https://github.com/stacklok/codegate/issues/new"
               rel="noopener noreferrer"
               target="_blank"

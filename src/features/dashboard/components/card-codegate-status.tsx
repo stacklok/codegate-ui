@@ -1,10 +1,10 @@
 import {
   Card,
-  CardContent,
+  CardBody,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@stacklok/ui-kit-mono";
 import { TableRow, TableBody, TableCell, Table } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -74,7 +74,7 @@ const StatusText = ({
 }) => {
   if (isPending || status === null) {
     return (
-      <div className="flex gap-2 items-center text-gray-600 justify-end overflow-hidden">
+      <div className="flex gap-2 items-center text-secondary justify-end overflow-hidden">
         Checking <LoaderCircle className="size-4 animate-spin" />
       </div>
     );
@@ -103,13 +103,13 @@ function ErrorUI() {
   return (
     <div className="flex flex-col items-center justify-center py-8">
       <XCircle className="text-red-600 mb-2 size-8" />
-      <div className="text-md font-semibold text-gray-600 text-center">
+      <div className="text-md font-semibold text-secondary text-center">
         An error occurred
       </div>
-      <div className="text-sm text-gray-600 text-center text-balance">
+      <div className="text-sm text-secondary text-center text-balance">
         If this issue persists, please reach out to us on{" "}
         <a
-          className="underline text-gray-700"
+          className="underline text-secondary"
           href="https://discord.gg/stacklok"
           rel="noopener noreferrer"
           target="_blank"
@@ -118,7 +118,7 @@ function ErrorUI() {
         </a>{" "}
         or open a new{" "}
         <a
-          className="underline text-gray-700"
+          className="underline text-secondary"
           href="https://github.com/stacklok/codegate/issues/new"
           rel="noopener noreferrer"
           target="_blank"
@@ -141,12 +141,12 @@ function PollIntervalControl({
 }) {
   return (
     <div className={cn("flex items-center relative group", className)}>
-      <div className="text-gray-600 hover:text-gray-800 font-normal cursor-pointer text-base px-2 py-1 rounded-md hover:bg-blue-50 transition-colors flex gap-1 items-center">
+      <div className="text-secondary hover:text-secondary font-normal cursor-pointer text-base px-2 py-1 rounded-md hover:bg-blue-50 transition-colors flex gap-1 items-center">
         <div>
-          <div className="text-sm font-semibold text-gray-500 text-right">
+          <div className="text-sm font-semibold text-secondary text-right">
             Check for updates
           </div>
-          <div className="text-sm text-gray-500 text-right">
+          <div className="text-sm text-secondary text-right">
             every {INTERVAL[pollingInterval].name}
           </div>
         </div>
@@ -160,7 +160,7 @@ function PollIntervalControl({
             <button
               onClick={() => setPollingInterval(key as Interval)}
               data-active={isActive}
-              className="text-right :not:last:mb-1 font-normal text-sm text-gray-600 hover:bg-gray-100 rounded px-2 py-0.5 hover:text-gray-800 &[data-active=true]:text-gray-800 flex items-center justify-between w-full"
+              className="text-right :not:last:mb-1 font-normal text-sm text-secondary hover:bg-gray-100 rounded px-2 py-0.5 hover:text-secondary &[data-active=true]:text-secondary flex items-center justify-between w-full"
               key={key}
             >
               {name}
@@ -211,16 +211,16 @@ export function CardCodegateStatus() {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="h-max">
+      <CardBody className="h-max">
         <InnerContent data={data} isPending={isPending} isError={isError} />
-      </CardContent>
+      </CardBody>
 
       <CardFooter className="border-t border-gray-200 mt-auto py-2 pr-2">
         <div>
-          <div className="text-sm font-semibold text-gray-500">
+          <div className="text-sm font-semibold text-secondary">
             Last checked
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-secondary">
             {format(new Date(dataUpdatedAt), "pp")}
           </div>
         </div>
