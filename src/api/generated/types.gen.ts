@@ -4,64 +4,60 @@
  * Represents an alert with it's respective conversation.
  */
 export type AlertConversation = {
-  conversation: Conversation;
-  alert_id: string;
-  code_snippet: CodeSnippet | null;
-  trigger_string:
-    | string
-    | {
-        [key: string]: unknown;
-      }
-    | null;
-  trigger_type: string;
-  trigger_category: string | null;
-  timestamp: string;
+    conversation: Conversation;
+    alert_id: string;
+    code_snippet: (CodeSnippet | null);
+    trigger_string: (string | {
+    [key: string]: unknown;
+} | null);
+    trigger_type: string;
+    trigger_category: (string | null);
+    timestamp: string;
 };
 
 /**
  * Represents a chat message.
  */
 export type ChatMessage = {
-  message: string;
-  timestamp: string;
-  message_id: string;
+    message: string;
+    timestamp: string;
+    message_id: string;
 };
 
 export type CodeSnippet = {
-  code: string;
-  language: string | null;
-  filepath: string | null;
-  libraries?: Array<string>;
+    code: string;
+    language: (string | null);
+    filepath: (string | null);
+    libraries?: Array<(string)>;
 };
 
 /**
  * Represents a conversation.
  */
 export type Conversation = {
-  question_answers: Array<QuestionAnswer>;
-  provider: string | null;
-  type: string;
-  chat_id: string;
-  conversation_timestamp: string;
+    question_answers: Array<QuestionAnswer>;
+    provider: (string | null);
+    type: string;
+    chat_id: string;
+    conversation_timestamp: string;
 };
 
 /**
  * Represents a question and answer pair.
  */
 export type QuestionAnswer = {
-  question: ChatMessage;
-  answer: ChatMessage | null;
+    question: ChatMessage;
+    answer: (ChatMessage | null);
 };
 
-export type GetMessagesDashboardMessagesGetResponse = Array<Conversation>;
+export type GetMessagesDashboardMessagesGetResponse = (Array<Conversation>);
 
 export type GetMessagesDashboardMessagesGetError = unknown;
 
-export type GetAlertsDashboardAlertsGetResponse =
-  Array<AlertConversation | null>;
+export type GetAlertsDashboardAlertsGetResponse = (Array<(AlertConversation | null)>);
 
 export type GetAlertsDashboardAlertsGetError = unknown;
 
-export type StreamSseDashboardAlertsNotificationGetResponse = unknown;
+export type StreamSseDashboardAlertsNotificationGetResponse = (unknown);
 
 export type StreamSseDashboardAlertsNotificationGetError = unknown;
