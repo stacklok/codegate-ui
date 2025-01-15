@@ -22,10 +22,14 @@ export const useAlertsStore = create<AlertState>((set, get) => ({
           alert?.conversation.question_answers.every(
             (item) => item.answer && item.question,
           ),
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
         );
 
       set({
-        alerts,
+        alerts: [...alerts],
         loading: false,
       });
     } else {
@@ -54,47 +58,36 @@ export const useAlertsStore = create<AlertState>((set, get) => ({
           )
       : alerts;
 
-    set({ filteredAlerts });
+    set({
+      filteredAlerts: [...filteredAlerts],
+    });
   },
   updateFilteredAlerts: () => {
     const { alerts, search } = get();
     const filteredAlerts = search
-      ? alerts
-          .filter((alert) => {
-            const maliciousPkg = getMaliciousPackage(alert.trigger_string);
-            const maliciousPkgName =
-              typeof maliciousPkg === "object"
-                ? maliciousPkg?.type
-                : maliciousPkg;
+      ? alerts.filter((alert) => {
+          const maliciousPkg = getMaliciousPackage(alert.trigger_string);
+          const maliciousPkgName =
+            typeof maliciousPkg === "object"
+              ? maliciousPkg?.type
+              : maliciousPkg;
 
-            // typeof alert.trigger_string === "object"
-            //   ? alert.trigger_string?.type
-            //   : alert.trigger_string;
-            const maliciousPkgType =
-              typeof maliciousPkg === "object"
-                ? maliciousPkg?.name
-                : maliciousPkg;
+          const maliciousPkgType =
+            typeof maliciousPkg === "object"
+              ? maliciousPkg?.name
+              : maliciousPkg;
 
-            // typeof alert.trigger_string === "object"
-            //   ? alert.trigger_string?.name
-            //   : alert.trigger_string;
+          return (
+            maliciousPkgName?.toLowerCase().includes(search) ||
+            maliciousPkgType?.toLowerCase().includes(search) ||
+            alert.trigger_type?.toLowerCase().includes(search)
+          );
+        })
+      : alerts;
 
-            return (
-              maliciousPkgName?.toLowerCase().includes(search) ||
-              maliciousPkgType?.toLowerCase().includes(search) ||
-              alert.trigger_type?.toLowerCase().includes(search)
-            );
-          })
-          .sort(
-            (a, b) =>
-              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-          )
-      : alerts.sort(
-          (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-        );
-
-    set({ filteredAlerts });
+    set({
+      filteredAlerts: [...filteredAlerts],
+    });
   },
   getMaliciousPackagesChart: () => {
     const { alerts } = get();
