@@ -29,7 +29,7 @@ function App() {
   }, [fetchPrompts]);
 
   return (
-    <div className="flex w-screen h-screen theme-minder">
+    <div className="flex w-screen h-screen">
       <Sidebar loading={loading}>
         <PromptList prompts={prompts} />
       </Sidebar>

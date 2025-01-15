@@ -20,7 +20,6 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CheckCircle2, LoaderCircle, XCircle } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
-import { twMerge } from "tailwind-merge";
 
 const INTERVAL = {
   "1_SEC": { value: 1_000, name: "1 second" },
@@ -151,13 +150,13 @@ function PollIntervalControl({
 }) {
   return (
     <Select
-      className={twMerge("flex items-center gap-1",className)}
+      className={className}
       onSelectionChange={(v) => setPollingInterval(v.toString() as Interval)}
       items={INTERVAL_SELECT_ITEMS}
       defaultSelectedKey={pollingInterval}
     >
       <Label>Check for updates</Label>
-      <SelectButton />
+      <SelectButton className="w-36" />
     </Select>
   );
 }

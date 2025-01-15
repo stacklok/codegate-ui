@@ -111,6 +111,7 @@ export function LineChart({
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
+              
             />
             <Line
               dataKey="alerts"
@@ -118,7 +119,7 @@ export function LineChart({
               stroke="var(--gray-200)"
               strokeWidth={2}
               dot={{
-                fill: "var(--gray-200)",
+                fill: "var(--brand-600)",
               }}
               activeDot={{
                 r: 6,
