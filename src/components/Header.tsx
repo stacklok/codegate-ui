@@ -13,7 +13,7 @@ import { HoverPopover } from "./HoverPopover";
 
 // function DropdownMenu({ children }: { children: React.ReactNode }) {
 //   return (
-//     <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
+//     <div className="absolute right-0 top-full mt-2 w-56 bg-base rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
 //       <div className="py-1">{children}</div>
 //     </div>
 //   );

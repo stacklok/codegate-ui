@@ -211,7 +211,7 @@ export function Certificates() {
               onClick={() => setActiveOS("macos")}
               className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 activeOS === "macos"
-                  ? "bg-white text-brand-700 shadow-sm"
+                  ? "bg-base text-brand-700 shadow-sm"
                   : "text-gray-500 hover:text-secondary"
               }`}
             >
@@ -221,7 +221,7 @@ export function Certificates() {
               onClick={() => setActiveOS("windows")}
               className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 activeOS === "windows"
-                  ? "bg-white text-brand-700 shadow-sm"
+                  ? "bg-base text-brand-700 shadow-sm"
                   : "text-gray-500 hover:text-secondary"
               }`}
             >
@@ -231,7 +231,7 @@ export function Certificates() {
               onClick={() => setActiveOS("linux")}
               className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 activeOS === "linux"
-                  ? "bg-white text-brand-700 shadow-sm"
+                  ? "bg-base text-brand-700 shadow-sm"
                   : "text-gray-500 hover:text-secondary"
               }`}
             >
