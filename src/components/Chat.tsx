@@ -29,9 +29,9 @@ export function Chat() {
         {(chat?.question_answers ?? []).map(({ question, answer }, index) => (
           <div key={index} className="flex flex-col w-full h-full gap-6">
             <ChatBubble variant="sent">
-              <ChatBubbleAvatar fallback="User" className="w-14" />
-              <ChatBubbleMessage variant="sent" className="bg-zinc-700">
-                <Markdown className="text-gray-300">
+              <ChatBubbleAvatar fallback="User"  />
+              <ChatBubbleMessage variant="sent" >
+                <Markdown >
                   {sanitizeQuestionPrompt({
                     question: question?.message ?? "",
                     answer: answer?.message ?? "",
