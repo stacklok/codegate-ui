@@ -1,7 +1,7 @@
 {
   "name": "vite-project",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -34,7 +34,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "highlight.js": "^11.11.1",
-    "lucide-react": "^0.462.0",
+    "lucide-react": "^0.471.1",
     "prismjs": "^1.29.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -51,7 +51,7 @@
   "devDependencies": {
     "@eslint/js": "^9.15.0",
     "@hey-api/openapi-ts": "^0.61.2",
-    "@tailwindcss/typography": "^0.5.15",
+    "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
@@ -63,7 +63,7 @@
     "@vitest/expect": "^2.1.4",
     "@vitest/ui": "^2.1.4",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.17.0",
+    "eslint": "^9.18.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "eslint-plugin-tailwindcss": "3.17.5",

@@ -71,18 +71,18 @@ export function Header({ hasError }: { hasError?: boolean }) {
           </Link>
         </HoverPopover>
 
-        <HoverPopover title="Help">
+        <HoverPopover title="Setup">
           <Link
             to="/help/continue-setup"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
-            Continue Setup
+            Set up in <span className="font-bold">Continue</span>
           </Link>
           <Link
             to="/help/copilot-setup"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
-            Copilot Setup
+            Set up in <span className="font-bold">Copilot</span>
           </Link>
         </HoverPopover>
 
