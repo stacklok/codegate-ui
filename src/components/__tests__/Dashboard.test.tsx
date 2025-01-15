@@ -164,7 +164,7 @@ describe("Dashboard", () => {
     expect(within(firstRow).getByText(/ghp_token/i)).toBeVisible();
     expect(within(firstRow).getByText(/codegate-secrets/i)).toBeVisible();
     expect(within(firstRow).getAllByText(/n\/a/i).length).toEqual(2);
-    expect(within(firstRow).getByText(/2025\/01\/07/i)).toBeVisible();
+    expect(within(firstRow).getByText(/2025\/01\/14/i)).toBeVisible();
     expect(within(firstRow).getByTestId(/time/i)).toBeVisible();
 
     // check trigger_string null
@@ -278,5 +278,22 @@ describe("Dashboard", () => {
     )[1] as HTMLElement;
     expect(within(row).getByText(/ghp_token/i)).toBeVisible();
     expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
+  });
+
+  it("should sort alerts by date desc", async () => {
+    render(<Dashboard />);
+    expect(
+      (await screen.findAllByTestId(/mock-responsive-container/i)).length,
+    ).toEqual(1);
+
+    const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
+      "row",
+    )[1] as HTMLElement;
+    const secondRow = within(screen.getByTestId("alerts-table")).getAllByRole(
+      "row",
+    )[2] as HTMLElement;
+
+    expect(within(firstRow).getByText(/2025\/01\/14/i)).toBeVisible();
+    expect(within(secondRow).getByText(/2025\/01\/07/i)).toBeVisible();
   });
 });
