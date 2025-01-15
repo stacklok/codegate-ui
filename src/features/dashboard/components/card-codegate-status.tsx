@@ -32,7 +32,7 @@ const INTERVAL = {
 } as const;
 
 const INTERVAL_SELECT_ITEMS: TDropdownItemOrSection[] = Object.entries(
-  INTERVAL
+  INTERVAL,
 ).map(([key, { name }]) => {
   return { textValue: name, id: key };
 });
@@ -50,7 +50,7 @@ type HealthResp = { status: "healthy" | unknown } | null;
 
 const getStatus = async (): Promise<Status | null> => {
   const resp = await fetch(
-    new URL("/health", import.meta.env.VITE_BASE_API_URL)
+    new URL("/health", import.meta.env.VITE_BASE_API_URL),
   );
   const data = (await resp.json()) as unknown as HealthResp;
 
@@ -155,8 +155,13 @@ function PollIntervalControl({
       items={INTERVAL_SELECT_ITEMS}
       defaultSelectedKey={pollingInterval}
     >
-      <Label className="w-full text-right font-semibold text-secondary pr-2 -mb-1">Check for updates</Label>
-      <SelectButton isBorderless className="h-7 max-w-36 [&>span>span]:text-right [&>span>span]:justify-end !gap-0 text-secondary" />
+      <Label className="w-full text-right font-semibold text-secondary pr-2 -mb-1">
+        Check for updates
+      </Label>
+      <SelectButton
+        isBorderless
+        className="h-7 max-w-36 [&>span>span]:text-right [&>span>span]:justify-end !gap-0 text-secondary"
+      />
     </Select>
   );
 }
@@ -171,7 +176,7 @@ export function InnerContent({
   }
 
   return (
-    <Table className="h-max">
+    <Table className="h-max" aria-label="CodeGate status checks">
       <TableHeader className="hidden">
         <Column isRowHeader>Name</Column>
         <Column>Value</Column>
@@ -190,7 +195,7 @@ export function InnerContent({
 
 export function CardCodegateStatus() {
   const [pollingInterval, setPollingInterval] = useState<Interval>(
-    () => DEFAULT_INTERVAL
+    () => DEFAULT_INTERVAL,
   );
   const { data, dataUpdatedAt, isPending, isError } =
     useStatus(pollingInterval);

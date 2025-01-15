@@ -213,7 +213,7 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getByRole("cell", {
+      screen.getByRole("row", {
         name: /codegate-secrets/i,
       }),
     ).toBeVisible();
@@ -258,12 +258,12 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getByRole("cell", {
+      screen.getByRole("row", {
         name: /codegate-secrets/i,
       }),
     ).toBeVisible();
     expect(
-      screen.getByRole("cell", {
+      screen.getByRole("row", {
         name: /codegate-context-retriever/i,
       }),
     ).toBeVisible();

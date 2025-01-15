@@ -165,15 +165,16 @@ export function Dashboard() {
           </div>
           <SearchField
             type="text"
+            aria-label="Search alerts"
             value={search}
             onChange={(value) => handleSearch(value.toLowerCase().trim())}
           >
-            <Input placeholder="Search..." icon={<Search />} />
+            <Input type="search" placeholder="Search..." icon={<Search />} />
           </SearchField>
         </div>
       </div>
       <div className="overflow-x-auto">
-        <Table data-testid="alerts-table">
+        <Table data-testid="alerts-table" aria-label="Alerts table">
           <TableHeader>
             <Row>
               <Column isRowHeader width={150}>

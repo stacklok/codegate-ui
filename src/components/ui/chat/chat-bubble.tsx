@@ -22,7 +22,7 @@ const chatBubbleVariant = cva(
       variant: "received",
       layout: "default",
     },
-  }
+  },
 );
 
 interface ChatBubbleProps
@@ -34,7 +34,7 @@ const ChatBubble = React.forwardRef<HTMLDivElement, ChatBubbleProps>(
     <div
       className={cn(
         chatBubbleVariant({ variant, layout, className }),
-        "relative group"
+        "relative group",
       )}
       ref={ref}
       {...props}
@@ -45,15 +45,15 @@ const ChatBubble = React.forwardRef<HTMLDivElement, ChatBubbleProps>(
               variant,
               layout,
             } as React.ComponentProps<typeof child.type>)
-          : child
+          : child,
       )}
     </div>
-  )
+  ),
 );
 ChatBubble.displayName = "ChatBubble";
 
 // ChatBubbleAvatar
-interface ChatBubbleAvatarProps {
+interface ChatBubbleAvatarProps extends React.ComponentProps<typeof Avatar> {
   src?: string;
   fallback?: string;
   className?: string;
@@ -63,7 +63,8 @@ const ChatBubbleAvatar: React.FC<ChatBubbleAvatarProps> = ({
   src,
   fallback,
   className,
-}) => <Avatar src={src} name={fallback} className={className} />;
+  ...rest
+}) => <Avatar src={src} name={fallback} className={className} {...rest} />;
 
 // ChatBubbleMessage
 const chatBubbleMessageVariants = cva("p-4 bg-gray-100 text-primary", {
@@ -95,12 +96,12 @@ const ChatBubbleMessage = React.forwardRef<
 >(
   (
     { className, variant, layout, isLoading = false, children, ...props },
-    ref
+    ref,
   ) => (
     <div
       className={cn(
         chatBubbleMessageVariants({ variant, layout, className }),
-        "break-words max-w-full"
+        "break-words max-w-full",
       )}
       ref={ref}
       {...props}
@@ -113,7 +114,7 @@ const ChatBubbleMessage = React.forwardRef<
         children
       )}
     </div>
-  )
+  ),
 );
 ChatBubbleMessage.displayName = "ChatBubbleMessage";
 
@@ -174,7 +175,7 @@ const ChatBubbleActionWrapper = React.forwardRef<
       variant === "sent"
         ? "-left-1 -translate-x-full flex-row-reverse"
         : "-right-1 translate-x-full",
-      className
+      className,
     )}
     {...props}
   >

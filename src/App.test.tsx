@@ -20,7 +20,7 @@ describe("App", () => {
     expect(screen.getByText(/toggle sidebar/i)).toBeVisible();
     expect(screen.getByText("Certificates")).toBeVisible();
     expect(screen.getByText("Help")).toBeVisible();
-    expect(screen.getByRole("banner")).toBeVisible();
+    expect(screen.getByRole("banner", { name: "App header" })).toBeVisible();
     expect(
       screen.getByRole("heading", { name: /codeGate dashboard/i }),
     ).toBeVisible();
