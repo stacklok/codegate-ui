@@ -19,7 +19,7 @@ describe("App", () => {
     render(<App />);
     expect(screen.getByText(/toggle sidebar/i)).toBeVisible();
     expect(screen.getByText("Certificates")).toBeVisible();
-    expect(screen.getByText("Help")).toBeVisible();
+    expect(screen.getByText("Setup")).toBeVisible();
     expect(screen.getByRole("banner")).toBeVisible();
     expect(
       screen.getByRole("heading", { name: /codeGate dashboard/i }),
@@ -31,13 +31,13 @@ describe("App", () => {
     ).toBeVisible();
     expect(
       screen.getByRole("link", {
-        name: /continue setup/i,
+        name: /set up in continue/i,
       }),
     ).toBeVisible();
 
     expect(
       screen.getByRole("link", {
-        name: /copilot setup/i,
+        name: /set up in copilot/i,
       }),
     ).toBeVisible();
     expect(

@@ -63,13 +63,13 @@ export function Header({ hasError }: { hasError?: boolean }) {
         </div>
 
         <div className="flex items-center relative group">
-          <HeaderMenuItem>Help</HeaderMenuItem>
+          <HeaderMenuItem>Setup</HeaderMenuItem>
           <DropdownMenu>
             <DropdownMenuItem to="/help/continue-setup">
-              Continue Setup
+              Set up in <span className="font-bold">Continue</span>
             </DropdownMenuItem>
             <DropdownMenuItem to="/help/copilot-setup">
-              Copilot Setup
+              Set up in <span className="font-bold">Copilot</span>
             </DropdownMenuItem>
           </DropdownMenu>
         </div>
