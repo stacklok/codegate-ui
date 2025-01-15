@@ -15,5 +15,4 @@ jobs:
         id: release
         with:
           token: ${{ secrets.GH_PAT_RELEASE_PLEASE }}
-          config-file: release-please-config.json
-          manifest-file: release-please-manifest.json
+          release-type: node
