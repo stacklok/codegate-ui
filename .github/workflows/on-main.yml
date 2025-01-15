@@ -4,8 +4,7 @@ on:
     branches:
       - main
       - chore/release-please
-permissions:
-    contents: write   
+permissions: write-all
 jobs:
   security:
     name: Security Checks
