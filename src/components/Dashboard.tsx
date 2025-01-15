@@ -21,7 +21,7 @@ const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   if (data === null) return "N/A";
   if (typeof data === "string") {
     return (
-      <Markdown className="bg-secondary rounded-lg overflow-auto w-fit p-1">
+      <Markdown className="bg-gray-25 rounded-lg overflow-auto w-fit p-1">
         {data}
       </Markdown>
     );
@@ -132,7 +132,7 @@ export function Dashboard() {
 
       <div className="flex mb-2 mx-2 justify-between w-[calc(100vw-20rem)]">
         <div className="flex gap-2 items-center">
-          <h2 className="font-bold font-lg">All Alerts</h2>
+          <h2 className="font-bold text-lg">All Alerts</h2>
           <Badge variant="inverted" data-testid="alerts-count">{filteredAlerts.length}</Badge>
         </div>
 

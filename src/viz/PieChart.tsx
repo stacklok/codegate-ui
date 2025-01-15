@@ -81,8 +81,8 @@ export function PieChart({ data, loading }: PieChartProps) {
           <CardTitle>Malicious packages by type</CardTitle>
         </CardHeader>
         <CardBody className="flex justify-center">
-          <div className="w-[220px] h-[220px] flex justify-center">
-            <Skeleton className="h-40 w-40 rounded-full" />
+          <div className="size-[220px] flex justify-center">
+            <Skeleton className="size-40 rounded-full" />
           </div>
         </CardBody>
       </Card>
@@ -96,7 +96,7 @@ export function PieChart({ data, loading }: PieChartProps) {
           <CardTitle>Malicious packages by type</CardTitle>
         </CardHeader>
         <CardBody className="flex justify-center">
-          <div className="bg-gray-100 rounded-full flex items-center justify-center h-40 w-40 font-bold text-lg">
+          <div className="bg-gray-100 rounded-full flex items-center justify-center size-40 font-bold text-lg">
             N/A
           </div>
         </CardBody>

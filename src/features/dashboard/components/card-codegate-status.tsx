@@ -92,7 +92,7 @@ const StatusText = ({
   switch (status) {
     case Status.HEALTHY:
       return (
-        <div className="flex gap-2 items-center text-green-600 justify-end">
+        <div className="flex gap-2 items-center text-brand-600 justify-end">
           {Status.HEALTHY} <CheckCircle2 className="size-4" />
         </div>
       );
@@ -112,7 +112,7 @@ function ErrorUI() {
   return (
     <div className="flex flex-col items-center justify-center py-8">
       <XCircle className="text-red-600 mb-2 size-8" />
-      <div className="text-md font-semibold text-secondary text-center">
+      <div className="text-base font-semibold text-secondary text-center">
         An error occurred
       </div>
       <div className="text-sm text-secondary text-center text-balance">
@@ -155,8 +155,8 @@ function PollIntervalControl({
       items={INTERVAL_SELECT_ITEMS}
       defaultSelectedKey={pollingInterval}
     >
-      <Label>Check for updates</Label>
-      <SelectButton className="w-36" />
+      <Label className="w-full text-right font-semibold text-secondary pr-2 -mb-1">Check for updates</Label>
+      <SelectButton isBorderless className="h-7 max-w-36 [&>span>span]:text-right [&>span>span]:justify-end !gap-0 text-secondary" />
     </Select>
   );
 }
@@ -207,7 +207,7 @@ export function CardCodegateStatus() {
         <InnerContent data={data} isPending={isPending} isError={isError} />
       </CardBody>
 
-      <CardFooter className="border-t border-gray-200 mt-auto py-2 pr-2">
+      <CardFooter className="items-start border-t border-gray-200 mt-auto py-2">
         <div>
           <div className="text-sm font-semibold text-secondary">
             Last checked

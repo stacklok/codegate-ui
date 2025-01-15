@@ -27,7 +27,7 @@ export function CopyToClipboard({
         className,
       )}
     >
-      <ClipboardCopy role="img" className="w-5 h-5 text-gray-200" />
+      <ClipboardCopy role="img" className="size-5 text-gray-200" />
     </button>
   );
 }

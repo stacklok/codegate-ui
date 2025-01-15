@@ -39,7 +39,7 @@ export function BarChart({
           <CardTitle>Security issues detected</CardTitle>
         </CardHeader>
         <CardBody className="flex items-center h-2/3">
-          <div className="bg-gray-100 w-full flex items-center justify-center h-full font-bold text-lg">
+          <div className="bg-gray-100 size-full flex items-center justify-center font-bold text-lg">
             N/A
           </div>
         </CardBody>

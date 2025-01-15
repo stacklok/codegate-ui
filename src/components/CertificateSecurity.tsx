@@ -1,7 +1,7 @@
 import { Card } from "@stacklok/ui-kit-mono"
 
 const SecurityShieldIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-brand-700">
+  <svg viewBox="0 0 24 24" className="size-16 text-brand-700">
     <path
       fill="none"
       stroke="currentColor"
@@ -22,7 +22,7 @@ const SecurityShieldIcon = () => (
 );
 
 const KeySecurityIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-brand-700">
+  <svg viewBox="0 0 24 24" className="size-16 text-brand-700">
     <path
       fill="none"
       stroke="currentColor"
@@ -35,7 +35,7 @@ const KeySecurityIcon = () => (
 );
 
 const OpenSourceIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-16 h-16 text-brand-700">
+  <svg viewBox="0 0 24 24" className="size-16 text-brand-700">
     <circle
       cx="12"
       cy="12"

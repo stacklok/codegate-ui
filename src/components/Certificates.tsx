@@ -12,7 +12,7 @@ function renderWithCode(text: string): ReactNode {
       return (
         <code
           key={index}
-          className="px-1.5 py-0.5 mx-0.5 bg-gray-100 rounded font-mono text-sm"
+          className="px-1.5 py-0.5 mx-0.5 bg-gray-100 rounded font-code text-sm"
         >
           {part.slice(1, -1)}
         </code>
@@ -25,7 +25,7 @@ function renderWithCode(text: string): ReactNode {
 function InstructionStep({ number, text }: { number: number; text: string }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="w-6 h-6 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-1">
+      <div className="size-6 rounded-full bg-brand-50 flex items-center justify-center shrink-0 mt-1">
         <span className="text-brand-700 text-sm font-semibold">{number}</span>
       </div>
       <p className="text-secondary">{renderWithCode(text)}</p>
@@ -36,7 +36,7 @@ function InstructionStep({ number, text }: { number: number; text: string }) {
 const CheckIcon = () => (
   <svg
     viewBox="0 0 24 24"
-    className="w-5 h-5 text-brand-700 flex-shrink-0 mt-1"
+    className="size-5 text-brand-700 shrink-0 mt-1"
   >
     <path
       fill="none"
@@ -50,7 +50,7 @@ const CheckIcon = () => (
 );
 
 const ShieldIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-8 w-8 text-brand-700">
+  <svg viewBox="0 0 24 24" className="size-8 text-brand-700">
     <path
       fill="none"
       stroke="currentColor"
@@ -63,7 +63,7 @@ const ShieldIcon = () => (
 );
 
 const ArrowIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4">
+  <svg viewBox="0 0 24 24" className="size-4">
     <path
       fill="none"
       stroke="currentColor"
@@ -145,10 +145,10 @@ export function Certificates() {
       <Card className="mb-8">
         <CardBody>
           <div className="flex items-start gap-6">
-            <div className="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="size-16 bg-brand-50 rounded-full flex items-center justify-center shrink-0">
               <ShieldIcon />
             </div>
-            <div className="flex-grow">
+            <div className="grow">
               <h2 className="text-xl font-semibold mb-2">
                 CodeGate CA certificate
               </h2>
@@ -239,12 +239,12 @@ export function Certificates() {
             </button>
           </div>
           {/* Action Selection Tabs */}
-          <div className="flex space-x-4 mt-6 mb-6">
+          <div className="flex space-x-4 my-6">
             <button
               onClick={() => setActiveAction("install")}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
                 activeAction === "install"
-                  ? "border-teal-200 bg-teal-50 text-brand-700"
+                  ? "border-brand-200 bg-brand-50 text-brand-700"
                   : "border-gray-200 text-gray-500 hover:text-secondary"
               }`}
             >
@@ -254,7 +254,7 @@ export function Certificates() {
               onClick={() => setActiveAction("remove")}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
                 activeAction === "remove"
-                  ? "border-teal-200 bg-teal-50 text-brand-700"
+                  ? "border-brand-200 bg-brand-50 text-brand-700"
                   : "border-gray-200 text-gray-500 hover:text-secondary"
               }`}
             >

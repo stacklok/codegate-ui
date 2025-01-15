@@ -86,7 +86,7 @@ export function LineChart({
         <CardTitle>Alerts by date</CardTitle>
       </CardHeader>
       <CardBody>
-        <ChartContainer config={chartConfig} className="min-h-[10rem]">
+        <ChartContainer config={chartConfig} className="min-h-40">
           <LineChartsUI
             accessibilityLayer
             data={chartData}
@@ -116,10 +116,11 @@ export function LineChart({
             <Line
               dataKey="alerts"
               type="natural"
-              stroke="var(--gray-200)"
+              stroke="var(--brand-700)"
               strokeWidth={2}
               dot={{
-                fill: "var(--brand-600)",
+                fill: "var(--brand-700)",
+                stroke: "var(--brand-700)",
               }}
               activeDot={{
                 r: 6,

@@ -5,7 +5,7 @@ import { Card } from "@stacklok/ui-kit-mono";
 export function Error() {
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
-      <div className="flex-0 w-full">
+      <div className="shrink-0 w-full">
         <Header hasError />
       </div>
       <div className="h-24 flex flex-col flex-1 justify-center">
@@ -14,7 +14,7 @@ export function Error() {
           <div className="text-xl font-semibold text-secondary text-center">
             An error occurred
           </div>
-          <div className="text-md mb-4 text-secondary text-center text-balance">
+          <div className="text-base mb-4 text-secondary text-center text-balance">
             If this issue persists, please reach out to us on{" "}
             <a
               className="underline text-secondary"

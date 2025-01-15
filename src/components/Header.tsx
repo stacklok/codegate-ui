@@ -5,7 +5,7 @@ import { HoverPopover } from "./HoverPopover";
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
-    <header className="flex-shrink-0 h-16 px-3 items-center flex w-full bg-gray-25 opacity-1 border-b-gray-200 border-b">
+    <header className="shrink-0 h-16 px-3 items-center flex w-full bg-gray-25 border-b-gray-200 border-b">
       <div className="flex items-center flex-1">
         {!hasError && (
           <>
