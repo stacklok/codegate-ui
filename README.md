@@ -1,15 +1,25 @@
-# React + TypeScript + Vite
+# CodeGate Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Coverage Status](https://coveralls.io/repos/github/stacklok/codegate-ui/badge.svg?branch=main)](https://coveralls.io/github/stacklok/codegate-ui?branch=main)
 
-Currently, two official plugins are available:
+This repository contains the [CodeGate](https://github.com/stacklok/codegate)
+dashboard user interface. The dashboard presents information about CodeGate's
+security insights and activity, including:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Prompt and chat conversation history
+- Security alert counts and daily trend
+- Alert history with secrets and package risks detected by CodeGate
+- CA certificate download and installation instructions
 
 ## Setting up local development environment
 
-To install all dependencies for your local development environment, run
+To run a local development environment, start by running a copy of the CodeGate
+[application](https://github.com/stacklok/codegate/blob/main/docs/development.md)
+or [container](https://docs.codegate.ai/how-to/install). The UI will connect to
+the API endpoint at `http://localhost:8989` by default. To change this, set the
+`VITE_BASE_API_URL` environment variable.
+
+Install all dependencies and run a dev server:
 
 ```bash
 npm install
@@ -22,6 +32,8 @@ Run the development server using:
 ```bash
 npm run dev
 ```
+
+Open <http://localhost:5173> on your browser to see the dashboard
 
 ## Build production
 
