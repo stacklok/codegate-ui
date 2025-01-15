@@ -47,7 +47,7 @@ const aggregateAlertsByDate = (alerts: { timestamp: string }[]) => {
 const chartConfig = {
   alerts: {
     label: "Alerts",
-    color: "hsl(var(--chart-1))",
+    color: "var(--brand-700)",
   },
 } satisfies ChartConfig;
 
@@ -115,10 +115,10 @@ export function LineChart({
             <Line
               dataKey="alerts"
               type="natural"
-              stroke="var(--color-alerts)"
+              stroke="var(--gray-200)"
               strokeWidth={2}
               dot={{
-                fill: "var(--color-alerts)",
+                fill: "var(--gray-200)",
               }}
               activeDot={{
                 r: 6,
@@ -127,7 +127,7 @@ export function LineChart({
               <LabelList
                 position="top"
                 offset={12}
-                className="fill-foreground"
+                className="fill-gray-50"
                 fontSize={12}
               />
             </Line>

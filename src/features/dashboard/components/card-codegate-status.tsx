@@ -6,23 +6,21 @@ import {
   CardTitle,
   Cell,
   Column,
+  Label,
   Row,
+  Select,
+  SelectButton,
   Table,
   TableBody,
   TableHeader,
+  TDropdownItemOrSection,
 } from "@stacklok/ui-kit-mono";
 
-import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import {
-  CheckCircle2,
-  LoaderCircle,
-  XCircle,
-  ChevronDown,
-  Check,
-} from "lucide-react";
+import { CheckCircle2, LoaderCircle, XCircle } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 const INTERVAL = {
   "1_SEC": { value: 1_000, name: "1 second" },
@@ -33,6 +31,12 @@ const INTERVAL = {
   "5_MIN": { value: 300_000, name: "5 minutes" },
   "10_MIN": { value: 600_000, name: "10 minutes" },
 } as const;
+
+const INTERVAL_SELECT_ITEMS: TDropdownItemOrSection[] = Object.entries(
+  INTERVAL
+).map(([key, { name }]) => {
+  return { textValue: name, id: key };
+});
 
 const DEFAULT_INTERVAL: Interval = "5_SEC";
 
@@ -47,7 +51,7 @@ type HealthResp = { status: "healthy" | unknown } | null;
 
 const getStatus = async (): Promise<Status | null> => {
   const resp = await fetch(
-    new URL("/health", import.meta.env.VITE_BASE_API_URL),
+    new URL("/health", import.meta.env.VITE_BASE_API_URL)
   );
   const data = (await resp.json()) as unknown as HealthResp;
 
@@ -146,36 +150,15 @@ function PollIntervalControl({
   setPollingInterval: Dispatch<SetStateAction<Interval>>;
 }) {
   return (
-    <div className={cn("flex items-center relative group", className)}>
-      <div className="text-secondary hover:text-secondary font-normal cursor-pointer text-base px-2 py-1 rounded-md hover:bg-blue-50 transition-colors flex gap-1 items-center">
-        <div>
-          <div className="text-sm font-semibold text-secondary text-right">
-            Check for updates
-          </div>
-          <div className="text-sm text-secondary text-right">
-            every {INTERVAL[pollingInterval].name}
-          </div>
-        </div>
-        <ChevronDown className="size-4" />
-      </div>
-      <div className="p-1 absolute right-0 top-full mt-2 w-32 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
-        {Object.entries(INTERVAL).map(([key, { name }]) => {
-          const isActive = key === pollingInterval;
-
-          return (
-            <button
-              onClick={() => setPollingInterval(key as Interval)}
-              data-active={isActive}
-              className="text-right :not:last:mb-1 font-normal text-sm text-secondary hover:bg-gray-100 rounded px-2 py-0.5 hover:text-secondary &[data-active=true]:text-secondary flex items-center justify-between w-full"
-              key={key}
-            >
-              {name}
-              {isActive ? <Check className="size-3" /> : null}
-            </button>
-          );
-        })}
-      </div>
-    </div>
+    <Select
+      className={twMerge("flex items-center gap-1",className)}
+      onSelectionChange={(v) => setPollingInterval(v.toString() as Interval)}
+      items={INTERVAL_SELECT_ITEMS}
+      defaultSelectedKey={pollingInterval}
+    >
+      <Label>Check for updates</Label>
+      <SelectButton />
+    </Select>
   );
 }
 
@@ -208,7 +191,7 @@ export function InnerContent({
 
 export function CardCodegateStatus() {
   const [pollingInterval, setPollingInterval] = useState<Interval>(
-    () => DEFAULT_INTERVAL,
+    () => DEFAULT_INTERVAL
   );
   const { data, dataUpdatedAt, isPending, isError } =
     useStatus(pollingInterval);
