@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - chore/release-please
 permissions:
     contents: write   
 jobs:
@@ -19,3 +20,9 @@ jobs:
     name: Unit Tests
     uses: ./.github/workflows/_unit-tests.yml
     secrets: inherit
+
+  release-please:
+    name: Release Please
+    uses: ./.github/workflows/_release-please.yml
+    secrets:
+      GH_PAT_RELEASE_PLEASE: ${{ secrets.GITHUB_TOKEN }} # Note: This won't allow running workflows on the PR, we'll need to check in a PAT issued by StacklokBot
