@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@stacklok/ui-kit-mono";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@stacklok/ui-kit-mono";
 import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit-mono";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";

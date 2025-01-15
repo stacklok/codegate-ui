@@ -1,9 +1,8 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import MessageLoading from "./message-loading";
-import { Button } from "@stacklok/ui-kit-mono";
+import { Avatar, Button } from "@stacklok/ui-kit-mono";
 
 // ChatBubble
 const chatBubbleVariant = cva(
@@ -64,19 +63,13 @@ const ChatBubbleAvatar: React.FC<ChatBubbleAvatarProps> = ({
   src,
   fallback,
   className,
-}) => (
-  <Avatar className={className}>
-    <AvatarImage src={src} alt="Avatar" />
-    <AvatarFallback>{fallback}</AvatarFallback>
-  </Avatar>
-);
+}) => <Avatar src={src} name={fallback} className={className} />;
 
 // ChatBubbleMessage
 const chatBubbleMessageVariants = cva("p-4", {
   variants: {
     variant: {
-      received:
-        "bg-gray-100 text-secondary rounded-r-lg rounded-tl-lg",
+      received: "bg-gray-100 text-secondary rounded-r-lg rounded-tl-lg",
       sent: "bg-gray-100 text-secondary rounded-l-lg rounded-tr-lg",
     },
     layout: {

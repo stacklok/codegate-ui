@@ -9,7 +9,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { MaliciousPkgType } from "@/types";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@stacklok/ui-kit-mono";
 
 const COLORS = [
   "var(--brand-700)",

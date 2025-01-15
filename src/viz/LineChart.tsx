@@ -15,7 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@stacklok/ui-kit-mono";
 import { AlertConversation } from "@/api/generated/types.gen";
 
 const aggregateAlertsByDate = (alerts: { timestamp: string }[]) => {

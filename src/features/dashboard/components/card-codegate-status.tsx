@@ -4,8 +4,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Cell,
+  Column,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
 } from "@stacklok/ui-kit-mono";
-import { TableRow, TableBody, TableCell, Table } from "@/components/ui/table";
+
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -184,13 +190,17 @@ export function InnerContent({
 
   return (
     <Table className="h-max">
+      <TableHeader className="hidden">
+        <Column isRowHeader>Name</Column>
+        <Column>Value</Column>
+      </TableHeader>
       <TableBody>
-        <TableRow className="hover:bg-transparent">
-          <TableCell className="pl-0">CodeGate server</TableCell>
-          <TableCell className="pr-0 text-end">
+        <Row className="hover:bg-transparent">
+          <Cell className="pl-0">CodeGate server</Cell>
+          <Cell className="pr-0 text-end">
             <StatusText isPending={isPending} status={data ?? null} />
-          </TableCell>
-        </TableRow>
+          </Cell>
+        </Row>
       </TableBody>
     </Table>
   );

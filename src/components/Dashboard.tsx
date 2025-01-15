@@ -1,15 +1,8 @@
 import { Separator } from "./ui/separator";
-import {
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  Table,
-} from "./ui/table";
+
 import { format } from "date-fns";
-import { Input, SearchField } from "@stacklok/ui-kit-mono";
-import { Badge } from "./ui/badge";
+import { Cell, Column, Input, Row, SearchField, Table, TableBody, TableHeader } from "@stacklok/ui-kit-mono";
+import { Badge } from "@stacklok/ui-kit-mono";
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
@@ -171,25 +164,25 @@ export function Dashboard() {
       <div className="overflow-x-auto">
         <Table data-testid="alerts-table">
           <TableHeader>
-            <TableRow>
-              <TableHead className="w-[150px]">Trigger Type</TableHead>
-              <TableHead className="w-[300px]">Trigger Token</TableHead>
-              <TableHead className="w-[150px]">File</TableHead>
-              <TableHead className="w-[250px]">Code</TableHead>
-              <TableHead className="w-[100px]">Timestamp</TableHead>
-            </TableRow>
+            <Row>
+              <Column isRowHeader width={150}>Trigger Type</Column>
+              <Column width={300}>Trigger Token</Column>
+              <Column width={150}>File</Column>
+              <Column width={250}>Code</Column>
+              <Column width={100}>Timestamp</Column>
+            </Row>
           </TableHeader>
           <TableBody>
             {filteredAlerts.map((alert) => (
-              <TableRow key={alert.alert_id} className="h-20">
-                <TableCell className="truncate">{alert.trigger_type}</TableCell>
-                <TableCell className="overflow-auto whitespace-nowrap max-w-80">
+              <Row key={alert.alert_id} className="h-20">
+                <Cell className="truncate">{alert.trigger_type}</Cell>
+                <Cell className="overflow-auto whitespace-nowrap max-w-80">
                   {wrapObjectOutput(alert.trigger_string)}
-                </TableCell>
-                <TableCell className="truncate">
+                </Cell>
+                <Cell className="truncate">
                   {alert.code_snippet?.filepath || "N/A"}
-                </TableCell>
-                <TableCell className="overflow-auto whitespace-nowrap max-w-80">
+                </Cell>
+                <Cell className="overflow-auto whitespace-nowrap max-w-80">
                   {alert.code_snippet?.code ? (
                     <pre className="max-h-40 overflow-auto bg-gray-100 p-2 whitespace-pre-wrap">
                       <code>{alert.code_snippet.code}</code>
@@ -197,16 +190,16 @@ export function Dashboard() {
                   ) : (
                     "N/A"
                   )}
-                </TableCell>
-                <TableCell className="truncate">
+                </Cell>
+                <Cell className="truncate">
                   <div data-testid="date">
                     {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
                   </div>
                   <div data-testid="time">
                     {format(new Date(alert.timestamp ?? ""), "hh:mm:ss a")}
                   </div>
-                </TableCell>
-              </TableRow>
+                </Cell>
+              </Row>
             ))}
           </TableBody>
         </Table>
