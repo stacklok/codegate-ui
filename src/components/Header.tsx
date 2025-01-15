@@ -3,6 +3,36 @@ import { SidebarTrigger } from "./ui/sidebar";
 import { Separator } from "./ui/separator";
 import { HoverPopover } from "./HoverPopover";
 
+// function HeaderMenuItem({ children }: { children: React.ReactNode }) {
+//   return (
+//     <div className="text-black hover:text-gray-800 font-semibold cursor-pointer text-base px-2 py-1 rounded-md hover:bg-blue-50 transition-colors">
+//       {children}
+//     </div>
+//   );
+// }
+
+// function DropdownMenu({ children }: { children: React.ReactNode }) {
+//   return (
+//     <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
+//       <div className="py-1">{children}</div>
+//     </div>
+//   );
+// }
+
+// function DropdownMenuItem({
+//   children,
+//   to,
+// }: {
+//   to: string;
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <Link to={to} className="block px-5 py-3 text-gray-700 hover:bg-blue-50">
+//       {children}
+//     </Link>
+//   );
+// }
+
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
     <header className="shrink-0 h-16 px-3 items-center flex w-full bg-gray-25 border-b-gray-200 border-b">
@@ -52,7 +82,6 @@ export function Header({ hasError }: { hasError?: boolean }) {
             Copilot Setup
           </Link>
         </HoverPopover>
-       
 
         <div className="flex items-center relative group">
           <div className="text-primary hover:text-secondary font-semibold cursor-pointer text-base px-2 py-1 rounded-md transition-colors">

@@ -1,7 +1,16 @@
 import { Separator } from "./ui/separator";
 
 import { format } from "date-fns";
-import { Cell, Column, Input, Row, SearchField, Table, TableBody, TableHeader } from "@stacklok/ui-kit-mono";
+import {
+  Cell,
+  Column,
+  Input,
+  Row,
+  SearchField,
+  Table,
+  TableBody,
+  TableHeader,
+} from "@stacklok/ui-kit-mono";
 import { Badge } from "@stacklok/ui-kit-mono";
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
@@ -21,9 +30,9 @@ const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   if (data === null) return "N/A";
   if (typeof data === "string") {
     return (
-      <Markdown className="bg-gray-25 rounded-lg overflow-auto w-fit p-1">
-        {data}
-      </Markdown>
+      <div className="bg-gray-25 rounded-lg overflow-auto w-fit p-1">
+        <Markdown>{data}</Markdown>
+      </div>
     );
   }
   if (!data.type || !data.name) return "N/A";
@@ -100,7 +109,7 @@ export function Dashboard() {
       setSearchParams(searchParams);
       toggleMaliciousFilter(isChecked);
     },
-    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter]
+    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter],
   );
 
   const handleSearch = useCallback(
@@ -116,7 +125,7 @@ export function Dashboard() {
       }
       setSearchParams(searchParams);
     },
-    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter]
+    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter],
   );
 
   return (
@@ -133,7 +142,9 @@ export function Dashboard() {
       <div className="flex mb-2 mx-2 justify-between w-[calc(100vw-20rem)]">
         <div className="flex gap-2 items-center">
           <h2 className="font-bold text-lg">All Alerts</h2>
-          <Badge variant="inverted" data-testid="alerts-count">{filteredAlerts.length}</Badge>
+          <Badge variant="inverted" data-testid="alerts-count">
+            {filteredAlerts.length}
+          </Badge>
         </div>
 
         <div className="flex items-center gap-8">
@@ -165,7 +176,9 @@ export function Dashboard() {
         <Table data-testid="alerts-table">
           <TableHeader>
             <Row>
-              <Column isRowHeader width={150}>Trigger Type</Column>
+              <Column isRowHeader width={150}>
+                Trigger Type
+              </Column>
               <Column width={300}>Trigger Token</Column>
               <Column width={150}>File</Column>
               <Column width={250}>Code</Column>

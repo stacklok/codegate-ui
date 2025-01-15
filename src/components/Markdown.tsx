@@ -2,7 +2,6 @@ import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { cn } from "@/lib/utils";
 import { CopyToClipboard } from "./CopyToClipboard";
 import hljs from "highlight.js";
 
@@ -33,7 +32,7 @@ const LANGUAGES_SUBSET_DETECTION = [
 
 interface Props {
   children: string;
-  className?: string;
+  isInverted?: boolean;
 }
 
 const customStyle = {
@@ -52,9 +51,11 @@ const customStyle = {
     boxSizing: "border-box",
   },
 };
-export function Markdown({ children, className = "" }: Props) {
+
+export function Markdown({ children, isInverted = false }: Props) {
   return (
     <ReactMarkdown
+      className={`max-w-none prose prose-pre:shadow-md prose-pre:rounded-lg prose-pre:p-4 prose-p:leading-relaxed prose-h1:text-3xl prose-h1:font-bold prose-h1:mb-8 prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:font-medium prose-h3:mt-6 prose-h3:mb-3 ${isInverted ? "prose-invert" : ""}`}
       components={{
         code({ className, children, ...props }) {
           if (!children) return null;
@@ -71,7 +72,7 @@ export function Markdown({ children, className = "" }: Props) {
               <SyntaxHighlighter
                 style={customStyle}
                 language={language}
-                PreTag="div"
+                PreTag="pre"
                 className="rounded-lg overflow-hidden shadow-lg text-sm my-6 whitespace-normal"
                 wrapLines
                 {...props}
@@ -84,22 +85,9 @@ export function Markdown({ children, className = "" }: Props) {
             </div>
           );
         },
-        p({ children }) {
-          return (
-            <p
-              className={cn(
-                "text-secondary leading-relaxed mt-6 mb-3",
-                className,
-              )}
-            >
-              {children}
-            </p>
-          );
-        },
         pre({ children }) {
-          return <div className="not-prose">{children}</div>;
+          return children;
         },
-
         a({ children, ...props }) {
           return (
             <a
@@ -116,7 +104,6 @@ export function Markdown({ children, className = "" }: Props) {
         },
       }}
       remarkPlugins={[remarkGfm]}
-      className={className}
     >
       {children}
     </ReactMarkdown>
