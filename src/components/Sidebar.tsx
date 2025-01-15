@@ -19,10 +19,10 @@ export function Sidebar({
   if (loading) {
     return (
       <SidebarUI side="left" className="border-r-blue-200">
-        <SidebarHeader className="bg-brand-25 py-6 pb-3 text-sm font-bold px-4">
+        <SidebarHeader className="bg-gray-25 py-6 pb-3 text-sm font-bold px-4">
           History Prompts
         </SidebarHeader>
-        <SidebarContent className="bg-brand-25">
+        <SidebarContent className="bg-gray-25">
           <SidebarMenu className="px-2">
             {Array.from({ length: 20 }).map((_, index) => (
               <SidebarMenuItem key={index}>
@@ -38,10 +38,10 @@ export function Sidebar({
 
   return (
     <SidebarUI side="left" className="border-r-gray-200">
-      <SidebarHeader className="bg-brand-25 py-6 pb-3 text-sm font-bold px-4">
+      <SidebarHeader className="bg-gray-25 py-6 pb-3 text-sm font-bold px-4">
         History Prompts
       </SidebarHeader>
-      <SidebarContent className="bg-brand-25">
+      <SidebarContent className="bg-gray-25">
         <SidebarGroup>{children}</SidebarGroup>
       </SidebarContent>
     </SidebarUI>
