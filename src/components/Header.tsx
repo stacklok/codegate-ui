@@ -14,9 +14,9 @@ export function Header({ hasError }: { hasError?: boolean }) {
           </>
         )}
 
-        <nav className="mx-1 flex">
+        <nav className="mr-1 flex">
           <Link to="/">
-            <h1 className="text-2xl text-secondary font-title w-max flex font-semibold">
+            <h1 className="text-2xl text-primary font-title w-max flex font-semibold">
               CodeGate Dashboard
             </h1>
           </Link>
