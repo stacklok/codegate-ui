@@ -28,9 +28,9 @@ const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   if (data === null) return "N/A";
   if (typeof data === "string") {
     return (
-      <Markdown className="bg-secondary rounded-lg overflow-auto w-fit p-1">
-        {data}
-      </Markdown>
+      <div className="bg-secondary rounded-lg overflow-auto w-fit p-1">
+        <Markdown>{data}</Markdown>
+      </div>
     );
   }
   if (!data.type || !data.name) return "N/A";

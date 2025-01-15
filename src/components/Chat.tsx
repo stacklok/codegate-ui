@@ -31,7 +31,7 @@ export function Chat() {
             <ChatBubble variant="sent">
               <ChatBubbleAvatar fallback="User" className="w-14" />
               <ChatBubbleMessage variant="sent" className="bg-zinc-700">
-                <Markdown className="text-gray-300">
+                <Markdown isInverted>
                   {sanitizeQuestionPrompt({
                     question: question?.message ?? "",
                     answer: answer?.message ?? "",
