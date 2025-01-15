@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - chore/release-please
 permissions: write-all
 jobs:
   security:
