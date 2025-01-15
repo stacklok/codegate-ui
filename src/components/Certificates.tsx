@@ -1,5 +1,5 @@
 // import { Card } from "./ui/card";
-import { Card, Button, LinkButton, CardBody } from "@stacklok/ui-kit-mono";
+import { Card, Button, LinkButton, CardBody } from "@stacklok/ui-kit";
 import { useState, ReactNode } from "react";
 
 type OS = "macos" | "windows" | "linux";

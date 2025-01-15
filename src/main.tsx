@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import '@stacklok/ui-kit-mono/style'
+import '@stacklok/ui-kit/style'
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { SidebarProvider } from "./components/ui/sidebar.tsx";

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Label, Pie, PieChart as PieChartUI } from "recharts";
 
-import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit-mono";
+import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit";
 import {
   ChartConfig,
   ChartContainer,
@@ -9,7 +9,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { MaliciousPkgType } from "@/types";
-import { Skeleton } from "@stacklok/ui-kit-mono";
+import { Skeleton } from "@stacklok/ui-kit";
 
 const COLORS = [
   "var(--brand-700)",

@@ -2,7 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import MessageLoading from "./message-loading";
-import { Avatar, Button } from "@stacklok/ui-kit-mono";
+import { Avatar, Button } from "@stacklok/ui-kit";
 
 // ChatBubble
 const chatBubbleVariant = cva(

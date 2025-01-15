@@ -26,7 +26,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.6",
-    "@stacklok/ui-kit-mono": "0.20250110.110",
+    "@stacklok/ui-kit": "^1.0.0",
     "@tanstack/react-query": "^5.64.1",
     "@types/prismjs": "^1.26.5",
     "@types/react-syntax-highlighter": "^15.5.13",

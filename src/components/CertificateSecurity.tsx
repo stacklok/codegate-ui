@@ -1,4 +1,4 @@
-import { Card, CardBody } from "@stacklok/ui-kit-mono";
+import { Card, CardBody } from "@stacklok/ui-kit";
 
 const SecurityShieldIcon = () => (
   <svg viewBox="0 0 24 24" className="size-16 text-brand-700">

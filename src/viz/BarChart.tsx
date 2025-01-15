@@ -1,6 +1,6 @@
 import { AlertConversation } from "@/api/generated/types.gen";
-import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit-mono";
-import { Skeleton } from "@stacklok/ui-kit-mono";
+import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit";
+import { Skeleton } from "@stacklok/ui-kit";
 import { getAllIssues } from "@/lib/utils";
 
 export function BarChart({

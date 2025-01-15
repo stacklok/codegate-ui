@@ -4,11 +4,11 @@ import { VariantProps, cva } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import { Button } from "@stacklok/ui-kit-mono";
+import { Button } from "@stacklok/ui-kit";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Skeleton } from "@stacklok/ui-kit-mono";
-import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit-mono";
+import { Skeleton } from "@stacklok/ui-kit";
+import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

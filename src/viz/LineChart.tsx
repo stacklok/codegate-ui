@@ -8,14 +8,14 @@ import {
   XAxis,
 } from "recharts";
 
-import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit-mono";
+import { Card, CardBody, CardHeader, CardTitle } from "@stacklok/ui-kit";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Skeleton } from "@stacklok/ui-kit-mono";
+import { Skeleton } from "@stacklok/ui-kit";
 import { AlertConversation } from "@/api/generated/types.gen";
 
 const aggregateAlertsByDate = (alerts: { timestamp: string }[]) => {

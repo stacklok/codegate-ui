@@ -14,7 +14,7 @@ import {
   TableBody,
   TableHeader,
   TDropdownItemOrSection,
-} from "@stacklok/ui-kit-mono";
+} from "@stacklok/ui-kit";
 
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";

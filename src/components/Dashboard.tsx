@@ -10,16 +10,16 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from "@stacklok/ui-kit-mono";
-import { Badge } from "@stacklok/ui-kit-mono";
+} from "@stacklok/ui-kit";
+import { Badge } from "@stacklok/ui-kit";
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
 import { useAlertsStore } from "@/hooks/useAlertsStore";
 import { Markdown } from "./Markdown";
 import { PieChart } from "@/viz/PieChart";
-import { Switch } from "@stacklok/ui-kit-mono";
-import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit-mono";
+import { Switch } from "@stacklok/ui-kit";
+import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
 import { useSearchParams } from "react-router-dom";
 import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";

@@ -1,6 +1,6 @@
 import { CircleAlert } from "lucide-react";
 import { Header } from "./Header";
-import { Card } from "@stacklok/ui-kit-mono";
+import { Card } from "@stacklok/ui-kit";
 
 export function Error() {
   return (

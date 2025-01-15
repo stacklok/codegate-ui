@@ -1,10 +1,10 @@
-import { stacklokTailwindPreset } from "@stacklok/ui-kit-mono";
+import { stacklokTailwindPreset } from "@stacklok/ui-kit";
 import type { Config } from "tailwindcss";
 import typographyPlugin from "@tailwindcss/typography";
 export default {
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@stacklok/ui-kit-mono/dist/**/*.js",
+    "./node_modules/@stacklok/ui-kit/dist/**/*.js",
   ],
   presets: [stacklokTailwindPreset],
   theme: {
