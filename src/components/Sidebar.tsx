@@ -20,7 +20,7 @@ export function Sidebar({
     return (
       <SidebarUI side="left" className="border-r-gray-200">
         <SidebarHeader className="bg-gray-25 py-6 pb-3 text-sm font-bold px-4">
-          History Prompts
+          Prompt History
         </SidebarHeader>
         <SidebarContent className="bg-gray-25">
           <SidebarMenu className="px-2">
@@ -39,7 +39,7 @@ export function Sidebar({
   return (
     <SidebarUI side="left" className="border-r-gray-200">
       <SidebarHeader className="bg-gray-25 py-6 pb-3 text-sm font-bold px-4">
-        History Prompts
+        Prompt History
       </SidebarHeader>
       <SidebarContent className="bg-gray-25">
         <SidebarGroup>{children}</SidebarGroup>
