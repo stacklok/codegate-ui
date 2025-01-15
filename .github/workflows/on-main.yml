@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - ci/release-please/configure-manifest
 permissions: write-all
 jobs:
   security:
