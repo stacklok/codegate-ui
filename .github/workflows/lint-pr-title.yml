@@ -1,0 +1,30 @@
+# NOTE: This workflow deviates from the normal convention of using a single
+# workflow as an entrypoint or trigger for other re-usable workflows. The reason
+# for this is it needs to be triggered for a variety of PR events, including
+# `edited`, when the title changes — where we do *not* want to trigger the
+# entire suite of CI checks. We also cannot use `if` or `needs` triggers to
+# filter which steps we need to run, as if we skip certain checks, we do not
+# have visibility on the code quality or security of the PR.
+name: Lint PR title
+on:
+  pull_request:
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+jobs:
+  lint-pr-title:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Install commitlint
+        run: |
+          npm i -D commitlint @commitlint/config-conventional
+
+      - name: Validate PR title
+        run: echo "${{ github.event.pull_request.title }}" | npx commitlint -x '@commitlint/config-conventional'

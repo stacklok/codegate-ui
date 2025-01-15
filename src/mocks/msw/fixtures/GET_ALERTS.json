@@ -707,7 +707,7 @@
         "trigger_string": "GitHub - Access Token:\n\n```tsx src/App.tsx (26-26)\n  const test = \"ghp_token\";\n```\nwhat about this?",
         "trigger_type": "codegate-secrets",
         "trigger_category": "critical",
-        "timestamp": "2025-01-07T17:02:59.915982Z"
+        "timestamp": "2025-01-14T17:02:59.915982Z"
     },
     {
         "conversation": {

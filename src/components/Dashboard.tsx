@@ -17,24 +17,20 @@ import { useAlertsStore } from "@/hooks/useAlertsStore";
 import { Markdown } from "./Markdown";
 import { PieChart } from "@/viz/PieChart";
 import { Switch } from "./ui/switch";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useSearchParams } from "react-router-dom";
 import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
+import { CardCodegateStatus } from "@/features/dashboard/components/card-codegate-status";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
   if (data === null) return "N/A";
   if (typeof data === "string") {
     return (
-      <Markdown className="bg-secondary rounded-lg overflow-auto w-fit p-1">
-        {data}
-      </Markdown>
+      <div className="bg-secondary rounded-lg overflow-auto w-fit p-1">
+        <Markdown>{data}</Markdown>
+      </div>
     );
   }
   if (!data.type || !data.name) return "N/A";
@@ -132,16 +128,11 @@ export function Dashboard() {
 
   return (
     <div className="flex-col">
-      <div className="flex flex-wrap items-center gap-4 w-full">
-        <div className="min-w-80 w-1/3 h-60">
-          <BarChart data={alerts} loading={loading} />
-        </div>
-        <div className="min-w-80 w-1/4 h-60">
-          <PieChart data={maliciousPackages} loading={loading} />
-        </div>
-        <div className="relative w-[370px] h-60">
-          <LineChart data={alerts} loading={loading} />
-        </div>
+      <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
+        <CardCodegateStatus />
+        <BarChart data={alerts} loading={loading} />
+        <PieChart data={maliciousPackages} loading={loading} />
+        <LineChart data={alerts} loading={loading} />
       </div>
 
       <Separator className="my-8" />
@@ -154,25 +145,23 @@ export function Dashboard() {
 
         <div className="flex items-center gap-8">
           <div className="flex items-center space-x-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="airplane-mode"
-                      checked={isMaliciousFilterActive}
-                      onCheckedChange={handleToggleFilter}
-                    />
-                    <label htmlFor="airplane-mode" className="text-sm">
-                      Malicious Packages
-                    </label>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Filter by malicious packages</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="airplane-mode"
+                    checked={isMaliciousFilterActive}
+                    onCheckedChange={handleToggleFilter}
+                  />
+                  <label htmlFor="airplane-mode" className="text-sm">
+                    Malicious Packages
+                  </label>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Filter by malicious packages</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
           <Input
             icon={
@@ -200,14 +189,14 @@ export function Dashboard() {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <Table>
+        <Table data-testid="alerts-table">
           <TableHeader>
             <TableRow>
               <TableHead className="w-[150px]">Trigger Type</TableHead>
               <TableHead className="w-[300px]">Trigger Token</TableHead>
               <TableHead className="w-[150px]">File</TableHead>
-              <TableHead className="w-[300px]">Code</TableHead>
-              <TableHead className="w-[150px]">Timestamp</TableHead>
+              <TableHead className="w-[250px]">Code</TableHead>
+              <TableHead className="w-[100px]">Timestamp</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -234,7 +223,7 @@ export function Dashboard() {
                     {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
                   </div>
                   <div data-testid="time">
-                    {format(new Date(alert.timestamp ?? ""), "HH:mm a")}
+                    {format(new Date(alert.timestamp ?? ""), "hh:mm:ss a")}
                   </div>
                 </TableCell>
               </TableRow>

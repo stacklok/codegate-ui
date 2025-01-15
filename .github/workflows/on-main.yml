@@ -3,8 +3,7 @@ on:
   push:
     branches:
       - main
-permissions:
-    contents: write   
+permissions: write-all
 jobs:
   security:
     name: Security Checks
@@ -19,3 +18,9 @@ jobs:
     name: Unit Tests
     uses: ./.github/workflows/_unit-tests.yml
     secrets: inherit
+
+  release-please:
+    name: Release Please
+    uses: ./.github/workflows/_release-please.yml
+    secrets:
+      GH_PAT_RELEASE_PLEASE: ${{ secrets.GH_PAT_RELEASE_PLEASE }}

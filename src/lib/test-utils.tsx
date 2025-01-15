@@ -1,4 +1,5 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RenderOptions, render } from "@testing-library/react";
 import React from "react";
 import {
@@ -18,14 +19,27 @@ const renderWithProviders = (
   options?: Omit<RenderOptions, "queries"> & RoutConfig,
 ) =>
   render(
-    <MemoryRouter {...options?.routeConfig}>
-      <Routes>
-        <Route
-          path={options?.pathConfig ?? "*"}
-          element={<SidebarProvider>{children}</SidebarProvider>}
-        />
-      </Routes>
-    </MemoryRouter>,
+    <QueryClientProvider
+      client={
+        new QueryClient({
+          defaultOptions: {
+            queries: {
+              gcTime: 0,
+              staleTime: 0,
+            },
+          },
+        })
+      }
+    >
+      <MemoryRouter {...options?.routeConfig}>
+        <Routes>
+          <Route
+            path={options?.pathConfig ?? "*"}
+            element={<SidebarProvider>{children}</SidebarProvider>}
+          />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
 
 export * from "@testing-library/react";

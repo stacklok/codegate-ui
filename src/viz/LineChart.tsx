@@ -21,24 +21,27 @@ import { AlertConversation } from "@/api/generated/types.gen";
 const aggregateAlertsByDate = (alerts: { timestamp: string }[]) => {
   const dateMap: Record<string, { date: string; alerts: number }> = {};
 
-  alerts.reduce((acc, alert) => {
-    const timestamp = new Date(alert.timestamp);
-    const formattedDate = timestamp.toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-    });
+  alerts
+    .sort(
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+    )
+    .reduce((acc, alert) => {
+      const timestamp = new Date(alert.timestamp);
+      const formattedDate = timestamp.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+      });
 
-    if (!acc[formattedDate]) {
-      acc[formattedDate] = { date: formattedDate, alerts: 0 };
-    }
-    (acc[formattedDate] as { alerts: number }).alerts += 1;
+      if (!acc[formattedDate]) {
+        acc[formattedDate] = { date: formattedDate, alerts: 0 };
+      }
+      (acc[formattedDate] as { alerts: number }).alerts += 1;
 
-    return acc;
-  }, dateMap);
+      return acc;
+    }, dateMap);
 
-  return Object.values(dateMap).sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-  );
+  return Object.values(dateMap);
 };
 
 const chartConfig = {
@@ -82,8 +85,8 @@ export function LineChart({
       <CardHeader>
         <CardTitle>Alerts by date</CardTitle>
       </CardHeader>
-      <CardContent className="h-full">
-        <ChartContainer config={chartConfig}>
+      <CardContent>
+        <ChartContainer config={chartConfig} className="min-h-[10rem]">
           <LineChartsUI
             accessibilityLayer
             data={chartData}
