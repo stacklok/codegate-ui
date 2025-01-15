@@ -45,7 +45,7 @@ const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
         href={`https://www.insight.stacklok.com/report/${data.type}/${data.name}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-500 hover:underline"
+        className="text-brand-500 hover:underline"
       >
         {data.type}/{data.name}
       </a>

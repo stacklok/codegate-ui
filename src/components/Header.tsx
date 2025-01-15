@@ -5,7 +5,7 @@ import { HoverPopover } from "./HoverPopover";
 
 // function HeaderMenuItem({ children }: { children: React.ReactNode }) {
 //   return (
-//     <div className="text-black hover:text-gray-800 font-semibold cursor-pointer text-base px-2 py-1 rounded-md hover:bg-blue-50 transition-colors">
+//     <div className="text-black hover:text-gray-800 font-semibold cursor-pointer text-base px-2 py-1 rounded-md hover:bg-brand-50 transition-colors">
 //       {children}
 //     </div>
 //   );
@@ -27,7 +27,7 @@ import { HoverPopover } from "./HoverPopover";
 //   children: React.ReactNode;
 // }) {
 //   return (
-//     <Link to={to} className="block px-5 py-3 text-gray-700 hover:bg-blue-50">
+//     <Link to={to} className="block px-5 py-3 text-gray-700 hover:bg-brand-50">
 //       {children}
 //     </Link>
 //   );
@@ -56,13 +56,13 @@ export function Header({ hasError }: { hasError?: boolean }) {
         <HoverPopover title="Certificates">
           <Link
             to="/certificates"
-            className="block px-5 py-3 text-secondary hover:bg-blue-50"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
             Download
           </Link>
           <Link
             to="/certificates/security"
-            className="block px-5 py-3 text-secondary hover:bg-blue-50"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
             Certificate Security
           </Link>
@@ -71,13 +71,13 @@ export function Header({ hasError }: { hasError?: boolean }) {
         <HoverPopover title="Help">
           <Link
             to="/help/continue-setup"
-            className="block px-5 py-3 text-secondary hover:bg-blue-50"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
             Continue Setup
           </Link>
           <Link
             to="/help/copilot-setup"
-            className="block px-5 py-3 text-secondary hover:bg-blue-50"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
             Copilot Setup
           </Link>

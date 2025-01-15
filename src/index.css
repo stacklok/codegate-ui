@@ -15,7 +15,8 @@ body {
   font-weight: 400;
 
   /* color-scheme: light dark; */
-  background-color: #ffffff;
+  background-color: var(--gray-25);
+  color: var(--gray-950);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

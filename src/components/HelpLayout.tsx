@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 export function HelpLayout() {
   const location = useLocation();
@@ -10,8 +10,8 @@ export function HelpLayout() {
   const linkClass = (path: string) => {
     return `block px-4 py-2 rounded-lg transition-colors ${
       isActive(path)
-        ? 'bg-blue-100 text-blue-700 font-medium'
-        : 'text-secondary hover:bg-gray-100'
+        ? "bg-brand-100 text-brand-700 font-medium"
+        : "text-secondary hover:bg-gray-100"
     }`;
   };
 
@@ -23,13 +23,13 @@ export function HelpLayout() {
           <nav className="flex flex-col gap-2 sticky top-8">
             <Link
               to="/help/continue-setup"
-              className={linkClass('/help/continue-setup')}
+              className={linkClass("/help/continue-setup")}
             >
               Continue Setup
             </Link>
             <Link
               to="/help/copilot-setup"
-              className={linkClass('/help/copilot-setup')}
+              className={linkClass("/help/copilot-setup")}
             >
               Copilot Setup
             </Link>

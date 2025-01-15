@@ -91,7 +91,7 @@ export function Markdown({ children, isInverted = false }: Props) {
         a({ children, ...props }) {
           return (
             <a
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="text-brand-600 hover:text-brand-800 underline"
               target="_blank"
               {...props}
             >

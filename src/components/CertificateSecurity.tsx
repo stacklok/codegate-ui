@@ -1,4 +1,4 @@
-import { Card, CardBody } from "@stacklok/ui-kit-mono"
+import { Card, CardBody } from "@stacklok/ui-kit-mono";
 
 const SecurityShieldIcon = () => (
   <svg viewBox="0 0 24 24" className="size-16 text-brand-700">
@@ -72,9 +72,9 @@ export function CertificateSecurity() {
               Robust Certificate Security
             </h2>
             <p className="text-secondary mb-4">
-              Security is a top priority for us. We have designed CodeGate's local
-              certificate management with security in mind, balanced against ease
-              of use.
+              Security is a top priority for us. We have designed CodeGate's
+              local certificate management with security in mind, balanced
+              against ease of use.
             </p>
             <p className="text-secondary">
               We always seek to improve and balance security, privacy, and
@@ -88,7 +88,9 @@ export function CertificateSecurity() {
             <div className="flex justify-center mb-4">
               <KeySecurityIcon />
             </div>
-            <h2 className="text-xl font-semibold mb-4">Key security features</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              Key security features
+            </h2>
             <div className="space-y-6">
               <div>
                 <h3 className="font-semibold text-lg mb-2">
@@ -97,8 +99,8 @@ export function CertificateSecurity() {
                 <p className="text-secondary mb-2">
                   Instead of using wildcard certificates, CodeGate generates a
                   unique certificate for each domain. This approach minimizes
-                  security risks by limiting the impact of any single certificate
-                  compromise.
+                  security risks by limiting the impact of any single
+                  certificate compromise.
                 </p>
               </div>
               <div>
@@ -120,9 +122,9 @@ export function CertificateSecurity() {
                 </h3>
                 <p className="text-secondary mb-2">
                   CodeGate's SSL context is configured to enforce the latest
-                  security standards, including strong cipher suites and disabling
-                  outdated protocols. This ensures secure and efficient encrypted
-                  communications.
+                  security standards, including strong cipher suites and
+                  disabling outdated protocols. This ensures secure and
+                  efficient encrypted communications.
                 </p>
               </div>
               <div>
@@ -158,14 +160,15 @@ export function CertificateSecurity() {
               <p className="text-secondary">
                 We believe in transparency and continuous improvement. By making
                 our code open source, we invite the global security community to
-                review, audit, and contribute to enhancing our security measures.
+                review, audit, and contribute to enhancing our security
+                measures.
               </p>
               <p className="text-secondary">
                 If you discover a security vulnerability or have suggestions for
                 improvement, please reach out to us at{" "}
                 <a
                   href="mailto:security@stacklok.com"
-                  className="text-blue-600 hover:text-blue-800 underline"
+                  className="text-brand-600 hover:text-brand-800 underline"
                 >
                   security@stacklok.com
                 </a>
@@ -178,7 +181,7 @@ export function CertificateSecurity() {
                   href="https://github.com/stacklok/codegate"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 underline"
+                  className="text-brand-600 hover:text-brand-800 underline"
                 >
                   GitHub
                 </a>{" "}
