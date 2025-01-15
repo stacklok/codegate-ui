@@ -73,7 +73,7 @@ const chatBubbleMessageVariants = cva("p-4", {
       sent: "bg-gray-100 text-secondary rounded-l-lg rounded-tr-lg",
     },
     layout: {
-      default: "",
+      default: "border-t w-full rounded-none bg-transparent",
       ai: "border-t w-full rounded-none bg-transparent",
     },
   },
