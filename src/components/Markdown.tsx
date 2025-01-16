@@ -80,7 +80,10 @@ export function Markdown({ children, isInverted = false }: Props) {
                 {String(children).replace(/\n$/, "")}
               </SyntaxHighlighter>
               {match && (
-                <CopyToClipboard text={String(children).replace(/\n$/, "")} />
+                <CopyToClipboard
+                  text={String(children).replace(/\n$/, "")}
+                  className="absolute top-4 right-8"
+                />
               )}
             </div>
           );

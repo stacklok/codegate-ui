@@ -1,5 +1,7 @@
-import clsx from "clsx";
-import { ClipboardCopy } from "lucide-react";
+import { Button, Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
+import { ClipboardCheck, ClipboardCopy } from "lucide-react";
+import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export function CopyToClipboard({
   text,
@@ -8,26 +10,33 @@ export function CopyToClipboard({
   className?: string;
   text: string;
 }) {
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      return;
-    }
-  };
+  const [copied, setCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    const id = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(id);
+  }, [copied]);
 
   return (
-    <button
-      onClick={copyToClipboard}
-      className={clsx(
-        `absolute top-4 right-8 p-2 rounded-md 
-    bg-gray-700/50 hover:bg-gray-700/70 
-    transition-opacity duration-200 
-    opacity-0 group-hover:opacity-100`,
-        className,
-      )}
-    >
-      <ClipboardCopy role="img" className="size-5 text-gray-200" />
-    </button>
+    <TooltipTrigger delay={0} closeDelay={500}>
+      <Button
+        variant="tertiary"
+        className={twMerge(
+          "size-7 text-secondary",
+          className,
+          copied ? "text-primary" : "text-secondary",
+        )}
+        onPress={() => {
+          navigator.clipboard.writeText(text);
+          setCopied(true);
+        }}
+      >
+        {copied ? <ClipboardCheck /> : <ClipboardCopy />}
+      </Button>
+
+      <Tooltip placement="top" className="text-center">
+        Copy to clipboard
+      </Tooltip>
+    </TooltipTrigger>
   );
 }
