@@ -19,7 +19,7 @@ export function BarChart({
           <CardTitle>Security issues detected</CardTitle>
         </CardHeader>
         <CardBody>
-          {Array.from({ length: 6 }).map((_, index) => (
+          {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
               className="flex w-full items-center justify-around mb-4"
@@ -49,7 +49,7 @@ export function BarChart({
 
   return (
     <Card className="h-full" data-testid="security-issues-barchart">
-        <CardHeader className="shrink-0">
+      <CardHeader className="shrink-0">
         <CardTitle>Security issues detected</CardTitle>
       </CardHeader>
       <CardBody>
