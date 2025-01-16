@@ -26,6 +26,11 @@ import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
 import { CardCodegateStatus } from "@/features/dashboard/components/card-codegate-status";
 import { Search } from "lucide-react";
+import {
+  useAlertsData,
+  useFilteredAlerts,
+  useMaliciousPackagesChartData,
+} from "@/hooks/useAlertsData";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
@@ -71,20 +76,15 @@ export function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const {
-    alerts,
     loading,
-    fetchAlerts,
-    filteredAlerts,
-    getMaliciousPackagesChart,
     isMaliciousFilterActive,
     toggleMaliciousFilter,
     setSearch,
     search,
   } = useAlertsStore();
 
-  useEffect(() => {
-    fetchAlerts();
-  }, [fetchAlerts]);
+  const { data: alerts = [] } = useAlertsData();
+  const { data: filteredAlerts = [] } = useFilteredAlerts();
 
   useEffect(() => {
     const isMaliciousFilterActive = searchParams.get("maliciousPkg") === "true";
@@ -97,7 +97,7 @@ export function Dashboard() {
     }
   }, [searchParams, toggleMaliciousFilter, setSearch, alerts]);
 
-  const maliciousPackages = getMaliciousPackagesChart();
+  const maliciousPackages = useMaliciousPackagesChartData();
 
   const handleToggleFilter = useCallback(
     (isChecked: boolean) => {

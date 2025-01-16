@@ -15,10 +15,7 @@ export type AlertState = {
   isMaliciousFilterActive: boolean;
   search: string;
   setSearch: (search: string) => void;
-  getMaliciousPackagesChart: () => MaliciousPkgType[];
-  updateFilteredAlerts: () => void;
   toggleMaliciousFilter: (isChecked: boolean) => void;
-  fetchAlerts: () => void;
 };
 
 export type TriggerType =
