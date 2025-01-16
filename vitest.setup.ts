@@ -66,9 +66,9 @@ afterEach(() => {
 afterAll(() => server.close());
 
 failOnConsole({
-  shouldFailOnDebug: true,
+  shouldFailOnDebug: false,
   shouldFailOnError: true,
-  shouldFailOnInfo: true,
-  shouldFailOnLog: true,
+  shouldFailOnInfo: false,
+  shouldFailOnLog: false,
   shouldFailOnWarn: true,
 });

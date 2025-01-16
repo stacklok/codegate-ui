@@ -2,11 +2,11 @@ import { renderHook } from "@testing-library/react";
 import { vi } from "vitest";
 import { useBreadcrumb } from "../useBreadcrumb";
 import { MemoryRouter } from "react-router-dom";
+import { TestQueryClientProvider } from "@/lib/test-utils";
 
-vi.mock("../usePromptsStore", () => ({
-  usePromptsStore: vi.fn(() => ({
-    currentPromptId: "test-chat-id",
-    prompts: [
+vi.mock("../usePromptsData", () => ({
+  usePromptsData: vi.fn(() => ({
+    data: [
       {
         chat_id: "test-chat-id",
         question_answers: [
@@ -17,6 +17,12 @@ vi.mock("../usePromptsStore", () => ({
         ],
       },
     ],
+  })),
+}));
+
+vi.mock("../useCurrentPromptStore", () => ({
+  useCurrentPromptStore: vi.fn(() => ({
+    currentPromptId: "test-chat-id",
   })),
 }));
 
@@ -34,7 +40,9 @@ describe("useBreadcrumb", () => {
     { path: "/", expected: "" },
   ])("returns breadcrumb for path $path", ({ path, expected }) => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <MemoryRouter initialEntries={[path]}>{children}</MemoryRouter>
+      <TestQueryClientProvider>
+        <MemoryRouter initialEntries={[path]}>{children}</MemoryRouter>
+      </TestQueryClientProvider>
     );
 
     const { result } = renderHook(() => useBreadcrumb(), { wrapper });
