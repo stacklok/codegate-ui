@@ -1,6 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { vi } from "vitest";
 import { useSse } from "../useSse";
+import { TestQueryClientProvider } from "@/lib/test-utils";
 
 vi.mock("react-router-dom", () => ({
   useLocation: vi.fn(() => ({ pathname: "/" })),
@@ -63,7 +64,7 @@ describe("useSse", () => {
   });
 
   it("should send notification if new alert is detected", () => {
-    renderHook(() => useSse());
+    renderHook(() => useSse(), { wrapper: TestQueryClientProvider });
 
     expect(MockEventSource.instances.length).toBe(1);
     const instance = MockEventSource.instances[0];
@@ -87,7 +88,7 @@ describe("useSse", () => {
   });
 
   it("should send notification if new alert is detected", () => {
-    renderHook(() => useSse());
+    renderHook(() => useSse(), { wrapper: TestQueryClientProvider });
 
     act(() => {
       MockEventSource.triggerMessage("other message");

@@ -1,6 +1,5 @@
 import { Header } from "./components/Header";
 import { PromptList } from "./components/PromptList";
-import { useEffect } from "react";
 import { Dashboard } from "./components/Dashboard";
 import { Routes, Route, Link } from "react-router-dom";
 import { Chat } from "./components/Chat";
@@ -20,13 +19,9 @@ import {
 import { useBreadcrumb } from "./hooks/useBreadcrumb";
 
 function App() {
-  const { data: prompts, isLoading, refetch } = usePromptsData();
+  const { data: prompts, isLoading } = usePromptsData();
   useSse();
   const breadcrumb = useBreadcrumb();
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   return (
     <div className="flex w-screen h-screen">
