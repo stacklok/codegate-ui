@@ -27,7 +27,6 @@ import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
 import { CardCodegateStatus } from "@/features/dashboard/components/card-codegate-status";
 import { Search } from "lucide-react";
-import { useAlertsData } from "@/hooks/useAlertsData";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
@@ -71,9 +70,11 @@ const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
 
 export function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: alerts = [], isLoading } = useAlertsData();
 
   const {
+    alerts,
+    loading,
+    fetchAlerts,
     filteredAlerts,
     getMaliciousPackagesChart,
     isMaliciousFilterActive,
@@ -81,6 +82,10 @@ export function Dashboard() {
     setSearch,
     search,
   } = useAlertsStore();
+
+  useEffect(() => {
+    fetchAlerts();
+  }, [fetchAlerts]);
 
   useEffect(() => {
     const isMaliciousFilterActive = searchParams.get("maliciousPkg") === "true";
@@ -130,9 +135,9 @@ export function Dashboard() {
     <div className="flex-col">
       <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
         <CardCodegateStatus />
-        <BarChart data={alerts} loading={isLoading} />
-        <PieChart data={maliciousPackages} loading={isLoading} />
-        <LineChart data={alerts} loading={isLoading} />
+        <BarChart data={alerts} loading={loading} />
+        <PieChart data={maliciousPackages} loading={loading} />
+        <LineChart data={alerts} loading={loading} />
       </div>
 
       <Separator className="my-8" />

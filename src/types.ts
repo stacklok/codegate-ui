@@ -18,6 +18,7 @@ export type AlertState = {
   getMaliciousPackagesChart: () => MaliciousPkgType[];
   updateFilteredAlerts: () => void;
   toggleMaliciousFilter: (isChecked: boolean) => void;
+  fetchAlerts: () => void;
 };
 
 export type TriggerType =
