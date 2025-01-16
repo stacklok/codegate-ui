@@ -92,13 +92,13 @@ const StatusText = ({
   switch (status) {
     case Status.HEALTHY:
       return (
-        <div className="flex gap-2 items-center text-brand-600 justify-end">
+        <div className="flex gap-2 items-center text-primary justify-end">
           {Status.HEALTHY} <CheckCircle2 className="size-4" />
         </div>
       );
     case Status.UNHEALTHY:
       return (
-        <div className="flex gap-2 items-center text-red-600 justify-end overflow-hidden">
+        <div className="flex gap-2 items-center text-primary justify-end overflow-hidden">
           {Status.UNHEALTHY} <XCircle className="size-4" />
         </div>
       );

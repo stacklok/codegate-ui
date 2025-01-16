@@ -25,6 +25,7 @@ import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
 import { CardCodegateStatus } from "@/features/dashboard/components/card-codegate-status";
 import { Search } from "lucide-react";
+
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
   if (data === null) return "N/A";
@@ -142,7 +143,7 @@ export function Dashboard() {
       <div className="flex mb-2 mx-2 justify-between w-[calc(100vw-20rem)]">
         <div className="flex gap-2 items-center">
           <h2 className="font-bold text-lg">All Alerts</h2>
-          <Badge variant="inverted" data-testid="alerts-count">
+          <Badge size="sm" variant="inverted" data-testid="alerts-count">
             {filteredAlerts.length}
           </Badge>
         </div>
@@ -151,7 +152,7 @@ export function Dashboard() {
           <div className="flex items-center space-x-2">
             <TooltipTrigger>
               <Switch
-                id="airplane-mode"
+                id="malicious-packages"
                 isSelected={isMaliciousFilterActive}
                 onChange={handleToggleFilter}
               >
