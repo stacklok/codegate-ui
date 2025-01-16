@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { VariantProps, cva } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Tooltip, TooltipTrigger, Button, Skeleton } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
+import { tv } from "tailwind-variants";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -370,27 +370,25 @@ const SidebarMenuItem = React.forwardRef<
 ));
 SidebarMenuItem.displayName = "SidebarMenuItem";
 
-const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none transition-[width,height,padding] hover:bg-gray-25 focus-visible:ring-2 active:bg-gray-25-accent disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-gray-25-accent data-[active=true]:font-medium data-[state=open]:hover:bg-gray-25 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
-  {
-    variants: {
-      variant: {
-        default: "hover:bg-gray-25",
-        outline:
-          "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-gray-25 hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
-      },
-      size: {
-        default: "h-8 text-sm",
-        sm: "h-7 text-sm",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0",
-      },
+const sidebarMenuButtonVariants = tv({
+  base: "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-brand-600 transition-[width,height,padding] hover:bg-brand-25 hover:text-secondary focus-visible:ring-2 active:bg-gray-25 active:text-secondary disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-gray-25 data-[active=true]:font-medium data-[active=true]:text-secondary data-[state=open]:hover:bg-brand-25 data-[state=open]:hover:text-secondary group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  variants: {
+    variant: {
+      default: "hover:bg-brand-25 hover:text-secondary",
+      outline:
+        "bg-base shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-brand-25 hover:text-secondary hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+    size: {
+      default: "h-8 text-sm",
+      sm: "h-7 text-sm",
+      lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0",
     },
   },
-);
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+  },
+});
 
 const SidebarMenuButton = React.forwardRef<
   HTMLButtonElement,
@@ -398,7 +396,10 @@ const SidebarMenuButton = React.forwardRef<
     asChild?: boolean;
     isActive?: boolean;
     tooltip?: string;
-  } & VariantProps<typeof sidebarMenuButtonVariants>
+  } & {
+    variant: "default" | "outline";
+    size: "default" | "sm" | "lg";
+  }
 >(
   (
     {
