@@ -9,9 +9,11 @@ import {
   SearchField,
   Table,
   TableBody,
+  FieldGroup,
   TableHeader,
+  SearchFieldClearButton,
+  Badge,
 } from "@stacklok/ui-kit";
-import { Badge } from "@stacklok/ui-kit";
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
@@ -170,7 +172,15 @@ export function Dashboard() {
             value={search}
             onChange={(value) => handleSearch(value.toLowerCase().trim())}
           >
-            <Input type="search" placeholder="Search..." icon={<Search />} />
+            <FieldGroup>
+              <Input
+                type="search"
+                placeholder="Search..."
+                isBorderless
+                icon={<Search />}
+              />
+              <SearchFieldClearButton />
+            </FieldGroup>
           </SearchField>
         </div>
       </div>
