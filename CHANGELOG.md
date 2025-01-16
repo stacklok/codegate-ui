@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/stacklok/codegate-ui/compare/v0.2.0...v0.3.0) (2025-01-16)
+
+
+### Features
+
+* use @stacklok/ui-kit ([#80](https://github.com/stacklok/codegate-ui/issues/80)) ([48e7103](https://github.com/stacklok/codegate-ui/commit/48e7103bb9faa32d50c24b59b937b40b2c1ab27e))
+
+
+### Bug Fixes
+
+* **alerts-table:** add clear button to input search ([#87](https://github.com/stacklok/codegate-ui/issues/87)) ([ee1ac50](https://github.com/stacklok/codegate-ui/commit/ee1ac50a5066daa8f149c590d0144f93e2c3dad8))
+* **alerts-table:** trigger token box and copy to clipboard icon ([#85](https://github.com/stacklok/codegate-ui/issues/85)) ([7a0e61c](https://github.com/stacklok/codegate-ui/commit/7a0e61c62bdd0c466b529f4c1b6eb38e8fdbafef))
+
 ## [0.2.0](https://github.com/stacklok/codegate-ui/compare/v0.1.0...v0.2.0) (2025-01-15)
 
 
