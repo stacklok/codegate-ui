@@ -1,17 +1,11 @@
 import { AlertConversation, Conversation } from "@/api/generated/types.gen";
 import { MaliciousPkgType, TriggerType } from "@/types";
-import { clsx, type ClassValue } from "clsx";
 import { isToday, isYesterday } from "date-fns";
-import { twMerge } from "tailwind-merge";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const SEVEN_DAYS_MS = 7 * ONE_DAY_MS;
 const TEEN_DAYS_MS = 14 * ONE_DAY_MS;
 const THTY_DAYS_MS = 30 * ONE_DAY_MS;
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 export function extractTitleFromMessage(message: string) {
   try {

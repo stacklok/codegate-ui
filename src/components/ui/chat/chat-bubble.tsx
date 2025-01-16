@@ -1,8 +1,8 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
 import MessageLoading from "./message-loading";
 import { Avatar, Button } from "@stacklok/ui-kit";
+import { twMerge } from "tailwind-merge";
 
 // ChatBubble
 const chatBubbleVariant = cva(
@@ -32,7 +32,7 @@ interface ChatBubbleProps
 const ChatBubble = React.forwardRef<HTMLDivElement, ChatBubbleProps>(
   ({ className, variant, layout, children, ...props }, ref) => (
     <div
-      className={cn(
+      className={twMerge(
         chatBubbleVariant({ variant, layout, className }),
         "relative group",
       )}
@@ -99,7 +99,7 @@ const ChatBubbleMessage = React.forwardRef<
     ref,
   ) => (
     <div
-      className={cn(
+      className={twMerge(
         chatBubbleMessageVariants({ variant, layout, className }),
         "break-words max-w-full",
       )}
@@ -129,7 +129,7 @@ const ChatBubbleTimestamp: React.FC<ChatBubbleTimestampProps> = ({
   className,
   ...props
 }) => (
-  <div className={cn("text-xs mt-2 text-right", className)} {...props}>
+  <div className={twMerge("text-sm mt-2 text-right", className)} {...props}>
     {timestamp}
   </div>
 );
@@ -170,7 +170,7 @@ const ChatBubbleActionWrapper = React.forwardRef<
 >(({ variant, className, children, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
+    className={twMerge(
       "absolute top-1/2 -translate-y-1/2 flex opacity-0 group-hover:opacity-100 transition-opacity duration-200",
       variant === "sent"
         ? "-left-1 -translate-x-full flex-row-reverse"
