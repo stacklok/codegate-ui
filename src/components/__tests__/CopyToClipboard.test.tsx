@@ -8,7 +8,7 @@ describe("CopyToClipboard", () => {
     render(<CopyToClipboard text="Fake text" />);
 
     expect(screen.getByRole("button")).toBeVisible();
-    expect(screen.getByRole("img", { hidden: true })).toBeVisible();
+    expect(screen.getByTestId("icon-clipboard-copy")).toBeVisible();
   });
 
   it("copies text to clipboard when clicked", async () => {
@@ -24,5 +24,6 @@ describe("CopyToClipboard", () => {
     await userEvent.click(screen.getByRole("button"));
 
     expect(mockedText).toHaveBeenCalledWith("Fake text");
+    expect(screen.getByTestId("icon-clipboard-check")).toBeVisible();
   });
 });

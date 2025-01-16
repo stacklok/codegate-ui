@@ -31,7 +31,11 @@ export function CopyToClipboard({
           setCopied(true);
         }}
       >
-        {copied ? <ClipboardCheck /> : <ClipboardCopy />}
+        {copied ? (
+          <ClipboardCheck data-testid="icon-clipboard-check" />
+        ) : (
+          <ClipboardCopy data-testid="icon-clipboard-copy" />
+        )}
       </Button>
 
       <Tooltip placement="top" className="text-center">
