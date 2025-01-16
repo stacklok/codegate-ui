@@ -1,5 +1,3 @@
-import { Separator } from "./ui/separator";
-
 import { format } from "date-fns";
 import {
   Cell,
@@ -13,6 +11,7 @@ import {
   TableHeader,
   SearchFieldClearButton,
   Badge,
+  Separator,
 } from "@stacklok/ui-kit";
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";

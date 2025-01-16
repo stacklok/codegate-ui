@@ -12,11 +12,16 @@ vi.mock("@stacklok/ui-kit", async (importOriginal) => {
   };
 });
 
-vi.mock("@/hooks/usePromptsStore", () => ({
-  usePromptsStore: () => ({
-    ...vi.importActual("@/hooks/usePromptsStore"),
+vi.mock("@/hooks/useCurrentPromptStore", () => ({
+  useCurrentPromptStore: vi.fn(() => ({
+    currentPromptId: "test-chat-id",
     setCurrentPromptId: vi.fn(),
-    prompts: [
+  })),
+}));
+
+vi.mock("@/hooks/usePromptsData", () => ({
+  usePromptsData: vi.fn(() => ({
+    data: [
       {
         question_answers: [
           {
@@ -40,7 +45,7 @@ vi.mock("@/hooks/usePromptsStore", () => ({
         conversation_timestamp: "2025-01-02T13:42:48.721165Z",
       },
     ],
-  }),
+  })),
 }));
 
 describe("Chat", () => {

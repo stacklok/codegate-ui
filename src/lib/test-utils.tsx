@@ -2,7 +2,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { DarkModeProvider } from "@stacklok/ui-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RenderOptions, render } from "@testing-library/react";
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   MemoryRouter,
   MemoryRouterProps,
@@ -15,11 +15,12 @@ type RoutConfig = {
   pathConfig?: string;
 };
 
-const renderWithProviders = (
-  children: React.ReactNode,
-  options?: Omit<RenderOptions, "queries"> & RoutConfig,
-) =>
-  render(
+export const TestQueryClientProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  return (
     <QueryClientProvider
       client={
         new QueryClient({
@@ -32,6 +33,17 @@ const renderWithProviders = (
         })
       }
     >
+      {children}
+    </QueryClientProvider>
+  );
+};
+
+const renderWithProviders = (
+  children: React.ReactNode,
+  options?: Omit<RenderOptions, "queries"> & RoutConfig,
+) =>
+  render(
+    <TestQueryClientProvider>
       <DarkModeProvider>
         <MemoryRouter {...options?.routeConfig}>
           <Routes>
@@ -42,7 +54,7 @@ const renderWithProviders = (
           </Routes>
         </MemoryRouter>
       </DarkModeProvider>
-    </QueryClientProvider>,
+    </TestQueryClientProvider>,
   );
 
 export * from "@testing-library/react";

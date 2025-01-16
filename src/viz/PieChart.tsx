@@ -16,13 +16,13 @@ const COLORS = [
   "var(--brand-800)",
   "var(--brand-900)",
   "var(--brand-950)",
-] as const
+] as const;
 
 const generateTypeColors = (data: MaliciousPkgType[]) => {
   const uniqueTypes = Array.from(new Set(data.map((pkg) => pkg.type)));
   return uniqueTypes.reduce<Record<string, string>>((acc, type, index) => {
-    const colorIndex = index > COLORS.length -1 ? COLORS.length -1 : index
-    acc[type] = COLORS[colorIndex] as string
+    const colorIndex = index > COLORS.length - 1 ? COLORS.length - 1 : index;
+    acc[type] = COLORS[colorIndex] as string;
     return acc;
   }, {});
 };
@@ -81,7 +81,7 @@ export function PieChart({ data, loading }: PieChartProps) {
           <CardTitle>Malicious packages by type</CardTitle>
         </CardHeader>
         <CardBody className="flex justify-center">
-          <div className="size-[220px] flex justify-center">
+          <div className="flex justify-center">
             <Skeleton className="size-40 rounded-full" />
           </div>
         </CardBody>
@@ -109,11 +109,8 @@ export function PieChart({ data, loading }: PieChartProps) {
       <CardHeader className="items-center">
         <CardTitle>Malicious packages by type</CardTitle>
       </CardHeader>
-      <CardBody className="mt-[-1em]">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[240px]"
-        >
+      <CardBody>
+        <ChartContainer config={chartConfig} className="mx-auto">
           <PieChartUI width={400} height={300}>
             <ChartTooltip
               cursor={false}
@@ -127,7 +124,6 @@ export function PieChart({ data, loading }: PieChartProps) {
               outerRadius={80}
               strokeWidth={5}
               fill="red"
-
             >
               <Label
                 content={({ viewBox }) => {

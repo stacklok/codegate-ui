@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { SidebarTrigger } from "./ui/sidebar";
-import { Separator } from "./ui/separator";
 import { HoverPopover } from "./HoverPopover";
-import { ButtonDarkMode } from "@stacklok/ui-kit";
+import { Separator, ButtonDarkMode } from "@stacklok/ui-kit";
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
@@ -14,11 +13,11 @@ export function Header({ hasError }: { hasError?: boolean }) {
         {!hasError && (
           <>
             <SidebarTrigger />
-            <Separator orientation="vertical" className="h-8 mx-3" />
+            <Separator orientation="vertical" className="h-8 mx-2" />
           </>
         )}
 
-        <nav className="mr-1 flex">
+        <nav className="mr-1 flex ml-2">
           <Link to="/">
             <h1 className="text-2xl text-primary font-title w-max flex font-semibold">
               CodeGate Dashboard
