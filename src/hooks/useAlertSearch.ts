@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { AlertSearchState } from "../types";
 
-export const useAlertsStore = create<AlertSearchState>((set) => ({
+export const useAlertSearch = create<AlertSearchState>((set) => ({
   isMaliciousFilterActive: false,
   search: "",
   setSearch: (search: string) => {

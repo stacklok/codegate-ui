@@ -16,7 +16,6 @@ import {
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
-import { useAlertsStore } from "@/hooks/useAlertsStore";
 import { Markdown } from "./Markdown";
 import { PieChart } from "@/viz/PieChart";
 import { Switch } from "@stacklok/ui-kit";
@@ -31,6 +30,7 @@ import {
   useFilteredAlerts,
   useMaliciousPackagesChartData,
 } from "@/hooks/useAlertsData";
+import { useAlertSearch } from "@/hooks/useAlertSearch";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
@@ -76,14 +76,13 @@ export function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const {
-    loading,
     isMaliciousFilterActive,
     setIsMaliciousFilterActive,
     setSearch,
     search,
-  } = useAlertsStore();
+  } = useAlertSearch();
 
-  const { data: alerts = [] } = useAlertsData();
+  const { data: alerts = [], isLoading } = useAlertsData();
   const { data: filteredAlerts = [] } = useFilteredAlerts();
 
   useEffect(() => {
@@ -134,9 +133,9 @@ export function Dashboard() {
     <div className="flex-col">
       <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
         <CardCodegateStatus />
-        <BarChart data={alerts} loading={loading} />
-        <PieChart data={maliciousPackages} loading={loading} />
-        <LineChart data={alerts} loading={loading} />
+        <BarChart data={alerts} loading={isLoading} />
+        <PieChart data={maliciousPackages} loading={isLoading} />
+        <LineChart data={alerts} loading={isLoading} />
       </div>
 
       <Separator className="my-8" />

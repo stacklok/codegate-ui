@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { serverApi } from "@/api/service";
 import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
-import { useAlertsStore } from "./useAlertsStore";
 import { MaliciousPkgType, TriggerType } from "@/types";
+import { useAlertSearch } from "./useAlertSearch";
 
 const fetchAlerts = async (): Promise<AlertConversation[]> => {
   const { getAlertsDashboardAlertsGet } = await serverApi();
@@ -33,7 +33,7 @@ export const useAlertsData = ({ ...args } = {}) => {
 
 export const useFilteredAlerts = () => {
   const state = useAlertsData();
-  const { search, isMaliciousFilterActive } = useAlertsStore();
+  const { search, isMaliciousFilterActive } = useAlertSearch();
 
   return {
     ...state,
