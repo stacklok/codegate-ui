@@ -10,7 +10,7 @@ export const useAlertsStore = create<AlertState>((set) => ({
   setSearch: (search: string) => {
     set({ search });
   },
-  toggleMaliciousFilter: (isActive: boolean) => {
+  setIsMaliciousFilterActive: (isActive: boolean) => {
     set({
       isMaliciousFilterActive: isActive,
     });

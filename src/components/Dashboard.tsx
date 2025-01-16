@@ -78,7 +78,7 @@ export function Dashboard() {
   const {
     loading,
     isMaliciousFilterActive,
-    toggleMaliciousFilter,
+    setIsMaliciousFilterActive,
     setSearch,
     search,
   } = useAlertsStore();
@@ -90,12 +90,12 @@ export function Dashboard() {
     const isMaliciousFilterActive = searchParams.get("maliciousPkg") === "true";
     const searchFilterParam = searchParams.get("search");
     if (isMaliciousFilterActive && alerts.length > 0) {
-      toggleMaliciousFilter(true);
+      setIsMaliciousFilterActive(true);
     }
     if (searchFilterParam && alerts.length > 0) {
       setSearch(searchFilterParam);
     }
-  }, [searchParams, toggleMaliciousFilter, setSearch, alerts]);
+  }, [searchParams, setIsMaliciousFilterActive, setSearch, alerts]);
 
   const maliciousPackages = useMaliciousPackagesChartData();
 
@@ -109,9 +109,9 @@ export function Dashboard() {
         searchParams.delete("maliciousPkg");
       }
       setSearchParams(searchParams);
-      toggleMaliciousFilter(isChecked);
+      setIsMaliciousFilterActive(isChecked);
     },
-    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter],
+    [setSearchParams, setSearch, searchParams, setIsMaliciousFilterActive],
   );
 
   const handleSearch = useCallback(
@@ -120,14 +120,14 @@ export function Dashboard() {
         searchParams.set("search", value);
         searchParams.delete("maliciousPkg");
         setSearch(value);
-        toggleMaliciousFilter(false);
+        setIsMaliciousFilterActive(false);
       } else {
         searchParams.delete("search");
         setSearch("");
       }
       setSearchParams(searchParams);
     },
-    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter],
+    [searchParams, setIsMaliciousFilterActive, setSearch, setSearchParams],
   );
 
   return (

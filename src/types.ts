@@ -15,7 +15,7 @@ export type AlertState = {
   isMaliciousFilterActive: boolean;
   search: string;
   setSearch: (search: string) => void;
-  toggleMaliciousFilter: (isChecked: boolean) => void;
+  setIsMaliciousFilterActive: (isChecked: boolean) => void;
 };
 
 export type TriggerType =
