@@ -8,7 +8,7 @@ export type PromptState = {
   fetchPrompts: () => void;
 };
 
-export type AlertState = {
+export type AlertSearchState = {
   alerts: AlertConversation[];
   filteredAlerts: AlertConversation[];
   loading: boolean;

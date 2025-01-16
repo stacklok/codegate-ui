@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { AlertState } from "../types";
+import { AlertSearchState } from "../types";
 
-export const useAlertsStore = create<AlertState>((set) => ({
+export const useAlertsStore = create<AlertSearchState>((set) => ({
   alerts: [],
   filteredAlerts: [],
   loading: false,
