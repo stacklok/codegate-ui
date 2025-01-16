@@ -5,23 +5,14 @@ import {
 } from "./ui/chat/chat-bubble";
 import { ChatMessageList } from "./ui/chat/chat-message-list";
 import { useParams } from "react-router-dom";
-import { usePromptsStore } from "@/hooks/usePromptsStore";
+import { usePromptsData } from "@/hooks/usePromptsData";
 import { Markdown } from "./Markdown";
-import { useEffect } from "react";
 import { sanitizeQuestionPrompt } from "@/lib/utils";
 
 export function Chat() {
   const { id } = useParams();
-  const { prompts, setCurrentPromptId } = usePromptsStore();
-  const chat = prompts.find((prompt) => prompt.chat_id === id);
-
-  useEffect(() => {
-    if (id) {
-      setCurrentPromptId(id);
-    }
-
-    return () => setCurrentPromptId("");
-  }, [prompts, id, setCurrentPromptId]);
+  const { data: prompts } = usePromptsData();
+  const chat = prompts?.find((prompt) => prompt.chat_id === id);
 
   return (
     <div className="w-[calc(100vw-18rem)]">
