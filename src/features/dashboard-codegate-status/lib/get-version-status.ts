@@ -6,16 +6,10 @@ export type VersionResponse = {
 } | null;
 
 export const getVersionStatus = async (): Promise<VersionResponse | null> => {
-  try {
-    const resp = await fetch(
-      new URL("/dashboard/version", import.meta.env.VITE_BASE_API_URL),
-    );
-    if (!resp.ok) return null;
-    const data = (await resp.json()) as unknown as VersionResponse;
-    if (data?.error) console.error(data.error);
+  const resp = await fetch(
+    new URL("/dashboard/version", import.meta.env.VITE_BASE_API_URL),
+  );
+  const data = (await resp.json()) as unknown as VersionResponse;
 
-    return data;
-  } catch {
-    return null;
-  }
+  return data;
 };
