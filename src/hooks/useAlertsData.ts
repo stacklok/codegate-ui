@@ -32,45 +32,42 @@ export const useAlertsData = ({ ...args } = {}) => {
 };
 
 export const useFilteredAlerts = () => {
-  const state = useAlertsData();
-  const { search, isMaliciousFilterActive } = useAlertSearch();
+  const { isMaliciousFilterActive, search } = useAlertSearch();
 
-  return {
-    ...state,
-    data:
-      state.data !== undefined
-        ? state.data
-            .filter((alert) => {
-              const maliciousPkg = getMaliciousPackage(alert.trigger_string);
-              const maliciousPkgName =
-                typeof maliciousPkg === "object"
-                  ? maliciousPkg?.type
-                  : maliciousPkg;
+  return useAlertsData({
+    select: (
+      data: Exclude<ReturnType<typeof useAlertsData>["data"], undefined>,
+    ) =>
+      data
+        .filter((alert) => {
+          const maliciousPkg = getMaliciousPackage(alert.trigger_string);
+          const maliciousPkgName =
+            typeof maliciousPkg === "object"
+              ? maliciousPkg?.type
+              : maliciousPkg;
 
-              const maliciousPkgType =
-                typeof maliciousPkg === "object"
-                  ? maliciousPkg?.name
-                  : maliciousPkg;
+          const maliciousPkgType =
+            typeof maliciousPkg === "object"
+              ? maliciousPkg?.name
+              : maliciousPkg;
 
-              return (
-                maliciousPkgName?.toLowerCase().includes(search) ||
-                maliciousPkgType?.toLowerCase().includes(search) ||
-                alert.trigger_type?.toLowerCase().includes(search)
-              );
-            })
-            .filter((alert) => {
-              if (!isMaliciousFilterActive) {
-                return true;
-              }
+          return (
+            maliciousPkgName?.toLowerCase().includes(search) ||
+            maliciousPkgType?.toLowerCase().includes(search) ||
+            alert.trigger_type?.toLowerCase().includes(search)
+          );
+        })
+        .filter((alert) => {
+          if (!isMaliciousFilterActive) {
+            return true;
+          }
 
-              return (
-                typeof alert.trigger_string === "object" &&
-                (alert.trigger_type as TriggerType) ===
-                  "codegate-context-retriever"
-              );
-            })
-        : undefined,
-  };
+          return (
+            typeof alert.trigger_string === "object" &&
+            (alert.trigger_type as TriggerType) === "codegate-context-retriever"
+          );
+        }),
+  });
 };
 
 export function useMaliciousPackagesChartData() {
