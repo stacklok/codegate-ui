@@ -1,4 +1,4 @@
-import { AlertConversation, Conversation } from "./api/generated";
+import { Conversation } from "./api/generated";
 
 export type PromptState = {
   prompts: Conversation[];
@@ -9,9 +9,6 @@ export type PromptState = {
 };
 
 export type AlertSearchState = {
-  alerts: AlertConversation[];
-  filteredAlerts: AlertConversation[];
-  loading: boolean;
   isMaliciousFilterActive: boolean;
   search: string;
   setSearch: (search: string) => void;
