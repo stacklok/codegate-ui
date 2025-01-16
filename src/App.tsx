@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Dashboard } from "./components/Dashboard";
 import { Routes, Route, Link } from "react-router-dom";
 import { Chat } from "./components/Chat";
-import { usePromptsDataStore } from "./hooks/usePromptsDataStore";
+import { usePromptsData } from "./hooks/usePromptsData";
 import { Sidebar } from "./components/Sidebar";
 import { useSse } from "./hooks/useSse";
 import { Help } from "./components/Help";
@@ -20,18 +20,18 @@ import {
 import { useBreadcrumb } from "./hooks/useBreadcrumb";
 
 function App() {
-  const { prompts, loading, fetchPrompts } = usePromptsDataStore();
+  const { data: prompts, isLoading, refetch } = usePromptsData();
   useSse();
   const breadcrumb = useBreadcrumb();
 
   useEffect(() => {
-    fetchPrompts();
-  }, [fetchPrompts]);
+    refetch();
+  }, [refetch]);
 
   return (
     <div className="flex w-screen h-screen">
-      <Sidebar loading={loading}>
-        <PromptList prompts={prompts} />
+      <Sidebar loading={isLoading}>
+        <PromptList prompts={prompts ?? []} />
       </Sidebar>
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
