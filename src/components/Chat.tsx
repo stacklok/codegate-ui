@@ -5,14 +5,16 @@ import {
 } from "./ui/chat/chat-bubble";
 import { ChatMessageList } from "./ui/chat/chat-message-list";
 import { useParams } from "react-router-dom";
-import { usePromptsStore } from "@/hooks/usePromptsStore";
+import { usePromptsDataStore } from "@/hooks/usePromptsDataStore";
 import { Markdown } from "./Markdown";
 import { useEffect } from "react";
 import { sanitizeQuestionPrompt } from "@/lib/utils";
+import { useCurrentPromptStore } from "@/hooks/useCurrentPromptStore";
 
 export function Chat() {
   const { id } = useParams();
-  const { prompts, setCurrentPromptId } = usePromptsStore();
+  const { prompts } = usePromptsDataStore();
+  const { setCurrentPromptId } = useCurrentPromptStore();
   const chat = prompts.find((prompt) => prompt.chat_id === id);
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { extractTitleFromMessage, sanitizeQuestionPrompt } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
-import { usePromptsStore } from "./usePromptsStore";
+import { useCurrentPromptStore } from "./useCurrentPromptStore";
+import { usePromptsDataStore } from "./usePromptsDataStore";
 
 const routes = [
   { path: "/certificates/security", breadcrumb: "Certificate Security" },
@@ -13,7 +14,8 @@ const routes = [
 
 export function useBreadcrumb() {
   const { pathname } = useLocation();
-  const { currentPromptId, prompts } = usePromptsStore();
+  const { currentPromptId } = useCurrentPromptStore();
+  const { prompts } = usePromptsDataStore();
 
   const match = routes.find((route) => pathname.startsWith(route.path));
   if (match?.path === "/prompt/") {

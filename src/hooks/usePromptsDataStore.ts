@@ -1,12 +1,16 @@
 import { create } from "zustand";
-import { PromptState } from "../types";
 import { serverApi } from "@/api/service";
+import { Conversation } from "@/api/generated";
 
-export const usePromptsStore = create<PromptState>((set) => ({
+type PromptsDataState = {
+  prompts: Conversation[];
+  loading: boolean;
+  fetchPrompts: () => Promise<void>;
+};
+
+export const usePromptsDataStore = create<PromptsDataState>((set) => ({
   prompts: [],
   loading: false,
-  currentPromptId: "",
-  setCurrentPromptId: (id: string) => set({ currentPromptId: id }),
   fetchPrompts: async () => {
     set({ loading: true });
     const { getMessagesDashboardMessagesGet } = await serverApi();

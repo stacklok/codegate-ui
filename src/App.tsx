@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Dashboard } from "./components/Dashboard";
 import { Routes, Route, Link } from "react-router-dom";
 import { Chat } from "./components/Chat";
-import { usePromptsStore } from "./hooks/usePromptsStore";
+import { usePromptsDataStore } from "./hooks/usePromptsDataStore";
 import { Sidebar } from "./components/Sidebar";
 import { useSse } from "./hooks/useSse";
 import { Help } from "./components/Help";
@@ -20,7 +20,7 @@ import {
 import { useBreadcrumb } from "./hooks/useBreadcrumb";
 
 function App() {
-  const { prompts, loading, fetchPrompts } = usePromptsStore();
+  const { prompts, loading, fetchPrompts } = usePromptsDataStore();
   useSse();
   const breadcrumb = useBreadcrumb();
 
