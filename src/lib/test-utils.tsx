@@ -1,4 +1,5 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { DarkModeProvider } from "@stacklok/ui-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RenderOptions, render } from "@testing-library/react";
 import React from "react";
@@ -31,14 +32,16 @@ const renderWithProviders = (
         })
       }
     >
-      <MemoryRouter {...options?.routeConfig}>
-        <Routes>
-          <Route
-            path={options?.pathConfig ?? "*"}
-            element={<SidebarProvider>{children}</SidebarProvider>}
-          />
-        </Routes>
-      </MemoryRouter>
+      <DarkModeProvider>
+        <MemoryRouter {...options?.routeConfig}>
+          <Routes>
+            <Route
+              path={options?.pathConfig ?? "*"}
+              element={<SidebarProvider>{children}</SidebarProvider>}
+            />
+          </Routes>
+        </MemoryRouter>
+      </DarkModeProvider>
     </QueryClientProvider>,
   );
 

@@ -2,36 +2,7 @@ import { Link } from "react-router-dom";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Separator } from "./ui/separator";
 import { HoverPopover } from "./HoverPopover";
-
-// function HeaderMenuItem({ children }: { children: React.ReactNode }) {
-//   return (
-//     <div className="text-black hover:text-gray-800 font-semibold cursor-pointer text-base px-2 py-1 rounded-md hover:bg-brand-50 transition-colors">
-//       {children}
-//     </div>
-//   );
-// }
-
-// function DropdownMenu({ children }: { children: React.ReactNode }) {
-//   return (
-//     <div className="absolute right-0 top-full mt-2 w-56 bg-base rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
-//       <div className="py-1">{children}</div>
-//     </div>
-//   );
-// }
-
-// function DropdownMenuItem({
-//   children,
-//   to,
-// }: {
-//   to: string;
-//   children: React.ReactNode;
-// }) {
-//   return (
-//     <Link to={to} className="block px-5 py-3 text-gray-700 hover:bg-brand-50">
-//       {children}
-//     </Link>
-//   );
-// }
+import { ButtonDarkMode } from "@stacklok/ui-kit";
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
@@ -97,6 +68,8 @@ export function Header({ hasError }: { hasError?: boolean }) {
             </a>
           </div>
         </div>
+
+        <ButtonDarkMode />
       </div>
     </header>
   );
