@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/stacklok/codegate-ui/compare/v0.3.0...v0.4.0) (2025-01-16)
+
+
+### Features
+
+* add dark mode switcher ([#89](https://github.com/stacklok/codegate-ui/issues/89)) ([603b397](https://github.com/stacklok/codegate-ui/commit/603b397d25071ad6852f18c0cc5deb21f6fdba7c)), closes [#30](https://github.com/stacklok/codegate-ui/issues/30)
+
 ## [0.3.0](https://github.com/stacklok/codegate-ui/compare/v0.2.0...v0.3.0) (2025-01-16)
 
 
