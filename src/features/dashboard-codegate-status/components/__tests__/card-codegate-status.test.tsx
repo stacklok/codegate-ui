@@ -1,10 +1,10 @@
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
 import { expect } from "vitest";
-import { CardCodegateStatus } from "../card-codegate-status";
+import { CodegateStatus } from "../codegate-status";
 import { render, waitFor } from "@/lib/test-utils";
 
-const renderComponent = () => render(<CardCodegateStatus />);
+const renderComponent = () => render(<CodegateStatus />);
 
 describe("CardCodegateStatus", () => {
   test("renders 'healthy' state", async () => {

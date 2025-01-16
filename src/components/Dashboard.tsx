@@ -25,7 +25,7 @@ import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
 import { useSearchParams } from "react-router-dom";
 import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
-import { CardCodegateStatus } from "@/features/dashboard/components/card-codegate-status";
+import { CodegateStatus } from "@/features/dashboard-codegate-status/components/codegate-status";
 import { Search } from "lucide-react";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
@@ -134,7 +134,7 @@ export function Dashboard() {
   return (
     <div className="flex-col">
       <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
-        <CardCodegateStatus />
+        <CodegateStatus />
         <BarChart data={alerts} loading={loading} />
         <PieChart data={maliciousPackages} loading={loading} />
         <LineChart data={alerts} loading={loading} />
