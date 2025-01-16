@@ -16,7 +16,6 @@ import {
 import { useCallback, useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
-import { useAlertsStore } from "@/hooks/useAlertsStore";
 import { Markdown } from "./Markdown";
 import { PieChart } from "@/viz/PieChart";
 import { Switch } from "@stacklok/ui-kit";
@@ -26,6 +25,12 @@ import { AlertConversation } from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
 import { CodegateStatus } from "@/features/dashboard-codegate-status/components/codegate-status";
 import { Search } from "lucide-react";
+import {
+  useAlertsData,
+  useFilteredAlerts,
+  useMaliciousPackagesChartData,
+} from "@/hooks/useAlertsData";
+import { useAlertSearch } from "@/hooks/useAlertSearch";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
@@ -71,33 +76,27 @@ export function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const {
-    alerts,
-    loading,
-    fetchAlerts,
-    filteredAlerts,
-    getMaliciousPackagesChart,
     isMaliciousFilterActive,
-    toggleMaliciousFilter,
+    setIsMaliciousFilterActive,
     setSearch,
     search,
-  } = useAlertsStore();
+  } = useAlertSearch();
 
-  useEffect(() => {
-    fetchAlerts();
-  }, [fetchAlerts]);
+  const { data: alerts = [], isLoading } = useAlertsData();
+  const { data: filteredAlerts = [] } = useFilteredAlerts();
 
   useEffect(() => {
     const isMaliciousFilterActive = searchParams.get("maliciousPkg") === "true";
     const searchFilterParam = searchParams.get("search");
     if (isMaliciousFilterActive && alerts.length > 0) {
-      toggleMaliciousFilter(true);
+      setIsMaliciousFilterActive(true);
     }
     if (searchFilterParam && alerts.length > 0) {
       setSearch(searchFilterParam);
     }
-  }, [searchParams, toggleMaliciousFilter, setSearch, alerts]);
+  }, [searchParams, setIsMaliciousFilterActive, setSearch, alerts]);
 
-  const maliciousPackages = getMaliciousPackagesChart();
+  const maliciousPackages = useMaliciousPackagesChartData();
 
   const handleToggleFilter = useCallback(
     (isChecked: boolean) => {
@@ -109,9 +108,9 @@ export function Dashboard() {
         searchParams.delete("maliciousPkg");
       }
       setSearchParams(searchParams);
-      toggleMaliciousFilter(isChecked);
+      setIsMaliciousFilterActive(isChecked);
     },
-    [setSearchParams, setSearch, searchParams, toggleMaliciousFilter],
+    [setSearchParams, setSearch, searchParams, setIsMaliciousFilterActive],
   );
 
   const handleSearch = useCallback(
@@ -120,23 +119,23 @@ export function Dashboard() {
         searchParams.set("search", value);
         searchParams.delete("maliciousPkg");
         setSearch(value);
-        toggleMaliciousFilter(false);
+        setIsMaliciousFilterActive(false);
       } else {
         searchParams.delete("search");
         setSearch("");
       }
       setSearchParams(searchParams);
     },
-    [searchParams, setSearch, setSearchParams, toggleMaliciousFilter],
+    [searchParams, setIsMaliciousFilterActive, setSearch, setSearchParams],
   );
 
   return (
     <div className="flex-col">
       <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
         <CodegateStatus />
-        <BarChart data={alerts} loading={loading} />
-        <PieChart data={maliciousPackages} loading={loading} />
-        <LineChart data={alerts} loading={loading} />
+        <BarChart data={alerts} loading={isLoading} />
+        <PieChart data={maliciousPackages} loading={isLoading} />
+        <LineChart data={alerts} loading={isLoading} />
       </div>
 
       <Separator className="my-8" />

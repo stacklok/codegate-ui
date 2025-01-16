@@ -1,4 +1,4 @@
-import { AlertConversation, Conversation } from "./api/generated";
+import { Conversation } from "./api/generated";
 
 export type PromptState = {
   prompts: Conversation[];
@@ -8,17 +8,11 @@ export type PromptState = {
   fetchPrompts: () => void;
 };
 
-export type AlertState = {
-  alerts: AlertConversation[];
-  filteredAlerts: AlertConversation[];
-  loading: boolean;
+export type AlertSearchState = {
   isMaliciousFilterActive: boolean;
   search: string;
   setSearch: (search: string) => void;
-  getMaliciousPackagesChart: () => MaliciousPkgType[];
-  updateFilteredAlerts: () => void;
-  toggleMaliciousFilter: (isChecked: boolean) => void;
-  fetchAlerts: () => void;
+  setIsMaliciousFilterActive: (isChecked: boolean) => void;
 };
 
 export type TriggerType =
