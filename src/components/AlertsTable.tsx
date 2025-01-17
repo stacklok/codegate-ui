@@ -87,14 +87,6 @@ export function AlertsTable() {
   const hasPreviousPage = page > 0;
   const hasNextPage = pageEnd + 1 < filteredAlerts.length;
 
-  console.log({
-    pageStart,
-    pageEnd,
-    hasPreviousPage,
-    hasNextPage,
-    length: filteredAlerts.length,
-  });
-
   const handleToggleFilter = useCallback(
     (isChecked: boolean) => {
       if (isChecked) {
