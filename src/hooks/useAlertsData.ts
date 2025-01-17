@@ -25,7 +25,7 @@ const fetchAlerts = async (): Promise<AlertConversation[]> => {
 
 export const useAlertsData = ({ ...args } = {}) => {
   return useQuery({
-    queryKey: ["prompts"],
+    queryKey: ["alerts"],
     queryFn: fetchAlerts,
     ...args,
   });
