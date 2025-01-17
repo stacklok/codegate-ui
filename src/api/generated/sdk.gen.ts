@@ -12,6 +12,21 @@ import type {
   GetAlertsDashboardAlertsGetResponse,
   StreamSseDashboardAlertsNotificationGetError,
   StreamSseDashboardAlertsNotificationGetResponse,
+  VersionCheckDashboardVersionGetError,
+  VersionCheckDashboardVersionGetResponse,
+  V1ListWorkspacesError,
+  V1ListWorkspacesResponse,
+  V1CreateWorkspaceData,
+  V1CreateWorkspaceError,
+  V1CreateWorkspaceResponse,
+  V1ListActiveWorkspacesError,
+  V1ListActiveWorkspacesResponse,
+  V1ActivateWorkspaceData,
+  V1ActivateWorkspaceError,
+  V1ActivateWorkspaceResponse,
+  V1DeleteWorkspaceData,
+  V1DeleteWorkspaceError,
+  V1DeleteWorkspaceResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -70,5 +85,111 @@ export const streamSseDashboardAlertsNotificationGet = <
   >({
     ...options,
     url: "/dashboard/alerts_notification",
+  });
+};
+
+/**
+ * Version Check
+ */
+export const versionCheckDashboardVersionGet = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    VersionCheckDashboardVersionGetResponse,
+    VersionCheckDashboardVersionGetError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/dashboard/version",
+  });
+};
+
+/**
+ * List Workspaces
+ * List all workspaces.
+ */
+export const v1ListWorkspaces = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListWorkspacesResponse,
+    V1ListWorkspacesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces",
+  });
+};
+
+/**
+ * Create Workspace
+ * Create a new workspace.
+ */
+export const v1CreateWorkspace = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1CreateWorkspaceData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    V1CreateWorkspaceResponse,
+    V1CreateWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces",
+  });
+};
+
+/**
+ * List Active Workspaces
+ * List all active workspaces.
+ *
+ * In it's current form, this function will only return one workspace. That is,
+ * the globally active workspace.
+ */
+export const v1ListActiveWorkspaces = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListActiveWorkspacesResponse,
+    V1ListActiveWorkspacesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/active",
+  });
+};
+
+/**
+ * Activate Workspace
+ * Activate a workspace by name.
+ */
+export const v1ActivateWorkspace = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1ActivateWorkspaceData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    V1ActivateWorkspaceResponse,
+    V1ActivateWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/active",
+  });
+};
+
+/**
+ * Delete Workspace
+ * Delete a workspace by name.
+ */
+export const v1DeleteWorkspace = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1DeleteWorkspaceData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).delete<
+    V1DeleteWorkspaceResponse,
+    V1DeleteWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}",
   });
 };

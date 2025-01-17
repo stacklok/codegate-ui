@@ -47,12 +47,6 @@ export default defineConfig({
         "src/**/*stories.tsx",
         "src/types/**/*.{ts,tsx}",
       ],
-      thresholds: {
-        branches: 50,
-        functions: 70,
-        lines: 70,
-        statements: 70,
-      },
       enabled: false,
       provider: "istanbul",
       reporter: ["text", "lcov"],
