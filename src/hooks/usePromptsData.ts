@@ -1,13 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  Conversation,
-  GetMessagesDashboardMessagesGetResponse,
-} from "@/api/generated";
-import { getMessagesDashboardMessagesGetOptions } from "@/api/generated/@tanstack/react-query.gen";
+import { Conversation, V1GetMessagesResponse } from "@/api/generated";
+import { v1GetMessagesOptions } from "@/api/generated/@tanstack/react-query.gen";
 
-const selectConversations = (
-  data: GetMessagesDashboardMessagesGetResponse,
-): Conversation[] => {
+const selectConversations = (data: V1GetMessagesResponse): Conversation[] => {
   return data.filter((prompt) =>
     prompt.question_answers?.every((item) => item.answer && item.question),
   );
@@ -15,7 +10,7 @@ const selectConversations = (
 
 export const usePromptsData = () => {
   return useQuery({
-    ...getMessagesDashboardMessagesGetOptions(),
+    ...v1GetMessagesOptions(),
     select: selectConversations,
   });
 };

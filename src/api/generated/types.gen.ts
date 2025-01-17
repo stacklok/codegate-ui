@@ -90,22 +90,25 @@ export type Workspace = {
   is_active: boolean;
 };
 
-export type GetMessagesDashboardMessagesGetResponse = Array<Conversation>;
+export type HealthCheckHealthGetResponse = unknown;
 
-export type GetMessagesDashboardMessagesGetError = unknown;
+export type HealthCheckHealthGetError = unknown;
 
-export type GetAlertsDashboardAlertsGetResponse =
-  Array<AlertConversation | null>;
+export type V1GetMessagesResponse = Array<Conversation>;
 
-export type GetAlertsDashboardAlertsGetError = unknown;
+export type V1GetMessagesError = unknown;
 
-export type StreamSseDashboardAlertsNotificationGetResponse = unknown;
+export type V1GetAlertsResponse = Array<AlertConversation | null>;
 
-export type StreamSseDashboardAlertsNotificationGetError = unknown;
+export type V1GetAlertsError = unknown;
 
-export type VersionCheckDashboardVersionGetResponse = unknown;
+export type V1StreamSseResponse = unknown;
 
-export type VersionCheckDashboardVersionGetError = unknown;
+export type V1StreamSseError = unknown;
+
+export type V1VersionCheckResponse = unknown;
+
+export type V1VersionCheckError = unknown;
 
 export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 
