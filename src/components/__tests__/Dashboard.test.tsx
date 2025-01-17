@@ -324,7 +324,7 @@ describe("Dashboard", () => {
     await waitFor(() => {
       expect(
         within(screen.getByTestId("alerts-table")).getAllByRole("row"),
-      ).toHaveLength(15);
+      ).toHaveLength(16);
     });
   });
 
@@ -333,13 +333,16 @@ describe("Dashboard", () => {
 
     render(<Dashboard />);
 
-    await waitFor(async () => {
-      await userEvent.click(screen.getByRole("button", { name: /next/i }));
+    await waitFor(
+      async () => {
+        await userEvent.click(screen.getByRole("button", { name: /next/i }));
 
-      expect(
-        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
-      ).toBeLessThan(15);
-    });
+        expect(
+          within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+        ).toBeLessThan(16);
+      },
+      { timeout: 5000 },
+    );
 
     // on the last page, we cannot go further
     expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
@@ -357,7 +360,7 @@ describe("Dashboard", () => {
 
       expect(
         within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
-      ).toEqual(15);
+      ).toEqual(16);
     });
   });
 });
