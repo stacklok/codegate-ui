@@ -73,6 +73,8 @@ export function AlertsTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: filteredAlerts = [] } = useFilteredAlerts();
 
+  console.log();
+
   const handleToggleFilter = useCallback(
     (isChecked: boolean) => {
       if (isChecked) {
