@@ -104,6 +104,7 @@ function mockManyAlerts() {
           ...mockedAlerts,
           ...mockedAlerts,
           ...mockedAlerts,
+          ...mockedAlerts,
         ].map((alert) => ({ ...alert, alert_id: faker.string.uuid() })),
       );
     }),
@@ -332,34 +333,31 @@ describe("Dashboard", () => {
 
     render(<Dashboard />);
 
-    expect(screen.getByRole("button", { name: /previous/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
-
-    await userEvent.click(screen.getByRole("button", { name: /next/i }));
-    expect(screen.getByRole("button", { name: /previous/i })).toBeEnabled();
-
-    await userEvent.click(screen.getByRole("button", { name: /next/i }));
-    expect(screen.getByRole("button", { name: /previous/i })).toBeEnabled();
-
-    await userEvent.click(screen.getByRole("button", { name: /previous/i }));
-    expect(screen.getByRole("button", { name: /previous/i })).toBeEnabled();
-
-    // back at the first page
-    await userEvent.click(screen.getByRole("button", { name: /previous/i }));
-    expect(screen.getByRole("button", { name: /previous/i })).toBeDisabled();
-  });
-
-  it("displays the correct rows when using pagination", async () => {
-    mockManyAlerts();
-
-    render(<Dashboard />);
-
     await waitFor(async () => {
       await userEvent.click(screen.getByRole("button", { name: /next/i }));
 
       expect(
         within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
       ).toBeLessThan(15);
+    });
+
+    // on the last page, we cannot go further
+    expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
+
+    await userEvent.click(screen.getByRole("button", { name: /previous/i }));
+    expect(screen.getByRole("button", { name: /previous/i })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
+
+    await waitFor(async () => {
+      await userEvent.click(screen.getByRole("button", { name: /previous/i }));
+
+      // once we reach the first page, we cannot paginate backwards anymore
+      expect(screen.getByRole("button", { name: /previous/i })).toBeDisabled();
+      expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
+
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toEqual(15);
     });
   });
 });

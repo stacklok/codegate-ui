@@ -24,6 +24,8 @@ import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useFilteredAlerts } from "@/hooks/useAlertsData";
 
+const PAGE_SIZE = 15;
+
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
   if (data === null) return "N/A";
@@ -77,8 +79,21 @@ export function AlertsTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: filteredAlerts = [] } = useFilteredAlerts();
 
+  const pageStart = page * PAGE_SIZE;
+  const pageEnd = page * PAGE_SIZE + PAGE_SIZE - 1;
+
+  const dataView = filteredAlerts.slice(pageStart, pageEnd);
+
   const hasPreviousPage = page > 0;
-  const hasNextPage = true;
+  const hasNextPage = pageEnd + 1 < filteredAlerts.length;
+
+  console.log({
+    pageStart,
+    pageEnd,
+    hasPreviousPage,
+    hasNextPage,
+    length: filteredAlerts.length,
+  });
 
   const handleToggleFilter = useCallback(
     (isChecked: boolean) => {
@@ -169,7 +184,7 @@ export function AlertsTable() {
             </Row>
           </TableHeader>
           <TableBody>
-            {filteredAlerts
+            {dataView
               .sort(
                 (a, b) =>
                   new Date(b.timestamp).getTime() -

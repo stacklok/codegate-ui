@@ -35,18 +35,14 @@ export const useAlertsData = ({ ...args } = {}) => {
   });
 };
 
-const PAGE_SIZE = 15;
-
 export const useFilteredAlerts = () => {
-  const { isMaliciousFilterActive, search, page } = useAlertSearch();
-
-  const page_start = page * PAGE_SIZE;
+  const { isMaliciousFilterActive, search } = useAlertSearch();
 
   return useAlertsData({
     select: (
       data: Exclude<ReturnType<typeof useAlertsData>["data"], undefined>,
-    ) =>
-      data
+    ) => {
+      return data
         .filter((alert) => {
           const maliciousPkg = getMaliciousPackage(alert.trigger_string);
           const maliciousPkgName =
@@ -74,8 +70,8 @@ export const useFilteredAlerts = () => {
             typeof alert.trigger_string === "object" &&
             (alert.trigger_type as TriggerType) === "codegate-context-retriever"
           );
-        })
-        .slice(page_start, page_start + PAGE_SIZE - 1),
+        });
+    },
   });
 };
 
