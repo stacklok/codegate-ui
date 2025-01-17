@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { serverApi } from "@/api/service";
-import { Conversation } from "@/api/generated";
+import {
+  Conversation,
+  GetMessagesDashboardMessagesGetResponse,
+} from "@/api/generated";
+import { getMessagesDashboardMessagesGetOptions } from "@/api/generated/@tanstack/react-query.gen";
 
-const fetchPrompts = async (): Promise<Conversation[]> => {
-  const { getMessagesDashboardMessagesGet } = await serverApi();
-  const { data } = await getMessagesDashboardMessagesGet();
-
-  if (!data) return [];
-
+const selectConversations = (
+  data: GetMessagesDashboardMessagesGetResponse,
+): Conversation[] => {
   return data.filter((prompt) =>
     prompt.question_answers?.every((item) => item.answer && item.question),
   );
@@ -15,7 +15,7 @@ const fetchPrompts = async (): Promise<Conversation[]> => {
 
 export const usePromptsData = () => {
   return useQuery({
-    queryKey: ["prompts"],
-    queryFn: fetchPrompts,
+    ...getMessagesDashboardMessagesGetOptions(),
+    select: selectConversations,
   });
 };
