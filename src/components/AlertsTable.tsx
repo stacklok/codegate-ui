@@ -211,12 +211,16 @@ export function AlertsTable() {
         </Table>
       </div>
 
-      <Button isDisabled={!hasPreviousPage} onPress={prevPage}>
-        Previous
-      </Button>
-      <Button isDisabled={!hasNextPage} onPress={nextPage}>
-        Next
-      </Button>
+      <div className="flex justify-center w-full p-4">
+        <div className="flex gap-2">
+          <Button isDisabled={!hasPreviousPage} onPress={prevPage}>
+            Previous
+          </Button>
+          <Button isDisabled={!hasNextPage} onPress={nextPage}>
+            Next
+          </Button>
+        </div>
+      </div>
     </>
   );
 }
