@@ -17,6 +17,7 @@ import {
   BreadcrumbPage,
 } from "./components/ui/breadcrumb";
 import { useBreadcrumb } from "./hooks/useBreadcrumb";
+import { RouteWorkspace } from "./routes/route-workspace";
 
 function App() {
   const { data: prompts, isLoading } = usePromptsData();
@@ -57,6 +58,7 @@ function App() {
             <Route path="/prompt/:id" element={<Chat />} />
             <Route path="/help/:section" element={<Help />} />
             <Route path="/certificates" element={<Certificates />} />
+            <Route path="/workspace/:id" element={<RouteWorkspace />} />
             <Route
               path="/certificates/security"
               element={<CertificateSecurity />}
