@@ -13,6 +13,9 @@ export type AlertSearchState = {
   search: string;
   setSearch: (search: string) => void;
   setIsMaliciousFilterActive: (isChecked: boolean) => void;
+  page: number;
+  nextPage: () => void;
+  prevPage: () => void;
 };
 
 export type TriggerType =
