@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/stacklok/codegate-ui/compare/v0.4.1...v0.5.0) (2025-01-17)
+
+
+### Features
+
+* initial work on codegate version check widget ([#94](https://github.com/stacklok/codegate-ui/issues/94)) ([0baa10b](https://github.com/stacklok/codegate-ui/commit/0baa10ba8875c6baa977b34eba637d8b1e11aa63))
+* react-query hey-api integration ([#101](https://github.com/stacklok/codegate-ui/issues/101)) ([58d4d47](https://github.com/stacklok/codegate-ui/commit/58d4d477677f5047c3b7efa7f744a5e88c57dd8f))
+
 ## [0.4.1](https://github.com/stacklok/codegate-ui/compare/v0.4.0...v0.4.1) (2025-01-17)
 
 
