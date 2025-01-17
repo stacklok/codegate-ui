@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { serverApi } from "@/api/service";
-import { AlertConversation } from "@/api/generated";
+import {
+  AlertConversation,
+  getAlertsDashboardAlertsGet,
+} from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
 import { MaliciousPkgType, TriggerType } from "@/types";
 import { useAlertSearch } from "./useAlertSearch";
+import { getAlertsDashboardAlertsGetQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 
 const fetchAlerts = async (): Promise<AlertConversation[]> => {
-  const { getAlertsDashboardAlertsGet } = await serverApi();
   const { data } = await getAlertsDashboardAlertsGet();
 
   return (data ?? [])
@@ -25,7 +27,7 @@ const fetchAlerts = async (): Promise<AlertConversation[]> => {
 
 export const useAlertsData = ({ ...args } = {}) => {
   return useQuery({
-    queryKey: ["prompts"],
+    queryKey: getAlertsDashboardAlertsGetQueryKey(),
     queryFn: fetchAlerts,
     ...args,
   });

@@ -9,6 +9,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Error } from "./components/Error.tsx";
 import { DarkModeProvider } from "@stacklok/ui-kit";
+import { client } from "./api/generated/index.ts";
+
+// Initialize the API client
+client.setConfig({
+  baseUrl: import.meta.env.VITE_BASE_API_URL,
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,5 +29,5 @@ createRoot(document.getElementById("root")!).render(
         </SidebarProvider>
       </DarkModeProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

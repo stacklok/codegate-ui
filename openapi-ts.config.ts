@@ -10,6 +10,7 @@ export default defineConfig({
   },
   plugins: [
     "@hey-api/sdk",
+    "@tanstack/react-query",
     {
       enums: "typescript",
       name: "@hey-api/typescript",
