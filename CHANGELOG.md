@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/stacklok/codegate-ui/compare/v0.4.0...v0.4.1) (2025-01-17)
+
+
+### Bug Fixes
+
+* fix data fetching bug ([#99](https://github.com/stacklok/codegate-ui/issues/99)) ([d75c445](https://github.com/stacklok/codegate-ui/commit/d75c445332827d8b1141f03d4c5a42627b6c71c7))
+
 ## [0.4.0](https://github.com/stacklok/codegate-ui/compare/v0.3.0...v0.4.0) (2025-01-16)
 
 
