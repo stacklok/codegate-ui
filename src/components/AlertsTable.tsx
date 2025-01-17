@@ -23,8 +23,7 @@ import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useFilteredAlerts } from "@/hooks/useAlertsData";
-
-const PAGE_SIZE = 15;
+import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 
 const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   const data = getMaliciousPackage(input);
@@ -79,13 +78,11 @@ export function AlertsTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: filteredAlerts = [] } = useFilteredAlerts();
 
-  const pageStart = page * PAGE_SIZE;
-  const pageEnd = page * PAGE_SIZE + PAGE_SIZE - 1;
-
-  const dataView = filteredAlerts.slice(pageStart, pageEnd);
-
-  const hasPreviousPage = page > 0;
-  const hasNextPage = pageEnd + 1 < filteredAlerts.length;
+  const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
+    filteredAlerts,
+    page,
+    15,
+  );
 
   const handleToggleFilter = useCallback(
     (isChecked: boolean) => {
