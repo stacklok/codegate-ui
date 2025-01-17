@@ -326,4 +326,26 @@ describe("Dashboard", () => {
       ).toHaveLength(15);
     });
   });
+
+  it("allows pagination", async () => {
+    mockManyAlerts();
+
+    render(<Dashboard />);
+
+    expect(screen.getByRole("button", { name: /previous/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
+
+    await userEvent.click(screen.getByRole("button", { name: /next/i }));
+    expect(screen.getByRole("button", { name: /previous/i })).toBeEnabled();
+
+    await userEvent.click(screen.getByRole("button", { name: /next/i }));
+    expect(screen.getByRole("button", { name: /previous/i })).toBeEnabled();
+
+    await userEvent.click(screen.getByRole("button", { name: /previous/i }));
+    expect(screen.getByRole("button", { name: /previous/i })).toBeEnabled();
+
+    // back at the first page
+    await userEvent.click(screen.getByRole("button", { name: /previous/i }));
+    expect(screen.getByRole("button", { name: /previous/i })).toBeDisabled();
+  });
 });

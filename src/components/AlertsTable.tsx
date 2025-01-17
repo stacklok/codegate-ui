@@ -11,6 +11,7 @@ import {
   TableHeader,
   SearchFieldClearButton,
   Badge,
+  Button,
 } from "@stacklok/ui-kit";
 import { Switch } from "@stacklok/ui-kit";
 import { AlertConversation } from "@/api/generated";
@@ -69,11 +70,15 @@ export function AlertsTable() {
     setIsMaliciousFilterActive,
     setSearch,
     search,
+    page,
+    nextPage,
+    prevPage,
   } = useAlertSearch();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: filteredAlerts = [] } = useFilteredAlerts();
 
-  console.log();
+  const hasPreviousPage = page > 0;
+  const hasNextPage = true;
 
   const handleToggleFilter = useCallback(
     (isChecked: boolean) => {
@@ -201,6 +206,13 @@ export function AlertsTable() {
           </TableBody>
         </Table>
       </div>
+
+      <Button isDisabled={!hasPreviousPage} onPress={prevPage}>
+        Previous
+      </Button>
+      <Button isDisabled={!hasNextPage} onPress={nextPage}>
+        Next
+      </Button>
     </>
   );
 }
