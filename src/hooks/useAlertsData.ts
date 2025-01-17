@@ -35,8 +35,12 @@ export const useAlertsData = ({ ...args } = {}) => {
   });
 };
 
+const PAGE_SIZE = 15;
+
 export const useFilteredAlerts = () => {
-  const { isMaliciousFilterActive, search } = useAlertSearch();
+  const { isMaliciousFilterActive, search, page } = useAlertSearch();
+
+  const page_start = page * PAGE_SIZE;
 
   return useAlertsData({
     select: (
@@ -71,7 +75,7 @@ export const useFilteredAlerts = () => {
             (alert.trigger_type as TriggerType) === "codegate-context-retriever"
           );
         })
-        .slice(0, 14),
+        .slice(page_start, page_start + PAGE_SIZE - 1),
   });
 };
 

@@ -348,4 +348,18 @@ describe("Dashboard", () => {
     await userEvent.click(screen.getByRole("button", { name: /previous/i }));
     expect(screen.getByRole("button", { name: /previous/i })).toBeDisabled();
   });
+
+  it("displays the correct rows when using pagination", async () => {
+    mockManyAlerts();
+
+    render(<Dashboard />);
+
+    await waitFor(async () => {
+      await userEvent.click(screen.getByRole("button", { name: /next/i }));
+
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toBeLessThan(15);
+    });
+  });
 });
