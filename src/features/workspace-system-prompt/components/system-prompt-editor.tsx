@@ -17,6 +17,7 @@ import {
 } from "react";
 import { usePostSystemPrompt } from "../hooks/use-post-system-prompt";
 import { Check } from "lucide-react";
+import { twMerge } from "tailwind-merge";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -63,7 +64,7 @@ export function SystemPromptEditor({ className }: { className?: string }) {
   const { saved, setSaved } = useSavedStatus();
 
   return (
-    <Card className={className}>
+    <Card className={twMerge(className, "shrink-0")}>
       <CardBody>
         <Text className="text-primary">Custom prompt</Text>
         <Text className="text-secondary mb-4">
@@ -86,7 +87,9 @@ export function SystemPromptEditor({ className }: { className?: string }) {
         </div>
       </CardBody>
       <CardFooter className="justify-end gap-2">
-        <LinkButton variant="secondary">Cancel</LinkButton>
+        <LinkButton href="/workspaces" variant="secondary">
+          Cancel
+        </LinkButton>
         <Button
           isPending={isPending}
           isDisabled={saved}
