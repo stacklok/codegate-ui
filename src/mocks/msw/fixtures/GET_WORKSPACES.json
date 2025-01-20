@@ -1,10 +1,20 @@
-[
-    {
-        "name": "workspace-1",
-        "is_active": true
-    },
-    {
-        "name": "workspace-2",
-        "is_active": false
-    }
-]
+{
+    "workspaces": [
+        {
+            "name": "default",
+            "is_active": true
+        },
+        {
+            "name": "myworkspace",
+            "is_active": false
+        },
+        {
+            "name": "anotherworkspae",
+            "is_active": false
+        },
+        {
+            "name": "favoriteworkspace",
+            "is_active": false
+        }
+    ]
+}

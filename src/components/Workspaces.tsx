@@ -1,3 +1,4 @@
+import { useWorkspacesData } from "@/hooks/useWorkspacesData";
 import {
   Cell,
   Column,
@@ -8,16 +9,8 @@ import {
 } from "@stacklok/ui-kit";
 
 export function Workspaces() {
-  const data = [
-    {
-      name: "Workspace 1",
-      configuration: "hello",
-    },
-    {
-      name: "Workspace 2",
-      configuration: "hello",
-    },
-  ];
+  const result = useWorkspacesData();
+  const workspaces = result.data?.workspaces ?? [];
 
   return (
     <div>
@@ -32,7 +25,7 @@ export function Workspaces() {
           </TableHeader>
         </Row>
         <TableBody>
-          {data.map((workspace) => (
+          {workspaces.map((workspace) => (
             <Row key={workspace.name}>
               <Cell>{workspace.name}</Cell>
               <Cell>hello</Cell>

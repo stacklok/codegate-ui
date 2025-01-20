@@ -1,5 +1,5 @@
 import { render } from "@/lib/test-utils";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Workspaces } from "./Workspaces";
 
@@ -21,7 +21,16 @@ describe("Workspaces page", () => {
     ).toBeVisible();
   });
 
-  it("has a row for each workspace", () => {
-    expect(screen.getAllByRole("row")).toHaveLength(3);
+  it("has a row for each workspace", async () => {
+    await waitFor(() => {
+      expect(screen.getAllByRole("row").length).toBeGreaterThan(1);
+    });
+
+    expect(
+      screen.getByRole("rowheader", { name: /myworkspace/i }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("rowheader", { name: /anotherworkspae/i }),
+    ).toBeVisible();
   });
 });
