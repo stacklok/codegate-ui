@@ -8,6 +8,17 @@ import {
 } from "@stacklok/ui-kit";
 
 export function Workspaces() {
+  const data = [
+    {
+      name: "Workspace 1",
+      configuration: "hello",
+    },
+    {
+      name: "Workspace 2",
+      configuration: "hello",
+    },
+  ];
+
   return (
     <div>
       <h1 className="text-4xl">Manage Workspaces</h1>
@@ -21,14 +32,12 @@ export function Workspaces() {
           </TableHeader>
         </Row>
         <TableBody>
-          <Row>
-            <Cell>My workspace</Cell>
-            <Cell>hello</Cell>
-          </Row>
-          <Row>
-            <Cell>My workspace</Cell>
-            <Cell>hello</Cell>
-          </Row>
+          {data.map((workspace) => (
+            <Row key={workspace.name}>
+              <Cell>{workspace.name}</Cell>
+              <Cell>hello</Cell>
+            </Row>
+          ))}
         </TableBody>
       </Table>
     </div>

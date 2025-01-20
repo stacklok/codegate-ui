@@ -61,7 +61,6 @@ function App() {
             <Route path="/certificates" element={<Certificates />} />
             <Route path="/workspace/:id" element={<RouteWorkspace />} />
             <Route path="/workspaces" element={<Workspaces />} />
-
             <Route
               path="/certificates/security"
               element={<CertificateSecurity />}
