@@ -15,6 +15,7 @@ import { ChevronDown, Search, Settings } from "lucide-react";
 import { useState } from "react";
 import { useActiveWorkspaces } from "../hooks/use-active-workspaces";
 import { useActivateWorkspace } from "../hooks/use-activate-workspace";
+import clsx from "clsx";
 
 export function WorkspacesSelection() {
   const queryClient = useQueryClient();
@@ -60,23 +61,30 @@ export function WorkspacesSelection() {
           </div>
 
           <ListBox
-            className="pb-2 pt-3"
             aria-label="Workspaces"
             items={filteredWorkspaces}
             selectedKeys={activeWorkspaceName ? [activeWorkspaceName] : []}
-            selectionMode="single"
-            onSelectionChange={(v) => {
-              if (v === "all") return; // Not possible with `selectionMode="single"`
-              const [key] = v.keys();
-              if (!key) return;
-              handleWorkspaceClick(key?.toString());
+            onAction={(v) => {
+              handleWorkspaceClick(v?.toString());
             }}
+            className="py-2 pt-3"
             renderEmptyState={() => (
               <p className="text-center">No workspaces found</p>
             )}
           >
             {(item) => (
-              <ListBoxItem id={item.name} key={item.name}>
+              <ListBoxItem
+                id={item.name}
+                key={item.name}
+                data-is-selected={item.name === activeWorkspaceName}
+                className={clsx(
+                  "cursor-pointer py-2 m-1 text-base hover:bg-gray-300",
+                  {
+                    "!bg-gray-900 hover:bg-gray-900 !text-gray-25 hover:!text-gray-25":
+                      item.is_active,
+                  },
+                )}
+              >
                 {item.name}
               </ListBoxItem>
             )}
