@@ -12,7 +12,7 @@ export function useSse() {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${BASE_URL}/dashboard/alerts_notification`,
+      `${BASE_URL}/api/v1/dashboard/alerts_notification`,
     );
 
     eventSource.onmessage = function (event) {
