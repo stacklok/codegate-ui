@@ -1,4 +1,4 @@
-import { Breadcrumb, Breadcrumbs, Separator } from "@stacklok/ui-kit";
+import { Separator } from "@stacklok/ui-kit";
 import { useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
@@ -33,24 +33,17 @@ export function RouteDashboard() {
   const maliciousPackages = useMaliciousPackagesChartData();
 
   return (
-    <>
-      <Breadcrumbs>
-        <Breadcrumb href="/">Dashboard</Breadcrumb>
-        <Breadcrumb>React Aria</Breadcrumb>
-      </Breadcrumbs>
-
-      <div className="flex-col">
-        <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
-          <CodegateStatus />
-          <BarChart data={alerts} loading={isLoading} />
-          <PieChart data={maliciousPackages} loading={isLoading} />
-          <LineChart data={alerts} loading={isLoading} />
-        </div>
-
-        <Separator className="my-8" />
-
-        <AlertsTable />
+    <div className="flex-col">
+      <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
+        <CodegateStatus />
+        <BarChart data={alerts} loading={isLoading} />
+        <PieChart data={maliciousPackages} loading={isLoading} />
+        <LineChart data={alerts} loading={isLoading} />
       </div>
-    </>
+
+      <Separator className="my-8" />
+
+      <AlertsTable />
+    </div>
   );
 }

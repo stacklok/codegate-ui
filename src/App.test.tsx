@@ -56,14 +56,4 @@ describe("App", () => {
       ).toBeVisible(),
     );
   });
-
-  it("should render breadcrumb", async () => {
-    render(<App />);
-    await waitFor(() =>
-      expect(
-        screen.getByRole("link", { name: "CodeGate Dashboard" }),
-      ).toBeVisible(),
-    );
-    expect(screen.getByRole("link", { name: "Dashboard" })).toBeVisible();
-  });
 });
