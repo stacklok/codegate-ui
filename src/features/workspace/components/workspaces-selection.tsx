@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 export function WorkspacesSelection() {
   const queryClient = useQueryClient();
   const { data } = useWorkspacesData();
+  const [isOpen, setIsOpen] = useState(false);
   const [searchWorkspace, setSearchWorkspace] = useState("");
   const workspaces = data?.workspaces ?? [];
   const filteredWorkspaces = workspaces.filter((workspace) =>
@@ -27,10 +28,11 @@ export function WorkspacesSelection() {
 
   const handleWorkspaceClick = () => {
     queryClient.invalidateQueries({ refetchType: "all" });
+    setIsOpen(false);
   };
 
   return (
-    <DialogTrigger>
+    <DialogTrigger isOpen={isOpen} onOpenChange={(test) => setIsOpen(test)}>
       <Button variant="tertiary" className="flex cursor-pointer">
         Workspace {activeWorkspace?.name ?? "default"}
         <ChevronDown />
@@ -77,6 +79,7 @@ export function WorkspacesSelection() {
           <Separator className="" />
           <Link
             to="/workspaces"
+            onClick={() => setIsOpen(false)}
             className="text-secondary pt-3 px-2 gap-2 flex"
           >
             <Settings />
