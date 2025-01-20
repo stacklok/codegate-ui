@@ -8,6 +8,8 @@ import "prismjs/components/prism-python";
 import "prismjs/components/prism-json";
 import "prismjs/components/prism-yaml";
 import { Markdown } from "@/components/Markdown";
+import { Breadcrumb, Breadcrumbs } from "@stacklok/ui-kit";
+import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 
 export function RouteHelp() {
   const { section } = useParams();
@@ -39,8 +41,15 @@ export function RouteHelp() {
   }, [section]);
 
   return (
-    <div className="max-w-5xl bg-base rounded-lg px-6 mx-auto">
-      <Markdown>{content}</Markdown>
-    </div>
+    <>
+      <Breadcrumbs>
+        <BreadcrumbHome />
+        <Breadcrumb>Help</Breadcrumb>
+      </Breadcrumbs>
+
+      <div className="max-w-5xl bg-base rounded-lg px-6 mx-auto">
+        <Markdown>{content}</Markdown>
+      </div>
+    </>
   );
 }
