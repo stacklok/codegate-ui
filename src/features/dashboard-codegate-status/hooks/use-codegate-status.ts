@@ -1,11 +1,28 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-import { getCodeGateHealth } from "../lib/get-codegate-health";
-import { getVersionStatus } from "../lib/get-version-status";
 import {
   PollingInterval,
   POLLING_INTERVAl,
 } from "../components/codegate-status-polling-control";
+import { healthCheckHealthGet, v1VersionCheck } from "@/api/generated";
+import { HealthStatus, VersionResponse } from "../types";
+
+type HealthResponse = { status: "healthy" | unknown } | null;
+
+const getCodeGateHealth = async (): Promise<HealthStatus | null> => {
+  const data = (await healthCheckHealthGet()).data;
+
+  if ((data as HealthResponse)?.status === "healthy")
+    return HealthStatus.HEALTHY;
+  if ((data as HealthResponse)?.status !== "healthy")
+    return HealthStatus.UNHEALTHY;
+
+  return null;
+};
+
+const getVersion = async (): Promise<VersionResponse | null> => {
+  return ((await v1VersionCheck()).data as VersionResponse) ?? null;
+};
 
 export function getQueryOptionsCodeGateStatus(
   pollingInterval: PollingInterval,
@@ -13,11 +30,11 @@ export function getQueryOptionsCodeGateStatus(
   return queryOptions({
     queryFn: async () => {
       const health = await getCodeGateHealth();
-      const version = await getVersionStatus();
+      const version = await getVersion();
 
       return {
         health,
-        version,
+        version: version as VersionResponse | null,
       };
     },
     queryKey: ["useHealthCheck", { pollingInterval }],
