@@ -12,7 +12,7 @@ import {
   TableBody,
   TableHeader,
 } from "@stacklok/ui-kit";
-import { Settings } from "lucide-react";
+import { Settings, SquarePlus } from "lucide-react";
 
 export function RouteWorkspaces() {
   const result = useListWorkspaces();
@@ -25,7 +25,12 @@ export function RouteWorkspaces() {
         <Breadcrumb>Manage Workspaces</Breadcrumb>
       </Breadcrumbs>
 
-      <WorkspaceHeading title="Manage Workspaces" />
+      <WorkspaceHeading title="Manage Workspaces">
+        <LinkButton href="/workspace/create" className="w-fit gap-2">
+          <SquarePlus /> Create Workspace
+        </LinkButton>
+      </WorkspaceHeading>
+
       <Table aria-label="List of workspaces">
         <Row>
           <TableHeader>
