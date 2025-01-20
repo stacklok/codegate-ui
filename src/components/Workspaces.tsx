@@ -2,6 +2,7 @@ import { useWorkspacesData } from "@/hooks/useWorkspacesData";
 import {
   Cell,
   Column,
+  Heading,
   LinkButton,
   Row,
   Table,
@@ -16,14 +17,19 @@ export function Workspaces() {
 
   return (
     <div>
-      <h1 className="text-4xl">Manage Workspaces</h1>
+      <Heading level={1} className="mb-5">
+        Manage Workspaces
+      </Heading>
+
       <Table aria-label="List of workspaces">
         <Row>
           <TableHeader>
-            <Column id="name" isRowHeader>
+            <Column id="name" isRowHeader className="w-full">
               Name
             </Column>
-            <Column id="configuration">Configuration</Column>
+            <Column id="configuration" className="w-56">
+              Configuration
+            </Column>
           </TableHeader>
         </Row>
         <TableBody>
