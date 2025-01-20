@@ -1,7 +1,7 @@
 import { render } from "@/lib/test-utils";
-import { Chat } from "../Chat";
 import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { RouteChat } from "../route-chat";
 
 vi.mock("@stacklok/ui-kit", async (importOriginal) => {
   return {
@@ -50,7 +50,7 @@ vi.mock("@/hooks/usePromptsData", () => ({
 
 describe("Chat", () => {
   it("should render secret issue chat", () => {
-    render(<Chat />, {
+    render(<RouteChat />, {
       routeConfig: {
         initialEntries: ["/prompt/chatcmpl-7d87679de7ed41639eb91d8ebbaa6f72"],
       },

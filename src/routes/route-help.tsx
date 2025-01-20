@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Markdown } from "./Markdown";
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
 import "prismjs/components/prism-bash";
@@ -8,8 +7,9 @@ import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-json";
 import "prismjs/components/prism-yaml";
+import { Markdown } from "@/components/Markdown";
 
-export function Help() {
+export function RouteHelp() {
   const { section } = useParams();
   const [content, setContent] = useState<string>("");
 

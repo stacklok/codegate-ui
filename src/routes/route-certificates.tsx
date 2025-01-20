@@ -34,10 +34,7 @@ function InstructionStep({ number, text }: { number: number; text: string }) {
 }
 
 const CheckIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    className="size-5 text-brand-700 shrink-0 mt-1"
-  >
+  <svg viewBox="0 0 24 24" className="size-5 text-brand-700 shrink-0 mt-1">
     <path
       fill="none"
       stroke="currentColor"
@@ -75,7 +72,7 @@ const ArrowIcon = () => (
   </svg>
 );
 
-export function Certificates() {
+export function RouteCertificates() {
   const [activeOS, setActiveOS] = useState<OS>("macos");
   const [activeAction, setActiveAction] = useState<Action>("install");
 
@@ -172,24 +169,25 @@ export function Certificates() {
               <CheckIcon />
               <p className="text-secondary">
                 <strong>Local-only:</strong> CodeGate runs entirely on your
-                machine within an isolated container, ensuring all data processing
-                stays local without any external transmissions.
+                machine within an isolated container, ensuring all data
+                processing stays local without any external transmissions.
               </p>
             </div>
             <div className="flex gap-3">
               <CheckIcon />
               <p className="text-secondary">
                 <strong>Secure certificate handling:</strong> this custom CA is
-                locally generated and managed. CodeGate developers have no access
-                to it.
+                locally generated and managed. CodeGate developers have no
+                access to it.
               </p>
             </div>
             <div className="flex gap-3">
               <CheckIcon />
               <p className="text-secondary">
-                <strong>No external communications:</strong> CodeGate is designed
-                with no capability to call home or communicate with external
-                servers, outside of those requested by the IDE or Agent.
+                <strong>No external communications:</strong> CodeGate is
+                designed with no capability to call home or communicate with
+                external servers, outside of those requested by the IDE or
+                Agent.
               </p>
             </div>
           </div>

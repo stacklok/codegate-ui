@@ -1,15 +1,15 @@
+import { useParams } from "react-router-dom";
+import { usePromptsData } from "@/hooks/usePromptsData";
+import { sanitizeQuestionPrompt } from "@/lib/utils";
+import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import {
   ChatBubble,
   ChatBubbleAvatar,
   ChatBubbleMessage,
-} from "./ui/chat/chat-bubble";
-import { ChatMessageList } from "./ui/chat/chat-message-list";
-import { useParams } from "react-router-dom";
-import { usePromptsData } from "@/hooks/usePromptsData";
-import { Markdown } from "./Markdown";
-import { sanitizeQuestionPrompt } from "@/lib/utils";
+} from "@/components/ui/chat/chat-bubble";
+import { Markdown } from "@/components/Markdown";
 
-export function Chat() {
+export function RouteChat() {
   const { id } = useParams();
   const { data: prompts } = usePromptsData();
   const chat = prompts?.find((prompt) => prompt.chat_id === id);

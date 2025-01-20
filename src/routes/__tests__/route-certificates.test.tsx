@@ -1,12 +1,12 @@
 import { render } from "@/lib/test-utils";
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Certificates } from "../Certificates";
 import userEvent from "@testing-library/user-event";
+import { RouteCertificates } from "../route-certificates";
 
 describe("Certificates", () => {
   it("should render download certificate", () => {
-    render(<Certificates />);
+    render(<RouteCertificates />);
     expect(
       screen.getByRole("heading", { name: "CodeGate CA certificate" }),
     ).toBeVisible();
@@ -28,7 +28,7 @@ describe("Certificates", () => {
   });
 
   it("should render macOS certificate installation", async () => {
-    render(<Certificates />);
+    render(<RouteCertificates />);
 
     expect(
       screen.getByText(
@@ -43,7 +43,7 @@ describe("Certificates", () => {
   });
 
   it("should render Windows certificate installation", async () => {
-    render(<Certificates />);
+    render(<RouteCertificates />);
 
     await userEvent.click(screen.getByText("Windows"));
 
@@ -58,7 +58,7 @@ describe("Certificates", () => {
   });
 
   it("should render Linux certificate installation", async () => {
-    render(<Certificates />);
+    render(<RouteCertificates />);
 
     await userEvent.click(screen.getByText("Linux"));
 
