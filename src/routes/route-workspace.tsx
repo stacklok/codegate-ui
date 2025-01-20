@@ -9,7 +9,7 @@ export function RouteWorkspace() {
       <Breadcrumbs>
         <BreadcrumbHome />
         <Breadcrumb href="/workspaces">Manage Workspaces</Breadcrumb>
-        <Breadcrumb>Edit Workspace</Breadcrumb>
+        <Breadcrumb>Workspace Settings</Breadcrumb>
       </Breadcrumbs>
 
       <Heading level={1}>Workspace settings</Heading>

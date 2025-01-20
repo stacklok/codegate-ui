@@ -49,5 +49,5 @@ test("has breadcrumbs", () => {
   expect(
     within(breadcrumbs).getByRole("link", { name: /manage workspaces/i }),
   ).toHaveAttribute("href", "/workspaces");
-  expect(within(breadcrumbs).getByText(/edit workspace/i)).toBeVisible();
+  expect(within(breadcrumbs).getByText(/workspace settings/i)).toBeVisible();
 });
