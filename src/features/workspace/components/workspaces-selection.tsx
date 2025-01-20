@@ -1,8 +1,9 @@
-import { useWorkspacesData } from "@/hooks/useWorkspacesData";
+import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
 import {
   Button,
   DialogTrigger,
   Input,
+  LinkButton,
   ListBox,
   ListBoxItem,
   Popover,
@@ -10,31 +11,39 @@ import {
   Separator,
 } from "@stacklok/ui-kit";
 import { useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
 import { ChevronDown, Search, Settings } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useActiveWorkspaces } from "../hooks/use-active-workspaces";
+import { useActivateWorkspace } from "../hooks/use-activate-workspace";
 
 export function WorkspacesSelection() {
   const queryClient = useQueryClient();
-  const { data } = useWorkspacesData();
+
+  const { data: workspacesResponse } = useListWorkspaces();
+  const { data: activeWorkspacesResponse } = useActiveWorkspaces();
+  const { mutateAsync: activateWorkspace } = useActivateWorkspace();
+
+  const activeWorkspaceName: string | null =
+    activeWorkspacesResponse?.workspaces[0]?.name ?? null;
+
   const [isOpen, setIsOpen] = useState(false);
   const [searchWorkspace, setSearchWorkspace] = useState("");
-  const workspaces = data?.workspaces ?? [];
+  const workspaces = workspacesResponse?.workspaces ?? [];
   const filteredWorkspaces = workspaces.filter((workspace) =>
     workspace.name.toLowerCase().includes(searchWorkspace.toLowerCase()),
   );
-  const activeWorkspace = workspaces.find((workspace) => workspace.is_active);
 
-  const handleWorkspaceClick = () => {
-    queryClient.invalidateQueries({ refetchType: "all" });
-    setIsOpen(false);
+  const handleWorkspaceClick = (name: string) => {
+    activateWorkspace({ body: { name } }).then(() => {
+      queryClient.invalidateQueries({ refetchType: "all" });
+      setIsOpen(false);
+    });
   };
 
   return (
     <DialogTrigger isOpen={isOpen} onOpenChange={(test) => setIsOpen(test)}>
       <Button variant="tertiary" className="flex cursor-pointer">
-        Workspace {activeWorkspace?.name ?? "default"}
+        Workspace {activeWorkspaceName ?? "default"}
         <ChevronDown />
       </Button>
 
@@ -54,37 +63,34 @@ export function WorkspacesSelection() {
             className="pb-2 pt-3"
             aria-label="Workspaces"
             items={filteredWorkspaces}
-            selectedKeys={activeWorkspace?.name ?? []}
+            selectedKeys={activeWorkspaceName ? [activeWorkspaceName] : []}
+            selectionMode="single"
+            onSelectionChange={(v) => {
+              if (v === "all") return; // Not possible with `selectionMode="single"`
+              const [key] = v.keys();
+              if (!key) return;
+              handleWorkspaceClick(key?.toString());
+            }}
             renderEmptyState={() => (
               <p className="text-center">No workspaces found</p>
             )}
           >
             {(item) => (
-              <ListBoxItem
-                id={item.name}
-                onAction={() => handleWorkspaceClick()}
-                className={clsx(
-                  "cursor-pointer py-2 m-1 text-base hover:bg-gray-300",
-                  {
-                    "bg-gray-900 text-white hover:text-secondary":
-                      item.is_active,
-                  },
-                )}
-                key={item.name}
-              >
+              <ListBoxItem id={item.name} key={item.name}>
                 {item.name}
               </ListBoxItem>
             )}
           </ListBox>
           <Separator className="" />
-          <Link
-            to="/workspaces"
-            onClick={() => setIsOpen(false)}
-            className="text-secondary pt-3 px-2 gap-2 flex"
+          <LinkButton
+            href="/workspaces"
+            onPress={() => setIsOpen(false)}
+            variant="tertiary"
+            className="text-secondary h-8 pl-2 gap-2 flex mt-2 justify-start"
           >
             <Settings />
             Manage Workspaces
-          </Link>
+          </LinkButton>
         </div>
       </Popover>
     </DialogTrigger>

@@ -1,4 +1,4 @@
-import { useWorkspacesData } from "@/hooks/useWorkspacesData";
+import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
 import {
   Cell,
   Column,
@@ -12,7 +12,7 @@ import {
 import { Settings } from "lucide-react";
 
 export function RouteWorkspaces() {
-  const result = useWorkspacesData();
+  const result = useListWorkspaces();
   const workspaces = result.data?.workspaces ?? [];
 
   return (
