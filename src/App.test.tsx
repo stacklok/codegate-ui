@@ -3,6 +3,7 @@ import { screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import App from "./App";
 import React from "react";
+import userEvent from "@testing-library/user-event";
 
 vi.mock("recharts", async (importOriginal) => {
   const originalModule = (await importOriginal()) as Record<string, unknown>;
@@ -22,38 +23,63 @@ describe("App", () => {
     expect(screen.getByText("Setup")).toBeVisible();
     expect(screen.getByRole("banner", { name: "App header" })).toBeVisible();
     expect(
-      screen.getByRole("heading", { name: /codeGate dashboard/i }),
+      screen.getByRole("heading", { name: /codeGate dashboard/i })
     ).toBeVisible();
     expect(
       screen.getByRole("link", {
         name: /certificate security/i,
-      }),
+      })
     ).toBeVisible();
     expect(
       screen.getByRole("link", {
         name: /set up in continue/i,
-      }),
+      })
     ).toBeVisible();
 
     expect(
       screen.getByRole("link", {
         name: /set up in copilot/i,
-      }),
+      })
     ).toBeVisible();
     expect(
       screen.getByRole("link", {
         name: /download/i,
-      }),
+      })
     ).toBeVisible();
     expect(
       screen.getByRole("link", {
         name: /documentation/i,
-      }),
+      })
     ).toBeVisible();
     await waitFor(() =>
       expect(
-        screen.getByRole("link", { name: /codeGate dashboard/i }),
-      ).toBeVisible(),
+        screen.getByRole("link", { name: /codeGate dashboard/i })
+      ).toBeVisible()
+    );
+  });
+
+  it("should render workspaces dropdown", async () => {
+    render(<App />);
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: "CodeGate Dashboard" })
+      ).toBeVisible()
+    );
+
+    const workspaceSelectionButton = screen.getByRole("button", {
+      name: "Workspace default",
+    });
+    await waitFor(() => expect(workspaceSelectionButton).toBeVisible());
+
+    await userEvent.click(workspaceSelectionButton);
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("option", {
+          name: /anotherworkspae/i,
+        })
+      ).toBeVisible()
     );
   });
 });

@@ -25,7 +25,7 @@ export function WorkspacesSelection() {
   const { mutateAsync: activateWorkspace } = useActivateWorkspace();
 
   const activeWorkspaceName: string | null =
-    activeWorkspacesResponse?.workspaces[0]?.name ?? null;
+    activeWorkspacesResponse?.workspaces?.[0]?.name ?? null;
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchWorkspace, setSearchWorkspace] = useState("");
