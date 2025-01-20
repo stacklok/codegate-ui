@@ -12,12 +12,12 @@ export function useSse() {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${BASE_URL}/dashboard/alerts_notification`,
+      `${BASE_URL}/api/v1/dashboard/alerts_notification`,
     );
 
     eventSource.onmessage = function (event) {
-      queryClient.invalidateQueries({ refetchType: "all" });
       if (event.data.toLowerCase().includes("new alert detected")) {
+        queryClient.invalidateQueries({ refetchType: "all" });
         sendNotification("CodeGate Dashboard", {
           body: "New Alert detected!",
         });
