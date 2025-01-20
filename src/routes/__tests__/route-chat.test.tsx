@@ -49,7 +49,7 @@ vi.mock("@/hooks/usePromptsData", () => ({
 }));
 
 describe("Chat", () => {
-  it("should render secret issue chat", () => {
+  it("render secret issue chat", () => {
     render(<RouteChat />, {
       routeConfig: {
         initialEntries: ["/prompt/chatcmpl-7d87679de7ed41639eb91d8ebbaa6f72"],
@@ -60,9 +60,6 @@ describe("Chat", () => {
     expect(screen.getByText(/REDACTED</i)).toBeVisible();
     expect(screen.getByTestId("avatar-user")).toBeVisible();
     expect(screen.getByTestId("avatar-ai")).toBeVisible();
-    expect(
-      screen.getByText(/do you see any security issue\?\./i),
-    ).toBeVisible();
     expect(
       screen.getByRole("heading", {
         name: /recommendations for security improvements/i,
@@ -76,5 +73,14 @@ describe("Chat", () => {
         .getByRole("code")
         .className.includes("language-tsx"),
     ).toBeTruthy();
+
+    const breadcrumbs = screen.getByRole("list", { name: "Breadcrumbs" });
+    expect(breadcrumbs).toBeVisible();
+    expect(
+      within(breadcrumbs).getByRole("link", { name: "Dashboard" }),
+    ).toHaveAttribute("href", "/");
+    expect(
+      within(breadcrumbs).getByText(/do you see any security issue/i),
+    ).toBeVisible();
   });
 });

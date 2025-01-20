@@ -1,9 +1,9 @@
-import { Separator } from "@stacklok/ui-kit";
+import { Breadcrumb, Breadcrumbs, Separator } from "@stacklok/ui-kit";
 import { useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
 import { PieChart } from "@/viz/PieChart";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { CodegateStatus } from "@/features/dashboard-codegate-status/components/codegate-status";
 import {
   useAlertsData,
@@ -11,11 +11,6 @@ import {
 } from "@/hooks/useAlertsData";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { AlertsTable } from "@/components/AlertsTable";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-} from "@/components/ui/breadcrumb";
 
 export function RouteDashboard() {
   const [searchParams] = useSearchParams();
@@ -39,13 +34,10 @@ export function RouteDashboard() {
 
   return (
     <>
-      <Breadcrumb className="mb-5">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <Link to="/">Dashboard</Link>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <Breadcrumbs>
+        <Breadcrumb href="/">Dashboard</Breadcrumb>
+        <Breadcrumb>React Aria</Breadcrumb>
+      </Breadcrumbs>
 
       <div className="flex-col">
         <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
