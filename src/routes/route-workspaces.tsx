@@ -1,5 +1,7 @@
 import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
 import {
+  Breadcrumb,
+  Breadcrumbs,
   Cell,
   Column,
   Heading,
@@ -17,6 +19,11 @@ export function RouteWorkspaces() {
 
   return (
     <div>
+      <Breadcrumbs>
+        <Breadcrumb href="/">Dashboard</Breadcrumb>
+        <Breadcrumb>Manage Workspaces</Breadcrumb>
+      </Breadcrumbs>
+
       <Heading level={1} className="mb-5">
         Manage Workspaces
       </Heading>

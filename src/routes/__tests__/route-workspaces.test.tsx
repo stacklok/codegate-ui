@@ -8,6 +8,15 @@ describe("Workspaces page", () => {
     render(<RouteWorkspaces />);
   });
 
+  it("has breadcrumbs", () => {
+    const breadcrumbs = screen.getByRole("list", { name: "Breadcrumbs" });
+    expect(breadcrumbs).toBeVisible();
+    expect(
+      within(breadcrumbs).getByRole("link", { name: "Dashboard" }),
+    ).toHaveAttribute("href", "/");
+    expect(within(breadcrumbs).getByText(/manage workspaces/i)).toBeVisible();
+  });
+
   it("has a title", () => {
     expect(
       screen.getByRole("heading", { name: /manage workspaces/i }),
