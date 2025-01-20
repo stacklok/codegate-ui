@@ -16,8 +16,8 @@ export function useSse() {
     );
 
     eventSource.onmessage = function (event) {
-      queryClient.invalidateQueries({ refetchType: "all" });
       if (event.data.toLowerCase().includes("new alert detected")) {
+        queryClient.invalidateQueries({ refetchType: "all" });
         sendNotification("CodeGate Dashboard", {
           body: "New Alert detected!",
         });
