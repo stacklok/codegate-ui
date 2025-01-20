@@ -12,16 +12,25 @@ export const handlers = [
       error: null,
     }),
   ),
-  http.get("*/dashboard/version", () =>
+  http.get("*/api/v1/dashboard/version", () =>
     HttpResponse.json({ status: "healthy" }),
   ),
-  http.get("*/dashboard/messages", () => {
+  http.get("*/api/v1/workspaces/active", () =>
+    HttpResponse.json([
+      {
+        name: "my-awesome-workspace",
+        is_active: true,
+        last_updated: new Date(Date.now()).toISOString(),
+      },
+    ]),
+  ),
+  http.get("*/api/v1/dashboard/messages", () => {
     return HttpResponse.json(mockedPrompts);
   }),
-  http.get("*/dashboard/alerts", () => {
+  http.get("*/api/v1/dashboard/alerts", () => {
     return HttpResponse.json(mockedAlerts);
   }),
-  http.get("*/workspaces", () => {
+  http.get("*/api/v1/workspaces", () => {
     return HttpResponse.json(mockedWorkspaces);
   }),
 ];
