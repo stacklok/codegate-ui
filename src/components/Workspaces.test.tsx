@@ -20,4 +20,8 @@ describe("Workspaces page", () => {
       screen.getByRole("columnheader", { name: /configuration/i }),
     ).toBeVisible();
   });
+
+  it("has a row for each workspace", () => {
+    expect(screen.getAllByRole("row")).toHaveLength(3);
+  });
 });

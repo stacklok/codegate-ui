@@ -1,4 +1,11 @@
-import { Column, Row, Table, TableBody, TableHeader } from "@stacklok/ui-kit";
+import {
+  Cell,
+  Column,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+} from "@stacklok/ui-kit";
 
 export function Workspaces() {
   return (
@@ -13,7 +20,16 @@ export function Workspaces() {
             <Column id="configuration">Configuration</Column>
           </TableHeader>
         </Row>
-        <TableBody></TableBody>
+        <TableBody>
+          <Row>
+            <Cell>My workspace</Cell>
+            <Cell>hello</Cell>
+          </Row>
+          <Row>
+            <Cell>My workspace</Cell>
+            <Cell>hello</Cell>
+          </Row>
+        </TableBody>
       </Table>
     </div>
   );
