@@ -24,7 +24,7 @@ function App() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-3">
           <Routes>
             <Route path="/" element={<RouteDashboard />} />
             <Route path="/prompt/:id" element={<RouteChat />} />

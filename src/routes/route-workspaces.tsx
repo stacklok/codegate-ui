@@ -19,7 +19,7 @@ export function RouteWorkspaces() {
   const workspaces = result.data?.workspaces ?? [];
 
   return (
-    <div>
+    <>
       <Breadcrumbs>
         <BreadcrumbHome />
         <Breadcrumb>Manage Workspaces</Breadcrumb>
@@ -57,6 +57,6 @@ export function RouteWorkspaces() {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </>
   );
 }
