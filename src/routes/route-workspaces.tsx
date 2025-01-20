@@ -11,7 +11,7 @@ import {
 } from "@stacklok/ui-kit";
 import { Settings } from "lucide-react";
 
-export function Workspaces() {
+export function RouteWorkspaces() {
   const result = useWorkspacesData();
   const workspaces = result.data?.workspaces ?? [];
 

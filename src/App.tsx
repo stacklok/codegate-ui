@@ -18,7 +18,7 @@ import {
 } from "./components/ui/breadcrumb";
 import { useBreadcrumb } from "./hooks/useBreadcrumb";
 import { RouteWorkspace } from "./routes/route-workspace";
-import { Workspaces } from "./components/Workspaces";
+import { RouteWorkspaces } from "./routes/route-workspaces";
 
 function App() {
   const { data: prompts, isLoading } = usePromptsData();
@@ -60,7 +60,7 @@ function App() {
             <Route path="/help/:section" element={<Help />} />
             <Route path="/certificates" element={<Certificates />} />
             <Route path="/workspace/:id" element={<RouteWorkspace />} />
-            <Route path="/workspaces" element={<Workspaces />} />
+            <Route path="/workspaces" element={<RouteWorkspaces />} />
             <Route
               path="/certificates/security"
               element={<CertificateSecurity />}

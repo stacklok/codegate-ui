@@ -1,11 +1,11 @@
 import { render } from "@/lib/test-utils";
 import { screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Workspaces } from "./Workspaces";
+import { RouteWorkspaces } from "../route-workspaces";
 
 describe("Workspaces page", () => {
   beforeEach(() => {
-    render(<Workspaces />);
+    render(<RouteWorkspaces />);
   });
 
   it("has a title", () => {
