@@ -1,18 +1,39 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "FastAPI",
-    "version": "0.1.0"
+    "title": "CodeGate",
+    "description": "Generative AI CodeGen security gateway",
+    "version": "0.1.7"
   },
   "paths": {
-    "/dashboard/messages": {
+    "/health": {
       "get": {
         "tags": [
+          "System"
+        ],
+        "summary": "Health Check",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard/messages": {
+      "get": {
+        "tags": [
+          "CodeGate API",
           "Dashboard"
         ],
         "summary": "Get Messages",
         "description": "Get all the messages from the database and return them as a list of conversations.",
-        "operationId": "get_messages_dashboard_messages_get",
+        "operationId": "v1_get_messages",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -23,7 +44,7 @@
                     "$ref": "#/components/schemas/Conversation"
                   },
                   "type": "array",
-                  "title": "Response Get Messages Dashboard Messages Get"
+                  "title": "Response V1 Get Messages"
                 }
               }
             }
@@ -31,14 +52,15 @@
         }
       }
     },
-    "/dashboard/alerts": {
+    "/api/v1/dashboard/alerts": {
       "get": {
         "tags": [
+          "CodeGate API",
           "Dashboard"
         ],
         "summary": "Get Alerts",
         "description": "Get all the messages from the database and return them as a list of conversations.",
-        "operationId": "get_alerts_dashboard_alerts_get",
+        "operationId": "v1_get_alerts",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -56,7 +78,7 @@
                     ]
                   },
                   "type": "array",
-                  "title": "Response Get Alerts Dashboard Alerts Get"
+                  "title": "Response V1 Get Alerts"
                 }
               }
             }
@@ -64,14 +86,15 @@
         }
       }
     },
-    "/dashboard/alerts_notification": {
+    "/api/v1/dashboard/alerts_notification": {
       "get": {
         "tags": [
+          "CodeGate API",
           "Dashboard"
         ],
         "summary": "Stream Sse",
         "description": "Send alerts event",
-        "operationId": "stream_sse_dashboard_alerts_notification_get",
+        "operationId": "v1_stream_sse",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -84,13 +107,14 @@
         }
       }
     },
-    "/dashboard/version": {
+    "/api/v1/dashboard/version": {
       "get": {
         "tags": [
+          "CodeGate API",
           "Dashboard"
         ],
         "summary": "Version Check",
-        "operationId": "version_check_dashboard_version_get",
+        "operationId": "v1_version_check",
         "responses": {
           "200": {
             "description": "Successful Response",

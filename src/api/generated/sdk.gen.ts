@@ -6,14 +6,16 @@ import {
   type OptionsLegacyParser,
 } from "@hey-api/client-fetch";
 import type {
-  GetMessagesDashboardMessagesGetError,
-  GetMessagesDashboardMessagesGetResponse,
-  GetAlertsDashboardAlertsGetError,
-  GetAlertsDashboardAlertsGetResponse,
-  StreamSseDashboardAlertsNotificationGetError,
-  StreamSseDashboardAlertsNotificationGetResponse,
-  VersionCheckDashboardVersionGetError,
-  VersionCheckDashboardVersionGetResponse,
+  HealthCheckHealthGetError,
+  HealthCheckHealthGetResponse,
+  V1GetMessagesError,
+  V1GetMessagesResponse,
+  V1GetAlertsError,
+  V1GetAlertsResponse,
+  V1StreamSseError,
+  V1StreamSseResponse,
+  V1VersionCheckError,
+  V1VersionCheckResponse,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
   V1CreateWorkspaceData,
@@ -32,21 +34,35 @@ import type {
 export const client = createClient(createConfig());
 
 /**
- * Get Messages
- * Get all the messages from the database and return them as a list of conversations.
+ * Health Check
  */
-export const getMessagesDashboardMessagesGet = <
-  ThrowOnError extends boolean = false,
->(
+export const healthCheckHealthGet = <ThrowOnError extends boolean = false>(
   options?: OptionsLegacyParser<unknown, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    GetMessagesDashboardMessagesGetResponse,
-    GetMessagesDashboardMessagesGetError,
+    HealthCheckHealthGetResponse,
+    HealthCheckHealthGetError,
     ThrowOnError
   >({
     ...options,
-    url: "/dashboard/messages",
+    url: "/health",
+  });
+};
+
+/**
+ * Get Messages
+ * Get all the messages from the database and return them as a list of conversations.
+ */
+export const v1GetMessages = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1GetMessagesResponse,
+    V1GetMessagesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/dashboard/messages",
   });
 };
 
@@ -54,18 +70,16 @@ export const getMessagesDashboardMessagesGet = <
  * Get Alerts
  * Get all the messages from the database and return them as a list of conversations.
  */
-export const getAlertsDashboardAlertsGet = <
-  ThrowOnError extends boolean = false,
->(
+export const v1GetAlerts = <ThrowOnError extends boolean = false>(
   options?: OptionsLegacyParser<unknown, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    GetAlertsDashboardAlertsGetResponse,
-    GetAlertsDashboardAlertsGetError,
+    V1GetAlertsResponse,
+    V1GetAlertsError,
     ThrowOnError
   >({
     ...options,
-    url: "/dashboard/alerts",
+    url: "/api/v1/dashboard/alerts",
   });
 };
 
@@ -73,36 +87,32 @@ export const getAlertsDashboardAlertsGet = <
  * Stream Sse
  * Send alerts event
  */
-export const streamSseDashboardAlertsNotificationGet = <
-  ThrowOnError extends boolean = false,
->(
+export const v1StreamSse = <ThrowOnError extends boolean = false>(
   options?: OptionsLegacyParser<unknown, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    StreamSseDashboardAlertsNotificationGetResponse,
-    StreamSseDashboardAlertsNotificationGetError,
+    V1StreamSseResponse,
+    V1StreamSseError,
     ThrowOnError
   >({
     ...options,
-    url: "/dashboard/alerts_notification",
+    url: "/api/v1/dashboard/alerts_notification",
   });
 };
 
 /**
  * Version Check
  */
-export const versionCheckDashboardVersionGet = <
-  ThrowOnError extends boolean = false,
->(
+export const v1VersionCheck = <ThrowOnError extends boolean = false>(
   options?: OptionsLegacyParser<unknown, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    VersionCheckDashboardVersionGetResponse,
-    VersionCheckDashboardVersionGetError,
+    V1VersionCheckResponse,
+    V1VersionCheckError,
     ThrowOnError
   >({
     ...options,
-    url: "/dashboard/version",
+    url: "/api/v1/dashboard/version",
   });
 };
 

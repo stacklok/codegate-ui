@@ -1,5 +1,5 @@
 import { LoaderCircle, CheckCircle2, XCircle } from "lucide-react";
-import { HealthStatus } from "../lib/get-codegate-health";
+import { HealthStatus } from "../types";
 
 export const CodegateStatusHealth = ({
   data: data,

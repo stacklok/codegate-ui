@@ -4,10 +4,11 @@ import type { OptionsLegacyParser } from "@hey-api/client-fetch";
 import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 import {
   client,
-  getMessagesDashboardMessagesGet,
-  getAlertsDashboardAlertsGet,
-  streamSseDashboardAlertsNotificationGet,
-  versionCheckDashboardVersionGet,
+  healthCheckHealthGet,
+  v1GetMessages,
+  v1GetAlerts,
+  v1StreamSse,
+  v1VersionCheck,
   v1ListWorkspaces,
   v1CreateWorkspace,
   v1ListActiveWorkspaces,
@@ -60,16 +61,14 @@ const createQueryKey = <TOptions extends OptionsLegacyParser>(
   return params;
 };
 
-export const getMessagesDashboardMessagesGetQueryKey = (
-  options?: OptionsLegacyParser,
-) => [createQueryKey("getMessagesDashboardMessagesGet", options)];
+export const healthCheckHealthGetQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey("healthCheckHealthGet", options),
+];
 
-export const getMessagesDashboardMessagesGetOptions = (
-  options?: OptionsLegacyParser,
-) => {
+export const healthCheckHealthGetOptions = (options?: OptionsLegacyParser) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getMessagesDashboardMessagesGet({
+      const { data } = await healthCheckHealthGet({
         ...options,
         ...queryKey[0],
         signal,
@@ -77,20 +76,18 @@ export const getMessagesDashboardMessagesGetOptions = (
       });
       return data;
     },
-    queryKey: getMessagesDashboardMessagesGetQueryKey(options),
+    queryKey: healthCheckHealthGetQueryKey(options),
   });
 };
 
-export const getAlertsDashboardAlertsGetQueryKey = (
-  options?: OptionsLegacyParser,
-) => [createQueryKey("getAlertsDashboardAlertsGet", options)];
+export const v1GetMessagesQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey("v1GetMessages", options),
+];
 
-export const getAlertsDashboardAlertsGetOptions = (
-  options?: OptionsLegacyParser,
-) => {
+export const v1GetMessagesOptions = (options?: OptionsLegacyParser) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAlertsDashboardAlertsGet({
+      const { data } = await v1GetMessages({
         ...options,
         ...queryKey[0],
         signal,
@@ -98,20 +95,18 @@ export const getAlertsDashboardAlertsGetOptions = (
       });
       return data;
     },
-    queryKey: getAlertsDashboardAlertsGetQueryKey(options),
+    queryKey: v1GetMessagesQueryKey(options),
   });
 };
 
-export const streamSseDashboardAlertsNotificationGetQueryKey = (
-  options?: OptionsLegacyParser,
-) => [createQueryKey("streamSseDashboardAlertsNotificationGet", options)];
+export const v1GetAlertsQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey("v1GetAlerts", options),
+];
 
-export const streamSseDashboardAlertsNotificationGetOptions = (
-  options?: OptionsLegacyParser,
-) => {
+export const v1GetAlertsOptions = (options?: OptionsLegacyParser) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await streamSseDashboardAlertsNotificationGet({
+      const { data } = await v1GetAlerts({
         ...options,
         ...queryKey[0],
         signal,
@@ -119,20 +114,18 @@ export const streamSseDashboardAlertsNotificationGetOptions = (
       });
       return data;
     },
-    queryKey: streamSseDashboardAlertsNotificationGetQueryKey(options),
+    queryKey: v1GetAlertsQueryKey(options),
   });
 };
 
-export const versionCheckDashboardVersionGetQueryKey = (
-  options?: OptionsLegacyParser,
-) => [createQueryKey("versionCheckDashboardVersionGet", options)];
+export const v1StreamSseQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey("v1StreamSse", options),
+];
 
-export const versionCheckDashboardVersionGetOptions = (
-  options?: OptionsLegacyParser,
-) => {
+export const v1StreamSseOptions = (options?: OptionsLegacyParser) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await versionCheckDashboardVersionGet({
+      const { data } = await v1StreamSse({
         ...options,
         ...queryKey[0],
         signal,
@@ -140,7 +133,26 @@ export const versionCheckDashboardVersionGetOptions = (
       });
       return data;
     },
-    queryKey: versionCheckDashboardVersionGetQueryKey(options),
+    queryKey: v1StreamSseQueryKey(options),
+  });
+};
+
+export const v1VersionCheckQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey("v1VersionCheck", options),
+];
+
+export const v1VersionCheckOptions = (options?: OptionsLegacyParser) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1VersionCheck({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1VersionCheckQueryKey(options),
   });
 };
 
