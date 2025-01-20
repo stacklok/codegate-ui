@@ -11,7 +11,7 @@ import { RouteHelp } from "./routes/route-help";
 import { RouteChat } from "./routes/route-chat";
 import { RouteDashboard } from "./routes/route-dashboard";
 import { RouteCertificateSecurity } from "./routes/route-certificate-security";
-import { WorkspaceCreation } from "./features/workspace/components/workspace-create";
+import { WorkspaceCreation } from "./features/workspace/components/workspace-creation";
 
 function App() {
   const { data: prompts, isLoading } = usePromptsData();
