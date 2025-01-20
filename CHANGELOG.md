@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/stacklok/codegate-ui/compare/v0.5.0...v0.6.0) (2025-01-20)
+
+
+### Features
+
+* add pagination for alerts table ([#104](https://github.com/stacklok/codegate-ui/issues/104)) ([a38e2cd](https://github.com/stacklok/codegate-ui/commit/a38e2cdd2ced63de130fe3a88118cc00a977b41f))
+* **workspaces:** create workspaces query hook ([#111](https://github.com/stacklok/codegate-ui/issues/111)) ([8ba7d36](https://github.com/stacklok/codegate-ui/commit/8ba7d369a6a51dfc66e4cc445b196bde77969061))
+
+
+### Bug Fixes
+
+* breaking changes in openapi spec ([#113](https://github.com/stacklok/codegate-ui/issues/113)) ([cd549d2](https://github.com/stacklok/codegate-ui/commit/cd549d2feb2d87c97205653458faa586442cfc8c))
+
 ## [0.5.0](https://github.com/stacklok/codegate-ui/compare/v0.4.1...v0.5.0) (2025-01-17)
 
 
