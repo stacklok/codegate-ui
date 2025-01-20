@@ -1,5 +1,13 @@
 // import { Card } from "./ui/card";
-import { Card, Button, LinkButton, CardBody } from "@stacklok/ui-kit";
+import { BreadcrumbHome } from "@/components/BreadcrumbHome";
+import {
+  Card,
+  Button,
+  LinkButton,
+  CardBody,
+  Breadcrumbs,
+  Breadcrumb,
+} from "@stacklok/ui-kit";
 import { useState, ReactNode } from "react";
 
 type OS = "macos" | "windows" | "linux";
@@ -136,138 +144,147 @@ export function RouteCertificates() {
   const currentSteps = steps[activeOS][activeAction];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 pr-6">
-      <h1 className="text-3xl font-bold mb-8">Certificates</h1>
+    <>
+      <Breadcrumbs>
+        <BreadcrumbHome />
+        <Breadcrumb>Certificates</Breadcrumb>
+      </Breadcrumbs>
 
-      <Card className="mb-8">
-        <CardBody>
-          <div className="flex items-start gap-6">
-            <div className="size-16 bg-brand-50 rounded-full flex items-center justify-center shrink-0">
-              <ShieldIcon />
-            </div>
-            <div className="grow">
-              <h2 className="text-xl font-semibold mb-2">
-                CodeGate CA certificate
-              </h2>
-              <p className="text-secondary mb-4">
-                This certificate allows CodeGate to act as a secure proxy for
-                integrations such as GitHub Copilot.
-              </p>
-              <Button onPress={handleDownload}>Download certificate</Button>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+      <div className="max-w-4xl mx-auto px-4 pr-6">
+        <h1 className="text-3xl font-bold mb-8">Certificates</h1>
 
-      <Card className="mb-8">
-        <CardBody>
-          <h2 className="text-xl font-semibold mb-4">
-            Is this certificate safe to install on my machine?
-          </h2>
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              <CheckIcon />
-              <p className="text-secondary">
-                <strong>Local-only:</strong> CodeGate runs entirely on your
-                machine within an isolated container, ensuring all data
-                processing stays local without any external transmissions.
-              </p>
+        <Card className="mb-8">
+          <CardBody>
+            <div className="flex items-start gap-6">
+              <div className="size-16 bg-brand-50 rounded-full flex items-center justify-center shrink-0">
+                <ShieldIcon />
+              </div>
+              <div className="grow">
+                <h2 className="text-xl font-semibold mb-2">
+                  CodeGate CA certificate
+                </h2>
+                <p className="text-secondary mb-4">
+                  This certificate allows CodeGate to act as a secure proxy for
+                  integrations such as GitHub Copilot.
+                </p>
+                <Button onPress={handleDownload}>Download certificate</Button>
+              </div>
             </div>
-            <div className="flex gap-3">
-              <CheckIcon />
-              <p className="text-secondary">
-                <strong>Secure certificate handling:</strong> this custom CA is
-                locally generated and managed. CodeGate developers have no
-                access to it.
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <CheckIcon />
-              <p className="text-secondary">
-                <strong>No external communications:</strong> CodeGate is
-                designed with no capability to call home or communicate with
-                external servers, outside of those requested by the IDE or
-                Agent.
-              </p>
-            </div>
-          </div>
-          <div className="mt-6 flex justify-start">
-            <LinkButton href="/certificates/security">
-              <span className="mr-2">Learn more</span>
-              <ArrowIcon />
-            </LinkButton>
-          </div>
-        </CardBody>
-      </Card>
+          </CardBody>
+        </Card>
 
-      <Card className="mb-8">
-        <CardBody>
-          <h2 className="text-xl font-semibold mb-6">Certificate Management</h2>
-          {/* OS Selection Tabs */}
-          <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
-            <button
-              onClick={() => setActiveOS("macos")}
-              className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeOS === "macos"
-                  ? "bg-base text-brand-700 shadow-sm"
-                  : "text-gray-500 hover:text-secondary"
-              }`}
-            >
-              macOS
-            </button>
-            <button
-              onClick={() => setActiveOS("windows")}
-              className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeOS === "windows"
-                  ? "bg-base text-brand-700 shadow-sm"
-                  : "text-gray-500 hover:text-secondary"
-              }`}
-            >
-              Windows
-            </button>
-            <button
-              onClick={() => setActiveOS("linux")}
-              className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeOS === "linux"
-                  ? "bg-base text-brand-700 shadow-sm"
-                  : "text-gray-500 hover:text-secondary"
-              }`}
-            >
-              Linux
-            </button>
-          </div>
-          {/* Action Selection Tabs */}
-          <div className="flex space-x-4 my-6">
-            <button
-              onClick={() => setActiveAction("install")}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
-                activeAction === "install"
-                  ? "border-brand-200 bg-brand-50 text-brand-700"
-                  : "border-gray-200 text-gray-500 hover:text-secondary"
-              }`}
-            >
-              Install certificate
-            </button>
-            <button
-              onClick={() => setActiveAction("remove")}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
-                activeAction === "remove"
-                  ? "border-brand-200 bg-brand-50 text-brand-700"
-                  : "border-gray-200 text-gray-500 hover:text-secondary"
-              }`}
-            >
-              Remove certificate
-            </button>
-          </div>
-          <div className="mt-6">
+        <Card className="mb-8">
+          <CardBody>
+            <h2 className="text-xl font-semibold mb-4">
+              Is this certificate safe to install on my machine?
+            </h2>
             <div className="space-y-4">
-              {currentSteps.map((step, index) => (
-                <InstructionStep key={index} number={index + 1} text={step} />
-              ))}
+              <div className="flex gap-3">
+                <CheckIcon />
+                <p className="text-secondary">
+                  <strong>Local-only:</strong> CodeGate runs entirely on your
+                  machine within an isolated container, ensuring all data
+                  processing stays local without any external transmissions.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <CheckIcon />
+                <p className="text-secondary">
+                  <strong>Secure certificate handling:</strong> this custom CA
+                  is locally generated and managed. CodeGate developers have no
+                  access to it.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <CheckIcon />
+                <p className="text-secondary">
+                  <strong>No external communications:</strong> CodeGate is
+                  designed with no capability to call home or communicate with
+                  external servers, outside of those requested by the IDE or
+                  Agent.
+                </p>
+              </div>
             </div>
-          </div>
-        </CardBody>
-      </Card>
-    </div>
+            <div className="mt-6 flex justify-start">
+              <LinkButton href="/certificates/security">
+                <span className="mr-2">Learn more</span>
+                <ArrowIcon />
+              </LinkButton>
+            </div>
+          </CardBody>
+        </Card>
+
+        <Card className="mb-8">
+          <CardBody>
+            <h2 className="text-xl font-semibold mb-6">
+              Certificate Management
+            </h2>
+            {/* OS Selection Tabs */}
+            <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
+              <button
+                onClick={() => setActiveOS("macos")}
+                className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeOS === "macos"
+                    ? "bg-base text-brand-700 shadow-sm"
+                    : "text-gray-500 hover:text-secondary"
+                }`}
+              >
+                macOS
+              </button>
+              <button
+                onClick={() => setActiveOS("windows")}
+                className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeOS === "windows"
+                    ? "bg-base text-brand-700 shadow-sm"
+                    : "text-gray-500 hover:text-secondary"
+                }`}
+              >
+                Windows
+              </button>
+              <button
+                onClick={() => setActiveOS("linux")}
+                className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeOS === "linux"
+                    ? "bg-base text-brand-700 shadow-sm"
+                    : "text-gray-500 hover:text-secondary"
+                }`}
+              >
+                Linux
+              </button>
+            </div>
+            {/* Action Selection Tabs */}
+            <div className="flex space-x-4 my-6">
+              <button
+                onClick={() => setActiveAction("install")}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
+                  activeAction === "install"
+                    ? "border-brand-200 bg-brand-50 text-brand-700"
+                    : "border-gray-200 text-gray-500 hover:text-secondary"
+                }`}
+              >
+                Install certificate
+              </button>
+              <button
+                onClick={() => setActiveAction("remove")}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors border ${
+                  activeAction === "remove"
+                    ? "border-brand-200 bg-brand-50 text-brand-700"
+                    : "border-gray-200 text-gray-500 hover:text-secondary"
+                }`}
+              >
+                Remove certificate
+              </button>
+            </div>
+            <div className="mt-6">
+              <div className="space-y-4">
+                {currentSteps.map((step, index) => (
+                  <InstructionStep key={index} number={index + 1} text={step} />
+                ))}
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import { render } from "@/lib/test-utils";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { RouteCertificates } from "../route-certificates";
@@ -25,6 +25,17 @@ describe("Certificates", () => {
     expect(screen.getByText("macOS")).toBeVisible();
     expect(screen.getByText("Windows")).toBeVisible();
     expect(screen.getByText("Linux")).toBeVisible();
+  });
+
+  it("has breadcrumbs", () => {
+    render(<RouteCertificates />);
+
+    const breadcrumbs = screen.getByRole("list", { name: "Breadcrumbs" });
+    expect(breadcrumbs).toBeVisible();
+    expect(
+      within(breadcrumbs).getByRole("link", { name: "Dashboard" }),
+    ).toHaveAttribute("href", "/");
+    expect(within(breadcrumbs).getByText(/certificates/i)).toBeVisible();
   });
 
   it("should render macOS certificate installation", async () => {
