@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { SidebarTrigger } from "./ui/sidebar";
 import { HoverPopover } from "./HoverPopover";
 import { Separator, ButtonDarkMode } from "@stacklok/ui-kit";
+import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
@@ -9,21 +10,23 @@ export function Header({ hasError }: { hasError?: boolean }) {
       aria-label="App header"
       className="shrink-0 h-16 px-3 items-center flex w-full bg-gray-25 border-b-gray-200 border-b"
     >
-      <div className="flex items-center flex-1">
+      <div className="flex items-center gap-2 flex-1">
         {!hasError && (
           <>
             <SidebarTrigger />
-            <Separator orientation="vertical" className="h-8 mx-2" />
+            <Separator orientation="vertical" className="h-8" />
           </>
         )}
 
-        <nav className="mr-1 flex ml-2">
+        <nav className="flex ml-2">
           <Link to="/">
             <h1 className="text-2xl text-primary font-title w-max flex font-semibold">
               CodeGate Dashboard
             </h1>
           </Link>
         </nav>
+        <Separator orientation="vertical" className="h-8 ml-4" />
+        <WorkspacesSelection />
       </div>
       <div className="flex items-center gap-4 mr-16">
         <HoverPopover title="Certificates">
