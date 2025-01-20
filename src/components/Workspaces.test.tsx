@@ -1,5 +1,5 @@
 import { render } from "@/lib/test-utils";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Workspaces } from "./Workspaces";
 
@@ -32,5 +32,13 @@ describe("Workspaces page", () => {
     expect(
       screen.getByRole("rowheader", { name: /anotherworkspae/i }),
     ).toBeVisible();
+
+    const firstRow = screen.getByRole("row", { name: /myworkspace/i });
+    const firstButton = within(firstRow).getByRole("link", {
+      name: /settings/i,
+    });
+
+    expect(firstButton).toBeVisible();
+    expect(firstButton).toHaveAttribute("href", "/workspace/myworkspace");
   });
 });

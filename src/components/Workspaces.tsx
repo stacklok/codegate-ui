@@ -2,11 +2,13 @@ import { useWorkspacesData } from "@/hooks/useWorkspacesData";
 import {
   Cell,
   Column,
+  LinkButton,
   Row,
   Table,
   TableBody,
   TableHeader,
 } from "@stacklok/ui-kit";
+import { Settings } from "lucide-react";
 
 export function Workspaces() {
   const result = useWorkspacesData();
@@ -28,7 +30,15 @@ export function Workspaces() {
           {workspaces.map((workspace) => (
             <Row key={workspace.name}>
               <Cell>{workspace.name}</Cell>
-              <Cell>hello</Cell>
+              <Cell>
+                <LinkButton
+                  href={`/workspace/${workspace.name}`}
+                  variant="tertiary"
+                >
+                  <Settings />
+                  Settings
+                </LinkButton>
+              </Cell>
             </Row>
           ))}
         </TableBody>
