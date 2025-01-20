@@ -1,3 +1,4 @@
+import { WorkspaceHeading } from "@/features/workspace/components/workspace-heading";
 import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import {
@@ -5,7 +6,6 @@ import {
   Breadcrumbs,
   Cell,
   Column,
-  Heading,
   LinkButton,
   Row,
   Table,
@@ -25,10 +25,7 @@ export function RouteWorkspaces() {
         <Breadcrumb>Manage Workspaces</Breadcrumb>
       </Breadcrumbs>
 
-      <Heading level={1} className="mb-5">
-        Manage Workspaces
-      </Heading>
-
+      <WorkspaceHeading title="Manage Workspaces" />
       <Table aria-label="List of workspaces">
         <Row>
           <TableHeader>

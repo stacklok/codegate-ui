@@ -11,7 +11,7 @@ import { RouteHelp } from "./routes/route-help";
 import { RouteChat } from "./routes/route-chat";
 import { RouteDashboard } from "./routes/route-dashboard";
 import { RouteCertificateSecurity } from "./routes/route-certificate-security";
-import { WorkspaceCreation } from "./features/workspace/components/workspace-creation";
+import { RouteWorkspaceCreation } from "./routes/route-workspace-creation";
 
 function App() {
   const { data: prompts, isLoading } = usePromptsData();
@@ -33,7 +33,10 @@ function App() {
             <Route path="/certificates" element={<RouteCertificates />} />
             <Route path="/workspace/:id" element={<RouteWorkspace />} />
             <Route path="/workspaces" element={<RouteWorkspaces />} />
-            <Route path="/workspace/create" element={<WorkspaceCreation />} />
+            <Route
+              path="/workspace/create"
+              element={<RouteWorkspaceCreation />}
+            />
             <Route
               path="/certificates/security"
               element={<RouteCertificateSecurity />}
