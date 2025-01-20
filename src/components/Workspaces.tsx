@@ -1,3 +1,7 @@
 export function Workspaces() {
-  return <div>hello world</div>;
+  return (
+    <div>
+      <h1 className="text-4xl">Manage Workspaces</h1>
+    </div>
+  );
 }
