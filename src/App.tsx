@@ -1,11 +1,9 @@
 import { Header } from "./components/Header";
 import { PromptList } from "./components/PromptList";
-import { Dashboard } from "./components/Dashboard";
 import { Routes, Route, Link } from "react-router-dom";
 import { usePromptsData } from "./hooks/usePromptsData";
 import { Sidebar } from "./components/Sidebar";
 import { useSse } from "./hooks/useSse";
-import { CertificateSecurity } from "./components/CertificateSecurity";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -19,6 +17,8 @@ import { RouteWorkspaces } from "./routes/route-workspaces";
 import { RouteCertificates } from "./routes/route-certificates";
 import { RouteHelp } from "./routes/route-help";
 import { RouteChat } from "./routes/route-chat";
+import { RouteDashboard } from "./routes/route-dashboard";
+import { RouteCertificateSecurity } from "./routes/route-certificate-security";
 
 function App() {
   const { data: prompts, isLoading } = usePromptsData();
@@ -55,7 +55,7 @@ function App() {
 
         <div className="flex-1 overflow-y-auto p-6">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<RouteDashboard />} />
             <Route path="/prompt/:id" element={<RouteChat />} />
             <Route path="/help/:section" element={<RouteHelp />} />
             <Route path="/certificates" element={<RouteCertificates />} />
@@ -63,7 +63,7 @@ function App() {
             <Route path="/workspaces" element={<RouteWorkspaces />} />
             <Route
               path="/certificates/security"
-              element={<CertificateSecurity />}
+              element={<RouteCertificateSecurity />}
             />
           </Routes>
         </div>

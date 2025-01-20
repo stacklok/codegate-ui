@@ -10,9 +10,9 @@ import {
   useMaliciousPackagesChartData,
 } from "@/hooks/useAlertsData";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
-import { AlertsTable } from "./AlertsTable";
+import { AlertsTable } from "@/components/AlertsTable";
 
-export function Dashboard() {
+export function RouteDashboard() {
   const [searchParams] = useSearchParams();
 
   const { setIsMaliciousFilterActive, setSearch } = useAlertSearch();

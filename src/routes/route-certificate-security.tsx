@@ -57,7 +57,7 @@ const OpenSourceIcon = () => (
   </svg>
 );
 
-export function CertificateSecurity() {
+export function RouteCertificateSecurity() {
   return (
     <div className="flex flex-col h-full">
       <div className="max-w-4xl mx-auto mb-4">

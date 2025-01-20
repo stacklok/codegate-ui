@@ -1,13 +1,13 @@
 import { render } from "@/lib/test-utils";
 import { screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Dashboard } from "../Dashboard";
 import { faker } from "@faker-js/faker";
 import React from "react";
 import { server } from "@/mocks/msw/node";
 import { HttpResponse, http } from "msw";
 import mockedAlerts from "@/mocks/msw/fixtures/GET_ALERTS.json";
 import userEvent from "@testing-library/user-event";
+import { RouteDashboard } from "../route-dashboard";
 
 vi.mock("recharts", async (importOriginal) => {
   const originalModule = (await importOriginal()) as Record<string, unknown>;
@@ -113,7 +113,7 @@ function mockManyAlerts() {
 
 describe("Dashboard", () => {
   it("should render charts and table", async () => {
-    render(<Dashboard />);
+    render(<RouteDashboard />);
     expect(screen.getByText(/security issues detected/i)).toBeVisible();
     expect(screen.getByText(/malicious packages by type/i)).toBeVisible();
     expect(screen.getByText(/alerts by date/i)).toBeVisible();
@@ -192,7 +192,7 @@ describe("Dashboard", () => {
 
   it("should render malicious pkg", async () => {
     mockAlertsWithMaliciousPkg();
-    render(<Dashboard />);
+    render(<RouteDashboard />);
 
     expect(
       (await screen.findAllByTestId(/mock-responsive-container/i)).length,
@@ -224,7 +224,7 @@ describe("Dashboard", () => {
 
   it("should filter by malicious pkg", async () => {
     mockAlertsWithMaliciousPkg();
-    render(<Dashboard />);
+    render(<RouteDashboard />);
 
     expect(
       (await screen.findAllByTestId(/mock-responsive-container/i)).length,
@@ -269,7 +269,7 @@ describe("Dashboard", () => {
 
   it("should search by secrets alert", async () => {
     mockAlertsWithMaliciousPkg();
-    render(<Dashboard />);
+    render(<RouteDashboard />);
 
     expect(
       (await screen.findAllByTestId(/mock-responsive-container/i)).length,
@@ -300,7 +300,7 @@ describe("Dashboard", () => {
   });
 
   it("should sort alerts by date desc", async () => {
-    render(<Dashboard />);
+    render(<RouteDashboard />);
     expect(
       (await screen.findAllByTestId(/mock-responsive-container/i)).length,
     ).toEqual(1);
@@ -319,7 +319,7 @@ describe("Dashboard", () => {
   it("only displays a limited number of items in the table", async () => {
     mockManyAlerts();
 
-    render(<Dashboard />);
+    render(<RouteDashboard />);
 
     await waitFor(() => {
       expect(
@@ -331,7 +331,7 @@ describe("Dashboard", () => {
   it("allows pagination", async () => {
     mockManyAlerts();
 
-    render(<Dashboard />);
+    render(<RouteDashboard />);
 
     await waitFor(
       async () => {
