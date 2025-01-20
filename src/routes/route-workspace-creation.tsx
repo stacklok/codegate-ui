@@ -4,7 +4,7 @@ import { WorkspaceHeading } from "@/features/workspace/components/workspace-head
 export function RouteWorkspaceCreation() {
   return (
     <>
-      <WorkspaceHeading title="Workspace settings" />
+      <WorkspaceHeading title="Create Workspace" />
       <WorkspaceCreation />
     </>
   );

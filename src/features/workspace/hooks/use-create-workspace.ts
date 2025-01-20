@@ -6,9 +6,6 @@ export function useCreateWorkspace() {
   const navigate = useNavigate();
   return useMutation({
     ...v1CreateWorkspaceMutation(),
-    onError(error) {
-      return error?.detail;
-    },
     onSuccess: () => navigate("/workspaces"),
   });
 }
