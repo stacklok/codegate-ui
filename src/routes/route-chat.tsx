@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/chat/chat-bubble";
 import { Markdown } from "@/components/Markdown";
 import { Breadcrumb, Breadcrumbs } from "@stacklok/ui-kit";
+import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 
 export function RouteChat() {
   const { id } = useParams();
@@ -30,7 +31,7 @@ export function RouteChat() {
   return (
     <>
       <Breadcrumbs>
-        <Breadcrumb href="/">Dashboard</Breadcrumb>
+        <BreadcrumbHome />
         <Breadcrumb>{title}</Breadcrumb>
       </Breadcrumbs>
 

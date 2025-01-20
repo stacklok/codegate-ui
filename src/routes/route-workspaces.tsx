@@ -1,4 +1,5 @@
 import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
+import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import {
   Breadcrumb,
   Breadcrumbs,
@@ -20,7 +21,7 @@ export function RouteWorkspaces() {
   return (
     <div>
       <Breadcrumbs>
-        <Breadcrumb href="/">Dashboard</Breadcrumb>
+        <BreadcrumbHome />
         <Breadcrumb>Manage Workspaces</Breadcrumb>
       </Breadcrumbs>
 

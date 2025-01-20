@@ -1,3 +1,4 @@
+import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import { SystemPromptEditor } from "@/features/workspace-system-prompt/components/system-prompt-editor";
 import { WorkspaceName } from "@/features/workspace/components/workspace-name";
 import { Breadcrumb, Breadcrumbs, Heading } from "@stacklok/ui-kit";
@@ -6,7 +7,7 @@ export function RouteWorkspace() {
   return (
     <>
       <Breadcrumbs>
-        <Breadcrumb href="/">Dashboard</Breadcrumb>
+        <BreadcrumbHome />
         <Breadcrumb href="/workspaces">Manage Workspaces</Breadcrumb>
         <Breadcrumb>Edit Workspace</Breadcrumb>
       </Breadcrumbs>
