@@ -13,4 +13,11 @@ describe("Workspaces page", () => {
       screen.getByRole("heading", { name: /manage workspaces/i }),
     ).toBeVisible();
   });
+
+  it("has a table with the correct columns", () => {
+    expect(screen.getByRole("columnheader", { name: /name/i })).toBeVisible();
+    expect(
+      screen.getByRole("columnheader", { name: /configuration/i }),
+    ).toBeVisible();
+  });
 });
