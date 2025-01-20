@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
 import { PieChart } from "@/viz/PieChart";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { CodegateStatus } from "@/features/dashboard-codegate-status/components/codegate-status";
 import {
   useAlertsData,
@@ -11,6 +11,11 @@ import {
 } from "@/hooks/useAlertsData";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { AlertsTable } from "@/components/AlertsTable";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb";
 
 export function RouteDashboard() {
   const [searchParams] = useSearchParams();
@@ -33,17 +38,27 @@ export function RouteDashboard() {
   const maliciousPackages = useMaliciousPackagesChartData();
 
   return (
-    <div className="flex-col">
-      <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
-        <CodegateStatus />
-        <BarChart data={alerts} loading={isLoading} />
-        <PieChart data={maliciousPackages} loading={isLoading} />
-        <LineChart data={alerts} loading={isLoading} />
+    <>
+      <Breadcrumb className="mb-5">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <Link to="/">Dashboard</Link>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <div className="flex-col">
+        <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
+          <CodegateStatus />
+          <BarChart data={alerts} loading={isLoading} />
+          <PieChart data={maliciousPackages} loading={isLoading} />
+          <LineChart data={alerts} loading={isLoading} />
+        </div>
+
+        <Separator className="my-8" />
+
+        <AlertsTable />
       </div>
-
-      <Separator className="my-8" />
-
-      <AlertsTable />
-    </div>
+    </>
   );
 }
