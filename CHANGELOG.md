@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/stacklok/codegate-ui/compare/v0.6.0...v0.6.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* version endpoint ([#119](https://github.com/stacklok/codegate-ui/issues/119)) ([eada275](https://github.com/stacklok/codegate-ui/commit/eada275d8bd40f38b1930bd7fb9be5ddf5cdd494))
+
 ## [0.6.0](https://github.com/stacklok/codegate-ui/compare/v0.5.0...v0.6.0) (2025-01-20)
 
 
