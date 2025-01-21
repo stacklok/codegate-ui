@@ -3,15 +3,8 @@ import { SidebarTrigger } from "./ui/sidebar";
 import { HoverPopover } from "./HoverPopover";
 import { Separator, ButtonDarkMode, MenuItem } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
-import {
-  Blocks,
-  BookOpenText,
-  Download,
-  Github,
-  MessageCircleQuestion,
-  ShieldCheck,
-  Youtube,
-} from "lucide-react";
+import { BookOpenText, Download, ShieldCheck } from "lucide-react";
+import { Continue, Copilot, Discord, Github, Youtube } from "./icons";
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
@@ -48,10 +41,10 @@ export function Header({ hasError }: { hasError?: boolean }) {
         </HoverPopover>
 
         <HoverPopover title="Help">
-          <MenuItem href="/help/continue-setup" icon={<Blocks />}>
+          <MenuItem href="/help/continue-setup" icon={<Continue />}>
             Set up in <span className="font-bold">Continue</span>
           </MenuItem>
-          <MenuItem icon={<Blocks />} href="/help/copilot-setup">
+          <MenuItem icon={<Copilot />} href="/help/copilot-setup">
             Set up in <span className="font-bold">Copilot</span>
           </MenuItem>
 
@@ -68,7 +61,7 @@ export function Header({ hasError }: { hasError?: boolean }) {
           <MenuItem
             href="https://discord.gg/stacklok"
             target="_blank"
-            icon={<MessageCircleQuestion />}
+            icon={<Discord />}
           >
             Discord
           </MenuItem>

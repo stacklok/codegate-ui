@@ -50,3 +50,16 @@ Run the production build command:
 ```bash
 npm run preview
 ```
+
+## Custom SVG icons
+
+In order to generate custom SVG icons based on the Figma design, download the icon from Figma and place it
+in the `icons/` folder.
+
+Then run:
+
+```bash
+npm run generate-icons
+```
+
+
