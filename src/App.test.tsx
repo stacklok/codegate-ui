@@ -20,7 +20,7 @@ describe("App", () => {
     render(<App />);
     expect(screen.getByText(/toggle sidebar/i)).toBeVisible();
     expect(screen.getByText("Certificates")).toBeVisible();
-    expect(screen.getByText("Setup")).toBeVisible();
+    expect(screen.getByText("Help")).toBeVisible();
     expect(screen.getByRole("banner", { name: "App header" })).toBeVisible();
     expect(
       screen.getByRole("heading", { name: /codeGate dashboard/i }),
@@ -40,7 +40,7 @@ describe("App", () => {
     ).toBeVisible();
 
     await userEvent.click(screen.getByText("Certificates"));
-    await userEvent.click(screen.getByText("Setup"));
+    await userEvent.click(screen.getByText("Help"));
 
     expect(
       screen.getByRole("menuitem", {
@@ -54,13 +54,14 @@ describe("App", () => {
       }),
     ).toBeVisible();
 
-    await userEvent.click(screen.getByText("Setup"));
-
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("menuitem", {
         name: /documentation/i,
       }),
     ).toBeVisible();
+
+    await userEvent.click(screen.getByText("Help"));
+
     await waitFor(() =>
       expect(
         screen.getByRole("link", { name: /codeGate dashboard/i }),

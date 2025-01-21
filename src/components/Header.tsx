@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom";
 import { SidebarTrigger } from "./ui/sidebar";
 import { HoverPopover } from "./HoverPopover";
-import {
-  Separator,
-  ButtonDarkMode,
-  MenuItem,
-  LinkButton,
-} from "@stacklok/ui-kit";
+import { Separator, ButtonDarkMode, MenuItem } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
 import { Blocks, Download, ShieldCheck } from "lucide-react";
 
@@ -43,6 +38,7 @@ export function Header({ hasError }: { hasError?: boolean }) {
           >
             Download
           </MenuItem>
+
           <MenuItem
             href="/certificates/security"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
@@ -52,7 +48,7 @@ export function Header({ hasError }: { hasError?: boolean }) {
           </MenuItem>
         </HoverPopover>
 
-        <HoverPopover title="Setup">
+        <HoverPopover title="Help">
           <MenuItem href="/help/continue-setup" icon={<Blocks />}>
             Set up in <span className="font-bold">Continue</span>
           </MenuItem>
@@ -63,15 +59,16 @@ export function Header({ hasError }: { hasError?: boolean }) {
           >
             Set up in <span className="font-bold">Copilot</span>
           </MenuItem>
-        </HoverPopover>
 
-        <LinkButton
-          variant="tertiary"
-          href="https://docs.codegate.ai/"
-          target="_blank"
-        >
-          Documentation
-        </LinkButton>
+          <MenuItem
+            href="https://docs.codegate.ai/"
+            target="_blank"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
+            icon={<ShieldCheck />}
+          >
+            Documentation
+          </MenuItem>
+        </HoverPopover>
 
         <ButtonDarkMode />
       </div>
