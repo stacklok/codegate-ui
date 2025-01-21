@@ -23,38 +23,48 @@ describe("App", () => {
     expect(screen.getByText("Setup")).toBeVisible();
     expect(screen.getByRole("banner", { name: "App header" })).toBeVisible();
     expect(
-      screen.getByRole("heading", { name: /codeGate dashboard/i })
+      screen.getByRole("heading", { name: /codeGate dashboard/i }),
     ).toBeVisible();
+
+    await userEvent.click(screen.getByText("Certificates"));
+
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("menuitem", {
         name: /certificate security/i,
-      })
+      }),
     ).toBeVisible();
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("menuitem", {
+        name: /download/i,
+      }),
+    ).toBeVisible();
+
+    await userEvent.click(screen.getByText("Certificates"));
+    await userEvent.click(screen.getByText("Setup"));
+
+    expect(
+      screen.getByRole("menuitem", {
         name: /set up in continue/i,
-      })
+      }),
     ).toBeVisible();
 
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("menuitem", {
         name: /set up in copilot/i,
-      })
+      }),
     ).toBeVisible();
-    expect(
-      screen.getByRole("link", {
-        name: /download/i,
-      })
-    ).toBeVisible();
+
+    await userEvent.click(screen.getByText("Setup"));
+
     expect(
       screen.getByRole("link", {
         name: /documentation/i,
-      })
+      }),
     ).toBeVisible();
     await waitFor(() =>
       expect(
-        screen.getByRole("link", { name: /codeGate dashboard/i })
-      ).toBeVisible()
+        screen.getByRole("link", { name: /codeGate dashboard/i }),
+      ).toBeVisible(),
     );
   });
 
@@ -63,8 +73,8 @@ describe("App", () => {
 
     await waitFor(() =>
       expect(
-        screen.getByRole("link", { name: "CodeGate Dashboard" })
-      ).toBeVisible()
+        screen.getByRole("link", { name: "CodeGate Dashboard" }),
+      ).toBeVisible(),
     );
 
     const workspaceSelectionButton = screen.getByRole("button", {
@@ -78,8 +88,8 @@ describe("App", () => {
       expect(
         screen.getByRole("option", {
           name: /anotherworkspae/i,
-        })
-      ).toBeVisible()
+        }),
+      ).toBeVisible(),
     );
   });
 });

@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import { SidebarTrigger } from "./ui/sidebar";
 import { HoverPopover } from "./HoverPopover";
-import { Separator, ButtonDarkMode } from "@stacklok/ui-kit";
+import {
+  Separator,
+  ButtonDarkMode,
+  MenuItem,
+  LinkButton,
+} from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
 
 export function Header({ hasError }: { hasError?: boolean }) {
@@ -30,46 +35,39 @@ export function Header({ hasError }: { hasError?: boolean }) {
       </div>
       <div className="flex items-center gap-4 mr-16">
         <HoverPopover title="Certificates">
-          <Link
-            to="/certificates"
+          <MenuItem
+            href="/certificates"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
             Download
-          </Link>
-          <Link
-            to="/certificates/security"
+          </MenuItem>
+          <MenuItem
+            href="/certificates/security"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
             Certificate Security
-          </Link>
+          </MenuItem>
         </HoverPopover>
 
         <HoverPopover title="Setup">
-          <Link
-            to="/help/continue-setup"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
-          >
+          <MenuItem href="/help/continue-setup">
             Set up in <span className="font-bold">Continue</span>
-          </Link>
-          <Link
-            to="/help/copilot-setup"
+          </MenuItem>
+          <MenuItem
+            href="/help/copilot-setup"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
             Set up in <span className="font-bold">Copilot</span>
-          </Link>
+          </MenuItem>
         </HoverPopover>
 
-        <div className="flex items-center relative group">
-          <div className="text-primary hover:text-secondary font-semibold cursor-pointer text-base px-2 py-1 rounded-md transition-colors">
-            <a
-              href="https://docs.codegate.ai/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Documentation
-            </a>
-          </div>
-        </div>
+        <LinkButton
+          variant="tertiary"
+          href="https://docs.codegate.ai/"
+          target="_blank"
+        >
+          Documentation
+        </LinkButton>
 
         <ButtonDarkMode />
       </div>
