@@ -1,12 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertConversation, v1GetAlerts } from "@/api/generated";
+import {
+  AlertConversation,
+  v1GetWorkspaceAlerts,
+  V1GetWorkspaceAlertsData,
+} from "@/api/generated";
 import { getMaliciousPackage } from "@/lib/utils";
 import { MaliciousPkgType, TriggerType } from "@/types";
 import { useAlertSearch } from "./useAlertSearch";
-import { v1GetAlertsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { v1GetWorkspaceAlertsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { useActiveWorkspaceName } from "@/features/workspace/hooks/use-active-workspace-name";
 
-const fetchAlerts = async (): Promise<AlertConversation[]> => {
-  const { data } = await v1GetAlerts();
+const fetchAlerts = async (
+  options: V1GetWorkspaceAlertsData,
+): Promise<AlertConversation[]> => {
+  const { data } = await v1GetWorkspaceAlerts(options);
 
   const results = (data ?? [])
     .filter((alert): alert is AlertConversation => alert !== null)
@@ -25,9 +32,17 @@ const fetchAlerts = async (): Promise<AlertConversation[]> => {
 };
 
 export const useAlertsData = ({ ...args } = {}) => {
+  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+
+  const options: V1GetWorkspaceAlertsData = {
+    path: {
+      workspace_name: activeWorkspaceName ?? "default",
+    },
+  };
+
   return useQuery({
-    queryKey: v1GetAlertsQueryKey(),
-    queryFn: fetchAlerts,
+    queryKey: v1GetWorkspaceAlertsQueryKey(options),
+    queryFn: () => fetchAlerts(options),
     ...args,
   });
 };

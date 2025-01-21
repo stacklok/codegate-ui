@@ -118,7 +118,7 @@ export type V1CreateWorkspaceData = {
   body: CreateWorkspaceRequest;
 };
 
-export type V1CreateWorkspaceResponse = unknown;
+export type V1CreateWorkspaceResponse = Workspace;
 
 export type V1CreateWorkspaceError = HTTPValidationError;
 
@@ -143,6 +143,26 @@ export type V1DeleteWorkspaceData = {
   };
 };
 
-export type V1DeleteWorkspaceResponse = void;
+export type V1DeleteWorkspaceResponse = unknown;
 
 export type V1DeleteWorkspaceError = HTTPValidationError;
+
+export type V1GetWorkspaceAlertsData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1GetWorkspaceAlertsResponse = Array<AlertConversation | null>;
+
+export type V1GetWorkspaceAlertsError = HTTPValidationError;
+
+export type V1GetWorkspaceMessagesData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1GetWorkspaceMessagesResponse = Array<Conversation>;
+
+export type V1GetWorkspaceMessagesError = HTTPValidationError;

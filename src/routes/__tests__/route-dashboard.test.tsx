@@ -89,7 +89,7 @@ const fakeConversionation2 = {
 
 function mockAlertsWithMaliciousPkg() {
   server.use(
-    http.get("*/dashboard/alerts", () => {
+    http.get("*/workspaces/:name/alerts", () => {
       return HttpResponse.json([fakeConversionation1, fakeConversionation2]);
     }),
   );
@@ -97,7 +97,7 @@ function mockAlertsWithMaliciousPkg() {
 
 function mockManyAlerts() {
   server.use(
-    http.get("*/dashboard/alerts", () => {
+    http.get("*/workspaces/:name/alerts", () => {
       return HttpResponse.json(
         [
           ...mockedAlerts,

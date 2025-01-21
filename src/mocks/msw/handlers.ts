@@ -24,10 +24,10 @@ export const handlers = [
       },
     ]),
   ),
-  http.get("*/api/v1/dashboard/messages", () => {
+  http.get("*/api/v1/workspaces/:name/messages", () => {
     return HttpResponse.json(mockedPrompts);
   }),
-  http.get("*/api/v1/dashboard/alerts", () => {
+  http.get("*/api/v1/workspaces/:name/alerts", () => {
     return HttpResponse.json(mockedAlerts);
   }),
   http.get("*/api/v1/workspaces", () => {
