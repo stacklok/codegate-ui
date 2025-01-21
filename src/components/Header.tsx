@@ -39,19 +39,11 @@ export function Header({ hasError }: { hasError?: boolean }) {
       </div>
       <div className="flex items-center gap-4 mr-16">
         <HoverPopover title="Certificates">
-          <MenuItem
-            icon={<Download />}
-            href="/certificates"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
-          >
+          <MenuItem icon={<Download />} href="/certificates">
             Download
           </MenuItem>
 
-          <MenuItem
-            href="/certificates/security"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
-            icon={<ShieldCheck />}
-          >
+          <MenuItem href="/certificates/security" icon={<ShieldCheck />}>
             Certificate Security
           </MenuItem>
         </HoverPopover>
@@ -60,18 +52,13 @@ export function Header({ hasError }: { hasError?: boolean }) {
           <MenuItem href="/help/continue-setup" icon={<Blocks />}>
             Set up in <span className="font-bold">Continue</span>
           </MenuItem>
-          <MenuItem
-            icon={<Blocks />}
-            href="/help/copilot-setup"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
-          >
+          <MenuItem icon={<Blocks />} href="/help/copilot-setup">
             Set up in <span className="font-bold">Copilot</span>
           </MenuItem>
 
           <MenuItem
             href="https://docs.codegate.ai/"
             target="_blank"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
             icon={<BookOpenText />}
           >
             Documentation
@@ -82,7 +69,6 @@ export function Header({ hasError }: { hasError?: boolean }) {
           <MenuItem
             href="https://discord.gg/stacklok"
             target="_blank"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
             icon={<MessageCircleQuestion />}
           >
             Discord
@@ -91,7 +77,6 @@ export function Header({ hasError }: { hasError?: boolean }) {
           <MenuItem
             href="https://github.com/stacklok/codegate"
             target="_blank"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
             icon={<Github />}
           >
             GitHub
@@ -100,7 +85,6 @@ export function Header({ hasError }: { hasError?: boolean }) {
           <MenuItem
             href="https://www.youtube.com/@Stacklok"
             target="_blank"
-            className="block px-5 py-3 text-secondary hover:bg-brand-50"
             icon={<Youtube />}
           >
             YouTube
