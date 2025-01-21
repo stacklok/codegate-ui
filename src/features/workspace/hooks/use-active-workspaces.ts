@@ -1,7 +1,12 @@
+import { ListActiveWorkspacesResponse } from "@/api/generated";
 import { v1ListActiveWorkspacesOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useQuery } from "@tanstack/react-query";
 
-export function useActiveWorkspaces() {
+export function useActiveWorkspaces<T = ListActiveWorkspacesResponse>({
+  select,
+}: {
+  select?: (data?: ListActiveWorkspacesResponse) => T;
+} = {}) {
   return useQuery({
     ...v1ListActiveWorkspacesOptions(),
     refetchInterval: 5_000,
@@ -10,5 +15,6 @@ export function useActiveWorkspaces() {
     refetchOnReconnect: true,
     refetchOnWindowFocus: true,
     retry: false,
+    select,
   });
 }

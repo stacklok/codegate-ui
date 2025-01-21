@@ -14,6 +14,8 @@ import {
   v1ListActiveWorkspaces,
   v1ActivateWorkspace,
   v1DeleteWorkspace,
+  v1GetWorkspaceAlerts,
+  v1GetWorkspaceMessages,
 } from "../sdk.gen";
 import type {
   V1CreateWorkspaceData,
@@ -25,6 +27,8 @@ import type {
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
+  V1GetWorkspaceAlertsData,
+  V1GetWorkspaceMessagesData,
 } from "../types.gen";
 
 type QueryKey<TOptions extends OptionsLegacyParser> = [
@@ -296,4 +300,46 @@ export const v1DeleteWorkspaceMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const v1GetWorkspaceAlertsQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsData>,
+) => [createQueryKey("v1GetWorkspaceAlerts", options)];
+
+export const v1GetWorkspaceAlertsOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetWorkspaceAlerts({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1GetWorkspaceAlertsQueryKey(options),
+  });
+};
+
+export const v1GetWorkspaceMessagesQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceMessagesData>,
+) => [createQueryKey("v1GetWorkspaceMessages", options)];
+
+export const v1GetWorkspaceMessagesOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceMessagesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetWorkspaceMessages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1GetWorkspaceMessagesQueryKey(options),
+  });
 };

@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { Conversation, V1GetMessagesResponse } from "@/api/generated";
-import { v1GetMessagesOptions } from "@/api/generated/@tanstack/react-query.gen";
+import {
+  Conversation,
+  V1GetMessagesResponse,
+  V1GetWorkspaceMessagesData,
+} from "@/api/generated";
+import { v1GetWorkspaceMessagesOptions } from "@/api/generated/@tanstack/react-query.gen";
+import { useActiveWorkspaceName } from "@/features/workspace/hooks/use-active-workspace-name";
 
 const selectConversations = (data: V1GetMessagesResponse): Conversation[] => {
   return data.filter((prompt) =>
@@ -9,8 +14,16 @@ const selectConversations = (data: V1GetMessagesResponse): Conversation[] => {
 };
 
 export const usePromptsData = () => {
+  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+
+  const options: V1GetWorkspaceMessagesData = {
+    path: {
+      workspace_name: activeWorkspaceName ?? "default",
+    },
+  };
+
   return useQuery({
-    ...v1GetMessagesOptions(),
+    ...v1GetWorkspaceMessagesOptions(options),
     select: selectConversations,
   });
 };

@@ -29,6 +29,12 @@ import type {
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
+  V1GetWorkspaceAlertsData,
+  V1GetWorkspaceAlertsError,
+  V1GetWorkspaceAlertsResponse,
+  V1GetWorkspaceMessagesData,
+  V1GetWorkspaceMessagesError,
+  V1GetWorkspaceMessagesResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -201,5 +207,39 @@ export const v1DeleteWorkspace = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/api/v1/workspaces/{workspace_name}",
+  });
+};
+
+/**
+ * Get Workspace Alerts
+ * Get alerts for a workspace.
+ */
+export const v1GetWorkspaceAlerts = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceAlertsResponse,
+    V1GetWorkspaceAlertsError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/alerts",
+  });
+};
+
+/**
+ * Get Workspace Messages
+ * Get messages for a workspace.
+ */
+export const v1GetWorkspaceMessages = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetWorkspaceMessagesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceMessagesResponse,
+    V1GetWorkspaceMessagesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/messages",
   });
 };

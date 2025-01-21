@@ -13,19 +13,17 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, Search, Settings } from "lucide-react";
 import { useState } from "react";
-import { useActiveWorkspaces } from "../hooks/use-active-workspaces";
 import { useActivateWorkspace } from "../hooks/use-activate-workspace";
 import clsx from "clsx";
+import { useActiveWorkspaceName } from "../hooks/use-active-workspace-name";
 
 export function WorkspacesSelection() {
   const queryClient = useQueryClient();
 
   const { data: workspacesResponse } = useListWorkspaces();
-  const { data: activeWorkspacesResponse } = useActiveWorkspaces();
   const { mutateAsync: activateWorkspace } = useActivateWorkspace();
 
-  const activeWorkspaceName: string | null =
-    activeWorkspacesResponse?.workspaces?.[0]?.name ?? null;
+  const { data: activeWorkspaceName } = useActiveWorkspaceName();
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchWorkspace, setSearchWorkspace] = useState("");
