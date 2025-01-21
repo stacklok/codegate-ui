@@ -16,7 +16,7 @@ export default function Page() {
       <Route path="/prompt/:id" element={<RouteChat />} />
       <Route path="/help/:section" element={<RouteHelp />} />
       <Route path="/certificates" element={<RouteCertificates />} />
-      <Route path="/workspace/:id" element={<RouteWorkspace />} />
+      <Route path="/workspace/:name" element={<RouteWorkspace />} />
       <Route path="/workspaces" element={<RouteWorkspaces />} />
       <Route path="/workspace/create" element={<RouteWorkspaceCreation />} />
       <Route
