@@ -8,6 +8,7 @@ import {
   LinkButton,
 } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
+import { Blocks, Download, ShieldCheck } from "lucide-react";
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
@@ -36,6 +37,7 @@ export function Header({ hasError }: { hasError?: boolean }) {
       <div className="flex items-center gap-4 mr-16">
         <HoverPopover title="Certificates">
           <MenuItem
+            icon={<Download />}
             href="/certificates"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
@@ -44,16 +46,18 @@ export function Header({ hasError }: { hasError?: boolean }) {
           <MenuItem
             href="/certificates/security"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
+            icon={<ShieldCheck />}
           >
             Certificate Security
           </MenuItem>
         </HoverPopover>
 
         <HoverPopover title="Setup">
-          <MenuItem href="/help/continue-setup">
+          <MenuItem href="/help/continue-setup" icon={<Blocks />}>
             Set up in <span className="font-bold">Continue</span>
           </MenuItem>
           <MenuItem
+            icon={<Blocks />}
             href="/help/copilot-setup"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
           >
