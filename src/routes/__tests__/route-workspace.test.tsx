@@ -2,7 +2,13 @@ import { render, within } from "@/lib/test-utils";
 import { test, expect } from "vitest";
 import { RouteWorkspace } from "../route-workspace";
 
-const renderComponent = () => render(<RouteWorkspace />);
+const renderComponent = () =>
+  render(<RouteWorkspace />, {
+    routeConfig: {
+      initialEntries: ["/workspace/foo"],
+    },
+    pathConfig: "/workspace/:name",
+  });
 
 vi.mock("@monaco-editor/react", () => {
   const FakeEditor = vi.fn((props) => {
