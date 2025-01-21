@@ -36,4 +36,7 @@ export const handlers = [
   http.post("*/api/v1/workspaces", () => {
     return HttpResponse.json(mockedWorkspaces);
   }),
+  http.delete("*/api/v1/workspaces/:workspace_name", () =>
+    HttpResponse.json({ status: 204 }),
+  ),
 ];
