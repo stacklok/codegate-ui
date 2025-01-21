@@ -8,6 +8,7 @@ export function RouteWorkspaceCreation() {
     <>
       <Breadcrumbs>
         <BreadcrumbHome />
+        <Breadcrumb href="/workspaces">Manage Workspaces</Breadcrumb>
         <Breadcrumb>Create Workspace</Breadcrumb>
       </Breadcrumbs>
 
