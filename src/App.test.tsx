@@ -69,6 +69,15 @@ describe("App", () => {
       "https://discord.gg/stacklok",
     );
 
+    const githubMenuItem = screen.getByRole("menuitem", {
+      name: /github/i,
+    });
+    expect(githubMenuItem).toBeVisible();
+    expect(githubMenuItem).toHaveAttribute(
+      "href",
+      "https://github.com/stacklok/codegate",
+    );
+
     await userEvent.click(screen.getByText("Help"));
 
     await waitFor(() =>

@@ -6,6 +6,7 @@ import { WorkspacesSelection } from "@/features/workspace/components/workspaces-
 import {
   Blocks,
   Download,
+  Github,
   MessageCircleQuestion,
   ShieldCheck,
 } from "lucide-react";
@@ -83,6 +84,15 @@ export function Header({ hasError }: { hasError?: boolean }) {
             icon={<MessageCircleQuestion />}
           >
             Discord
+          </MenuItem>
+
+          <MenuItem
+            href="https://github.com/stacklok/codegate"
+            target="_blank"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
+            icon={<Github />}
+          >
+            GitHub
           </MenuItem>
         </HoverPopover>
 
