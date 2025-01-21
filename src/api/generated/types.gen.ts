@@ -55,8 +55,9 @@ export type Conversation = {
   conversation_timestamp: string;
 };
 
-export type CreateWorkspaceRequest = {
+export type CreateOrRenameWorkspaceRequest = {
   name: string;
+  rename_to?: string | null;
 };
 
 export type HTTPValidationError = {
@@ -119,7 +120,7 @@ export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 export type V1ListWorkspacesError = unknown;
 
 export type V1CreateWorkspaceData = {
-  body: CreateWorkspaceRequest;
+  body: CreateOrRenameWorkspaceRequest;
 };
 
 export type V1CreateWorkspaceResponse = Workspace;
@@ -150,6 +151,30 @@ export type V1DeleteWorkspaceData = {
 export type V1DeleteWorkspaceResponse = unknown;
 
 export type V1DeleteWorkspaceError = HTTPValidationError;
+
+export type V1ListArchivedWorkspacesResponse = ListWorkspacesResponse;
+
+export type V1ListArchivedWorkspacesError = unknown;
+
+export type V1RecoverWorkspaceData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1RecoverWorkspaceResponse = void;
+
+export type V1RecoverWorkspaceError = HTTPValidationError;
+
+export type V1HardDeleteWorkspaceData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1HardDeleteWorkspaceResponse = unknown;
+
+export type V1HardDeleteWorkspaceError = HTTPValidationError;
 
 export type V1GetWorkspaceAlertsData = {
   path: {

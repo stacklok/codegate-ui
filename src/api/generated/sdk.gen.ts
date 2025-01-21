@@ -29,6 +29,14 @@ import type {
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
+  V1ListArchivedWorkspacesError,
+  V1ListArchivedWorkspacesResponse,
+  V1RecoverWorkspaceData,
+  V1RecoverWorkspaceError,
+  V1RecoverWorkspaceResponse,
+  V1HardDeleteWorkspaceData,
+  V1HardDeleteWorkspaceError,
+  V1HardDeleteWorkspaceResponse,
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceAlertsError,
   V1GetWorkspaceAlertsResponse,
@@ -216,6 +224,57 @@ export const v1DeleteWorkspace = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/api/v1/workspaces/{workspace_name}",
+  });
+};
+
+/**
+ * List Archived Workspaces
+ * List all archived workspaces.
+ */
+export const v1ListArchivedWorkspaces = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListArchivedWorkspacesResponse,
+    V1ListArchivedWorkspacesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/archive",
+  });
+};
+
+/**
+ * Recover Workspace
+ * Recover an archived workspace by name.
+ */
+export const v1RecoverWorkspace = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1RecoverWorkspaceData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    V1RecoverWorkspaceResponse,
+    V1RecoverWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/archive/{workspace_name}/recover",
+  });
+};
+
+/**
+ * Hard Delete Workspace
+ * Hard delete an archived workspace by name.
+ */
+export const v1HardDeleteWorkspace = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1HardDeleteWorkspaceData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).delete<
+    V1HardDeleteWorkspaceResponse,
+    V1HardDeleteWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/archive/{workspace_name}",
   });
 };
 

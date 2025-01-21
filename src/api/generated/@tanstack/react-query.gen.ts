@@ -14,6 +14,9 @@ import {
   v1ListActiveWorkspaces,
   v1ActivateWorkspace,
   v1DeleteWorkspace,
+  v1ListArchivedWorkspaces,
+  v1RecoverWorkspace,
+  v1HardDeleteWorkspace,
   v1GetWorkspaceAlerts,
   v1GetWorkspaceMessages,
   v1GetWorkspaceSystemPrompt,
@@ -30,6 +33,12 @@ import type {
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
+  V1RecoverWorkspaceData,
+  V1RecoverWorkspaceError,
+  V1RecoverWorkspaceResponse,
+  V1HardDeleteWorkspaceData,
+  V1HardDeleteWorkspaceError,
+  V1HardDeleteWorkspaceResponse,
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceMessagesData,
   V1GetWorkspaceSystemPromptData,
@@ -302,6 +311,88 @@ export const v1DeleteWorkspaceMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await v1DeleteWorkspace({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1ListArchivedWorkspacesQueryKey = (
+  options?: OptionsLegacyParser,
+) => [createQueryKey("v1ListArchivedWorkspaces", options)];
+
+export const v1ListArchivedWorkspacesOptions = (
+  options?: OptionsLegacyParser,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListArchivedWorkspaces({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1ListArchivedWorkspacesQueryKey(options),
+  });
+};
+
+export const v1RecoverWorkspaceQueryKey = (
+  options: OptionsLegacyParser<V1RecoverWorkspaceData>,
+) => [createQueryKey("v1RecoverWorkspace", options)];
+
+export const v1RecoverWorkspaceOptions = (
+  options: OptionsLegacyParser<V1RecoverWorkspaceData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1RecoverWorkspace({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1RecoverWorkspaceQueryKey(options),
+  });
+};
+
+export const v1RecoverWorkspaceMutation = (
+  options?: Partial<OptionsLegacyParser<V1RecoverWorkspaceData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1RecoverWorkspaceResponse,
+    V1RecoverWorkspaceError,
+    OptionsLegacyParser<V1RecoverWorkspaceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1RecoverWorkspace({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1HardDeleteWorkspaceMutation = (
+  options?: Partial<OptionsLegacyParser<V1HardDeleteWorkspaceData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1HardDeleteWorkspaceResponse,
+    V1HardDeleteWorkspaceError,
+    OptionsLegacyParser<V1HardDeleteWorkspaceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1HardDeleteWorkspace({
         ...options,
         ...localOptions,
         throwOnError: true,
