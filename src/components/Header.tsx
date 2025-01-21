@@ -5,6 +5,7 @@ import { Separator, ButtonDarkMode, MenuItem } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
 import {
   Blocks,
+  BookOpenText,
   Download,
   Github,
   MessageCircleQuestion,
@@ -71,7 +72,7 @@ export function Header({ hasError }: { hasError?: boolean }) {
             href="https://docs.codegate.ai/"
             target="_blank"
             className="block px-5 py-3 text-secondary hover:bg-brand-50"
-            icon={<ShieldCheck />}
+            icon={<BookOpenText />}
           >
             Documentation
           </MenuItem>
