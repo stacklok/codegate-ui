@@ -1,6 +1,6 @@
 import { Card, CardBody, Button, Text } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
-import { useArchiveWorkspace } from "../hooks/use-archive-workspace";
+import { useArchiveWorkspace } from "../../workspace-system-prompt/hooks/use-archive-workspace";
 
 export function ArchiveWorkspace({
   className,

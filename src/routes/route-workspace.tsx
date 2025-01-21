@@ -1,5 +1,5 @@
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
-import { ArchiveWorkspace } from "@/features/workspace-system-prompt/components/archive-workspace";
+import { ArchiveWorkspace } from "@/features/workspace/components/archive-workspace";
 import { SystemPromptEditor } from "@/features/workspace-system-prompt/components/system-prompt-editor";
 import { WorkspaceHeading } from "@/features/workspace/components/workspace-heading";
 import { WorkspaceName } from "@/features/workspace/components/workspace-name";
