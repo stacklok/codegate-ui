@@ -67,7 +67,7 @@ export function WorkspacesSelection() {
             onAction={(v) => {
               handleWorkspaceClick(v?.toString());
             }}
-            className="py-2 pt-3"
+            className="py-2 pt-3 max-h-80 overflow-auto"
             renderEmptyState={() => (
               <p className="text-center">No workspaces found</p>
             )}
