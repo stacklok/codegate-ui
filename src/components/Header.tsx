@@ -39,12 +39,11 @@ export function Header({ hasError }: { hasError?: boolean }) {
       </div>
       <div className="flex items-center gap-4 mr-16">
         <HoverPopover title="Certificates">
-          <MenuItem icon={<Download />} href="/certificates">
-            Download
-          </MenuItem>
-
           <MenuItem href="/certificates/security" icon={<ShieldCheck />}>
-            Certificate Security
+            About certificate security
+          </MenuItem>
+          <MenuItem icon={<Download />} href="/certificates">
+            Download certificates
           </MenuItem>
         </HoverPopover>
 
