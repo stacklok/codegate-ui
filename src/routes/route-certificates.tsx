@@ -96,9 +96,10 @@ export function RouteCertificates() {
   const steps = {
     macos: {
       install: [
-        "Open the downloaded certificate file. Keychain Access launches and imports the cert automatically.",
-        'Select the login keychain and search for "CodeGate" (it may not appear until you search).',
-        'Double-click the "CodeGate CA" certificate.',
+        "Open the downloaded certificate file; Keychain Access will open and prompt you to to add the certificates.",
+        "In the Add Certificates dialog, select the `login` keychain, and click Add.",
+        "In the Keychain Access dialog, select the `login` keychain from the Default Keychains list on the left.",
+        'Search for "CodeGate" (it may not appear until you search), then in the search results, double-click the "CodeGate CA" certificate.',
         'Expand the Trust section and set the "Secure Sockets Layer" and "X.509 Basic Policy" options to "Always Trust".',
         "Alternatively, run `security add-trusted-cert -r trustRoot -k ~/Library/Keychains/login.keychain ~/Downloads/codegate.crt` from a terminal.",
       ],
