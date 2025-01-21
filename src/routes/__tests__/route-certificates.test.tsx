@@ -43,7 +43,7 @@ describe("Certificates", () => {
 
     expect(
       screen.getByText(
-        "Open the downloaded certificate file. Keychain Access launches and imports the cert automatically.",
+        "Open the downloaded certificate file; Keychain Access will open and prompt you to to add the certificates.",
       ),
     ).toBeVisible();
 
