@@ -1,6 +1,5 @@
 import { V1ListActiveWorkspacesResponse } from "@/api/generated";
 import { v1ListActiveWorkspacesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
-import { toast } from "@stacklok/ui-kit";
 import {
   QueryCacheNotifyEvent,
   QueryClient,
@@ -55,12 +54,6 @@ export function QueryClientProvider({ children }: { children: ReactNode }) {
           return;
 
         setActiveWorkspaceName(newWorkspaceName);
-        toast.info(
-          <span className="block whitespace-nowrap">
-            Activated workspace:{" "}
-            <span className="font-semibold">"{newWorkspaceName}"</span>
-          </span>,
-        );
 
         void queryClient.invalidateQueries({
           refetchType: "all",
