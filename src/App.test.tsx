@@ -78,6 +78,15 @@ describe("App", () => {
       "https://github.com/stacklok/codegate",
     );
 
+    const youtubeMenuItem = screen.getByRole("menuitem", {
+      name: /youtube/i,
+    });
+    expect(youtubeMenuItem).toBeVisible();
+    expect(youtubeMenuItem).toHaveAttribute(
+      "href",
+      "https://www.youtube.com/@Stacklok",
+    );
+
     await userEvent.click(screen.getByText("Help"));
 
     await waitFor(() =>

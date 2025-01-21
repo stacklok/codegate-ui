@@ -9,6 +9,7 @@ import {
   Github,
   MessageCircleQuestion,
   ShieldCheck,
+  Youtube,
 } from "lucide-react";
 
 export function Header({ hasError }: { hasError?: boolean }) {
@@ -93,6 +94,15 @@ export function Header({ hasError }: { hasError?: boolean }) {
             icon={<Github />}
           >
             GitHub
+          </MenuItem>
+
+          <MenuItem
+            href="https://www.youtube.com/@Stacklok"
+            target="_blank"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
+            icon={<Youtube />}
+          >
+            YouTube
           </MenuItem>
         </HoverPopover>
 
