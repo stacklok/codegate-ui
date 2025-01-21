@@ -3,7 +3,12 @@ import { SidebarTrigger } from "./ui/sidebar";
 import { HoverPopover } from "./HoverPopover";
 import { Separator, ButtonDarkMode, MenuItem } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
-import { Blocks, Download, ShieldCheck } from "lucide-react";
+import {
+  Blocks,
+  Download,
+  MessageCircleQuestion,
+  ShieldCheck,
+} from "lucide-react";
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
@@ -67,6 +72,17 @@ export function Header({ hasError }: { hasError?: boolean }) {
             icon={<ShieldCheck />}
           >
             Documentation
+          </MenuItem>
+
+          <Separator />
+
+          <MenuItem
+            href="https://discord.gg/stacklok"
+            target="_blank"
+            className="block px-5 py-3 text-secondary hover:bg-brand-50"
+            icon={<MessageCircleQuestion />}
+          >
+            Discord
           </MenuItem>
         </HoverPopover>
 

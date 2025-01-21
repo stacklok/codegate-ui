@@ -60,6 +60,15 @@ describe("App", () => {
       }),
     ).toBeVisible();
 
+    const discordMenuItem = screen.getByRole("menuitem", {
+      name: /discord/i,
+    });
+    expect(discordMenuItem).toBeVisible();
+    expect(discordMenuItem).toHaveAttribute(
+      "href",
+      "https://discord.gg/stacklok",
+    );
+
     await userEvent.click(screen.getByText("Help"));
 
     await waitFor(() =>
