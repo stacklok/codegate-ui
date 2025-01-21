@@ -33,8 +33,21 @@ export const handlers = [
   http.get("*/api/v1/workspaces", () => {
     return HttpResponse.json(mockedWorkspaces);
   }),
+  http.get("*/api/v1/workspaces/archive", () => {
+    return HttpResponse.json({
+      workspaces: [
+        {
+          name: "archived_workspace",
+          is_active: false,
+        },
+      ],
+    });
+  }),
   http.post("*/api/v1/workspaces", () => {
     return HttpResponse.json(mockedWorkspaces);
+  }),
+  http.post("*/api/v1/workspaces/archive/:workspace_name/recover", () => {
+    HttpResponse.json({ status: 204 });
   }),
   http.delete("*/api/v1/workspaces/:name", () =>
     HttpResponse.json({ status: 204 }),

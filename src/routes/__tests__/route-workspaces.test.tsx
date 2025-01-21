@@ -50,4 +50,20 @@ describe("Workspaces page", () => {
     expect(firstButton).toBeVisible();
     expect(firstButton).toHaveAttribute("href", "/workspace/myworkspace");
   });
+
+  it("has archived workspace", async () => {
+    await waitFor(() => {
+      expect(screen.getAllByRole("row").length).toBeGreaterThan(1);
+    });
+
+    expect(
+      screen.getByRole("rowheader", { name: /archived_workspace/i }),
+    ).toBeVisible();
+
+    expect(
+      screen.getByRole("button", {
+        name: /restore configuration/i,
+      }),
+    ).toBeVisible();
+  });
 });

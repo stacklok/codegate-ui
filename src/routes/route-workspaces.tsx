@@ -48,7 +48,7 @@ function CellConfiguration({
   name: string;
   isArchived?: boolean;
 }) {
-  const { mutate, isPending } = useRestoreWorkspace(name);
+  const { mutate, isPending } = useRestoreWorkspace();
 
   if (isArchived) {
     return (
