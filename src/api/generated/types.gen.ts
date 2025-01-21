@@ -79,6 +79,10 @@ export type QuestionAnswer = {
   answer: ChatMessage | null;
 };
 
+export type SystemPrompt = {
+  prompt: string;
+};
+
 export type ValidationError = {
   loc: Array<string | number>;
   msg: string;
@@ -166,3 +170,34 @@ export type V1GetWorkspaceMessagesData = {
 export type V1GetWorkspaceMessagesResponse = Array<Conversation>;
 
 export type V1GetWorkspaceMessagesError = HTTPValidationError;
+
+export type V1GetWorkspaceSystemPromptData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1GetWorkspaceSystemPromptResponse = SystemPrompt;
+
+export type V1GetWorkspaceSystemPromptError = HTTPValidationError;
+
+export type V1SetWorkspaceSystemPromptData = {
+  body: SystemPrompt;
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1SetWorkspaceSystemPromptResponse = void;
+
+export type V1SetWorkspaceSystemPromptError = HTTPValidationError;
+
+export type V1DeleteWorkspaceSystemPromptData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1DeleteWorkspaceSystemPromptResponse = void;
+
+export type V1DeleteWorkspaceSystemPromptError = HTTPValidationError;

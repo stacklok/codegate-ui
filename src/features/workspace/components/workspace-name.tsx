@@ -5,8 +5,8 @@ export function WorkspaceName({
   className,
   workspaceName,
 }: {
-  workspaceName: string;
   className?: string;
+  workspaceName: string;
 }) {
   return (
     <Card className={twMerge(className, "shrink-0")}>

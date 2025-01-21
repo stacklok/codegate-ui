@@ -1,4 +1,4 @@
-import { render, within } from "@/lib/test-utils";
+import { render, waitFor, within } from "@/lib/test-utils";
 import { test, expect } from "vitest";
 import { RouteWorkspace } from "../route-workspace";
 
@@ -17,7 +17,7 @@ vi.mock("@monaco-editor/react", () => {
         data-testid="system-prompt-editor"
         data-auto={props.wrapperClassName}
         onChange={(e) => props.onChange(e.target.value)}
-        value={props.value}
+        value={props.value ?? ""}
       ></textarea>
     );
   });
@@ -38,10 +38,12 @@ test("renders workspace name input", () => {
   expect(getByRole("textbox", { name: "Workspace name" })).toBeVisible();
 });
 
-test("renders system prompt editor", () => {
+test("renders system prompt editor", async () => {
   const { getByTestId } = renderComponent();
 
-  expect(getByTestId("system-prompt-editor")).toBeVisible();
+  await waitFor(() => {
+    expect(getByTestId("system-prompt-editor")).toBeVisible();
+  });
 });
 
 test("has breadcrumbs", () => {

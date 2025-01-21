@@ -35,6 +35,15 @@ import type {
   V1GetWorkspaceMessagesData,
   V1GetWorkspaceMessagesError,
   V1GetWorkspaceMessagesResponse,
+  V1GetWorkspaceSystemPromptData,
+  V1GetWorkspaceSystemPromptError,
+  V1GetWorkspaceSystemPromptResponse,
+  V1SetWorkspaceSystemPromptData,
+  V1SetWorkspaceSystemPromptError,
+  V1SetWorkspaceSystemPromptResponse,
+  V1DeleteWorkspaceSystemPromptData,
+  V1DeleteWorkspaceSystemPromptError,
+  V1DeleteWorkspaceSystemPromptResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -241,5 +250,60 @@ export const v1GetWorkspaceMessages = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/api/v1/workspaces/{workspace_name}/messages",
+  });
+};
+
+/**
+ * Get Workspace System Prompt
+ * Get the system prompt for a workspace.
+ */
+export const v1GetWorkspaceSystemPrompt = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<V1GetWorkspaceSystemPromptData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceSystemPromptResponse,
+    V1GetWorkspaceSystemPromptError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/system-prompt",
+  });
+};
+
+/**
+ * Set Workspace System Prompt
+ */
+export const v1SetWorkspaceSystemPrompt = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<V1SetWorkspaceSystemPromptData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).put<
+    V1SetWorkspaceSystemPromptResponse,
+    V1SetWorkspaceSystemPromptError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/system-prompt",
+  });
+};
+
+/**
+ * Delete Workspace System Prompt
+ */
+export const v1DeleteWorkspaceSystemPrompt = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<V1DeleteWorkspaceSystemPromptData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).delete<
+    V1DeleteWorkspaceSystemPromptResponse,
+    V1DeleteWorkspaceSystemPromptError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/system-prompt",
   });
 };

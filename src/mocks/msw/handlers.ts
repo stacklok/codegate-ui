@@ -36,7 +36,13 @@ export const handlers = [
   http.post("*/api/v1/workspaces", () => {
     return HttpResponse.json(mockedWorkspaces);
   }),
-  http.delete("*/api/v1/workspaces/:workspace_name", () =>
+  http.delete("*/api/v1/workspaces/:name", () =>
     HttpResponse.json({ status: 204 }),
   ),
+  http.get("*/api/v1/workspaces/:name/system-prompt", () => {
+    return HttpResponse.json({ prompt: "foo" });
+  }),
+  http.put("*/api/v1/workspaces/:name/system-prompt", () => {
+    return HttpResponse.json({}, { status: 204 });
+  }),
 ];

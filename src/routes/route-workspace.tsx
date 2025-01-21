@@ -21,7 +21,7 @@ export function RouteWorkspace() {
 
       <WorkspaceHeading title="Workspace settings" />
       <WorkspaceName className="mb-4" workspaceName={name} />
-      <SystemPromptEditor className="mb-4" />
+      <SystemPromptEditor workspaceName={name} className="mb-4" />
       <ArchiveWorkspace workspaceName={name} />
     </>
   );

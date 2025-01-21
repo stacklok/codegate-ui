@@ -16,6 +16,9 @@ import {
   v1DeleteWorkspace,
   v1GetWorkspaceAlerts,
   v1GetWorkspaceMessages,
+  v1GetWorkspaceSystemPrompt,
+  v1SetWorkspaceSystemPrompt,
+  v1DeleteWorkspaceSystemPrompt,
 } from "../sdk.gen";
 import type {
   V1CreateWorkspaceData,
@@ -29,6 +32,13 @@ import type {
   V1DeleteWorkspaceResponse,
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceMessagesData,
+  V1GetWorkspaceSystemPromptData,
+  V1SetWorkspaceSystemPromptData,
+  V1SetWorkspaceSystemPromptError,
+  V1SetWorkspaceSystemPromptResponse,
+  V1DeleteWorkspaceSystemPromptData,
+  V1DeleteWorkspaceSystemPromptError,
+  V1DeleteWorkspaceSystemPromptResponse,
 } from "../types.gen";
 
 type QueryKey<TOptions extends OptionsLegacyParser> = [
@@ -342,4 +352,65 @@ export const v1GetWorkspaceMessagesOptions = (
     },
     queryKey: v1GetWorkspaceMessagesQueryKey(options),
   });
+};
+
+export const v1GetWorkspaceSystemPromptQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceSystemPromptData>,
+) => [createQueryKey("v1GetWorkspaceSystemPrompt", options)];
+
+export const v1GetWorkspaceSystemPromptOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceSystemPromptData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetWorkspaceSystemPrompt({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1GetWorkspaceSystemPromptQueryKey(options),
+  });
+};
+
+export const v1SetWorkspaceSystemPromptMutation = (
+  options?: Partial<OptionsLegacyParser<V1SetWorkspaceSystemPromptData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1SetWorkspaceSystemPromptResponse,
+    V1SetWorkspaceSystemPromptError,
+    OptionsLegacyParser<V1SetWorkspaceSystemPromptData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1SetWorkspaceSystemPrompt({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1DeleteWorkspaceSystemPromptMutation = (
+  options?: Partial<OptionsLegacyParser<V1DeleteWorkspaceSystemPromptData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1DeleteWorkspaceSystemPromptResponse,
+    V1DeleteWorkspaceSystemPromptError,
+    OptionsLegacyParser<V1DeleteWorkspaceSystemPromptData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1DeleteWorkspaceSystemPrompt({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
