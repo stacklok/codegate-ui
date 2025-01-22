@@ -16,7 +16,7 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "type-check": "tsc --noEmit -p ./tsconfig.app.json",
-    "generate-icons": "npx @svgr/cli --typescript --no-dimensions --jsx-runtime automatic --out-dir ./src/components/icons/ -- icons"
+    "generate-icons": "npx @svgr/cli --typescript --no-dimensions --replace-attr-values '#2E323A=currentColor' --jsx-runtime automatic --out-dir ./src/components/icons/ -- icons"
   },
   "dependencies": {
     "@hey-api/client-fetch": "^0.6.0",
