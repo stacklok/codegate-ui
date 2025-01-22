@@ -35,7 +35,7 @@ test("renders title", () => {
 test("renders workspace name input", () => {
   const { getByRole } = renderComponent();
 
-  expect(getByRole("textbox", { name: "Workspace name" })).toBeVisible();
+  expect(getByRole("textbox", { name: /workspace name/i })).toBeVisible();
 });
 
 test("renders system prompt editor", async () => {
