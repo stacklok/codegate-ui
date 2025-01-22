@@ -7,7 +7,7 @@ const SvgFlipBackward = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <path
-      stroke="#2E323A"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M1 5h13.5a4.5 4.5 0 1 1 0 9H10M1 5l4-4M1 5l4 4"

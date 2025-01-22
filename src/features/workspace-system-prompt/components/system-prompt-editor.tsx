@@ -132,9 +132,11 @@ function usePromptValue({
 export function SystemPromptEditor({
   className,
   workspaceName,
+  isArchived,
 }: {
   className?: string;
   workspaceName: string;
+  isArchived: boolean | undefined;
 }) {
   const context = useContext(DarkModeContext);
   const theme: Theme = inferDarkMode(context);
@@ -194,13 +196,14 @@ export function SystemPromptEditor({
             <Editor
               options={{
                 minimap: { enabled: false },
+                readOnly: isArchived,
               }}
               value={value}
               onChange={(v) => setValue(v ?? "")}
               height="20rem"
               defaultLanguage="Markdown"
               theme={theme}
-              className="bg-base"
+              className={twMerge("bg-base", isArchived ? "opacity-25" : "")}
             />
           )}
         </div>
@@ -208,7 +211,7 @@ export function SystemPromptEditor({
       <CardFooter className="justify-end gap-2">
         <Button
           isPending={isMutationPending}
-          isDisabled={Boolean(isGetPromptPending ?? saved)}
+          isDisabled={Boolean(isArchived ?? isGetPromptPending ?? saved)}
           onPress={() => handleSubmit(value)}
         >
           {saved ? (

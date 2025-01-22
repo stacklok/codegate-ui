@@ -1,14 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { v1ListArchivedWorkspacesOptions } from "@/api/generated/@tanstack/react-query.gen";
+import { V1ListArchivedWorkspacesResponse } from "@/api/generated";
 
-export const useArchivedWorkspaces = () => {
+export function useArchivedWorkspaces<T = V1ListArchivedWorkspacesResponse>({
+  select,
+}: {
+  select?: (data: V1ListArchivedWorkspacesResponse) => T;
+} = {}) {
   return useQuery({
     ...v1ListArchivedWorkspacesOptions(),
-    refetchInterval: 5_000,
+    refetchInterval: 5000,
     refetchIntervalInBackground: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
     refetchOnWindowFocus: true,
     retry: false,
+    select,
   });
-};
+}

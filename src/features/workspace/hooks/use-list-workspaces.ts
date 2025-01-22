@@ -1,14 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { v1ListWorkspacesOptions } from "@/api/generated/@tanstack/react-query.gen";
+import { V1ListWorkspacesResponse } from "@/api/generated";
 
-export const useListWorkspaces = () => {
+export function useListWorkspaces<T = V1ListWorkspacesResponse>({
+  select,
+}: {
+  select?: (data: V1ListWorkspacesResponse) => T;
+} = {}) {
   return useQuery({
     ...v1ListWorkspacesOptions(),
-    refetchInterval: 5_000,
+    refetchInterval: 5000,
     refetchIntervalInBackground: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
     refetchOnWindowFocus: true,
     retry: false,
+    select,
   });
-};
+}

@@ -15,9 +15,11 @@ import { FormEvent, useState } from "react";
 export function WorkspaceName({
   className,
   workspaceName,
+  isArchived,
 }: {
   className?: string;
   workspaceName: string;
+  isArchived: boolean | undefined;
 }) {
   const [name, setName] = useState(workspaceName);
   const { mutate, isPending, error } = useCreateWorkspace();
@@ -38,6 +40,7 @@ export function WorkspaceName({
             name="Workspace name"
             validationBehavior="aria"
             isRequired
+            isDisabled={isArchived}
             onChange={setName}
           >
             <Label>Workspace name</Label>
@@ -46,7 +49,11 @@ export function WorkspaceName({
           </TextField>
         </CardBody>
         <CardFooter className="justify-end gap-2">
-          <Button isDisabled={name === ""} isPending={isPending} type="submit">
+          <Button
+            isDisabled={isArchived || name === ""}
+            isPending={isPending}
+            type="submit"
+          >
             Save
           </Button>
         </CardFooter>

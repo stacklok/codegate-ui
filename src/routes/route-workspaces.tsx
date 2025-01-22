@@ -18,7 +18,7 @@ import { Settings, SquarePlus } from "lucide-react";
 import { useArchivedWorkspaces } from "@/features/workspace/hooks/use-archived-workspaces";
 import { Workspace } from "@/api/generated";
 import SvgFlipBackward from "@/components/icons/FlipBackward";
-import { useRestoreWorkspace } from "@/features/workspace/hooks/use-restore-workspace";
+import { useRestoreWorkspaceButton } from "@/features/workspace/hooks/use-restore-workspace-button";
 
 function CellName({
   name,
@@ -48,17 +48,15 @@ function CellConfiguration({
   name: string;
   isArchived?: boolean;
 }) {
-  const { mutate, isPending } = useRestoreWorkspace();
+  const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name });
 
   if (isArchived) {
     return (
       <Cell>
         <Button
           variant="tertiary"
-          isPending={isPending}
-          isDisabled={isPending}
           className="flex w-full gap-2 items-center"
-          onPress={() => mutate({ path: { workspace_name: name } })}
+          {...restoreButtonProps}
         >
           <SvgFlipBackward /> Restore Configuration
         </Button>

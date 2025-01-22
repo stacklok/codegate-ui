@@ -1,15 +1,19 @@
 import { Card, CardBody, Button, Text } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
-import { useArchiveWorkspace } from "../../workspace-system-prompt/hooks/use-archive-workspace";
+import { useRestoreWorkspaceButton } from "../hooks/use-restore-workspace-button";
+import { useArchiveWorkspaceButton } from "../hooks/use-archive-workspace-button";
 
 export function ArchiveWorkspace({
   className,
   workspaceName,
+  isArchived,
 }: {
   workspaceName: string;
   className?: string;
+  isArchived: boolean | undefined;
 }) {
-  const { mutate, isPending } = useArchiveWorkspace();
+  const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName });
+  const archiveButtonProps = useArchiveWorkspaceButton({ workspaceName });
 
   return (
     <Card className={twMerge(className, "shrink-0")}>
@@ -22,15 +26,7 @@ export function ArchiveWorkspace({
           </Text>
         </div>
 
-        <Button
-          isDestructive
-          isPending={isPending}
-          onPress={() => {
-            mutate({ path: { workspace_name: workspaceName } });
-          }}
-        >
-          Archive
-        </Button>
+        <Button {...(isArchived ? restoreButtonProps : archiveButtonProps)} />
       </CardBody>
     </Card>
   );
