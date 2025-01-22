@@ -25,9 +25,9 @@ const renderComponent = () =>
 
 test("can update system prompt", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/:name/system-prompt", () => {
+    http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
       return HttpResponse.json({ prompt: "initial prompt from server" });
-    })
+    }),
   );
 
   const { getByRole } = renderComponent();
@@ -46,9 +46,9 @@ test("can update system prompt", async () => {
   await userEvent.click(getByRole("button", { name: /Save/i }));
 
   server.use(
-    http.get("*/api/v1/workspaces/:name/system-prompt", () => {
+    http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
       return HttpResponse.json({ prompt: "new prompt from test" });
-    })
+    }),
   );
 
   await waitFor(() => {
