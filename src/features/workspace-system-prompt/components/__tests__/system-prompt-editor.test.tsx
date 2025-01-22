@@ -21,13 +21,13 @@ vi.mock("@monaco-editor/react", () => {
 });
 
 const renderComponent = () =>
-  render(<SystemPromptEditor workspaceName="foo" />);
+  render(<SystemPromptEditor isArchived={false} workspaceName="foo" />);
 
 test("can update system prompt", async () => {
   server.use(
     http.get("*/api/v1/workspaces/:name/system-prompt", () => {
       return HttpResponse.json({ prompt: "initial prompt from server" });
-    }),
+    })
   );
 
   const { getByRole } = renderComponent();
@@ -48,7 +48,7 @@ test("can update system prompt", async () => {
   server.use(
     http.get("*/api/v1/workspaces/:name/system-prompt", () => {
       return HttpResponse.json({ prompt: "new prompt from test" });
-    }),
+    })
   );
 
   await waitFor(() => {
