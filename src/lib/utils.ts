@@ -1,14 +1,42 @@
 import { AlertConversation, Conversation } from "@/api/generated/types.gen";
 import { MaliciousPkgType, TriggerType } from "@/types";
-import { isToday, isYesterday } from "date-fns";
+import { format, isToday, isYesterday } from "date-fns";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const SEVEN_DAYS_MS = 7 * ONE_DAY_MS;
 const TEEN_DAYS_MS = 14 * ONE_DAY_MS;
 const THTY_DAYS_MS = 30 * ONE_DAY_MS;
+const MAX_TEXT_LENGTH = 200;
+const FILEPATH_REGEX = /(?:---FILEPATH|Path:|\/\/\s*filepath:)\s*([^\s]+)/g;
+const COMPARE_CODE_REGEX = /Compare this snippet[^:]*:/g;
 
-export function extractTitleFromMessage(message: string) {
+function parsingByKeys(text: string | undefined, timestamp: string) {
+  const fallback = `Prompt ${format(new Date(timestamp ?? ""), "y/MM/dd - hh:mm:ss a")}`;
   try {
+    if (!text) return fallback;
+    const filePath = text.match(FILEPATH_REGEX);
+    const compareCode = text.match(COMPARE_CODE_REGEX);
+    if (compareCode || filePath) {
+      if (filePath)
+        return `Prompt on file${filePath[0]?.trim().toLocaleLowerCase()}`;
+
+      if (compareCode)
+        return `Prompt from snippet ${compareCode[0]?.trim().toLocaleLowerCase()}`;
+    }
+
+    if (text.length > MAX_TEXT_LENGTH) {
+      return fallback;
+    }
+
+    return text.trim();
+  } catch {
+    return fallback;
+  }
+}
+
+export function parsingPromptText(message: string, timestamp: string) {
+  try {
+    // checking malformed markdown code blocks
     const regex = /^(.*)```[\s\S]*?```(.*)$/s;
     const match = message.match(regex);
 
@@ -16,10 +44,10 @@ export function extractTitleFromMessage(message: string) {
       const beforeMarkdown = match[1]?.trim();
       const afterMarkdown = match[2]?.trim();
       const title = beforeMarkdown || afterMarkdown;
-      return title;
+      return parsingByKeys(title, timestamp);
     }
 
-    return message.trim();
+    return parsingByKeys(message, timestamp);
   } catch {
     return message.trim();
   }
@@ -119,7 +147,9 @@ export function sanitizeQuestionPrompt({
 }) {
   try {
     // it shouldn't be possible to receive the prompt answer without a question
-    if (!answer) return question;
+    if (!answer) {
+      throw new Error("Missing AI answer");
+    }
 
     // Check if 'answer' is truthy; if so, try to find and return the text after "Query:"
     const index = question.indexOf("Query:");

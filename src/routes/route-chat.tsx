@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { usePromptsData } from "@/hooks/usePromptsData";
-import { extractTitleFromMessage, sanitizeQuestionPrompt } from "@/lib/utils";
+import { parsingPromptText, sanitizeQuestionPrompt } from "@/lib/utils";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import {
   ChatBubble,
@@ -17,22 +17,22 @@ export function RouteChat() {
   const chat = prompts?.find((prompt) => prompt.chat_id === id);
 
   const title =
-    chat === undefined
-      ? ""
-      : extractTitleFromMessage(
-          chat.question_answers?.[0]?.question?.message
-            ? sanitizeQuestionPrompt({
-                question: chat.question_answers?.[0].question.message,
-                answer: chat.question_answers?.[0]?.answer?.message ?? "",
-              })
-            : `Prompt ${chat.conversation_timestamp}`,
+    chat === undefined ||
+    chat.question_answers?.[0]?.question?.message === undefined
+      ? `Prompt ${id}`
+      : parsingPromptText(
+          sanitizeQuestionPrompt({
+            question: chat.question_answers?.[0].question.message,
+            answer: chat.question_answers?.[0]?.answer?.message ?? "",
+          }),
+          chat.conversation_timestamp,
         );
 
   return (
     <>
       <Breadcrumbs>
         <BreadcrumbHome />
-        <Breadcrumb>{title}</Breadcrumb>
+        <Breadcrumb className="">{title}</Breadcrumb>
       </Breadcrumbs>
 
       <div className="w-[calc(100vw-18rem)]">

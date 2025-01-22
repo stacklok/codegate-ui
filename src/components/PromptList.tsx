@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import {
-  extractTitleFromMessage,
+  parsingPromptText,
   groupPromptsByRelativeDate,
   sanitizeQuestionPrompt,
 } from "@/lib/utils";
@@ -31,15 +31,14 @@ export function PromptList({ prompts }: { prompts: Conversation[] }) {
                     { "font-bold": currentPromptId === prompt.chat_id },
                   )}
                 >
-                  {extractTitleFromMessage(
-                    prompt.question_answers?.[0]?.question?.message
-                      ? sanitizeQuestionPrompt({
-                          question:
-                            prompt.question_answers?.[0].question.message,
-                          answer:
-                            prompt.question_answers?.[0]?.answer?.message ?? "",
-                        })
-                      : `Prompt ${prompt.conversation_timestamp}`,
+                  {parsingPromptText(
+                    sanitizeQuestionPrompt({
+                      question:
+                        prompt.question_answers?.[0]?.question.message ?? "",
+                      answer:
+                        prompt.question_answers?.[0]?.answer?.message ?? "",
+                    }),
+                    prompt.conversation_timestamp,
                   )}
                 </Link>
               </li>
