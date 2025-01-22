@@ -52,10 +52,10 @@ export const handlers = [
   http.delete("*/api/v1/workspaces/:name", () =>
     HttpResponse.json({ status: 204 }),
   ),
-  http.get("*/api/v1/workspaces/:name/system-prompt", () => {
+  http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
     return HttpResponse.json({ prompt: "foo" });
   }),
-  http.put("*/api/v1/workspaces/:name/system-prompt", () => {
+  http.put("*/api/v1/workspaces/:name/custom-instructions", () => {
     return HttpResponse.json({}, { status: 204 });
   }),
 ];

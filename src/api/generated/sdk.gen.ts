@@ -43,15 +43,15 @@ import type {
   V1GetWorkspaceMessagesData,
   V1GetWorkspaceMessagesError,
   V1GetWorkspaceMessagesResponse,
-  V1GetWorkspaceSystemPromptData,
-  V1GetWorkspaceSystemPromptError,
-  V1GetWorkspaceSystemPromptResponse,
-  V1SetWorkspaceSystemPromptData,
-  V1SetWorkspaceSystemPromptError,
-  V1SetWorkspaceSystemPromptResponse,
-  V1DeleteWorkspaceSystemPromptData,
-  V1DeleteWorkspaceSystemPromptError,
-  V1DeleteWorkspaceSystemPromptResponse,
+  V1GetWorkspaceCustomInstructionsData,
+  V1GetWorkspaceCustomInstructionsError,
+  V1GetWorkspaceCustomInstructionsResponse,
+  V1SetWorkspaceCustomInstructionsData,
+  V1SetWorkspaceCustomInstructionsError,
+  V1SetWorkspaceCustomInstructionsResponse,
+  V1DeleteWorkspaceCustomInstructionsData,
+  V1DeleteWorkspaceCustomInstructionsError,
+  V1DeleteWorkspaceCustomInstructionsResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -313,56 +313,65 @@ export const v1GetWorkspaceMessages = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get Workspace System Prompt
- * Get the system prompt for a workspace.
+ * Get Workspace Custom Instructions
+ * Get the custom instructions of a workspace.
  */
-export const v1GetWorkspaceSystemPrompt = <
+export const v1GetWorkspaceCustomInstructions = <
   ThrowOnError extends boolean = false,
 >(
-  options: OptionsLegacyParser<V1GetWorkspaceSystemPromptData, ThrowOnError>,
+  options: OptionsLegacyParser<
+    V1GetWorkspaceCustomInstructionsData,
+    ThrowOnError
+  >,
 ) => {
   return (options?.client ?? client).get<
-    V1GetWorkspaceSystemPromptResponse,
-    V1GetWorkspaceSystemPromptError,
+    V1GetWorkspaceCustomInstructionsResponse,
+    V1GetWorkspaceCustomInstructionsError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/system-prompt",
+    url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
   });
 };
 
 /**
- * Set Workspace System Prompt
+ * Set Workspace Custom Instructions
  */
-export const v1SetWorkspaceSystemPrompt = <
+export const v1SetWorkspaceCustomInstructions = <
   ThrowOnError extends boolean = false,
 >(
-  options: OptionsLegacyParser<V1SetWorkspaceSystemPromptData, ThrowOnError>,
+  options: OptionsLegacyParser<
+    V1SetWorkspaceCustomInstructionsData,
+    ThrowOnError
+  >,
 ) => {
   return (options?.client ?? client).put<
-    V1SetWorkspaceSystemPromptResponse,
-    V1SetWorkspaceSystemPromptError,
+    V1SetWorkspaceCustomInstructionsResponse,
+    V1SetWorkspaceCustomInstructionsError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/system-prompt",
+    url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
   });
 };
 
 /**
- * Delete Workspace System Prompt
+ * Delete Workspace Custom Instructions
  */
-export const v1DeleteWorkspaceSystemPrompt = <
+export const v1DeleteWorkspaceCustomInstructions = <
   ThrowOnError extends boolean = false,
 >(
-  options: OptionsLegacyParser<V1DeleteWorkspaceSystemPromptData, ThrowOnError>,
+  options: OptionsLegacyParser<
+    V1DeleteWorkspaceCustomInstructionsData,
+    ThrowOnError
+  >,
 ) => {
   return (options?.client ?? client).delete<
-    V1DeleteWorkspaceSystemPromptResponse,
-    V1DeleteWorkspaceSystemPromptError,
+    V1DeleteWorkspaceCustomInstructionsResponse,
+    V1DeleteWorkspaceCustomInstructionsError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/system-prompt",
+    url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
   });
 };

@@ -1,9 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { v1SetWorkspaceSystemPromptMutation } from "@/api/generated/@tanstack/react-query.gen";
-import { V1GetWorkspaceSystemPromptData } from "@/api/generated";
+import { v1SetWorkspaceCustomInstructionsMutation } from "@/api/generated/@tanstack/react-query.gen";
+import { V1GetWorkspaceCustomInstructionsData } from "@/api/generated";
 
-export function usePostSystemPrompt(options: V1GetWorkspaceSystemPromptData) {
+export function usePostSystemPrompt(
+  options: V1GetWorkspaceCustomInstructionsData,
+) {
   return useMutation({
-    ...v1SetWorkspaceSystemPromptMutation(options),
+    ...v1SetWorkspaceCustomInstructionsMutation(options),
   });
 }

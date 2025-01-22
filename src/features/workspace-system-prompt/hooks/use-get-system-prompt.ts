@@ -1,4 +1,4 @@
-import { v1GetWorkspaceSystemPromptOptions } from "@/api/generated/@tanstack/react-query.gen";
+import { v1GetWorkspaceCustomInstructionsOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetSystemPrompt(options: {
@@ -7,6 +7,6 @@ export function useGetSystemPrompt(options: {
   };
 }) {
   return useQuery({
-    ...v1GetWorkspaceSystemPromptOptions(options),
+    ...v1GetWorkspaceCustomInstructionsOptions(options),
   });
 }
