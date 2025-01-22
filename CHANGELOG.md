@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/stacklok/codegate-ui/compare/v0.7.0...v0.7.1) (2025-01-22)
+
+
+### Bug Fixes
+
+* show banner in archived workspace ([#165](https://github.com/stacklok/codegate-ui/issues/165)) ([e77a837](https://github.com/stacklok/codegate-ui/commit/e77a83722f5a83b65d185b14c7e618889703b904))
+
 ## [0.7.0](https://github.com/stacklok/codegate-ui/compare/v0.6.1...v0.7.0) (2025-01-22)
 
 
