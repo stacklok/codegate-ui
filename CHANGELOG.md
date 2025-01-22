@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.7.0](https://github.com/stacklok/codegate-ui/compare/v0.6.1...v0.7.0) (2025-01-22)
+
+
+### Features
+
+* add create workspace ([#133](https://github.com/stacklok/codegate-ui/issues/133)) ([1c3e0f0](https://github.com/stacklok/codegate-ui/commit/1c3e0f04e698d889d7a7e36234e31a0672c82933))
+* add workspaces page ([#128](https://github.com/stacklok/codegate-ui/issues/128)) ([750d8f6](https://github.com/stacklok/codegate-ui/commit/750d8f6db2fe6110ffe6c720db663d8fae2163f1))
+* archive workspace ([#145](https://github.com/stacklok/codegate-ui/issues/145)) ([34dc350](https://github.com/stacklok/codegate-ui/commit/34dc35090d14a959189deedae49454fca0dba08e))
+* enable toggle workspace, invalidate on workspace update ([#130](https://github.com/stacklok/codegate-ui/issues/130)) ([8904d8b](https://github.com/stacklok/codegate-ui/commit/8904d8bfc4b8946beeb7506df72d2b12504b33d1))
+* implement breadcrumbs according to design ([#131](https://github.com/stacklok/codegate-ui/issues/131)) ([43fdf83](https://github.com/stacklok/codegate-ui/commit/43fdf83d8c7fca94cf04a7d0a13b06ba30f7ea74))
+* implement new menu design ([#152](https://github.com/stacklok/codegate-ui/issues/152)) ([c63de9e](https://github.com/stacklok/codegate-ui/commit/c63de9e1c649d589421ecc94783a6e12a7c132c1))
+* rename workspace ([#163](https://github.com/stacklok/codegate-ui/issues/163)) ([3b68754](https://github.com/stacklok/codegate-ui/commit/3b6875489c92a7d7629250e1d984f36f4e56bda5))
+* show archived workspaces and restore it ([#154](https://github.com/stacklok/codegate-ui/issues/154)) ([d7e244f](https://github.com/stacklok/codegate-ui/commit/d7e244fecb358c572a26490344c30e5362b2c78a))
+* workspace scoped queries (messages & alerts) ([#140](https://github.com/stacklok/codegate-ui/issues/140)) ([500d48d](https://github.com/stacklok/codegate-ui/commit/500d48d06014b6e54bc55942a7cc705628bc30bc))
+* workspace settings route & system prompt editor ([#114](https://github.com/stacklok/codegate-ui/issues/114)) ([0d9d752](https://github.com/stacklok/codegate-ui/commit/0d9d75226e4670b54e33c9e184c2339b341eaee9))
+* workspace system prompt CRUD ([#147](https://github.com/stacklok/codegate-ui/issues/147)) ([0ed8d66](https://github.com/stacklok/codegate-ui/commit/0ed8d669862239129af93c6c998461f25a83849f))
+* **workspace:** add dropdown ([#123](https://github.com/stacklok/codegate-ui/issues/123)) ([51fd254](https://github.com/stacklok/codegate-ui/commit/51fd254affd1333b3f839fb6de7b5058fce68ca2))
+
+
+### Bug Fixes
+
+* buttons in workspace page ([#159](https://github.com/stacklok/codegate-ui/issues/159)) ([1d80c9f](https://github.com/stacklok/codegate-ui/commit/1d80c9fa761cb3da341ef471480d4665effd86c1))
+* cert instructions ([#150](https://github.com/stacklok/codegate-ui/issues/150)) ([81a1846](https://github.com/stacklok/codegate-ui/commit/81a1846767d7d2996848b0c26bf296e989f620ce))
+* enter to submit workspace create form ([#142](https://github.com/stacklok/codegate-ui/issues/142)) ([14a9cfe](https://github.com/stacklok/codegate-ui/commit/14a9cfe642e6cb0e8def62422d2fb4f562d0a729))
+* fix providers for better debugging ([#141](https://github.com/stacklok/codegate-ui/issues/141)) ([d471fd0](https://github.com/stacklok/codegate-ui/commit/d471fd0e91b5adc30aad34acb027d922c5026302))
+* title changed ([#158](https://github.com/stacklok/codegate-ui/issues/158)) ([ff6ce7f](https://github.com/stacklok/codegate-ui/commit/ff6ce7fa73039cc8f32fcabd1b1f11d886d25823))
+* workspace ui nits ([#132](https://github.com/stacklok/codegate-ui/issues/132)) ([2c97fd4](https://github.com/stacklok/codegate-ui/commit/2c97fd4982a17ece0c6c0475bd8d8ac7ad1420a7))
+* workspaces dropdown overflow ([#138](https://github.com/stacklok/codegate-ui/issues/138)) ([bc08ac9](https://github.com/stacklok/codegate-ui/commit/bc08ac918e8de8f3a01f987549459cd108e7d4fc))
+
 ## [0.6.1](https://github.com/stacklok/codegate-ui/compare/v0.6.0...v0.6.1) (2025-01-20)
 
 
