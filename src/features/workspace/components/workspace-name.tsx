@@ -39,7 +39,10 @@ export function WorkspaceName({
 
   return (
     <Form onSubmit={handleSubmit} validationBehavior="aria">
-      <Card className={twMerge(className, "shrink-0")}>
+      <Card
+        className={twMerge(className, "shrink-0")}
+        data-testid="workspace-name"
+      >
         <CardBody>
           <TextField
             aria-label="Workspace name"

@@ -8,7 +8,7 @@ const mockToast = vi.fn();
 vi.mock("react-router-dom", async () => {
   const original =
     await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom"
+      "react-router-dom",
     );
   return {
     ...original,
@@ -19,7 +19,7 @@ vi.mock("react-router-dom", async () => {
 vi.mock("@stacklok/ui-kit", async () => {
   const original =
     await vi.importActual<typeof import("@stacklok/ui-kit")>(
-      "@stacklok/ui-kit"
+      "@stacklok/ui-kit",
     );
   return {
     ...original,
@@ -31,5 +31,6 @@ test("archive workspace", async () => {
   render(<ArchiveWorkspace isArchived={false} workspaceName="foo" />);
 
   await userEvent.click(screen.getByRole("button", { name: /archive/i }));
-  await waitFor(() => expect(mockNavigate).toBeCalled());
+  await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));
+  expect(mockNavigate).toHaveBeenCalledWith("/workspaces");
 });
