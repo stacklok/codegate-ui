@@ -60,6 +60,10 @@ export type CreateOrRenameWorkspaceRequest = {
   rename_to?: string | null;
 };
 
+export type CustomInstructions = {
+  prompt: string;
+};
+
 export type HTTPValidationError = {
   detail?: Array<ValidationError>;
 };
@@ -78,10 +82,6 @@ export type ListWorkspacesResponse = {
 export type QuestionAnswer = {
   question: ChatMessage;
   answer: ChatMessage | null;
-};
-
-export type SystemPrompt = {
-  prompt: string;
 };
 
 export type ValidationError = {
@@ -196,33 +196,33 @@ export type V1GetWorkspaceMessagesResponse = Array<Conversation>;
 
 export type V1GetWorkspaceMessagesError = HTTPValidationError;
 
-export type V1GetWorkspaceSystemPromptData = {
+export type V1GetWorkspaceCustomInstructionsData = {
   path: {
     workspace_name: string;
   };
 };
 
-export type V1GetWorkspaceSystemPromptResponse = SystemPrompt;
+export type V1GetWorkspaceCustomInstructionsResponse = CustomInstructions;
 
-export type V1GetWorkspaceSystemPromptError = HTTPValidationError;
+export type V1GetWorkspaceCustomInstructionsError = HTTPValidationError;
 
-export type V1SetWorkspaceSystemPromptData = {
-  body: SystemPrompt;
+export type V1SetWorkspaceCustomInstructionsData = {
+  body: CustomInstructions;
   path: {
     workspace_name: string;
   };
 };
 
-export type V1SetWorkspaceSystemPromptResponse = void;
+export type V1SetWorkspaceCustomInstructionsResponse = void;
 
-export type V1SetWorkspaceSystemPromptError = HTTPValidationError;
+export type V1SetWorkspaceCustomInstructionsError = HTTPValidationError;
 
-export type V1DeleteWorkspaceSystemPromptData = {
+export type V1DeleteWorkspaceCustomInstructionsData = {
   path: {
     workspace_name: string;
   };
 };
 
-export type V1DeleteWorkspaceSystemPromptResponse = void;
+export type V1DeleteWorkspaceCustomInstructionsResponse = void;
 
-export type V1DeleteWorkspaceSystemPromptError = HTTPValidationError;
+export type V1DeleteWorkspaceCustomInstructionsError = HTTPValidationError;

@@ -19,9 +19,9 @@ import {
   v1HardDeleteWorkspace,
   v1GetWorkspaceAlerts,
   v1GetWorkspaceMessages,
-  v1GetWorkspaceSystemPrompt,
-  v1SetWorkspaceSystemPrompt,
-  v1DeleteWorkspaceSystemPrompt,
+  v1GetWorkspaceCustomInstructions,
+  v1SetWorkspaceCustomInstructions,
+  v1DeleteWorkspaceCustomInstructions,
 } from "../sdk.gen";
 import type {
   V1CreateWorkspaceData,
@@ -41,13 +41,13 @@ import type {
   V1HardDeleteWorkspaceResponse,
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceMessagesData,
-  V1GetWorkspaceSystemPromptData,
-  V1SetWorkspaceSystemPromptData,
-  V1SetWorkspaceSystemPromptError,
-  V1SetWorkspaceSystemPromptResponse,
-  V1DeleteWorkspaceSystemPromptData,
-  V1DeleteWorkspaceSystemPromptError,
-  V1DeleteWorkspaceSystemPromptResponse,
+  V1GetWorkspaceCustomInstructionsData,
+  V1SetWorkspaceCustomInstructionsData,
+  V1SetWorkspaceCustomInstructionsError,
+  V1SetWorkspaceCustomInstructionsResponse,
+  V1DeleteWorkspaceCustomInstructionsData,
+  V1DeleteWorkspaceCustomInstructionsError,
+  V1DeleteWorkspaceCustomInstructionsResponse,
 } from "../types.gen";
 
 type QueryKey<TOptions extends OptionsLegacyParser> = [
@@ -445,16 +445,16 @@ export const v1GetWorkspaceMessagesOptions = (
   });
 };
 
-export const v1GetWorkspaceSystemPromptQueryKey = (
-  options: OptionsLegacyParser<V1GetWorkspaceSystemPromptData>,
-) => [createQueryKey("v1GetWorkspaceSystemPrompt", options)];
+export const v1GetWorkspaceCustomInstructionsQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceCustomInstructionsData>,
+) => [createQueryKey("v1GetWorkspaceCustomInstructions", options)];
 
-export const v1GetWorkspaceSystemPromptOptions = (
-  options: OptionsLegacyParser<V1GetWorkspaceSystemPromptData>,
+export const v1GetWorkspaceCustomInstructionsOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceCustomInstructionsData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1GetWorkspaceSystemPrompt({
+      const { data } = await v1GetWorkspaceCustomInstructions({
         ...options,
         ...queryKey[0],
         signal,
@@ -462,20 +462,20 @@ export const v1GetWorkspaceSystemPromptOptions = (
       });
       return data;
     },
-    queryKey: v1GetWorkspaceSystemPromptQueryKey(options),
+    queryKey: v1GetWorkspaceCustomInstructionsQueryKey(options),
   });
 };
 
-export const v1SetWorkspaceSystemPromptMutation = (
-  options?: Partial<OptionsLegacyParser<V1SetWorkspaceSystemPromptData>>,
+export const v1SetWorkspaceCustomInstructionsMutation = (
+  options?: Partial<OptionsLegacyParser<V1SetWorkspaceCustomInstructionsData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    V1SetWorkspaceSystemPromptResponse,
-    V1SetWorkspaceSystemPromptError,
-    OptionsLegacyParser<V1SetWorkspaceSystemPromptData>
+    V1SetWorkspaceCustomInstructionsResponse,
+    V1SetWorkspaceCustomInstructionsError,
+    OptionsLegacyParser<V1SetWorkspaceCustomInstructionsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await v1SetWorkspaceSystemPrompt({
+      const { data } = await v1SetWorkspaceCustomInstructions({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -486,16 +486,18 @@ export const v1SetWorkspaceSystemPromptMutation = (
   return mutationOptions;
 };
 
-export const v1DeleteWorkspaceSystemPromptMutation = (
-  options?: Partial<OptionsLegacyParser<V1DeleteWorkspaceSystemPromptData>>,
+export const v1DeleteWorkspaceCustomInstructionsMutation = (
+  options?: Partial<
+    OptionsLegacyParser<V1DeleteWorkspaceCustomInstructionsData>
+  >,
 ) => {
   const mutationOptions: UseMutationOptions<
-    V1DeleteWorkspaceSystemPromptResponse,
-    V1DeleteWorkspaceSystemPromptError,
-    OptionsLegacyParser<V1DeleteWorkspaceSystemPromptData>
+    V1DeleteWorkspaceCustomInstructionsResponse,
+    V1DeleteWorkspaceCustomInstructionsError,
+    OptionsLegacyParser<V1DeleteWorkspaceCustomInstructionsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await v1DeleteWorkspaceSystemPrompt({
+      const { data } = await v1DeleteWorkspaceCustomInstructions({
         ...options,
         ...localOptions,
         throwOnError: true,

@@ -21,9 +21,9 @@ import { usePostSystemPrompt } from "../hooks/use-set-system-prompt";
 import { Check } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import {
-  V1GetWorkspaceSystemPromptData,
-  V1GetWorkspaceSystemPromptResponse,
-  V1SetWorkspaceSystemPromptData,
+  V1GetWorkspaceCustomInstructionsData,
+  V1GetWorkspaceCustomInstructionsResponse,
+  V1SetWorkspaceCustomInstructionsData,
 } from "@/api/generated";
 import { useGetSystemPrompt } from "../hooks/use-get-system-prompt";
 import {
@@ -31,7 +31,7 @@ import {
   QueryClient,
   useQueryClient,
 } from "@tanstack/react-query";
-import { v1GetWorkspaceSystemPromptQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -77,11 +77,12 @@ function EditorLoadingUI() {
 
 function isGetSystemPromptQuery(
   queryKey: unknown,
-  options: V1GetWorkspaceSystemPromptData,
+  options: V1GetWorkspaceCustomInstructionsData,
 ): boolean {
   return (
     Array.isArray(queryKey) &&
-    queryKey[0]._id === v1GetWorkspaceSystemPromptQueryKey(options)[0]?._id
+    queryKey[0]._id ===
+      v1GetWorkspaceCustomInstructionsQueryKey(options)[0]?._id
   );
 }
 
@@ -89,8 +90,12 @@ function getPromptFromNotifyEvent(event: QueryCacheNotifyEvent): string | null {
   if ("action" in event === false || "data" in event.action === false)
     return null;
   return (
-    (event.action.data as V1GetWorkspaceSystemPromptResponse | undefined | null)
-      ?.prompt ?? null
+    (
+      event.action.data as
+        | V1GetWorkspaceCustomInstructionsResponse
+        | undefined
+        | null
+    )?.prompt ?? null
   );
 }
 
@@ -100,7 +105,7 @@ function usePromptValue({
   queryClient,
 }: {
   initialValue: string;
-  options: V1GetWorkspaceSystemPromptData;
+  options: V1GetWorkspaceCustomInstructionsData;
   queryClient: QueryClient;
 }) {
   const [value, setValue] = useState<string>(initialValue);
@@ -141,8 +146,8 @@ export function SystemPromptEditor({
   const context = useContext(DarkModeContext);
   const theme: Theme = inferDarkMode(context);
 
-  const options: V1GetWorkspaceSystemPromptData &
-    Omit<V1SetWorkspaceSystemPromptData, "body"> = useMemo(
+  const options: V1GetWorkspaceCustomInstructionsData &
+    Omit<V1SetWorkspaceCustomInstructionsData, "body"> = useMemo(
     () => ({
       path: { workspace_name: workspaceName },
     }),
@@ -170,7 +175,7 @@ export function SystemPromptEditor({
         {
           onSuccess: () => {
             queryClient.invalidateQueries({
-              queryKey: v1GetWorkspaceSystemPromptQueryKey(options),
+              queryKey: v1GetWorkspaceCustomInstructionsQueryKey(options),
               refetchType: "all",
             });
             setSaved(true);

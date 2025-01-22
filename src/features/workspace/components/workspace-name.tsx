@@ -11,6 +11,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import { useCreateWorkspace } from "../hooks/use-create-workspace";
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function WorkspaceName({
   className,
@@ -21,13 +22,19 @@ export function WorkspaceName({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
+  const navigate = useNavigate();
   const [name, setName] = useState(workspaceName);
   const { mutate, isPending, error } = useCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({ body: { name: workspaceName, rename_to: name } });
+    mutate(
+      { body: { name: workspaceName, rename_to: name } },
+      {
+        onSuccess: () => navigate(`/workspace/${name}`),
+      },
+    );
   };
 
   return (
