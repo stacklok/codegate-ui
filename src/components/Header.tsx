@@ -42,10 +42,14 @@ export function Header({ hasError }: { hasError?: boolean }) {
 
         <HoverPopover title="Help">
           <MenuItem href="/help/continue-setup" icon={<Continue />}>
-            Set up in <span className="font-bold">Continue</span>
+            <span>
+              Set up in <span className="font-bold">Continue</span>
+            </span>
           </MenuItem>
           <MenuItem icon={<Copilot />} href="/help/copilot-setup">
-            Set up in <span className="font-bold">Copilot</span>
+            <span>
+              Set up in <span className="font-bold">Copilot</span>
+            </span>
           </MenuItem>
 
           <MenuItem
