@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2](https://github.com/stacklok/codegate-ui/compare/v0.7.1...v0.7.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* fix client side navigation ([#173](https://github.com/stacklok/codegate-ui/issues/173)) ([30b1112](https://github.com/stacklok/codegate-ui/commit/30b11127c2ea4303a3973fcc1f4f89a7957e6710))
+* make custom icons inherit text color ([#170](https://github.com/stacklok/codegate-ui/issues/170)) ([e8c3880](https://github.com/stacklok/codegate-ui/commit/e8c3880e4663c198e77383d21406741c14c002fc)), closes [#156](https://github.com/stacklok/codegate-ui/issues/156)
+
 ## [0.7.1](https://github.com/stacklok/codegate-ui/compare/v0.7.0...v0.7.1) (2025-01-22)
 
 
