@@ -1,6 +1,9 @@
 import { render, waitFor, within } from "@/lib/test-utils";
-import { test, expect } from "vitest";
+import { test, expect, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 import { RouteWorkspace } from "../route-workspace";
+
+const mockNavigate = vi.fn();
 
 const renderComponent = () =>
   render(<RouteWorkspace />, {
@@ -22,6 +25,17 @@ vi.mock("@monaco-editor/react", () => {
     );
   });
   return { default: FakeEditor };
+});
+
+vi.mock("react-router-dom", async () => {
+  const original =
+    await vi.importActual<typeof import("react-router-dom")>(
+      "react-router-dom",
+    );
+  return {
+    ...original,
+    useNavigate: () => mockNavigate,
+  };
 });
 
 test("renders title", () => {
@@ -58,4 +72,20 @@ test("has breadcrumbs", () => {
     within(breadcrumbs).getByRole("link", { name: /manage workspaces/i }),
   ).toHaveAttribute("href", "/workspaces");
   expect(within(breadcrumbs).getByText(/workspace settings/i)).toBeVisible();
+});
+
+test("rename workspace", async () => {
+  const { getByRole, getByTestId } = renderComponent();
+
+  const workspaceName = getByRole("textbox", {
+    name: /workspace name/i,
+  });
+  await userEvent.type(workspaceName, "_renamed");
+
+  const saveBtn = within(getByTestId("workspace-name")).getByRole("button", {
+    name: /save/i,
+  });
+  await userEvent.click(saveBtn);
+  await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));
+  expect(mockNavigate).toHaveBeenCalledWith("/workspace/foo_renamed");
 });
