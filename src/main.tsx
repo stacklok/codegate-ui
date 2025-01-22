@@ -10,6 +10,7 @@ import { DarkModeProvider, Toaster } from "@stacklok/ui-kit";
 import { client } from "./api/generated/index.ts";
 import { QueryClientProvider } from "./components/react-query-provider.tsx";
 import { BrowserRouter } from "react-router-dom";
+import { UiKitClientSideRoutingProvider } from "./lib/ui-kit-client-side-routing.tsx";
 
 // Initialize the API client
 client.setConfig({
@@ -19,16 +20,18 @@ client.setConfig({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <DarkModeProvider>
-        <SidebarProvider>
-          <QueryClientProvider>
-            <ErrorBoundary fallback={<Error />}>
-              <Toaster />
-              <App />
-            </ErrorBoundary>
-          </QueryClientProvider>
-        </SidebarProvider>
-      </DarkModeProvider>
+      <UiKitClientSideRoutingProvider>
+        <DarkModeProvider>
+          <SidebarProvider>
+            <QueryClientProvider>
+              <ErrorBoundary fallback={<Error />}>
+                <Toaster />
+                <App />
+              </ErrorBoundary>
+            </QueryClientProvider>
+          </SidebarProvider>
+        </DarkModeProvider>
+      </UiKitClientSideRoutingProvider>
     </BrowserRouter>
   </StrictMode>,
 );
