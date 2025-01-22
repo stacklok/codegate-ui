@@ -13,22 +13,24 @@ export function ArchiveWorkspace({
 
   return (
     <Card className={twMerge(className, "shrink-0")}>
-      <CardBody>
-        <Text className="text-primary">Archive Workspace</Text>
-        <div className="flex justify-between items-center">
+      <CardBody className="flex justify-between items-center">
+        <div>
+          <Text className="text-primary">Archive Workspace</Text>
           <Text className="flex items-center text-secondary mb-0">
             Archiving this workspace removes it from the main workspaces list,
             though it can be restored if needed.
           </Text>
-          <Button
-            isPending={isPending}
-            onPress={() => {
-              mutate({ path: { workspace_name: workspaceName } });
-            }}
-          >
-            Archive
-          </Button>
         </div>
+
+        <Button
+          isDestructive
+          isPending={isPending}
+          onPress={() => {
+            mutate({ path: { workspace_name: workspaceName } });
+          }}
+        >
+          Archive
+        </Button>
       </CardBody>
     </Card>
   );

@@ -43,7 +43,7 @@ test("can update system prompt", async () => {
   await userEvent.type(input, "new prompt from test");
   expect(input).toHaveTextContent("new prompt from test");
 
-  await userEvent.click(getByRole("button", { name: /save changes/i }));
+  await userEvent.click(getByRole("button", { name: /Save/i }));
 
   server.use(
     http.get("*/api/v1/workspaces/:name/system-prompt", () => {

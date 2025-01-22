@@ -5,7 +5,6 @@ import {
   CardBody,
   CardFooter,
   DarkModeContext,
-  LinkButton,
   Loader,
   Text,
 } from "@stacklok/ui-kit";
@@ -207,9 +206,6 @@ export function SystemPromptEditor({
         </div>
       </CardBody>
       <CardFooter className="justify-end gap-2">
-        <LinkButton href="/workspaces" variant="secondary">
-          Cancel
-        </LinkButton>
         <Button
           isPending={isMutationPending}
           isDisabled={Boolean(isGetPromptPending ?? saved)}
@@ -220,7 +216,7 @@ export function SystemPromptEditor({
               <span>Saved</span> <Check />
             </>
           ) : (
-            "Save changes"
+            "Save"
           )}
         </Button>
       </CardFooter>
