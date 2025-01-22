@@ -11,15 +11,24 @@ import {
   TextField,
 } from "@stacklok/ui-kit";
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function WorkspaceCreation() {
+  const navigate = useNavigate();
   const [workspaceName, setWorkspaceName] = useState("");
   const { mutate, isPending, error } = useCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({ body: { name: workspaceName } });
+    mutate(
+      {
+        body: { name: workspaceName },
+      },
+      {
+        onSuccess: () => navigate("/workspaces"),
+      },
+    );
   };
 
   return (
