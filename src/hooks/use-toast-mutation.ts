@@ -20,8 +20,6 @@ export function useToastMutation<
     ...rest
   } = useMutation(options);
 
-  // NOTE: That we are not allowing the user to pass in customization options
-  // (the second arg to mutate)
   const mutateAsync = useCallback(
     <TError extends { detail: string | undefined }>(
       variables: Parameters<typeof originalMutateAsync>[0],
