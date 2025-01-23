@@ -30,8 +30,8 @@ const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   if (data === null) return "N/A";
   if (typeof data === "string") {
     return (
-      <div className="bg-gray-25 rounded-lg overflow-auto p-4">
-        <Markdown>{data}</Markdown>
+      <div className="p-4 line-clamp-1 text-clip">
+        <Markdown>{data.split("\n")[0] ?? ""}</Markdown>
       </div>
     );
   }
