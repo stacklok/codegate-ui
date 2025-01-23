@@ -1,6 +1,13 @@
 import { WorkspaceHeading } from "@/features/workspace/components/workspace-heading";
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
-import { Breadcrumb, Breadcrumbs, LinkButton } from "@stacklok/ui-kit";
+import {
+  Breadcrumb,
+  Breadcrumbs,
+  Kbd,
+  LinkButton,
+  Tooltip,
+  TooltipTrigger,
+} from "@stacklok/ui-kit";
 import { SquarePlus } from "lucide-react";
 import { TableWorkspaces } from "@/features/workspace/components/table-workspaces";
 import { useKbdShortcuts } from "@/hooks/use-kbd-shortcuts";
@@ -20,9 +27,15 @@ export function RouteWorkspaces() {
       </Breadcrumbs>
 
       <WorkspaceHeading title="Manage Workspaces">
-        <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
-          <SquarePlus /> Create Workspace
-        </LinkButton>
+        <TooltipTrigger delay={0}>
+          <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
+            <SquarePlus /> Create
+          </LinkButton>
+          <Tooltip className="flex gap-2 items-center">
+            <span className="block">Create a new workspace</span>
+            <Kbd>C</Kbd>
+          </Tooltip>
+        </TooltipTrigger>
       </WorkspaceHeading>
 
       <TableWorkspaces />
