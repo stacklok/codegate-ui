@@ -1,18 +1,18 @@
 import { Button } from "@stacklok/ui-kit";
 import { ComponentProps } from "react";
-import { useRestoreWorkspace } from "./use-restore-workspace";
+import { useMutationRestoreWorkspace } from "./use-mutation-restore-workspace";
 
 export function useRestoreWorkspaceButton({
   workspaceName,
 }: {
   workspaceName: string;
 }): ComponentProps<typeof Button> {
-  const { mutate, isPending } = useRestoreWorkspace();
+  const { mutateAsync, isPending } = useMutationRestoreWorkspace();
 
   return {
     isPending,
     isDisabled: isPending,
-    onPress: () => mutate({ path: { workspace_name: workspaceName } }),
+    onPress: () => mutateAsync({ path: { workspace_name: workspaceName } }),
     children: "Restore",
   };
 }

@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
-import { useCreateWorkspace } from "../hooks/use-create-workspace";
+import { useMutationCreateWorkspace } from "../hooks/use-mutation-create-workspace";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,12 +24,12 @@ export function WorkspaceName({
 }) {
   const navigate = useNavigate();
   const [name, setName] = useState(workspaceName);
-  const { mutate, isPending, error } = useCreateWorkspace();
+  const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(
+    mutateAsync(
       { body: { name: workspaceName, rename_to: name } },
       {
         onSuccess: () => navigate(`/workspace/${name}`),
@@ -63,6 +63,7 @@ export function WorkspaceName({
             isDisabled={isArchived || name === ""}
             isPending={isPending}
             type="submit"
+            variant="secondary"
           >
             Save
           </Button>

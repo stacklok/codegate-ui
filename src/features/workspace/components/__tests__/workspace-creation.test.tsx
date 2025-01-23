@@ -23,6 +23,10 @@ test("create workspace", async () => {
   await userEvent.type(screen.getByRole("textbox"), "workspaceA");
   await userEvent.click(screen.getByRole("button", { name: /create/i }));
   await waitFor(() => expect(mockNavigate).toBeCalled());
+
+  await waitFor(() => {
+    expect(screen.getByText(/created "(.*)" workspace/i)).toBeVisible();
+  });
 });
 
 test("create workspace with enter button", async () => {
@@ -32,4 +36,8 @@ test("create workspace with enter button", async () => {
 
   await userEvent.type(screen.getByRole("textbox"), "workspaceA{enter}");
   await waitFor(() => expect(mockNavigate).toBeCalled());
+
+  await waitFor(() => {
+    expect(screen.getByText(/created "(.*)" workspace/i)).toBeVisible();
+  });
 });

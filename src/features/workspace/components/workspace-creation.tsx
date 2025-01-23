@@ -1,4 +1,4 @@
-import { useCreateWorkspace } from "@/features/workspace/hooks/use-create-workspace";
+import { useMutationCreateWorkspace } from "@/features/workspace/hooks/use-mutation-create-workspace";
 import {
   Button,
   Card,
@@ -16,12 +16,12 @@ import { useNavigate } from "react-router-dom";
 export function WorkspaceCreation() {
   const navigate = useNavigate();
   const [workspaceName, setWorkspaceName] = useState("");
-  const { mutate, isPending, error } = useCreateWorkspace();
+  const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(
+    mutateAsync(
       {
         body: { name: workspaceName },
       },
@@ -36,6 +36,7 @@ export function WorkspaceCreation() {
       <Card>
         <CardBody className="w-full">
           <TextField
+            autoFocus
             aria-label="Workspace name"
             name="Workspace name"
             validationBehavior="aria"

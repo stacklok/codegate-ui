@@ -1,5 +1,5 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { DarkModeProvider } from "@stacklok/ui-kit";
+import { DarkModeProvider, Toaster } from "@stacklok/ui-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RenderOptions, render } from "@testing-library/react";
 import React, { ReactNode } from "react";
@@ -45,6 +45,7 @@ const renderWithProviders = (
   render(
     <TestQueryClientProvider>
       <DarkModeProvider>
+        <Toaster />
         <MemoryRouter {...options?.routeConfig}>
           <Routes>
             <Route

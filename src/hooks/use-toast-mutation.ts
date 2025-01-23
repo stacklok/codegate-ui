@@ -11,7 +11,16 @@ export function useToastMutation<
   TError = DefaultError,
   TVariables = void,
   TContext = unknown,
->(options: UseMutationOptions<TData, TError, TVariables, TContext>) {
+>({
+  successMsg,
+  errorMsg,
+  loadingMsg,
+  ...options
+}: UseMutationOptions<TData, TError, TVariables, TContext> & {
+  successMsg?: ((variables: TVariables) => string) | string;
+  loadingMsg?: string;
+  errorMsg?: string;
+}) {
   const {
     mutateAsync: originalMutateAsync,
     // NOTE: We are not allowing direct use of the `mutate` (sync) function.
@@ -21,19 +30,21 @@ export function useToastMutation<
   } = useMutation(options);
 
   const mutateAsync = useCallback(
-    <TError extends { detail: string | undefined }>(
+    async <TError extends { detail: string | undefined }>(
       variables: Parameters<typeof originalMutateAsync>[0],
-      options: Parameters<typeof originalMutateAsync>[1],
-      { successMsg }: { successMsg: string },
+      options: Parameters<typeof originalMutateAsync>[1] = {},
     ) => {
       const promise = originalMutateAsync(variables, options);
 
       toast.promise(promise, {
-        success: successMsg,
-        error: (e: TError) => (e.detail ? e.detail : "An error occurred"),
+        success:
+          typeof successMsg === "function" ? successMsg(variables) : successMsg,
+        loading: loadingMsg ?? "Loading...",
+        error: (e: TError) =>
+          errorMsg ?? (e.detail ? e.detail : "An error occurred"),
       });
     },
-    [originalMutateAsync],
+    [errorMsg, loadingMsg, originalMutateAsync, successMsg],
   );
 
   return { mutateAsync, ...rest };
