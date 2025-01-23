@@ -1,10 +1,76 @@
 import { Link } from "react-router-dom";
 import { SidebarTrigger } from "./ui/sidebar";
-import { HoverPopover } from "./HoverPopover";
-import { Separator, ButtonDarkMode, MenuItem } from "@stacklok/ui-kit";
+import { DropdownMenu } from "./HoverPopover";
+import { Separator, ButtonDarkMode, OptionsSchema } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
 import { BookOpenText, Download, ShieldCheck } from "lucide-react";
 import { Continue, Copilot, Discord, Github, Youtube } from "./icons";
+
+const CERTIFICATE_MENU_ITEMS: OptionsSchema<"menu">[] = [
+  {
+    icon: <ShieldCheck />,
+    id: "about-certificate-security",
+    href: "/certificates/security",
+    textValue: "About certificate security",
+  },
+  {
+    icon: <Download />,
+    id: "download-certificates",
+    href: "/certificates",
+    textValue: "Download certificates",
+  },
+];
+
+const HELP_MENU_ITEMS: OptionsSchema<"menu">[] = [
+  {
+    textValue: "Setup",
+    id: "setup",
+    items: [
+      {
+        icon: <Continue />,
+        id: "continue-setup",
+        href: "/help/continue-setup",
+        textValue: "Set up in Continue",
+      },
+      {
+        icon: <Copilot />,
+        id: "copilot-setup",
+        href: "/help/copilot-setup",
+        textValue: "Set up in Copilot",
+      },
+    ],
+  },
+  {
+    textValue: "Resources",
+    id: "resources",
+    items: [
+      {
+        icon: <BookOpenText />,
+        id: "documentation",
+        href: "https://docs.codegate.ai/",
+        textValue: "Documentation",
+      },
+      {
+        icon: <Discord />,
+        id: "discord",
+        href: "https://discord.gg/stacklok",
+        textValue: "Discord",
+      },
+      {
+        icon: <Github />,
+        id: "github",
+        href: "https://github.com/stacklok/codegate",
+        textValue: "GitHub",
+      },
+      {
+        icon: <Youtube />,
+        id: "youtube",
+        href: "https://www.youtube.com/@Stacklok",
+        textValue: "YouTube",
+      },
+    ],
+  },
+];
 
 export function Header({ hasError }: { hasError?: boolean }) {
   return (
@@ -31,61 +97,9 @@ export function Header({ hasError }: { hasError?: boolean }) {
         <WorkspacesSelection />
       </div>
       <div className="flex items-center gap-4 mr-16">
-        <HoverPopover title="Certificates">
-          <MenuItem href="/certificates/security" icon={<ShieldCheck />}>
-            About certificate security
-          </MenuItem>
-          <MenuItem icon={<Download />} href="/certificates">
-            Download certificates
-          </MenuItem>
-        </HoverPopover>
+        <DropdownMenu title="Certificates" items={CERTIFICATE_MENU_ITEMS} />
 
-        <HoverPopover title="Help">
-          <MenuItem href="/help/continue-setup" icon={<Continue />}>
-            <span>
-              Set up in <span className="font-bold">Continue</span>
-            </span>
-          </MenuItem>
-          <MenuItem icon={<Copilot />} href="/help/copilot-setup">
-            <span>
-              Set up in <span className="font-bold">Copilot</span>
-            </span>
-          </MenuItem>
-
-          <MenuItem
-            href="https://docs.codegate.ai/"
-            target="_blank"
-            icon={<BookOpenText />}
-          >
-            Documentation
-          </MenuItem>
-
-          <Separator />
-
-          <MenuItem
-            href="https://discord.gg/stacklok"
-            target="_blank"
-            icon={<Discord />}
-          >
-            Discord
-          </MenuItem>
-
-          <MenuItem
-            href="https://github.com/stacklok/codegate"
-            target="_blank"
-            icon={<Github />}
-          >
-            GitHub
-          </MenuItem>
-
-          <MenuItem
-            href="https://www.youtube.com/@Stacklok"
-            target="_blank"
-            icon={<Youtube />}
-          >
-            YouTube
-          </MenuItem>
-        </HoverPopover>
+        <DropdownMenu title="Help" items={HELP_MENU_ITEMS} />
 
         <ButtonDarkMode />
       </div>

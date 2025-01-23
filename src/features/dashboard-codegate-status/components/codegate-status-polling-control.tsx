@@ -1,10 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import {
-  Label,
-  Select,
-  SelectButton,
-  TDropdownItemOrSection,
-} from "@stacklok/ui-kit";
+import { Label, Select, SelectButton, OptionsSchema } from "@stacklok/ui-kit";
 
 // NOTE: We don't poll more than once per minute, as the server depends on
 // Github's public API, which is rate limited to 60reqs per hour.
@@ -14,7 +9,7 @@ export const POLLING_INTERVAl = {
   "10_MIN": { value: 600_000, name: "10 minutes" },
 } as const;
 
-export const INTERVAL_SELECT_ITEMS: TDropdownItemOrSection[] = Object.entries(
+export const INTERVAL_SELECT_ITEMS: OptionsSchema<"listbox">[] = Object.entries(
   POLLING_INTERVAl,
 ).map(([key, { name }]) => {
   return { textValue: name, id: key };

@@ -1,4 +1,10 @@
-import { Button, DropdownMenu, MenuTrigger, Popover } from "@stacklok/ui-kit";
+import {
+  Button,
+  Menu,
+  MenuTrigger,
+  OptionsSchema,
+  Popover,
+} from "@stacklok/ui-kit";
 import { OverlayTriggerStateContext } from "react-aria-components";
 import { ReactNode, useContext } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -9,12 +15,12 @@ function PopoverIcon() {
   return isOpen ? <ChevronUp /> : <ChevronDown />;
 }
 
-export function HoverPopover({
-  children,
+export function DropdownMenu({
+  items,
   title,
 }: {
   title: ReactNode;
-  children: ReactNode;
+  items: OptionsSchema<"menu">[];
   className?: string;
 }) {
   return (
@@ -24,7 +30,7 @@ export function HoverPopover({
         <PopoverIcon />
       </Button>
       <Popover>
-        <DropdownMenu>{children}</DropdownMenu>
+        <Menu items={items} />
       </Popover>
     </MenuTrigger>
   );
