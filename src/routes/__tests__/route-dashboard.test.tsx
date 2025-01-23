@@ -183,8 +183,7 @@ describe("Dashboard", () => {
     expect(within(firstRow).getByText(/ghp_token/i)).toBeVisible();
     expect(within(firstRow).getByText(/codegate-secrets/i)).toBeVisible();
     expect(within(firstRow).getAllByText(/n\/a/i).length).toEqual(2);
-    expect(within(firstRow).getByText(/2025\/01\/14/i)).toBeVisible();
-    expect(within(firstRow).getByTestId(/time/i)).toBeVisible();
+    expect(within(firstRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
 
     // check trigger_string null
     expect(within(secondRow).getAllByText(/n\/a/i).length).toEqual(3);
@@ -312,8 +311,8 @@ describe("Dashboard", () => {
       "row",
     )[2] as HTMLElement;
 
-    expect(within(firstRow).getByText(/2025\/01\/14/i)).toBeVisible();
-    expect(within(secondRow).getByText(/2025\/01\/07/i)).toBeVisible();
+    expect(within(firstRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
+    expect(within(secondRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
   });
 
   it("only displays a limited number of items in the table", async () => {
