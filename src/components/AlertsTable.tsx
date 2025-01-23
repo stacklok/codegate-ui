@@ -18,7 +18,6 @@ import { AlertConversation } from "@/api/generated";
 import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
 import { getMaliciousPackage } from "@/lib/utils";
 import { Search } from "lucide-react";
-import { Markdown } from "./Markdown";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -31,7 +30,7 @@ const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
   if (typeof data === "string") {
     return (
       <div className="p-4 line-clamp-1 text-clip">
-        <Markdown>{data.split("\n")[0] ?? ""}</Markdown>
+        {data.split("\n")[0] ?? ""}
       </div>
     );
   }
