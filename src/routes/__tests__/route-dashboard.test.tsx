@@ -146,7 +146,7 @@ describe("Dashboard", () => {
     ).toBeVisible();
     expect(
       screen.getByRole("columnheader", {
-        name: /trigger token/i,
+        name: /event/i,
       }),
     ).toBeVisible();
 

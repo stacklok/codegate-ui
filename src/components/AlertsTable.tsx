@@ -167,7 +167,7 @@ export function AlertsTable() {
               <Column isRowHeader width={150}>
                 Type
               </Column>
-              <Column width={300}>Trigger Token</Column>
+              <Column width={300}>Event</Column>
             </Row>
           </TableHeader>
           <TableBody>
