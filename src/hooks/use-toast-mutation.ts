@@ -23,7 +23,7 @@ export function useToastMutation<
 }) {
   const {
     mutateAsync: originalMutateAsync,
-    // NOTE: We are not allowing direct use of the `mutate` (sync) function.
+    // NOTE: We are not allowing direct use of the `mutate` (sync) function
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mutate: _,
     ...rest
