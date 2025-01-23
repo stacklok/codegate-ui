@@ -8,12 +8,12 @@ import { useCallback } from "react";
 export function useInvalidateWorkspaceQueries() {
   const queryClient = useQueryClient();
 
-  const invalidate = useCallback(() => {
-    queryClient.invalidateQueries({
+  const invalidate = useCallback(async () => {
+    await queryClient.invalidateQueries({
       queryKey: v1ListWorkspacesOptions(),
       refetchType: "all",
     });
-    queryClient.invalidateQueries({
+    await queryClient.invalidateQueries({
       queryKey: v1ListArchivedWorkspacesQueryKey(),
       refetchType: "all",
     });

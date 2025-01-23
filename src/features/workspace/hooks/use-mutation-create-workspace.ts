@@ -7,7 +7,9 @@ export function useMutationCreateWorkspace() {
 
   return useToastMutation({
     ...v1CreateWorkspaceMutation(),
-    onSuccess: () => invalidate(),
+    onSuccess: async () => {
+      await invalidate();
+    },
     successMsg: (variables) => `Created "${variables.body.name}" workspace`,
   });
 }

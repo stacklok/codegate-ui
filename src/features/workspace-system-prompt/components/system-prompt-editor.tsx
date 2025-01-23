@@ -218,6 +218,7 @@ export function SystemPromptEditor({
           isPending={isMutationPending}
           isDisabled={Boolean(isArchived ?? isGetPromptPending ?? saved)}
           onPress={() => handleSubmit(value)}
+          variant="secondary"
         >
           {saved ? (
             <>

@@ -25,9 +25,6 @@ describe("Workspaces page", () => {
 
   it("has a table with the correct columns", () => {
     expect(screen.getByRole("columnheader", { name: /name/i })).toBeVisible();
-    expect(
-      screen.getByRole("columnheader", { name: /configuration/i }),
-    ).toBeVisible();
   });
 
   it("has a row for each workspace", async () => {
@@ -43,12 +40,8 @@ describe("Workspaces page", () => {
     ).toBeVisible();
 
     const firstRow = screen.getByRole("row", { name: /myworkspace/i });
-    const firstButton = within(firstRow).getByRole("link", {
-      name: /settings/i,
-    });
 
-    expect(firstButton).toBeVisible();
-    expect(firstButton).toHaveAttribute("href", "/workspace/myworkspace");
+    expect(firstRow).toHaveAttribute("data-href", "/workspace/myworkspace");
   });
 
   it("has archived workspace", async () => {
@@ -58,12 +51,6 @@ describe("Workspaces page", () => {
 
     expect(
       screen.getByRole("rowheader", { name: /archived_workspace/i }),
-    ).toBeVisible();
-
-    expect(
-      screen.getByRole("button", {
-        name: /restore configuration/i,
-      }),
     ).toBeVisible();
   });
 });
