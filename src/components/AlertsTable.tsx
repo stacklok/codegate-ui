@@ -168,8 +168,6 @@ export function AlertsTable() {
                 Type
               </Column>
               <Column width={300}>Trigger Token</Column>
-              <Column width={150}>File</Column>
-              <Column width={250}>Code</Column>
             </Row>
           </TableHeader>
           <TableBody>
@@ -184,18 +182,6 @@ export function AlertsTable() {
                   <Cell className="truncate">{alert.trigger_type}</Cell>
                   <Cell className="overflow-auto whitespace-nowrap max-w-80">
                     {wrapObjectOutput(alert.trigger_string)}
-                  </Cell>
-                  <Cell className="truncate">
-                    {alert.code_snippet?.filepath || "N/A"}
-                  </Cell>
-                  <Cell className="overflow-auto whitespace-nowrap max-w-80">
-                    {alert.code_snippet?.code ? (
-                      <pre className="max-h-40 overflow-auto bg-gray-100 p-2 whitespace-pre-wrap">
-                        <code>{alert.code_snippet.code}</code>
-                      </pre>
-                    ) : (
-                      "N/A"
-                    )}
                   </Cell>
                 </Row>
               ))}

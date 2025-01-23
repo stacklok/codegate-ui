@@ -152,16 +152,6 @@ describe("Dashboard", () => {
 
     expect(
       screen.getByRole("columnheader", {
-        name: /file/i,
-      }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("columnheader", {
-        name: /code/i,
-      }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("columnheader", {
         name: /time/i,
       }),
     ).toBeVisible();
@@ -176,17 +166,9 @@ describe("Dashboard", () => {
     const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
     )[1] as HTMLElement;
-    const secondRow = within(screen.getByTestId("alerts-table")).getAllByRole(
-      "row",
-    )[2] as HTMLElement;
 
-    expect(within(firstRow).getByText(/ghp_token/i)).toBeVisible();
     expect(within(firstRow).getByText(/codegate-secrets/i)).toBeVisible();
-    expect(within(firstRow).getAllByText(/n\/a/i).length).toEqual(2);
     expect(within(firstRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
-
-    // check trigger_string null
-    expect(within(secondRow).getAllByText(/n\/a/i).length).toEqual(3);
   });
 
   it("should render malicious pkg", async () => {
@@ -294,7 +276,6 @@ describe("Dashboard", () => {
     const row = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
     )[1] as HTMLElement;
-    expect(within(row).getByText(/ghp_token/i)).toBeVisible();
     expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
   });
 
