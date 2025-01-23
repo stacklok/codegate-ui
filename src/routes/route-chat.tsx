@@ -32,7 +32,7 @@ export function RouteChat() {
     <>
       <Breadcrumbs>
         <BreadcrumbHome />
-        <Breadcrumb className="">{title}</Breadcrumb>
+        <Breadcrumb className="w-96 block truncate">{title}</Breadcrumb>
       </Breadcrumbs>
 
       <div className="w-[calc(100vw-18rem)]">

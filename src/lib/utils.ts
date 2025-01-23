@@ -6,7 +6,6 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const SEVEN_DAYS_MS = 7 * ONE_DAY_MS;
 const TEEN_DAYS_MS = 14 * ONE_DAY_MS;
 const THTY_DAYS_MS = 30 * ONE_DAY_MS;
-const MAX_TEXT_LENGTH = 200;
 const FILEPATH_REGEX = /(?:---FILEPATH|Path:|\/\/\s*filepath:)\s*([^\s]+)/g;
 const COMPARE_CODE_REGEX = /Compare this snippet[^:]*:/g;
 
@@ -16,16 +15,13 @@ function parsingByKeys(text: string | undefined, timestamp: string) {
     if (!text) return fallback;
     const filePath = text.match(FILEPATH_REGEX);
     const compareCode = text.match(COMPARE_CODE_REGEX);
+    // there some edge cases in copilot where the prompts are not correctly parsed. In this case is better to show the filepath
     if (compareCode || filePath) {
       if (filePath)
         return `Prompt on file${filePath[0]?.trim().toLocaleLowerCase()}`;
 
       if (compareCode)
         return `Prompt from snippet ${compareCode[0]?.trim().toLocaleLowerCase()}`;
-    }
-
-    if (text.length > MAX_TEXT_LENGTH) {
-      return fallback;
     }
 
     return text.trim();

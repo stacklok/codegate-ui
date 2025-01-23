@@ -39,11 +39,12 @@ const testCases: [string, { message: string; expected: RegExp | string }][] = [
     },
   ],
   [
-    "render fallback",
+    "render default",
     {
       message:
-        "<file> ```Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      expected: /Prompt 2025\/01\/03/i,
+        "I know that this local proxy can forward requests to api.foo.com.\n\napi.foo.com will validate whether the connection si trusted using a certificate authority added on the local machine, specifically whether they allow SSL and x.509 basic policy.\n\nI need to be able to validate the proxys ability to make requests to api.foo.com. I only have access to code that can run in the browser. I can infer this based on a successful request. Be creative.",
+      expected:
+        "I know that this local proxy can forward requests to api.foo.com. api.foo.com will validate whether the connection si trusted using a certificate authority added on the local machine, specifically whether they allow SSL and x.509 basic policy. I need to be able to validate the proxys ability to make requests to api.foo.com. I only have access to code that can run in the browser. I can infer this based on a successful request. Be creative.",
     },
   ],
 ];
