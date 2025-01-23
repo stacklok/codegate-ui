@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 export function useKbdShortcuts(map: [string, () => void][]) {
   return useEffect(() => {
-    // Attach a listener to the document to listen for the "/" key
     const documentListener = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
       if (
