@@ -165,7 +165,7 @@ export function AlertsTable() {
             <Row>
               <Column width={100}>Time</Column>
               <Column isRowHeader width={150}>
-                Trigger Type
+                Type
               </Column>
               <Column width={300}>Trigger Token</Column>
               <Column width={150}>File</Column>

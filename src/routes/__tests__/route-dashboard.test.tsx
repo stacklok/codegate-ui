@@ -141,7 +141,7 @@ describe("Dashboard", () => {
 
     expect(
       screen.getByRole("columnheader", {
-        name: /trigger type/i,
+        name: /type/i,
       }),
     ).toBeVisible();
     expect(
