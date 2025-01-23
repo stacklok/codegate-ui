@@ -163,18 +163,26 @@ export function AlertsTable() {
         <Table data-testid="alerts-table" aria-label="Alerts table">
           <TableHeader>
             <Row>
+              <Column width={100}>Time</Column>
               <Column isRowHeader width={150}>
                 Trigger Type
               </Column>
               <Column width={300}>Trigger Token</Column>
               <Column width={150}>File</Column>
               <Column width={250}>Code</Column>
-              <Column width={100}>Time</Column>
             </Row>
           </TableHeader>
           <TableBody>
             {dataView.map((alert) => (
               <Row key={alert.alert_id} className="h-20">
+                <Cell className="truncate">
+                  <div data-testid="date">
+                    {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
+                  </div>
+                  <div data-testid="time">
+                    {format(new Date(alert.timestamp ?? ""), "hh:mm:ss a")}
+                  </div>
+                </Cell>
                 <Cell className="truncate">{alert.trigger_type}</Cell>
                 <Cell className="overflow-auto whitespace-nowrap max-w-80">
                   {wrapObjectOutput(alert.trigger_string)}
@@ -190,14 +198,6 @@ export function AlertsTable() {
                   ) : (
                     "N/A"
                   )}
-                </Cell>
-                <Cell className="truncate">
-                  <div data-testid="date">
-                    {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
-                  </div>
-                  <div data-testid="time">
-                    {format(new Date(alert.timestamp ?? ""), "hh:mm:ss a")}
-                  </div>
                 </Cell>
               </Row>
             ))}
