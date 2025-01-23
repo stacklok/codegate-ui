@@ -19,6 +19,9 @@ import { useArchivedWorkspaces } from "@/features/workspace/hooks/use-archived-w
 import { Workspace } from "@/api/generated";
 import SvgFlipBackward from "@/components/icons/FlipBackward";
 import { useRestoreWorkspaceButton } from "@/features/workspace/hooks/use-restore-workspace-button";
+import { useKbdShortcuts } from "@/hooks/use-kbd-shortcuts";
+import { useNavigate } from "react-router-dom";
+import { hrefs } from "@/lib/hrefs";
 
 function CellName({
   name,
@@ -89,6 +92,10 @@ export function RouteWorkspaces() {
     })) ?? []),
   ];
 
+  const navigate = useNavigate();
+
+  useKbdShortcuts([["c", () => navigate(hrefs.workspaces.create)]]);
+
   return (
     <>
       <Breadcrumbs>
@@ -97,7 +104,7 @@ export function RouteWorkspaces() {
       </Breadcrumbs>
 
       <WorkspaceHeading title="Manage Workspaces">
-        <LinkButton href="/workspace/create" className="w-fit gap-2">
+        <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
           <SquarePlus /> Create Workspace
         </LinkButton>
       </WorkspaceHeading>
