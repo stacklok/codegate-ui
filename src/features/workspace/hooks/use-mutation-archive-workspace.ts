@@ -16,6 +16,7 @@ export function useMutationArchiveWorkspace() {
   const queryClient = useQueryClient();
   const invalidate = useInvalidateWorkspaceQueries();
   const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  console.debug("👉  activeWorkspaceName:", activeWorkspaceName);
 
   return useToastMutation({
     ...v1DeleteWorkspaceMutation(),
@@ -24,41 +25,46 @@ export function useMutationArchiveWorkspace() {
       if (variables.path.workspace_name === "default") return;
       if (variables.path.workspace_name === activeWorkspaceName) return;
 
-      // Cancel any outgoing refetches
-      // Prevents the refetch from overwriting the optimistic update
-      await queryClient.cancelQueries({
-        queryKey: v1ListWorkspacesQueryKey(),
-      });
-      await queryClient.cancelQueries({
-        queryKey: v1ListArchivedWorkspacesQueryKey(),
-      });
+      try {
+        // Cancel any outgoing refetches
+        // Prevents the refetch from overwriting the optimistic update
+        await queryClient.cancelQueries({
+          queryKey: v1ListWorkspacesQueryKey(),
+        });
+        await queryClient.cancelQueries({
+          queryKey: v1ListArchivedWorkspacesQueryKey(),
+        });
 
-      // Optimistically remove the archived workspace from the list
-      queryClient.setQueryData(
-        v1ListWorkspacesQueryKey(),
-        (old: V1ListWorkspacesResponse) => ({
-          workspaces: [...old.workspaces].filter(
-            (o) => o.name !== variables.path.workspace_name,
-          ),
-        }),
-      );
-      // Optimistically add the archived workspace to the archived list
-      queryClient.setQueryData(
-        v1ListArchivedWorkspacesQueryKey(),
-        (old: V1ListArchivedWorkspacesResponse) => ({
-          workspaces: [
-            ...old.workspaces,
-            { name: variables.path.workspace_name },
-          ],
-        }),
-      );
-
+        // Optimistically remove the archived workspace from the list
+        queryClient.setQueryData(
+          v1ListWorkspacesQueryKey(),
+          (old: V1ListWorkspacesResponse | null) => ({
+            workspaces: old
+              ? [...old.workspaces].filter(
+                  (o) => o.name !== variables.path.workspace_name,
+                )
+              : [],
+          }),
+        );
+        // Optimistically add the archived workspace to the archived list
+        queryClient.setQueryData(
+          v1ListArchivedWorkspacesQueryKey(),
+          (old: V1ListArchivedWorkspacesResponse | null) => ({
+            workspaces: old
+              ? [...old.workspaces, { name: variables.path.workspace_name }]
+              : [],
+          }),
+        );
+      } catch (e) {
+        console.log(e);
+      }
       return {};
     },
     onSettled: async () => {
       await invalidate();
     },
-    onError: async () => {
+    onError: async (e) => {
+      console.error(e);
       await invalidate();
     },
     successMsg: (variables) =>

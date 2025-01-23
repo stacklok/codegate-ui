@@ -2,6 +2,40 @@ import { Card, CardBody, Button, Text } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
 import { useRestoreWorkspaceButton } from "../hooks/use-restore-workspace-button";
 import { useArchiveWorkspaceButton } from "../hooks/use-archive-workspace-button";
+import { useConfirmHardDeleteWorkspace } from "../hooks/use-confirm-hard-delete-workspace";
+import { useNavigate } from "react-router-dom";
+import { hrefs } from "@/lib/hrefs";
+
+const ButtonsUnarchived = ({ workspaceName }: { workspaceName: string }) => {
+  const archiveButtonProps = useArchiveWorkspaceButton({ workspaceName });
+
+  return <Button {...archiveButtonProps} />;
+};
+
+const ButtonsArchived = ({ workspaceName }: { workspaceName: string }) => {
+  const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName });
+  const hardDelete = useConfirmHardDeleteWorkspace();
+
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex gap-1 items-center">
+      <Button {...restoreButtonProps} variant="secondary" />
+      <Button
+        variant="primary"
+        onPress={() =>
+          hardDelete(
+            { path: { workspace_name: workspaceName } },
+            { onSuccess: () => navigate(hrefs.workspaces.all) },
+          )
+        }
+        isDestructive
+      >
+        Delete permanently
+      </Button>
+    </div>
+  );
+};
 
 export function ArchiveWorkspace({
   className,
@@ -12,9 +46,6 @@ export function ArchiveWorkspace({
   className?: string;
   isArchived: boolean | undefined;
 }) {
-  const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName });
-  const archiveButtonProps = useArchiveWorkspaceButton({ workspaceName });
-
   return (
     <Card className={twMerge(className, "shrink-0")}>
       <CardBody className="flex justify-between items-center">
@@ -26,7 +57,11 @@ export function ArchiveWorkspace({
           </Text>
         </div>
 
-        <Button {...(isArchived ? restoreButtonProps : archiveButtonProps)} />
+        {isArchived ? (
+          <ButtonsArchived workspaceName={workspaceName} />
+        ) : (
+          <ButtonsUnarchived workspaceName={workspaceName} />
+        )}
       </CardBody>
     </Card>
   );

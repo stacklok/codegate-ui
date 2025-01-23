@@ -1,7 +1,6 @@
 import { Button } from "@stacklok/ui-kit";
 import { ComponentProps } from "react";
 import { useMutationArchiveWorkspace } from "@/features/workspace/hooks/use-mutation-archive-workspace";
-import { useNavigate } from "react-router-dom";
 
 export function useArchiveWorkspaceButton({
   workspaceName,
@@ -9,18 +8,11 @@ export function useArchiveWorkspaceButton({
   workspaceName: string;
 }): ComponentProps<typeof Button> {
   const { mutateAsync, isPending } = useMutationArchiveWorkspace();
-  const navigate = useNavigate();
 
   return {
     isPending,
     isDisabled: isPending,
-    onPress: () =>
-      mutateAsync(
-        { path: { workspace_name: workspaceName } },
-        {
-          onSuccess: () => navigate("/workspaces"),
-        },
-      ),
+    onPress: () => mutateAsync({ path: { workspace_name: workspaceName } }),
     isDestructive: true,
     children: "Archive",
   };
