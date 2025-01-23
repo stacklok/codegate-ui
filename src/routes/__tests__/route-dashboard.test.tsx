@@ -188,19 +188,15 @@ describe("Dashboard", () => {
         /codegate-context-retriever/i,
       ),
     ).toBeVisible();
+  });
 
-    expect(screen.getByText(/package:/i)).toBeVisible();
-    expect(
-      screen.getByRole("link", {
-        name: /pypi\/invokehttp/i,
-      }),
-    ).toHaveAttribute(
-      "href",
-      "https://www.insight.stacklok.com/report/pypi/invokehttp",
-    );
-    expect(
-      screen.getByText(/malicious python http for humans\./i),
-    ).toBeVisible();
+  it("renders event column", async () => {
+    mockAlertsWithMaliciousPkg();
+    render(<RouteDashboard />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/are there malicious/i)).toBeVisible();
+    });
   });
 
   it("should filter by malicious pkg", async () => {
@@ -227,16 +223,6 @@ describe("Dashboard", () => {
     await waitFor(() =>
       expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("1"),
     );
-
-    expect(screen.getByText(/package:/i)).toBeVisible();
-    expect(
-      screen.getByRole("link", {
-        name: /pypi\/invokehttp/i,
-      }),
-    ).toBeVisible();
-    expect(
-      screen.getByText(/malicious python http for humans\./i),
-    ).toBeVisible();
 
     userEvent.click(
       screen.getByRole("switch", {
