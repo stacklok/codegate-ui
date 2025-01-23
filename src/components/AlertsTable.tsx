@@ -37,6 +37,17 @@ const getTitle = (alert: AlertConversation) => {
   return title;
 };
 
+function TypeCellContent({ alert }: { alert: AlertConversation }) {
+  const conversationType = alert.conversation.type;
+  console.log({ conversationType });
+
+  if (conversationType === "chat") {
+    return "Chat";
+  }
+
+  return "Completion";
+}
+
 export function AlertsTable() {
   const {
     isMaliciousFilterActive,
@@ -151,7 +162,9 @@ export function AlertsTable() {
                       addSuffix: true,
                     })}
                   </Cell>
-                  <Cell className="truncate">{alert.trigger_type}</Cell>
+                  <Cell className="truncate">
+                    <TypeCellContent alert={alert} />
+                  </Cell>
                   <Cell className="truncate">{getTitle(alert)}</Cell>
                 </Row>
               ))}

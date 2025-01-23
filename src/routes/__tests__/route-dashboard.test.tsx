@@ -167,7 +167,7 @@ describe("Dashboard", () => {
       "row",
     )[1] as HTMLElement;
 
-    expect(within(firstRow).getByText(/codegate-secrets/i)).toBeVisible();
+    expect(within(firstRow).getByText(/chat/i)).toBeVisible();
     expect(within(firstRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
   });
 
@@ -209,10 +209,10 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getByRole("row", {
-        name: /codegate-secrets/i,
-      }),
-    ).toBeVisible();
+      screen.getAllByRole("row", {
+        name: /chat/i,
+      }).length,
+    ).toBeGreaterThanOrEqual(1);
 
     userEvent.click(
       screen.getByRole("switch", {
@@ -244,15 +244,10 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getByRole("row", {
-        name: /codegate-secrets/i,
-      }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("row", {
-        name: /codegate-context-retriever/i,
-      }),
-    ).toBeVisible();
+      screen.getAllByRole("row", {
+        name: /chat/i,
+      }).length,
+    ).toBeGreaterThanOrEqual(1);
 
     await userEvent.type(screen.getByRole("searchbox"), "codegate-secrets");
 
@@ -262,7 +257,7 @@ describe("Dashboard", () => {
     const row = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
     )[1] as HTMLElement;
-    expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
+    expect(within(row).getByText(/chat/i)).toBeVisible();
   });
 
   it("should sort alerts by date desc", async () => {
