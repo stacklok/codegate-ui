@@ -169,7 +169,7 @@ export function AlertsTable() {
               <Column width={300}>Trigger Token</Column>
               <Column width={150}>File</Column>
               <Column width={250}>Code</Column>
-              <Column width={100}>Timestamp</Column>
+              <Column width={100}>Time</Column>
             </Row>
           </TableHeader>
           <TableBody>

@@ -162,7 +162,7 @@ describe("Dashboard", () => {
     ).toBeVisible();
     expect(
       screen.getByRole("columnheader", {
-        name: /timestamp/i,
+        name: /time/i,
       }),
     ).toBeVisible();
 
