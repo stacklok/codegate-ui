@@ -31,7 +31,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
-import { useGetSystemPrompt } from "../hooks/use-query-get-workspace-custom-instructions";
+import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
 
 type DarkModeContextValue = {
@@ -65,7 +65,7 @@ function EditorLoadingUI() {
   );
 }
 
-function isGetSystemPromptQuery(
+function isGetWorkspaceCustomInstructionsQuery(
   queryKey: unknown,
   options: V1GetWorkspaceCustomInstructionsData,
 ): boolean {
@@ -76,7 +76,9 @@ function isGetSystemPromptQuery(
   );
 }
 
-function getPromptFromNotifyEvent(event: QueryCacheNotifyEvent): string | null {
+function getCustomInstructionsFromEvent(
+  event: QueryCacheNotifyEvent,
+): string | null {
   if ("action" in event === false || "data" in event.action === false)
     return null;
   return (
@@ -89,7 +91,7 @@ function getPromptFromNotifyEvent(event: QueryCacheNotifyEvent): string | null {
   );
 }
 
-function usePromptValue({
+function useCustomInstructionsValue({
   initialValue,
   options,
   queryClient,
@@ -107,9 +109,12 @@ function usePromptValue({
       if (
         event.type === "updated" &&
         event.action.type === "success" &&
-        isGetSystemPromptQuery(event.query.options.queryKey, options)
+        isGetWorkspaceCustomInstructionsQuery(
+          event.query.options.queryKey,
+          options,
+        )
       ) {
-        const prompt: string | null = getPromptFromNotifyEvent(event);
+        const prompt: string | null = getCustomInstructionsFromEvent(event);
         if (prompt === value || prompt === null) return;
 
         setValue(prompt);
@@ -124,7 +129,7 @@ function usePromptValue({
   return { value, setValue };
 }
 
-export function SystemPromptEditor({
+export function WorkspaceCustomInstructions({
   className,
   workspaceName,
   isArchived,
@@ -146,13 +151,15 @@ export function SystemPromptEditor({
 
   const queryClient = useQueryClient();
 
-  const { data: systemPromptResponse, isPending: isGetPromptPending } =
-    useGetSystemPrompt(options);
+  const {
+    data: customInstructionsResponse,
+    isPending: isCustomInstructionsPending,
+  } = useQueryGetWorkspaceCustomInstructions(options);
   const { mutateAsync, isPending: isMutationPending } =
     useMutationSetWorkspaceCustomInstructions(options);
 
-  const { setValue, value } = usePromptValue({
-    initialValue: systemPromptResponse?.prompt ?? "",
+  const { setValue, value } = useCustomInstructionsValue({
+    initialValue: customInstructionsResponse?.prompt ?? "",
     options,
     queryClient,
   });
@@ -183,7 +190,7 @@ export function SystemPromptEditor({
           save time & tokens.
         </Text>
         <div className="border border-gray-200 rounded overflow-hidden">
-          {isGetPromptPending ? (
+          {isCustomInstructionsPending ? (
             <EditorLoadingUI />
           ) : (
             <Editor
@@ -204,7 +211,7 @@ export function SystemPromptEditor({
       <CardFooter className="justify-end gap-2">
         <Button
           isPending={isMutationPending}
-          isDisabled={Boolean(isArchived ?? isGetPromptPending)}
+          isDisabled={Boolean(isArchived ?? isCustomInstructionsPending)}
           onPress={() => handleSubmit(value)}
           variant="secondary"
         >
