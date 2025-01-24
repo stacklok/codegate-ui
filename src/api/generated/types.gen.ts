@@ -50,7 +50,7 @@ export type CodeSnippet = {
 export type Conversation = {
   question_answers: Array<QuestionAnswer>;
   provider: string | null;
-  type: string;
+  type: QuestionType;
   chat_id: string;
   conversation_timestamp: string;
 };
@@ -83,6 +83,11 @@ export type QuestionAnswer = {
   question: ChatMessage;
   answer: ChatMessage | null;
 };
+
+export enum QuestionType {
+  CHAT = "chat",
+  FIM = "fim",
+}
 
 export type ValidationError = {
   loc: Array<string | number>;
