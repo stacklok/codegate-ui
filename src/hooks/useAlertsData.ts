@@ -82,7 +82,11 @@ export const useFilteredAlerts = () => {
             typeof alert.trigger_string === "object" &&
             (alert.trigger_type as TriggerType) === "codegate-context-retriever"
           );
-        });
+        })
+        .sort(
+          (a, b) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        );
     },
   });
 };
