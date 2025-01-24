@@ -10,6 +10,9 @@ export function useMutationCreateWorkspace() {
     onSuccess: async () => {
       await invalidate();
     },
-    successMsg: (variables) => `Created "${variables.body.name}" workspace`,
+    successMsg: (variables) =>
+      variables.body.rename_to
+        ? `Renamed workspace to "${variables.body.rename_to}"`
+        : `Created "${variables.body.name}" workspace`,
   });
 }
