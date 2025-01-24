@@ -157,6 +157,12 @@ describe("Dashboard", () => {
     ).toBeVisible();
 
     expect(
+      screen.getByRole("columnheader", {
+        name: /issue detected/i,
+      }),
+    ).toBeVisible();
+
+    expect(
       screen.getByRole("switch", {
         name: /malicious packages/i,
       }),
@@ -169,6 +175,11 @@ describe("Dashboard", () => {
 
     expect(within(firstRow).getByText(/chat/i)).toBeVisible();
     expect(within(firstRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
+    expect(
+      screen.getAllByRole("gridcell", {
+        name: /blocked secret exposure/i,
+      }).length,
+    ).toBeGreaterThanOrEqual(1);
   });
 
   it("should render malicious pkg", async () => {
@@ -187,6 +198,12 @@ describe("Dashboard", () => {
       within(screen.getByTestId("security-issues-barchart")).getByText(
         /codegate-context-retriever/i,
       ),
+    ).toBeVisible();
+
+    expect(
+      screen.getByRole("gridcell", {
+        name: /blocked malicious package/i,
+      }),
     ).toBeVisible();
   });
 
@@ -223,6 +240,12 @@ describe("Dashboard", () => {
     await waitFor(() =>
       expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("1"),
     );
+
+    expect(
+      screen.queryAllByRole("gridcell", {
+        name: /blocked secret exposure/i,
+      }).length,
+    ).toBe(0);
 
     userEvent.click(
       screen.getByRole("switch", {

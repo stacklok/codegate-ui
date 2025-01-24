@@ -16,8 +16,12 @@ import {
 import { Switch } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
 import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
-import { sanitizeQuestionPrompt, parsingPromptText } from "@/lib/utils";
-import { Search } from "lucide-react";
+import {
+  sanitizeQuestionPrompt,
+  parsingPromptText,
+  getIssueDetectedType,
+} from "@/lib/utils";
+import { KeyRoundIcon, PackageX, Search } from "lucide-react";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -47,6 +51,29 @@ function TypeCellContent({ alert }: { alert: AlertConversation }) {
       return "Code Suggestion";
     default:
       return "Unknown";
+  }
+}
+
+function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
+  const issueDetected = getIssueDetectedType(alert);
+
+  switch (issueDetected) {
+    case "leaked_secret":
+      return (
+        <>
+          <KeyRoundIcon className="size-4" />
+          Blocked secret exposure
+        </>
+      );
+    case "malicious_package":
+      return (
+        <>
+          <PackageX className="size-4" />
+          Blocked malicious package
+        </>
+      );
+    default:
+      return "";
   }
 }
 
@@ -154,6 +181,7 @@ export function AlertsTable() {
                 Type
               </Column>
               <Column width={300}>Event</Column>
+              <Column width={300}>Issue Detected</Column>
             </Row>
           </TableHeader>
           <TableBody>
@@ -174,6 +202,11 @@ export function AlertsTable() {
                   <TypeCellContent alert={alert} />
                 </Cell>
                 <Cell className="truncate">{getTitle(alert)}</Cell>
+                <Cell>
+                  <div className="truncate flex gap-2 text-blue-800 items-center">
+                    <IssueDetectedCellContent alert={alert} />
+                  </div>
+                </Cell>
               </Row>
             ))}
           </TableBody>

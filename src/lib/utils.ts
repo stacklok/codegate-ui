@@ -175,3 +175,15 @@ export function getMaliciousPackage(
 
   return null;
 }
+
+export function getIssueDetectedType(
+  alert: AlertConversation,
+): "malicious_package" | "leaked_secret" {
+  const maliciousPackage = getMaliciousPackage(alert.trigger_string);
+
+  if (maliciousPackage !== null && typeof maliciousPackage === "object") {
+    return "malicious_package";
+  }
+
+  return "leaked_secret";
+}
