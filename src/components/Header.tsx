@@ -23,20 +23,29 @@ const CERTIFICATE_MENU_ITEMS: OptionsSchema<"menu">[] = [
 
 const HELP_MENU_ITEMS: OptionsSchema<"menu">[] = [
   {
-    textValue: "Setup",
+    textValue: "Getting Starting",
     id: "setup",
     items: [
       {
         icon: <Continue />,
         id: "continue-setup",
-        href: "/help/continue-setup",
-        textValue: "Set up in Continue",
+        href: "https://docs.codegate.ai/how-to/use-with-continue",
+        textValue: "Use with Continue",
+        target: "_blank",
       },
       {
         icon: <Copilot />,
         id: "copilot-setup",
-        href: "/help/copilot-setup",
-        textValue: "Set up in Copilot",
+        href: "https://docs.codegate.ai/how-to/use-with-copilot",
+        textValue: "Use with Copilot",
+        target: "_blank",
+      },
+      {
+        icon: <BookOpenText />,
+        id: "documentation",
+        href: "https://docs.codegate.ai/",
+        textValue: "Documentation",
+        target: "_blank",
       },
     ],
   },
@@ -45,28 +54,25 @@ const HELP_MENU_ITEMS: OptionsSchema<"menu">[] = [
     id: "resources",
     items: [
       {
-        icon: <BookOpenText />,
-        id: "documentation",
-        href: "https://docs.codegate.ai/",
-        textValue: "Documentation",
-      },
-      {
         icon: <Discord />,
         id: "discord",
         href: "https://discord.gg/stacklok",
         textValue: "Discord",
+        target: "_blank",
       },
       {
         icon: <Github />,
         id: "github",
         href: "https://github.com/stacklok/codegate",
         textValue: "GitHub",
+        target: "_blank",
       },
       {
         icon: <Youtube />,
         id: "youtube",
         href: "https://www.youtube.com/@Stacklok",
         textValue: "YouTube",
+        target: "_blank",
       },
     ],
   },
@@ -96,7 +102,7 @@ export function Header({ hasError }: { hasError?: boolean }) {
         <Separator orientation="vertical" className="h-8 ml-4" />
         <WorkspacesSelection />
       </div>
-      <div className="flex items-center gap-4 mr-16">
+      <div className="flex items-center gap-4 mr-2">
         <DropdownMenu title="Certificates" items={CERTIFICATE_MENU_ITEMS} />
 
         <DropdownMenu title="Help" items={HELP_MENU_ITEMS} />
