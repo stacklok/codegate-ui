@@ -99,9 +99,11 @@ const getArchivedWorkspaceActions = ({
 function CellName({
   name,
   isArchived = false,
+  isActive = false,
 }: {
   name: string;
-  isArchived?: boolean;
+  isArchived: boolean;
+  isActive: boolean;
 }) {
   if (isArchived)
     return (
@@ -110,6 +112,17 @@ function CellName({
         &nbsp;&nbsp;
         <Badge size="sm" className="text-tertiary">
           Archived
+        </Badge>
+      </Cell>
+    );
+
+  if (isActive)
+    return (
+      <Cell>
+        <span>{name}</span>
+        &nbsp;&nbsp;
+        <Badge size="sm" variant="inverted">
+          Active
         </Badge>
       </Cell>
     );
@@ -139,7 +152,11 @@ export function TableWorkspaces() {
       <TableBody>
         {workspaces.map((workspace) => (
           <Row key={workspace.id} href={`/workspace/${workspace.name}`}>
-            <CellName name={workspace.name} isArchived={workspace.isArchived} />
+            <CellName
+              name={workspace.name}
+              isActive={workspace.is_active}
+              isArchived={workspace.isArchived}
+            />
             <Cell alignment="end">
               <MenuTrigger>
                 <Button isIcon variant="tertiary">
