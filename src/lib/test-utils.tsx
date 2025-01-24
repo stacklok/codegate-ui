@@ -10,6 +10,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
+import { UiKitClientSideRoutingProvider } from "./ui-kit-client-side-routing";
 
 type RoutConfig = {
   routeConfig?: MemoryRouterProps;
@@ -49,12 +50,14 @@ const renderWithProviders = (
         <ConfirmProvider>
           <Toaster />
           <MemoryRouter {...options?.routeConfig}>
-            <Routes>
-              <Route
-                path={options?.pathConfig ?? "*"}
-                element={<SidebarProvider>{children}</SidebarProvider>}
-              />
-            </Routes>
+            <UiKitClientSideRoutingProvider>
+              <Routes>
+                <Route
+                  path={options?.pathConfig ?? "*"}
+                  element={<SidebarProvider>{children}</SidebarProvider>}
+                />
+              </Routes>
+            </UiKitClientSideRoutingProvider>
           </MemoryRouter>
         </ConfirmProvider>
       </DarkModeProvider>

@@ -31,7 +31,7 @@ const ButtonsArchived = ({ workspaceName }: { workspaceName: string }) => {
         }
         isDestructive
       >
-        Delete permanently
+        Permanently delete
       </Button>
     </div>
   );

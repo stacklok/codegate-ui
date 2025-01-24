@@ -16,13 +16,15 @@ export const handlers = [
     HttpResponse.json({ status: "healthy" }),
   ),
   http.get("*/api/v1/workspaces/active", () =>
-    HttpResponse.json([
-      {
-        name: "my-awesome-workspace",
-        is_active: true,
-        last_updated: new Date(Date.now()).toISOString(),
-      },
-    ]),
+    HttpResponse.json({
+      workspaces: [
+        {
+          name: "my-awesome-workspace",
+          is_active: true,
+          last_updated: new Date(Date.now()).toISOString(),
+        },
+      ],
+    }),
   ),
   http.get("*/api/v1/workspaces/:name/messages", () => {
     return HttpResponse.json(mockedPrompts);
@@ -46,16 +48,27 @@ export const handlers = [
   http.post("*/api/v1/workspaces", () => {
     return HttpResponse.json(mockedWorkspaces);
   }),
-  http.post("*/api/v1/workspaces/archive/:workspace_name/recover", () => {
-    HttpResponse.json({ status: 204 });
-  }),
-  http.delete("*/api/v1/workspaces/:name", () =>
-    HttpResponse.json({ status: 204 }),
+  http.post(
+    "*/api/v1/workspaces/active",
+    () => new HttpResponse(null, { status: 204 }),
+  ),
+  http.post(
+    "*/api/v1/workspaces/archive/:workspace_name/recover",
+    () => new HttpResponse(null, { status: 204 }),
+  ),
+  http.delete(
+    "*/api/v1/workspaces/:name",
+    () => new HttpResponse(null, { status: 204 }),
+  ),
+  http.delete(
+    "*/api/v1/workspaces/archive/:name",
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
     return HttpResponse.json({ prompt: "foo" });
   }),
-  http.put("*/api/v1/workspaces/:name/custom-instructions", () => {
-    return HttpResponse.json({}, { status: 204 });
-  }),
+  http.put(
+    "*/api/v1/workspaces/:name/custom-instructions",
+    () => new HttpResponse(null, { status: 204 }),
+  ),
 ];

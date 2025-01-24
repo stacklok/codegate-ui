@@ -12,14 +12,14 @@ export function useConfirmHardDeleteWorkspace() {
       const answer = await confirm(
         <>
           <p>Are you sure you want to delete this workspace?</p>
-          <p>You will lose any custom instructions, or other configuration.</p>
           <p>
+            You will lose any custom instructions, or other configuration.{" "}
             <b>This action cannot be undone.</b>
           </p>
         </>,
         {
           buttons: {
-            yes: "Remove",
+            yes: "Delete",
             no: "Cancel",
           },
           title: "Permanently delete workspace",
@@ -27,7 +27,7 @@ export function useConfirmHardDeleteWorkspace() {
         },
       );
       if (answer) {
-        void hardDeleteWorkspace(...params);
+        return hardDeleteWorkspace(...params);
       }
     },
     [confirm, hardDeleteWorkspace],

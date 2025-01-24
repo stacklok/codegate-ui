@@ -27,7 +27,17 @@ export function useMutationRestoreWorkspace() {
         queryKey: v1ListArchivedWorkspacesQueryKey(),
       });
 
-      // Optimistically remove the workspace from the archived list
+      // Snapshot the previous data
+      const prevWorkspaces = queryClient.getQueryData(
+        v1ListWorkspacesQueryKey(),
+      );
+      const prevArchivedWorkspaces = queryClient.getQueryData(
+        v1ListArchivedWorkspacesQueryKey(),
+      );
+
+      if (!prevWorkspaces || !prevArchivedWorkspaces) return;
+
+      // Optimistically update values in cache
       queryClient.setQueryData(
         v1ListArchivedWorkspacesQueryKey(),
         (old: V1ListWorkspacesResponse) => ({
@@ -47,13 +57,24 @@ export function useMutationRestoreWorkspace() {
         }),
       );
 
-      return {};
+      return {
+        prevWorkspaces,
+        prevArchivedWorkspaces,
+      };
     },
     onSettled: async () => {
       await invalidate();
     },
-    onError: async () => {
-      await invalidate();
+    // Rollback cache updates on error
+    onError: async (_a, _b, context) => {
+      queryClient.setQueryData(
+        v1ListWorkspacesQueryKey(),
+        context?.prevWorkspaces,
+      );
+      queryClient.setQueryData(
+        v1ListArchivedWorkspacesQueryKey(),
+        context?.prevArchivedWorkspaces,
+      );
     },
     successMsg: (variables) =>
       `Restored "${variables.path.workspace_name}" workspace`,
