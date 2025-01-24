@@ -1,12 +1,13 @@
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import { ArchiveWorkspace } from "@/features/workspace/components/archive-workspace";
-import { SystemPromptEditor } from "@/features/workspace-system-prompt/components/system-prompt-editor";
+
 import { WorkspaceHeading } from "@/features/workspace/components/workspace-heading";
 import { WorkspaceName } from "@/features/workspace/components/workspace-name";
 import { Alert, Breadcrumb, Breadcrumbs } from "@stacklok/ui-kit";
 import { useParams } from "react-router-dom";
 import { useArchivedWorkspaces } from "@/features/workspace/hooks/use-archived-workspaces";
 import { useRestoreWorkspaceButton } from "@/features/workspace/hooks/use-restore-workspace-button";
+import { SystemPromptEditor } from "@/features/workspace/components/system-prompt-editor";
 
 function WorkspaceArchivedBanner({ name }: { name: string }) {
   const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name });

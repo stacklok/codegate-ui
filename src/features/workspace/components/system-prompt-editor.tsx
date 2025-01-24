@@ -17,21 +17,22 @@ import {
   useMemo,
   useState,
 } from "react";
-import { usePostSystemPrompt } from "../hooks/use-set-system-prompt";
-import { Check } from "lucide-react";
+
 import { twMerge } from "tailwind-merge";
 import {
   V1GetWorkspaceCustomInstructionsData,
   V1GetWorkspaceCustomInstructionsResponse,
   V1SetWorkspaceCustomInstructionsData,
 } from "@/api/generated";
-import { useGetSystemPrompt } from "../hooks/use-get-system-prompt";
+
 import {
   QueryCacheNotifyEvent,
   QueryClient,
   useQueryClient,
 } from "@tanstack/react-query";
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { useGetSystemPrompt } from "../hooks/use-query-get-workspace-custom-instructions";
+import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -52,17 +53,6 @@ function inferDarkMode(
   // Handle preference
   if (contextValue[0].preference === "dark") return "vs-dark";
   return "light";
-}
-
-function useSavedStatus() {
-  const [saved, setSaved] = useState<boolean>(false);
-
-  useEffect(() => {
-    const id = setTimeout(() => setSaved(false), 2000);
-    return () => clearTimeout(id);
-  }, [saved]);
-
-  return { saved, setSaved };
 }
 
 function EditorLoadingUI() {
@@ -158,7 +148,8 @@ export function SystemPromptEditor({
 
   const { data: systemPromptResponse, isPending: isGetPromptPending } =
     useGetSystemPrompt(options);
-  const { mutate, isPending: isMutationPending } = usePostSystemPrompt(options);
+  const { mutateAsync, isPending: isMutationPending } =
+    useMutationSetWorkspaceCustomInstructions(options);
 
   const { setValue, value } = usePromptValue({
     initialValue: systemPromptResponse?.prompt ?? "",
@@ -166,11 +157,9 @@ export function SystemPromptEditor({
     queryClient,
   });
 
-  const { saved, setSaved } = useSavedStatus();
-
   const handleSubmit = useCallback(
     (value: string) => {
-      mutate(
+      mutateAsync(
         { ...options, body: { prompt: value } },
         {
           onSuccess: () => {
@@ -178,18 +167,17 @@ export function SystemPromptEditor({
               queryKey: v1GetWorkspaceCustomInstructionsQueryKey(options),
               refetchType: "all",
             });
-            setSaved(true);
           },
         },
       );
     },
-    [mutate, options, queryClient, setSaved],
+    [mutateAsync, options, queryClient],
   );
 
   return (
     <Card className={twMerge(className, "shrink-0")}>
       <CardBody>
-        <Text className="text-primary">Custom prompt</Text>
+        <Text className="text-primary">Custom instructions</Text>
         <Text className="text-secondary mb-4">
           Pass custom instructions to your LLM to augment it's behavior, and
           save time & tokens.
@@ -216,17 +204,11 @@ export function SystemPromptEditor({
       <CardFooter className="justify-end gap-2">
         <Button
           isPending={isMutationPending}
-          isDisabled={Boolean(isArchived ?? isGetPromptPending ?? saved)}
+          isDisabled={Boolean(isArchived ?? isGetPromptPending)}
           onPress={() => handleSubmit(value)}
           variant="secondary"
         >
-          {saved ? (
-            <>
-              <span>Saved</span> <Check />
-            </>
-          ) : (
-            "Save"
-          )}
+          Save
         </Button>
       </CardFooter>
     </Card>

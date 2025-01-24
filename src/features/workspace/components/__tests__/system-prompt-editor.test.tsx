@@ -1,9 +1,10 @@
 import { render, waitFor } from "@/lib/test-utils";
 import { expect, test } from "vitest";
-import { SystemPromptEditor } from "../system-prompt-editor";
+
 import userEvent from "@testing-library/user-event";
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
+import { SystemPromptEditor } from "../system-prompt-editor";
 
 vi.mock("../../lib/post-system-prompt");
 
