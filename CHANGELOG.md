@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://github.com/stacklok/codegate-ui/compare/v0.8.0...v0.9.0) (2025-01-24)
+
+
+### Features
+
+* add not_found route ([#194](https://github.com/stacklok/codegate-ui/issues/194)) ([d865730](https://github.com/stacklok/codegate-ui/commit/d865730201eaff07e0e1852750803d0a262e5df6))
+
+
+### Bug Fixes
+
+* workspace hard delete nits ([#202](https://github.com/stacklok/codegate-ui/issues/202)) ([9129a5b](https://github.com/stacklok/codegate-ui/commit/9129a5b983a1b54f7d3b5cffc19cce85a955045a))
+
 ## [0.8.0](https://github.com/stacklok/codegate-ui/compare/v0.7.2...v0.8.0) (2025-01-24)
 
 
