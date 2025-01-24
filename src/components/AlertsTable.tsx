@@ -173,40 +173,34 @@ export function AlertsTable() {
             </Row>
           </TableHeader>
           <TableBody>
-            {dataView
-              .sort(
-                (a, b) =>
-                  new Date(b.timestamp).getTime() -
-                  new Date(a.timestamp).getTime(),
-              )
-              .map((alert) => (
-                <Row key={alert.alert_id} className="h-20">
-                  <Cell className="truncate">{alert.trigger_type}</Cell>
-                  <Cell className="overflow-auto whitespace-nowrap max-w-80">
-                    {wrapObjectOutput(alert.trigger_string)}
-                  </Cell>
-                  <Cell className="truncate">
-                    {alert.code_snippet?.filepath || "N/A"}
-                  </Cell>
-                  <Cell className="overflow-auto whitespace-nowrap max-w-80">
-                    {alert.code_snippet?.code ? (
-                      <pre className="max-h-40 overflow-auto bg-gray-100 p-2 whitespace-pre-wrap">
-                        <code>{alert.code_snippet.code}</code>
-                      </pre>
-                    ) : (
-                      "N/A"
-                    )}
-                  </Cell>
-                  <Cell className="truncate">
-                    <div data-testid="date">
-                      {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
-                    </div>
-                    <div data-testid="time">
-                      {format(new Date(alert.timestamp ?? ""), "hh:mm:ss a")}
-                    </div>
-                  </Cell>
-                </Row>
-              ))}
+            {dataView.map((alert) => (
+              <Row key={alert.alert_id} className="h-20">
+                <Cell className="truncate">{alert.trigger_type}</Cell>
+                <Cell className="overflow-auto whitespace-nowrap max-w-80">
+                  {wrapObjectOutput(alert.trigger_string)}
+                </Cell>
+                <Cell className="truncate">
+                  {alert.code_snippet?.filepath || "N/A"}
+                </Cell>
+                <Cell className="overflow-auto whitespace-nowrap max-w-80">
+                  {alert.code_snippet?.code ? (
+                    <pre className="max-h-40 overflow-auto bg-gray-100 p-2 whitespace-pre-wrap">
+                      <code>{alert.code_snippet.code}</code>
+                    </pre>
+                  ) : (
+                    "N/A"
+                  )}
+                </Cell>
+                <Cell className="truncate">
+                  <div data-testid="date">
+                    {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
+                  </div>
+                  <div data-testid="time">
+                    {format(new Date(alert.timestamp ?? ""), "hh:mm:ss a")}
+                  </div>
+                </Cell>
+              </Row>
+            ))}
           </TableBody>
         </Table>
       </div>
