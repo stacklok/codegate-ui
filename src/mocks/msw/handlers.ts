@@ -12,9 +12,7 @@ export const handlers = [
       error: null,
     }),
   ),
-  http.get("*/api/v1/dashboard/version", () =>
-    HttpResponse.json({ status: "healthy" }),
-  ),
+  http.get("*/api/v1/version", () => HttpResponse.json({ status: "healthy" })),
   http.get("*/api/v1/workspaces/active", () =>
     HttpResponse.json([
       {

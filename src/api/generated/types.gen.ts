@@ -99,22 +99,6 @@ export type HealthCheckHealthGetResponse = unknown;
 
 export type HealthCheckHealthGetError = unknown;
 
-export type V1GetMessagesResponse = Array<Conversation>;
-
-export type V1GetMessagesError = unknown;
-
-export type V1GetAlertsResponse = Array<AlertConversation | null>;
-
-export type V1GetAlertsError = unknown;
-
-export type V1StreamSseResponse = unknown;
-
-export type V1StreamSseError = unknown;
-
-export type V1VersionCheckResponse = unknown;
-
-export type V1VersionCheckError = unknown;
-
 export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 
 export type V1ListWorkspacesError = unknown;
@@ -226,3 +210,11 @@ export type V1DeleteWorkspaceCustomInstructionsData = {
 export type V1DeleteWorkspaceCustomInstructionsResponse = void;
 
 export type V1DeleteWorkspaceCustomInstructionsError = HTTPValidationError;
+
+export type V1StreamSseResponse = unknown;
+
+export type V1StreamSseError = unknown;
+
+export type V1VersionCheckResponse = unknown;
+
+export type V1VersionCheckError = unknown;

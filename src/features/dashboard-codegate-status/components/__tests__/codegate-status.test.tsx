@@ -49,7 +49,7 @@ describe("CardCodegateStatus", () => {
   });
 
   test("renders 'error' state when version check request fails", async () => {
-    server.use(http.get("*/dashboard/version", () => HttpResponse.error()));
+    server.use(http.get("*/api/v1/version", () => HttpResponse.error()));
 
     const { getByText } = renderComponent();
 
@@ -63,7 +63,7 @@ describe("CardCodegateStatus", () => {
 
   test("renders 'latest version' state", async () => {
     server.use(
-      http.get("*/dashboard/version", () =>
+      http.get("*/api/v1/version", () =>
         HttpResponse.json({
           current_version: "foo",
           latest_version: "foo",
@@ -85,7 +85,7 @@ describe("CardCodegateStatus", () => {
 
   test("renders 'update available' state", async () => {
     server.use(
-      http.get("*/dashboard/version", () =>
+      http.get("*/api/v1/version", () =>
         HttpResponse.json({
           current_version: "foo",
           latest_version: "bar",
@@ -112,7 +112,7 @@ describe("CardCodegateStatus", () => {
 
   test("renders 'version check error' state", async () => {
     server.use(
-      http.get("*/dashboard/version", () =>
+      http.get("*/api/v1/version", () =>
         HttpResponse.json({
           current_version: "foo",
           latest_version: "bar",

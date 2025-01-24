@@ -5,10 +5,6 @@ import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 import {
   client,
   healthCheckHealthGet,
-  v1GetMessages,
-  v1GetAlerts,
-  v1StreamSse,
-  v1VersionCheck,
   v1ListWorkspaces,
   v1CreateWorkspace,
   v1ListActiveWorkspaces,
@@ -22,6 +18,8 @@ import {
   v1GetWorkspaceCustomInstructions,
   v1SetWorkspaceCustomInstructions,
   v1DeleteWorkspaceCustomInstructions,
+  v1StreamSse,
+  v1VersionCheck,
 } from "../sdk.gen";
 import type {
   V1CreateWorkspaceData,
@@ -100,82 +98,6 @@ export const healthCheckHealthGetOptions = (options?: OptionsLegacyParser) => {
       return data;
     },
     queryKey: healthCheckHealthGetQueryKey(options),
-  });
-};
-
-export const v1GetMessagesQueryKey = (options?: OptionsLegacyParser) => [
-  createQueryKey("v1GetMessages", options),
-];
-
-export const v1GetMessagesOptions = (options?: OptionsLegacyParser) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1GetMessages({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: v1GetMessagesQueryKey(options),
-  });
-};
-
-export const v1GetAlertsQueryKey = (options?: OptionsLegacyParser) => [
-  createQueryKey("v1GetAlerts", options),
-];
-
-export const v1GetAlertsOptions = (options?: OptionsLegacyParser) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1GetAlerts({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: v1GetAlertsQueryKey(options),
-  });
-};
-
-export const v1StreamSseQueryKey = (options?: OptionsLegacyParser) => [
-  createQueryKey("v1StreamSse", options),
-];
-
-export const v1StreamSseOptions = (options?: OptionsLegacyParser) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1StreamSse({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: v1StreamSseQueryKey(options),
-  });
-};
-
-export const v1VersionCheckQueryKey = (options?: OptionsLegacyParser) => [
-  createQueryKey("v1VersionCheck", options),
-];
-
-export const v1VersionCheckOptions = (options?: OptionsLegacyParser) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1VersionCheck({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: v1VersionCheckQueryKey(options),
   });
 };
 
@@ -506,4 +428,42 @@ export const v1DeleteWorkspaceCustomInstructionsMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const v1StreamSseQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey("v1StreamSse", options),
+];
+
+export const v1StreamSseOptions = (options?: OptionsLegacyParser) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1StreamSse({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1StreamSseQueryKey(options),
+  });
+};
+
+export const v1VersionCheckQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey("v1VersionCheck", options),
+];
+
+export const v1VersionCheckOptions = (options?: OptionsLegacyParser) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1VersionCheck({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1VersionCheckQueryKey(options),
+  });
 };

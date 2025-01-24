@@ -1,13 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   Conversation,
-  V1GetMessagesResponse,
+  V1GetWorkspaceMessagesResponse,
   V1GetWorkspaceMessagesData,
 } from "@/api/generated";
 import { v1GetWorkspaceMessagesOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useActiveWorkspaceName } from "@/features/workspace/hooks/use-active-workspace-name";
 
-const selectConversations = (data: V1GetMessagesResponse): Conversation[] => {
+const selectConversations = (
+  data: V1GetWorkspaceMessagesResponse,
+): Conversation[] => {
   return data.filter((prompt) =>
     prompt.question_answers?.every((item) => item.answer && item.question),
   );
