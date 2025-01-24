@@ -38,14 +38,16 @@ const getTitle = (alert: AlertConversation) => {
 };
 
 function TypeCellContent({ alert }: { alert: AlertConversation }) {
+  // TODO: this should be improved to better make sure all possible
+  // values from BE are properly handled
+  // see discussion: https://discord.com/channels/1184987096302239844/1317203257051054120/1332280487464407071
   const conversationType = alert.conversation.type;
-  console.log({ conversationType });
 
   if (conversationType === "chat") {
     return "Chat";
   }
 
-  return "Completion";
+  return "Code Suggestion";
 }
 
 export function AlertsTable() {
