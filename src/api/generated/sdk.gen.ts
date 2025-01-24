@@ -8,14 +8,6 @@ import {
 import type {
   HealthCheckHealthGetError,
   HealthCheckHealthGetResponse,
-  V1GetMessagesError,
-  V1GetMessagesResponse,
-  V1GetAlertsError,
-  V1GetAlertsResponse,
-  V1StreamSseError,
-  V1StreamSseResponse,
-  V1VersionCheckError,
-  V1VersionCheckResponse,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
   V1CreateWorkspaceData,
@@ -52,6 +44,10 @@ import type {
   V1DeleteWorkspaceCustomInstructionsData,
   V1DeleteWorkspaceCustomInstructionsError,
   V1DeleteWorkspaceCustomInstructionsResponse,
+  V1StreamSseError,
+  V1StreamSseResponse,
+  V1VersionCheckError,
+  V1VersionCheckResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -69,73 +65,6 @@ export const healthCheckHealthGet = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/health",
-  });
-};
-
-/**
- * Get Messages
- * Get all the messages from the database and return them as a list of conversations.
- */
-export const v1GetMessages = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
-) => {
-  return (options?.client ?? client).get<
-    V1GetMessagesResponse,
-    V1GetMessagesError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/v1/dashboard/messages",
-  });
-};
-
-/**
- * Get Alerts
- * Get all the messages from the database and return them as a list of conversations.
- */
-export const v1GetAlerts = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
-) => {
-  return (options?.client ?? client).get<
-    V1GetAlertsResponse,
-    V1GetAlertsError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/v1/dashboard/alerts",
-  });
-};
-
-/**
- * Stream Sse
- * Send alerts event
- */
-export const v1StreamSse = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
-) => {
-  return (options?.client ?? client).get<
-    V1StreamSseResponse,
-    V1StreamSseError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/v1/dashboard/alerts_notification",
-  });
-};
-
-/**
- * Version Check
- */
-export const v1VersionCheck = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
-) => {
-  return (options?.client ?? client).get<
-    V1VersionCheckResponse,
-    V1VersionCheckError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/v1/dashboard/version",
   });
 };
 
@@ -373,5 +302,38 @@ export const v1DeleteWorkspaceCustomInstructions = <
   >({
     ...options,
     url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
+  });
+};
+
+/**
+ * Stream Sse
+ * Send alerts event
+ */
+export const v1StreamSse = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1StreamSseResponse,
+    V1StreamSseError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/alerts_notification",
+  });
+};
+
+/**
+ * Version Check
+ */
+export const v1VersionCheck = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1VersionCheckResponse,
+    V1VersionCheckError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/version",
   });
 };

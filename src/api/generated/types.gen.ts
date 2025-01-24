@@ -50,7 +50,7 @@ export type CodeSnippet = {
 export type Conversation = {
   question_answers: Array<QuestionAnswer>;
   provider: string | null;
-  type: string;
+  type: QuestionType;
   chat_id: string;
   conversation_timestamp: string;
 };
@@ -84,6 +84,11 @@ export type QuestionAnswer = {
   answer: ChatMessage | null;
 };
 
+export enum QuestionType {
+  CHAT = "chat",
+  FIM = "fim",
+}
+
 export type ValidationError = {
   loc: Array<string | number>;
   msg: string;
@@ -98,22 +103,6 @@ export type Workspace = {
 export type HealthCheckHealthGetResponse = unknown;
 
 export type HealthCheckHealthGetError = unknown;
-
-export type V1GetMessagesResponse = Array<Conversation>;
-
-export type V1GetMessagesError = unknown;
-
-export type V1GetAlertsResponse = Array<AlertConversation | null>;
-
-export type V1GetAlertsError = unknown;
-
-export type V1StreamSseResponse = unknown;
-
-export type V1StreamSseError = unknown;
-
-export type V1VersionCheckResponse = unknown;
-
-export type V1VersionCheckError = unknown;
 
 export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 
@@ -226,3 +215,11 @@ export type V1DeleteWorkspaceCustomInstructionsData = {
 export type V1DeleteWorkspaceCustomInstructionsResponse = void;
 
 export type V1DeleteWorkspaceCustomInstructionsError = HTTPValidationError;
+
+export type V1StreamSseResponse = unknown;
+
+export type V1StreamSseError = unknown;
+
+export type V1VersionCheckResponse = unknown;
+
+export type V1VersionCheckError = unknown;
