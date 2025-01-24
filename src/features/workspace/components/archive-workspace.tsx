@@ -1,15 +1,62 @@
-import { Card, CardBody, Button, Text } from "@stacklok/ui-kit";
+import {
+  Card,
+  CardBody,
+  Button,
+  Text,
+  TooltipTrigger,
+  Tooltip,
+  TooltipInfoButton,
+} from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
 import { useRestoreWorkspaceButton } from "../hooks/use-restore-workspace-button";
 import { useArchiveWorkspaceButton } from "../hooks/use-archive-workspace-button";
 import { useConfirmHardDeleteWorkspace } from "../hooks/use-confirm-hard-delete-workspace";
 import { useNavigate } from "react-router-dom";
 import { hrefs } from "@/lib/hrefs";
+import { useActiveWorkspaceName } from "../hooks/use-active-workspace-name";
+
+function getContextualText({
+  activeWorkspaceName,
+  workspaceName,
+}: {
+  workspaceName: string;
+  activeWorkspaceName: string;
+}) {
+  if (workspaceName === activeWorkspaceName) {
+    return "Cannot archive the active workspace";
+  }
+  if (workspaceName === "default") {
+    return "Cannot archive the default workspace";
+  }
+  return null;
+}
+
+// NOTE: You can't show a tooltip on a disabled button
+// React Aria's recommended approach is https://spectrum.adobe.com/page/contextual-help/
+function ContextualHelp({ workspaceName }: { workspaceName: string }) {
+  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  if (!activeWorkspaceName) return null;
+
+  const text = getContextualText({ activeWorkspaceName, workspaceName });
+  if (!text) return null;
+
+  return (
+    <TooltipTrigger delay={0}>
+      <TooltipInfoButton aria-label="Contextual help" />
+      <Tooltip>{text}</Tooltip>
+    </TooltipTrigger>
+  );
+}
 
 const ButtonsUnarchived = ({ workspaceName }: { workspaceName: string }) => {
   const archiveButtonProps = useArchiveWorkspaceButton({ workspaceName });
 
-  return <Button {...archiveButtonProps} />;
+  return (
+    <div className="flex gap-2 items-center">
+      <Button {...archiveButtonProps} />
+      <ContextualHelp workspaceName={workspaceName} />
+    </div>
+  );
 };
 
 const ButtonsArchived = ({ workspaceName }: { workspaceName: string }) => {
@@ -51,7 +98,7 @@ export function ArchiveWorkspace({
       <CardBody className="flex justify-between items-center">
         <div>
           <Text className="text-primary">Archive Workspace</Text>
-          <Text className="flex items-center text-secondary mb-0">
+          <Text className="flex items-center text-secondary mb-0 text-balance">
             Archiving this workspace removes it from the main workspaces list,
             though it can be restored if needed.
           </Text>

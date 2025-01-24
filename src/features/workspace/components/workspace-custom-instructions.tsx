@@ -186,8 +186,8 @@ export function WorkspaceCustomInstructions({
       <CardBody>
         <Text className="text-primary">Custom instructions</Text>
         <Text className="text-secondary mb-4">
-          Pass custom instructions to your LLM to augment it's behavior, and
-          save time & tokens.
+          Pass custom instructions to your LLM to augment its behavior, and save
+          time & tokens.
         </Text>
         <div className="border border-gray-200 rounded overflow-hidden">
           {isCustomInstructionsPending ? (

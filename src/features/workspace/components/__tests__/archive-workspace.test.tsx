@@ -2,13 +2,16 @@ import { render } from "@/lib/test-utils";
 import { ArchiveWorkspace } from "../archive-workspace";
 import userEvent from "@testing-library/user-event";
 import { waitFor } from "@testing-library/react";
+import { server } from "@/mocks/msw/node";
+import { http, HttpResponse } from "msw";
 
 test("has correct buttons when not archived", async () => {
-  const { getByRole } = render(
+  const { getByRole, queryByRole } = render(
     <ArchiveWorkspace isArchived={false} workspaceName="foo-bar" />,
   );
 
   expect(getByRole("button", { name: /archive/i })).toBeVisible();
+  expect(queryByRole("button", { name: /contextual help/i })).toBe(null);
 });
 
 test("has correct buttons when archived", async () => {
@@ -58,5 +61,40 @@ test("can permanently delete archived workspace", async () => {
 
   await waitFor(() => {
     expect(getByText(/permanently deleted "foo-bar" workspace/i)).toBeVisible();
+  });
+});
+
+test("can't archive active workspace", async () => {
+  server.use(
+    http.get("*/api/v1/workspaces/active", () =>
+      HttpResponse.json({
+        workspaces: [
+          {
+            name: "foo",
+            is_active: true,
+            last_updated: new Date(Date.now()).toISOString(),
+          },
+        ],
+      }),
+    ),
+  );
+  const { getByRole } = render(
+    <ArchiveWorkspace workspaceName="foo" isArchived={false} />,
+  );
+
+  await waitFor(() => {
+    expect(getByRole("button", { name: /archive/i })).toBeDisabled();
+    expect(getByRole("button", { name: /contextual help/i })).toBeVisible();
+  });
+});
+
+test("can't archive default workspace", async () => {
+  const { getByRole } = render(
+    <ArchiveWorkspace workspaceName="default" isArchived={false} />,
+  );
+
+  await waitFor(() => {
+    expect(getByRole("button", { name: /archive/i })).toBeDisabled();
+    expect(getByRole("button", { name: /contextual help/i })).toBeVisible();
   });
 });

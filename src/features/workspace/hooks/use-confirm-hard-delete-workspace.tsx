@@ -11,10 +11,12 @@ export function useConfirmHardDeleteWorkspace() {
     async (...params: Parameters<typeof hardDeleteWorkspace>) => {
       const answer = await confirm(
         <>
-          <p>Are you sure you want to delete this workspace?</p>
+          <p className="mb-1">
+            Are you sure you want to permanently delete this workspace?
+          </p>
           <p>
-            You will lose any custom instructions, or other configuration.{" "}
-            <b>This action cannot be undone.</b>
+            You will lose all configuration and data associated with this
+            workspace, like prompt history or alerts.
           </p>
         </>,
         {
