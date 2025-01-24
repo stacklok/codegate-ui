@@ -1,6 +1,7 @@
 import { toast } from "@stacklok/ui-kit";
 import {
   DefaultError,
+  // eslint-disable-next-line no-restricted-imports
   useMutation,
   UseMutationOptions,
 } from "@tanstack/react-query";
