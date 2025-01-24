@@ -14,7 +14,7 @@ import {
   Button,
 } from "@stacklok/ui-kit";
 import { Switch } from "@stacklok/ui-kit";
-import { AlertConversation } from "@/api/generated";
+import { AlertConversation, QuestionType } from "@/api/generated";
 import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
 import { sanitizeQuestionPrompt, parsingPromptText } from "@/lib/utils";
 import { Search } from "lucide-react";
@@ -38,16 +38,16 @@ const getTitle = (alert: AlertConversation) => {
 };
 
 function TypeCellContent({ alert }: { alert: AlertConversation }) {
-  // TODO: this should be improved to better make sure all possible
-  // values from BE are properly handled
-  // see discussion: https://discord.com/channels/1184987096302239844/1317203257051054120/1332280487464407071
   const conversationType = alert.conversation.type;
 
-  if (conversationType === "chat") {
-    return "Chat";
+  switch (conversationType) {
+    case QuestionType.CHAT:
+      return "Chat";
+    case QuestionType.FIM:
+      return "Code Suggestion";
+    default:
+      return "Unknown";
   }
-
-  return "Code Suggestion";
 }
 
 export function AlertsTable() {
@@ -156,20 +156,19 @@ export function AlertsTable() {
             </Row>
           </TableHeader>
           <TableBody>
-            {dataView
-              .map((alert) => (
-                <Row key={alert.alert_id} className="h-20">
-                  <Cell className="truncate">
-                    {formatDistanceToNow(new Date(alert.timestamp), {
-                      addSuffix: true,
-                    })}
-                  </Cell>
-                  <Cell className="truncate">
-                    <TypeCellContent alert={alert} />
-                  </Cell>
-                  <Cell className="truncate">{getTitle(alert)}</Cell>
-                </Row>
-              ))}
+            {dataView.map((alert) => (
+              <Row key={alert.alert_id} className="h-20">
+                <Cell className="truncate">
+                  {formatDistanceToNow(new Date(alert.timestamp), {
+                    addSuffix: true,
+                  })}
+                </Cell>
+                <Cell className="truncate">
+                  <TypeCellContent alert={alert} />
+                </Cell>
+                <Cell className="truncate">{getTitle(alert)}</Cell>
+              </Row>
+            ))}
           </TableBody>
         </Table>
       </div>
