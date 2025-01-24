@@ -8,6 +8,7 @@ import { RouteChat } from "./routes/route-chat";
 import { RouteDashboard } from "./routes/route-dashboard";
 import { RouteCertificateSecurity } from "./routes/route-certificate-security";
 import { RouteWorkspaceCreation } from "./routes/route-workspace-creation";
+import { RouteNotFound } from "./routes/route-not-found";
 
 export default function Page() {
   return (
@@ -23,6 +24,7 @@ export default function Page() {
         path="/certificates/security"
         element={<RouteCertificateSecurity />}
       />
+      <Route path="*" element={<RouteNotFound />} />
     </Routes>
   );
 }
