@@ -176,12 +176,12 @@ export function AlertsTable() {
         <Table data-testid="alerts-table" aria-label="Alerts table">
           <TableHeader>
             <Row>
-              <Column width={100}>Time</Column>
-              <Column isRowHeader width={150}>
-                Type
+              <Column isRowHeader className="w-[150px]">
+                Time
               </Column>
-              <Column width={300}>Event</Column>
-              <Column width={300}>Issue Detected</Column>
+              <Column className="w-[150px]">Type</Column>
+              <Column>Event</Column>
+              <Column width={325}>Issue Detected</Column>
             </Row>
           </TableHeader>
           <TableBody>
