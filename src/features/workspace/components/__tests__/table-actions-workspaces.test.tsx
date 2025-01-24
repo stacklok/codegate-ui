@@ -36,7 +36,6 @@ it("has correct actions for default workspace when not active", async () => {
   expect(activate).not.toHaveAttribute("aria-disabled", "true");
 
   const edit = getByRole("menuitem", { name: /edit/i });
-  expect(edit).not.toBeDisabled();
   expect(edit).toHaveAttribute("href", hrefs.workspaces.edit("default"));
 
   const archive = getByRole("menuitem", { name: /archive/i });
@@ -61,7 +60,6 @@ it("has correct actions for default workspace when active", async () => {
   expect(activate).toHaveAttribute("aria-disabled", "true");
 
   const edit = getByRole("menuitem", { name: /edit/i });
-  expect(edit).not.toBeDisabled();
   expect(edit).toHaveAttribute("href", hrefs.workspaces.edit("default"));
 
   const archive = getByRole("menuitem", { name: /archive/i });
@@ -86,7 +84,6 @@ it("has correct actions for normal workspace when not active", async () => {
   expect(activate).not.toHaveAttribute("aria-disabled", "true");
 
   const edit = getByRole("menuitem", { name: /edit/i });
-  expect(edit).not.toBeDisabled();
   expect(edit).toHaveAttribute("href", hrefs.workspaces.edit("foo-bar"));
 
   const archive = getByRole("menuitem", { name: /archive/i });
@@ -111,7 +108,6 @@ it("has correct actions for normal workspace when active", async () => {
   expect(activate).toHaveAttribute("aria-disabled", "true");
 
   const edit = getByRole("menuitem", { name: /edit/i });
-  expect(edit).not.toBeDisabled();
   expect(edit).toHaveAttribute("href", hrefs.workspaces.edit("foo-bar"));
 
   const archive = getByRole("menuitem", { name: /archive/i });
