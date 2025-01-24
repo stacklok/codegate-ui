@@ -17,21 +17,22 @@ import {
   useMemo,
   useState,
 } from "react";
-import { usePostSystemPrompt } from "../hooks/use-set-system-prompt";
-import { Check } from "lucide-react";
+
 import { twMerge } from "tailwind-merge";
 import {
   V1GetWorkspaceCustomInstructionsData,
   V1GetWorkspaceCustomInstructionsResponse,
   V1SetWorkspaceCustomInstructionsData,
 } from "@/api/generated";
-import { useGetSystemPrompt } from "../hooks/use-get-system-prompt";
+
 import {
   QueryCacheNotifyEvent,
   QueryClient,
   useQueryClient,
 } from "@tanstack/react-query";
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
+import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -54,17 +55,6 @@ function inferDarkMode(
   return "light";
 }
 
-function useSavedStatus() {
-  const [saved, setSaved] = useState<boolean>(false);
-
-  useEffect(() => {
-    const id = setTimeout(() => setSaved(false), 2000);
-    return () => clearTimeout(id);
-  }, [saved]);
-
-  return { saved, setSaved };
-}
-
 function EditorLoadingUI() {
   return (
     // arbitrary value to match the monaco editor height
@@ -75,7 +65,7 @@ function EditorLoadingUI() {
   );
 }
 
-function isGetSystemPromptQuery(
+function isGetWorkspaceCustomInstructionsQuery(
   queryKey: unknown,
   options: V1GetWorkspaceCustomInstructionsData,
 ): boolean {
@@ -86,7 +76,9 @@ function isGetSystemPromptQuery(
   );
 }
 
-function getPromptFromNotifyEvent(event: QueryCacheNotifyEvent): string | null {
+function getCustomInstructionsFromEvent(
+  event: QueryCacheNotifyEvent,
+): string | null {
   if ("action" in event === false || "data" in event.action === false)
     return null;
   return (
@@ -99,7 +91,7 @@ function getPromptFromNotifyEvent(event: QueryCacheNotifyEvent): string | null {
   );
 }
 
-function usePromptValue({
+function useCustomInstructionsValue({
   initialValue,
   options,
   queryClient,
@@ -117,9 +109,12 @@ function usePromptValue({
       if (
         event.type === "updated" &&
         event.action.type === "success" &&
-        isGetSystemPromptQuery(event.query.options.queryKey, options)
+        isGetWorkspaceCustomInstructionsQuery(
+          event.query.options.queryKey,
+          options,
+        )
       ) {
-        const prompt: string | null = getPromptFromNotifyEvent(event);
+        const prompt: string | null = getCustomInstructionsFromEvent(event);
         if (prompt === value || prompt === null) return;
 
         setValue(prompt);
@@ -134,7 +129,7 @@ function usePromptValue({
   return { value, setValue };
 }
 
-export function SystemPromptEditor({
+export function WorkspaceCustomInstructions({
   className,
   workspaceName,
   isArchived,
@@ -156,21 +151,22 @@ export function SystemPromptEditor({
 
   const queryClient = useQueryClient();
 
-  const { data: systemPromptResponse, isPending: isGetPromptPending } =
-    useGetSystemPrompt(options);
-  const { mutate, isPending: isMutationPending } = usePostSystemPrompt(options);
+  const {
+    data: customInstructionsResponse,
+    isPending: isCustomInstructionsPending,
+  } = useQueryGetWorkspaceCustomInstructions(options);
+  const { mutateAsync, isPending: isMutationPending } =
+    useMutationSetWorkspaceCustomInstructions(options);
 
-  const { setValue, value } = usePromptValue({
-    initialValue: systemPromptResponse?.prompt ?? "",
+  const { setValue, value } = useCustomInstructionsValue({
+    initialValue: customInstructionsResponse?.prompt ?? "",
     options,
     queryClient,
   });
 
-  const { saved, setSaved } = useSavedStatus();
-
   const handleSubmit = useCallback(
     (value: string) => {
-      mutate(
+      mutateAsync(
         { ...options, body: { prompt: value } },
         {
           onSuccess: () => {
@@ -178,24 +174,23 @@ export function SystemPromptEditor({
               queryKey: v1GetWorkspaceCustomInstructionsQueryKey(options),
               refetchType: "all",
             });
-            setSaved(true);
           },
         },
       );
     },
-    [mutate, options, queryClient, setSaved],
+    [mutateAsync, options, queryClient],
   );
 
   return (
     <Card className={twMerge(className, "shrink-0")}>
       <CardBody>
-        <Text className="text-primary">Custom prompt</Text>
+        <Text className="text-primary">Custom instructions</Text>
         <Text className="text-secondary mb-4">
-          Pass custom instructions to your LLM to augment it's behavior, and
-          save time & tokens.
+          Pass custom instructions to your LLM to augment its behavior, and save
+          time & tokens.
         </Text>
         <div className="border border-gray-200 rounded overflow-hidden">
-          {isGetPromptPending ? (
+          {isCustomInstructionsPending ? (
             <EditorLoadingUI />
           ) : (
             <Editor
@@ -216,16 +211,11 @@ export function SystemPromptEditor({
       <CardFooter className="justify-end gap-2">
         <Button
           isPending={isMutationPending}
-          isDisabled={Boolean(isArchived ?? isGetPromptPending ?? saved)}
+          isDisabled={Boolean(isArchived ?? isCustomInstructionsPending)}
           onPress={() => handleSubmit(value)}
+          variant="secondary"
         >
-          {saved ? (
-            <>
-              <span>Saved</span> <Check />
-            </>
-          ) : (
-            "Save"
-          )}
+          Save
         </Button>
       </CardFooter>
     </Card>

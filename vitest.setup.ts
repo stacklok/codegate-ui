@@ -65,10 +65,17 @@ afterEach(() => {
 });
 afterAll(() => server.close());
 
+const SILENCED_MESSAGES = [
+  "Not implemented: navigation (except hash changes)", // JSDom issue — can safely be ignored
+];
+
 failOnConsole({
   shouldFailOnDebug: false,
   shouldFailOnError: true,
   shouldFailOnInfo: false,
   shouldFailOnLog: false,
   shouldFailOnWarn: true,
+  silenceMessage: (message: string) => {
+    return SILENCED_MESSAGES.some((m) => message.includes(m));
+  },
 });

@@ -1,7 +1,7 @@
 import { v1GetWorkspaceCustomInstructionsOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useQuery } from "@tanstack/react-query";
 
-export function useGetSystemPrompt(options: {
+export function useQueryGetWorkspaceCustomInstructions(options: {
   path: {
     workspace_name: string;
   };

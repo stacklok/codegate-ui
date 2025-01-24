@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.9.0](https://github.com/stacklok/codegate-ui/compare/v0.8.0...v0.9.0) (2025-01-24)
+
+
+### Features
+
+* add not_found route ([#194](https://github.com/stacklok/codegate-ui/issues/194)) ([d865730](https://github.com/stacklok/codegate-ui/commit/d865730201eaff07e0e1852750803d0a262e5df6))
+
+
+### Bug Fixes
+
+* workspace hard delete nits ([#202](https://github.com/stacklok/codegate-ui/issues/202)) ([9129a5b](https://github.com/stacklok/codegate-ui/commit/9129a5b983a1b54f7d3b5cffc19cce85a955045a))
+
+## [0.8.0](https://github.com/stacklok/codegate-ui/compare/v0.7.2...v0.8.0) (2025-01-24)
+
+
+### Features
+
+* implement hard delete for workspaces & refactor workspaces table to allow multiple actions ([#185](https://github.com/stacklok/codegate-ui/issues/185)) ([a98492a](https://github.com/stacklok/codegate-ui/commit/a98492a8c24067ccd037e6fa753caf9994558967))
+* implement use toast mutation for workspaces ([#184](https://github.com/stacklok/codegate-ui/issues/184)) ([a67b265](https://github.com/stacklok/codegate-ui/commit/a67b26518cd5ef1c3f6106b604d45456ffc03cf4))
+* redirect to conversation from alerts table ([#191](https://github.com/stacklok/codegate-ui/issues/191)) ([646ed5a](https://github.com/stacklok/codegate-ui/commit/646ed5a6b14661b3956dd2685d9065c4c0d110aa))
+* useKbdShortcuts hook & example implementation ([#180](https://github.com/stacklok/codegate-ui/issues/180)) ([0d935a3](https://github.com/stacklok/codegate-ui/commit/0d935a3b263d5c18c86d5ba669554cf3f2e1f3a7))
+* useToastMutation hook ([#183](https://github.com/stacklok/codegate-ui/issues/183)) ([9fe55a5](https://github.com/stacklok/codegate-ui/commit/9fe55a524fa776348fcb6719d625f57aac36d60a))
+
+
+### Bug Fixes
+
+* fix small visual glithc in help menu ([#175](https://github.com/stacklok/codegate-ui/issues/175)) ([7031047](https://github.com/stacklok/codegate-ui/commit/70310476e59085c18755dc3eed6d9a2f09523f0f))
+* parsing promptList text and breadcrumb ([#177](https://github.com/stacklok/codegate-ui/issues/177)) ([6da034d](https://github.com/stacklok/codegate-ui/commit/6da034d9ddb028202c14851319e380f61b139473))
+* sort filtered alerts before pagination ([#190](https://github.com/stacklok/codegate-ui/issues/190)) ([d844610](https://github.com/stacklok/codegate-ui/commit/d84461041076f9647ceae93220deb071d1897a17))
+
 ## [0.7.2](https://github.com/stacklok/codegate-ui/compare/v0.7.1...v0.7.2) (2025-01-22)
 
 

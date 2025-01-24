@@ -1,11 +1,10 @@
 import { render, waitFor } from "@/lib/test-utils";
 import { expect, test } from "vitest";
-import { SystemPromptEditor } from "../system-prompt-editor";
+
 import userEvent from "@testing-library/user-event";
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
-
-vi.mock("../../lib/post-system-prompt");
+import { WorkspaceCustomInstructions } from "../workspace-custom-instructions";
 
 vi.mock("@monaco-editor/react", () => {
   const FakeEditor = vi.fn((props) => {
@@ -21,16 +20,18 @@ vi.mock("@monaco-editor/react", () => {
 });
 
 const renderComponent = () =>
-  render(<SystemPromptEditor isArchived={false} workspaceName="foo" />);
+  render(
+    <WorkspaceCustomInstructions isArchived={false} workspaceName="foo" />,
+  );
 
-test("can update system prompt", async () => {
+test("can update custom instructions", async () => {
   server.use(
     http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
       return HttpResponse.json({ prompt: "initial prompt from server" });
     }),
   );
 
-  const { getByRole } = renderComponent();
+  const { getByRole, getByText } = renderComponent();
 
   await waitFor(() => {
     expect(getByRole("textbox")).toBeVisible();
@@ -43,13 +44,19 @@ test("can update system prompt", async () => {
   await userEvent.type(input, "new prompt from test");
   expect(input).toHaveTextContent("new prompt from test");
 
-  await userEvent.click(getByRole("button", { name: /Save/i }));
-
   server.use(
     http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
       return HttpResponse.json({ prompt: "new prompt from test" });
     }),
   );
+
+  await userEvent.click(getByRole("button", { name: /Save/i }));
+
+  await waitFor(() => {
+    expect(
+      getByText(/successfully updated custom instructions/i),
+    ).toBeVisible();
+  });
 
   await waitFor(() => {
     expect(input).toHaveTextContent("new prompt from test");

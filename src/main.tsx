@@ -11,6 +11,7 @@ import { client } from "./api/generated/index.ts";
 import { QueryClientProvider } from "./components/react-query-provider.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { UiKitClientSideRoutingProvider } from "./lib/ui-kit-client-side-routing.tsx";
+import { ConfirmProvider } from "./context/confirm-context.tsx";
 
 // Initialize the API client
 client.setConfig({
@@ -25,8 +26,10 @@ createRoot(document.getElementById("root")!).render(
           <SidebarProvider>
             <QueryClientProvider>
               <ErrorBoundary fallback={<Error />}>
-                <Toaster />
-                <App />
+                <ConfirmProvider>
+                  <Toaster />
+                  <App />
+                </ConfirmProvider>
               </ErrorBoundary>
             </QueryClientProvider>
           </SidebarProvider>

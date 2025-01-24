@@ -9,6 +9,6 @@ export function useMutationHardDeleteWorkspace() {
     ...v1HardDeleteWorkspaceMutation(),
     onSuccess: () => invalidate(),
     successMsg: (variables) =>
-      `Permanently deleted "${variables.path.name}" workspace`,
+      `Permanently deleted "${variables.path.workspace_name}" workspace`,
   });
 }
