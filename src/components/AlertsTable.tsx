@@ -21,7 +21,7 @@ import { Search } from "lucide-react";
 import { Markdown } from "./Markdown";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFilteredAlerts } from "@/hooks/useAlertsData";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 
@@ -75,6 +75,7 @@ export function AlertsTable() {
     nextPage,
     prevPage,
   } = useAlertSearch();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: filteredAlerts = [] } = useFilteredAlerts();
 
@@ -174,7 +175,13 @@ export function AlertsTable() {
           </TableHeader>
           <TableBody>
             {dataView.map((alert) => (
-              <Row key={alert.alert_id} className="h-20">
+              <Row
+                key={alert.alert_id}
+                className="h-20"
+                onAction={() =>
+                  navigate(`/prompt/${alert.conversation.chat_id}`)
+                }
+              >
                 <Cell className="truncate">{alert.trigger_type}</Cell>
                 <Cell className="overflow-auto whitespace-nowrap max-w-80">
                   {wrapObjectOutput(alert.trigger_string)}
