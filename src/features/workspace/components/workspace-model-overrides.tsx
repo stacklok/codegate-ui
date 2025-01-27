@@ -15,6 +15,7 @@ import { twMerge } from "tailwind-merge";
 import { useModelOverridesWorkspace } from "../hooks/use-model-overrides-workspace";
 import { useMutationModelOverridesWorkspace } from "../hooks/use-mutation-model-overrides-workspace";
 import { MuxMatcherType } from "@/api/generated";
+import { useModelsData } from "@/hooks/useModelsData";
 
 export function WorkspaceModelOverrides({
   className,
@@ -27,6 +28,7 @@ export function WorkspaceModelOverrides({
 }) {
   const { setOverrideItem, overrides } = useModelOverridesWorkspace();
   const { mutateAsync } = useMutationModelOverridesWorkspace();
+  const { data: models = [] } = useModelsData();
 
   console.log(overrides);
   const handleSubmit = () => {
@@ -68,18 +70,11 @@ export function WorkspaceModelOverrides({
               onSelectionChange={(model) =>
                 setOverrideItem({ id: 0, model: model.toString() })
               }
-              items={[
-                {
-                  textValue: "Chagpt o4mini",
-                  id: "chat_gpt",
-                  provider: "Openai",
-                },
-                {
-                  textValue: "Claude-3.5-sonnet-latest",
-                  id: "claude_3.5",
-                  provider: "Anthropic",
-                },
-              ]}
+              items={models.map((model) => ({
+                textValue: model.name,
+                id: model.name,
+                provider: model.provider,
+              }))}
             >
               <Label>Preferred Model</Label>
               <SelectButton className="w-96" />
