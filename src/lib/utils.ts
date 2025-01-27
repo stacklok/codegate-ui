@@ -1,4 +1,6 @@
 import { AlertConversation, Conversation } from "@/api/generated/types.gen";
+import { isAlertSecret } from "@/features/alerts/lib/is-alert-secret";
+import { isAlertMalicious } from "@/features/alerts/lib/is-malicious";
 import { MaliciousPkgType, TriggerType } from "@/types";
 import { format, isToday, isYesterday } from "date-fns";
 
@@ -172,6 +174,15 @@ export function getMaliciousPackage(
   if (typeof value === "object" && value !== null) {
     return value as MaliciousPkgType;
   }
+
+  return null;
+}
+
+export function getIssueDetectedType(
+  alert: AlertConversation,
+): "malicious_package" | "leaked_secret" | null {
+  if (isAlertMalicious(alert)) return "malicious_package";
+  if (isAlertSecret(alert)) return "leaked_secret";
 
   return null;
 }

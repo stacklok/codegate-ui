@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import {
   Cell,
   Column,
@@ -12,58 +12,72 @@ import {
   SearchFieldClearButton,
   Badge,
   Button,
+  ResizableTableContainer,
 } from "@stacklok/ui-kit";
 import { Switch } from "@stacklok/ui-kit";
-import { AlertConversation } from "@/api/generated";
+import { AlertConversation, QuestionType } from "@/api/generated";
 import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
-import { getMaliciousPackage } from "@/lib/utils";
-import { Search } from "lucide-react";
-import { Markdown } from "./Markdown";
+import {
+  sanitizeQuestionPrompt,
+  parsingPromptText,
+  getIssueDetectedType,
+} from "@/lib/utils";
+import { KeyRoundIcon, PackageX, Search } from "lucide-react";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFilteredAlerts } from "@/hooks/useAlertsData";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 
-const wrapObjectOutput = (input: AlertConversation["trigger_string"]) => {
-  const data = getMaliciousPackage(input);
-  if (data === null) return "N/A";
-  if (typeof data === "string") {
-    return (
-      <div className="bg-gray-25 rounded-lg overflow-auto p-4">
-        <Markdown>{data}</Markdown>
-      </div>
-    );
-  }
-  if (!data.type || !data.name) return "N/A";
-
-  return (
-    <div className="max-h-40 w-fit overflow-y-auto whitespace-pre-wrap p-2">
-      <label className="font-medium">Package:</label>
-      &nbsp;
-      <a
-        href={`https://www.insight.stacklok.com/report/${data.type}/${data.name}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-brand-500 hover:underline"
-      >
-        {data.type}/{data.name}
-      </a>
-      {data.status && (
-        <>
-          <br />
-          <label className="font-medium">Status:</label> {data.status}
-        </>
-      )}
-      {data.description && (
-        <>
-          <br />
-          <label className="font-medium">Description:</label> {data.description}
-        </>
-      )}
-    </div>
+const getTitle = (alert: AlertConversation) => {
+  const prompt = alert.conversation;
+  const title = parsingPromptText(
+    sanitizeQuestionPrompt({
+      question: prompt.question_answers?.[0]?.question.message ?? "",
+      answer: prompt.question_answers?.[0]?.answer?.message ?? "",
+    }),
+    prompt.conversation_timestamp,
   );
+
+  return title;
 };
+
+function TypeCellContent({ alert }: { alert: AlertConversation }) {
+  const conversationType = alert.conversation.type;
+
+  switch (conversationType) {
+    case QuestionType.CHAT:
+      return "Chat";
+    case QuestionType.FIM:
+      return "Code Suggestion";
+    default:
+      return "Unknown";
+  }
+}
+
+function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
+  const issueDetected = getIssueDetectedType(alert);
+
+  switch (issueDetected) {
+    case "leaked_secret":
+      return (
+        <>
+          <KeyRoundIcon className="size-4 text-blue-700" />
+          Blocked secret exposure
+        </>
+      );
+    case "malicious_package":
+      return (
+        <>
+          <PackageX className="size-4 text-blue-700" />
+
+          Blocked malicious package
+        </>
+      );
+    default:
+      return "";
+  }
+}
 
 export function AlertsTable() {
   const {
@@ -161,55 +175,46 @@ export function AlertsTable() {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <Table data-testid="alerts-table" aria-label="Alerts table">
-          <TableHeader>
-            <Row>
-              <Column isRowHeader width={150}>
-                Trigger Type
-              </Column>
-              <Column width={300}>Trigger Token</Column>
-              <Column width={150}>File</Column>
-              <Column width={250}>Code</Column>
-              <Column width={100}>Timestamp</Column>
-            </Row>
-          </TableHeader>
-          <TableBody>
-            {dataView.map((alert) => (
-              <Row
-                key={alert.alert_id}
-                className="h-20"
-                onAction={() =>
-                  navigate(`/prompt/${alert.conversation.chat_id}`)
-                }
-              >
-                <Cell className="truncate">{alert.trigger_type}</Cell>
-                <Cell className="overflow-auto whitespace-nowrap max-w-80">
-                  {wrapObjectOutput(alert.trigger_string)}
-                </Cell>
-                <Cell className="truncate">
-                  {alert.code_snippet?.filepath || "N/A"}
-                </Cell>
-                <Cell className="overflow-auto whitespace-nowrap max-w-80">
-                  {alert.code_snippet?.code ? (
-                    <pre className="max-h-40 overflow-auto bg-gray-100 p-2 whitespace-pre-wrap">
-                      <code>{alert.code_snippet.code}</code>
-                    </pre>
-                  ) : (
-                    "N/A"
-                  )}
-                </Cell>
-                <Cell className="truncate">
-                  <div data-testid="date">
-                    {format(new Date(alert.timestamp ?? ""), "y/MM/dd")}
-                  </div>
-                  <div data-testid="time">
-                    {format(new Date(alert.timestamp ?? ""), "hh:mm:ss a")}
-                  </div>
-                </Cell>
+        <ResizableTableContainer>
+          <Table data-testid="alerts-table" aria-label="Alerts table">
+            <TableHeader>
+              <Row>
+                <Column isRowHeader width={150}>
+                  Time
+                </Column>
+                <Column width={150}>Type</Column>
+                <Column>Event</Column>
+                <Column width={325}>Issue Detected</Column>
               </Row>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {dataView.map((alert) => (
+                <Row
+                  key={alert.alert_id}
+                  className="h-20"
+                  onAction={() =>
+                    navigate(`/prompt/${alert.conversation.chat_id}`)
+                  }
+                >
+                  <Cell className="truncate">
+                    {formatDistanceToNow(new Date(alert.timestamp), {
+                      addSuffix: true,
+                    })}
+                  </Cell>
+                  <Cell className="truncate">
+                    <TypeCellContent alert={alert} />
+                  </Cell>
+                  <Cell className="truncate">{getTitle(alert)}</Cell>
+                  <Cell>
+                    <div className="truncate flex gap-2  items-center">
+                      <IssueDetectedCellContent alert={alert} />
+                    </div>
+                  </Cell>
+                </Row>
+              ))}
+            </TableBody>
+          </Table>
+        </ResizableTableContainer>
       </div>
 
       <div className="flex justify-center w-full p-4">

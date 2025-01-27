@@ -141,28 +141,24 @@ describe("Dashboard", () => {
 
     expect(
       screen.getByRole("columnheader", {
-        name: /trigger type/i,
+        name: /type/i,
       }),
     ).toBeVisible();
     expect(
       screen.getByRole("columnheader", {
-        name: /trigger token/i,
+        name: /event/i,
       }),
     ).toBeVisible();
 
     expect(
       screen.getByRole("columnheader", {
-        name: /file/i,
+        name: /time/i,
       }),
     ).toBeVisible();
+
     expect(
       screen.getByRole("columnheader", {
-        name: /code/i,
-      }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("columnheader", {
-        name: /timestamp/i,
+        name: /issue detected/i,
       }),
     ).toBeVisible();
 
@@ -176,18 +172,14 @@ describe("Dashboard", () => {
     const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
     )[1] as HTMLElement;
-    const secondRow = within(screen.getByTestId("alerts-table")).getAllByRole(
-      "row",
-    )[2] as HTMLElement;
 
-    expect(within(firstRow).getByText(/ghp_token/i)).toBeVisible();
-    expect(within(firstRow).getByText(/codegate-secrets/i)).toBeVisible();
-    expect(within(firstRow).getAllByText(/n\/a/i).length).toEqual(2);
-    expect(within(firstRow).getByText(/2025\/01\/14/i)).toBeVisible();
-    expect(within(firstRow).getByTestId(/time/i)).toBeVisible();
-
-    // check trigger_string null
-    expect(within(secondRow).getAllByText(/n\/a/i).length).toEqual(3);
+    expect(within(firstRow).getByText(/chat/i)).toBeVisible();
+    expect(within(firstRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
+    expect(
+      screen.getAllByRole("gridcell", {
+        name: /blocked secret exposure/i,
+      }).length,
+    ).toBeGreaterThanOrEqual(1);
   });
 
   it("should render malicious pkg", async () => {
@@ -208,18 +200,20 @@ describe("Dashboard", () => {
       ),
     ).toBeVisible();
 
-    expect(screen.getByText(/package:/i)).toBeVisible();
     expect(
-      screen.getByRole("link", {
-        name: /pypi\/invokehttp/i,
+      screen.getByRole("gridcell", {
+        name: /blocked malicious package/i,
       }),
-    ).toHaveAttribute(
-      "href",
-      "https://www.insight.stacklok.com/report/pypi/invokehttp",
-    );
-    expect(
-      screen.getByText(/malicious python http for humans\./i),
     ).toBeVisible();
+  });
+
+  it("renders event column", async () => {
+    mockAlertsWithMaliciousPkg();
+    render(<RouteDashboard />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/are there malicious/i)).toBeVisible();
+    });
   });
 
   it("should filter by malicious pkg", async () => {
@@ -232,10 +226,10 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getByRole("row", {
-        name: /codegate-secrets/i,
-      }),
-    ).toBeVisible();
+      screen.getAllByRole("gridcell", {
+        name: /chat/i,
+      }).length,
+    ).toBeGreaterThanOrEqual(1);
 
     userEvent.click(
       screen.getByRole("switch", {
@@ -247,15 +241,11 @@ describe("Dashboard", () => {
       expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("1"),
     );
 
-    expect(screen.getByText(/package:/i)).toBeVisible();
     expect(
-      screen.getByRole("link", {
-        name: /pypi\/invokehttp/i,
-      }),
-    ).toBeVisible();
-    expect(
-      screen.getByText(/malicious python http for humans\./i),
-    ).toBeVisible();
+      screen.queryAllByRole("gridcell", {
+        name: /blocked secret exposure/i,
+      }).length,
+    ).toBe(0);
 
     userEvent.click(
       screen.getByRole("switch", {
@@ -277,15 +267,10 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getByRole("row", {
-        name: /codegate-secrets/i,
-      }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("row", {
-        name: /codegate-context-retriever/i,
-      }),
-    ).toBeVisible();
+      screen.getAllByRole("gridcell", {
+        name: /chat/i,
+      }).length,
+    ).toBeGreaterThanOrEqual(1);
 
     await userEvent.type(screen.getByRole("searchbox"), "codegate-secrets");
 
@@ -295,8 +280,7 @@ describe("Dashboard", () => {
     const row = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
     )[1] as HTMLElement;
-    expect(within(row).getByText(/ghp_token/i)).toBeVisible();
-    expect(within(row).getByText(/codegate-secrets/i)).toBeVisible();
+    expect(within(row).getByText(/chat/i)).toBeVisible();
   });
 
   it("should sort alerts by date desc", async () => {
@@ -312,8 +296,8 @@ describe("Dashboard", () => {
       "row",
     )[2] as HTMLElement;
 
-    expect(within(firstRow).getByText(/2025\/01\/14/i)).toBeVisible();
-    expect(within(secondRow).getByText(/2025\/01\/07/i)).toBeVisible();
+    expect(within(firstRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
+    expect(within(secondRow).getByText(/[0-9]+.*ago/i)).toBeVisible();
   });
 
   it("only displays a limited number of items in the table", async () => {

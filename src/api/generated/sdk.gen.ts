@@ -8,6 +8,26 @@ import {
 import type {
   HealthCheckHealthGetError,
   HealthCheckHealthGetResponse,
+  V1ListProviderEndpointsData,
+  V1ListProviderEndpointsError,
+  V1ListProviderEndpointsResponse,
+  V1AddProviderEndpointData,
+  V1AddProviderEndpointError,
+  V1AddProviderEndpointResponse,
+  V1GetProviderEndpointData,
+  V1GetProviderEndpointError,
+  V1GetProviderEndpointResponse,
+  V1UpdateProviderEndpointData,
+  V1UpdateProviderEndpointError,
+  V1UpdateProviderEndpointResponse,
+  V1DeleteProviderEndpointData,
+  V1DeleteProviderEndpointError,
+  V1DeleteProviderEndpointResponse,
+  V1ListModelsByProviderData,
+  V1ListModelsByProviderError,
+  V1ListModelsByProviderResponse,
+  V1ListAllModelsForAllProvidersError,
+  V1ListAllModelsForAllProvidersResponse,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
   V1CreateWorkspaceData,
@@ -44,6 +64,12 @@ import type {
   V1DeleteWorkspaceCustomInstructionsData,
   V1DeleteWorkspaceCustomInstructionsError,
   V1DeleteWorkspaceCustomInstructionsResponse,
+  V1GetWorkspaceMuxesData,
+  V1GetWorkspaceMuxesError,
+  V1GetWorkspaceMuxesResponse,
+  V1SetWorkspaceMuxesData,
+  V1SetWorkspaceMuxesError,
+  V1SetWorkspaceMuxesResponse,
   V1StreamSseError,
   V1StreamSseResponse,
   V1VersionCheckError,
@@ -65,6 +91,127 @@ export const healthCheckHealthGet = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/health",
+  });
+};
+
+/**
+ * List Provider Endpoints
+ * List all provider endpoints.
+ */
+export const v1ListProviderEndpoints = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<V1ListProviderEndpointsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListProviderEndpointsResponse,
+    V1ListProviderEndpointsError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints",
+  });
+};
+
+/**
+ * Add Provider Endpoint
+ * Add a provider endpoint.
+ */
+export const v1AddProviderEndpoint = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1AddProviderEndpointData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    V1AddProviderEndpointResponse,
+    V1AddProviderEndpointError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints",
+  });
+};
+
+/**
+ * Get Provider Endpoint
+ * Get a provider endpoint by ID.
+ */
+export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetProviderEndpointData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1GetProviderEndpointResponse,
+    V1GetProviderEndpointError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/{provider_id}",
+  });
+};
+
+/**
+ * Update Provider Endpoint
+ * Update a provider endpoint by ID.
+ */
+export const v1UpdateProviderEndpoint = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1UpdateProviderEndpointData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).put<
+    V1UpdateProviderEndpointResponse,
+    V1UpdateProviderEndpointError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/{provider_id}",
+  });
+};
+
+/**
+ * Delete Provider Endpoint
+ * Delete a provider endpoint by id.
+ */
+export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1DeleteProviderEndpointData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).delete<
+    V1DeleteProviderEndpointResponse,
+    V1DeleteProviderEndpointError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/{provider_id}",
+  });
+};
+
+/**
+ * List Models By Provider
+ * List models by provider.
+ */
+export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1ListModelsByProviderData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListModelsByProviderResponse,
+    V1ListModelsByProviderError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/{provider_name}/models",
+  });
+};
+
+/**
+ * List All Models For All Providers
+ * List all models for all providers.
+ */
+export const v1ListAllModelsForAllProviders = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListAllModelsForAllProvidersResponse,
+    V1ListAllModelsForAllProvidersError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/models",
   });
 };
 
@@ -302,6 +449,43 @@ export const v1DeleteWorkspaceCustomInstructions = <
   >({
     ...options,
     url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
+  });
+};
+
+/**
+ * Get Workspace Muxes
+ * Get the mux rules of a workspace.
+ *
+ * The list is ordered in order of priority. That is, the first rule in the list
+ * has the highest priority.
+ */
+export const v1GetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetWorkspaceMuxesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceMuxesResponse,
+    V1GetWorkspaceMuxesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/muxes",
+  });
+};
+
+/**
+ * Set Workspace Muxes
+ * Set the mux rules of a workspace.
+ */
+export const v1SetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1SetWorkspaceMuxesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).put<
+    V1SetWorkspaceMuxesResponse,
+    V1SetWorkspaceMuxesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/muxes",
   });
 };
 

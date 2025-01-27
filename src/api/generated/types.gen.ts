@@ -77,6 +77,66 @@ export type ListWorkspacesResponse = {
 };
 
 /**
+ * Represents a model supported by a provider.
+ *
+ * Note that these are auto-discovered by the provider.
+ */
+export type ModelByProvider = {
+  name: string;
+  provider: string;
+};
+
+/**
+ * Represents the different types of matchers we support.
+ */
+export enum MuxMatcherType {
+  FILE_REGEX = "file_regex",
+  CATCH_ALL = "catch_all",
+}
+
+/**
+ * Represents a mux rule for a provider.
+ */
+export type MuxRule = {
+  provider: string;
+  model: string;
+  matcher_type: MuxMatcherType;
+  matcher: string | null;
+};
+
+/**
+ * Represents the different types of auth we support for providers.
+ */
+export enum ProviderAuthType {
+  NONE = "none",
+  PASSTHROUGH = "passthrough",
+  API_KEY = "api_key",
+}
+
+/**
+ * Represents a provider's endpoint configuration. This
+ * allows us to persist the configuration for each provider,
+ * so we can use this for muxing messages.
+ */
+export type ProviderEndpoint = {
+  id: number;
+  name: string;
+  description?: string;
+  provider_type: ProviderType;
+  endpoint: string;
+  auth_type: ProviderAuthType;
+};
+
+/**
+ * Represents the different types of providers we support.
+ */
+export enum ProviderType {
+  OPENAI = "openai",
+  ANTHROPIC = "anthropic",
+  VLLM = "vllm",
+}
+
+/**
  * Represents a question and answer pair.
  */
 export type QuestionAnswer = {
@@ -103,6 +163,69 @@ export type Workspace = {
 export type HealthCheckHealthGetResponse = unknown;
 
 export type HealthCheckHealthGetError = unknown;
+
+export type V1ListProviderEndpointsData = {
+  query?: {
+    name?: string | null;
+  };
+};
+
+export type V1ListProviderEndpointsResponse = Array<ProviderEndpoint>;
+
+export type V1ListProviderEndpointsError = HTTPValidationError;
+
+export type V1AddProviderEndpointData = {
+  body: ProviderEndpoint;
+};
+
+export type V1AddProviderEndpointResponse = ProviderEndpoint;
+
+export type V1AddProviderEndpointError = HTTPValidationError;
+
+export type V1GetProviderEndpointData = {
+  path: {
+    provider_id: number;
+  };
+};
+
+export type V1GetProviderEndpointResponse = ProviderEndpoint;
+
+export type V1GetProviderEndpointError = HTTPValidationError;
+
+export type V1UpdateProviderEndpointData = {
+  body: ProviderEndpoint;
+  path: {
+    provider_id: number;
+  };
+};
+
+export type V1UpdateProviderEndpointResponse = ProviderEndpoint;
+
+export type V1UpdateProviderEndpointError = HTTPValidationError;
+
+export type V1DeleteProviderEndpointData = {
+  path: {
+    provider_id: number;
+  };
+};
+
+export type V1DeleteProviderEndpointResponse = unknown;
+
+export type V1DeleteProviderEndpointError = HTTPValidationError;
+
+export type V1ListModelsByProviderData = {
+  path: {
+    provider_name: string;
+  };
+};
+
+export type V1ListModelsByProviderResponse = Array<ModelByProvider>;
+
+export type V1ListModelsByProviderError = HTTPValidationError;
+
+export type V1ListAllModelsForAllProvidersResponse = Array<ModelByProvider>;
+
+export type V1ListAllModelsForAllProvidersError = unknown;
 
 export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 
@@ -215,6 +338,27 @@ export type V1DeleteWorkspaceCustomInstructionsData = {
 export type V1DeleteWorkspaceCustomInstructionsResponse = void;
 
 export type V1DeleteWorkspaceCustomInstructionsError = HTTPValidationError;
+
+export type V1GetWorkspaceMuxesData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1GetWorkspaceMuxesResponse = Array<MuxRule>;
+
+export type V1GetWorkspaceMuxesError = HTTPValidationError;
+
+export type V1SetWorkspaceMuxesData = {
+  body: Array<MuxRule>;
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1SetWorkspaceMuxesResponse = void;
+
+export type V1SetWorkspaceMuxesError = HTTPValidationError;
 
 export type V1StreamSseResponse = unknown;
 
