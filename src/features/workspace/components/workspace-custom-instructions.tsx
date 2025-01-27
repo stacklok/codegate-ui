@@ -5,7 +5,15 @@ import {
   CardBody,
   CardFooter,
   DarkModeContext,
+  Dialog,
+  DialogModal,
+  DialogModalOverlay,
+  DialogTrigger,
+  FieldGroup,
+  Input,
   Loader,
+  SearchField,
+  SearchFieldClearButton,
   Text,
 } from "@stacklok/ui-kit";
 import {
@@ -33,6 +41,8 @@ import {
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
+import { Search } from "lucide-react";
+import Fuse from "fuse.js";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -129,6 +139,48 @@ function useCustomInstructionsValue({
   return { value, setValue };
 }
 
+function PromptPresetPicker() {
+  const [query, setQuery] = useState<string>("");
+  const books = [
+    {
+      title: "Old Man's War",
+      author: {
+        firstName: "John",
+        lastName: "Scalzi",
+      },
+    },
+    {
+      title: "The Lock Artist",
+      author: {
+        firstName: "Steve",
+        lastName: "Hamilton",
+      },
+    },
+  ];
+
+  const fuse = new Fuse(books, {
+    keys: ["title", "author.firstName"],
+  });
+
+  return (
+    <>
+      <div className="flex justify-end">
+        <SearchField className="max-w-96" value={query} onChange={setQuery}>
+          <FieldGroup>
+            <Input icon={<Search />} />
+            <SearchFieldClearButton />
+          </FieldGroup>
+        </SearchField>
+      </div>
+      <div>
+        {fuse.search(query.length > 0 ? query : " ").map((item) => {
+          return <div>{item.item.title}</div>;
+        })}
+      </div>
+    </>
+  );
+}
+
 export function WorkspaceCustomInstructions({
   className,
   workspaceName,
@@ -209,6 +261,16 @@ export function WorkspaceCustomInstructions({
         </div>
       </CardBody>
       <CardFooter className="justify-end gap-2">
+        <DialogTrigger>
+          <Button>Use a preset</Button>
+          <DialogModalOverlay isDismissable>
+            <DialogModal>
+              <Dialog width="lg" className="flex flex-col p-4 gap-4">
+                <PromptPresetPicker />
+              </Dialog>
+            </DialogModal>
+          </DialogModalOverlay>
+        </DialogTrigger>
         <Button
           isPending={isMutationPending}
           isDisabled={Boolean(isArchived ?? isCustomInstructionsPending)}
