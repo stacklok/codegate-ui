@@ -41,7 +41,7 @@ import {
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
-import { Search } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import Fuse from "fuse.js";
 import systemPrompts from "../constants/built-in-system-prompts.json";
 
@@ -140,12 +140,23 @@ function useCustomInstructionsValue({
   return { value, setValue };
 }
 
-function PromptPresetPicker() {
+type PromptPresetPickerProps = {
+  onActivate: (text: string) => void;
+};
+
+function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
   const [query, setQuery] = useState<string>("");
 
   const fuse = new Fuse(systemPrompts, {
     keys: ["name", "text"],
   });
+
+  const handleActivate = useCallback(
+    (prompt: string) => {
+      onActivate(prompt);
+    },
+    [onActivate],
+  );
 
   return (
     <>
@@ -165,7 +176,16 @@ function PromptPresetPicker() {
               <pre className="h-40 overflow-hidden text-wrap text-sm">
                 {item.text}
               </pre>
-              <Button variant="secondary">Activate</Button>
+              <Button
+                slot="close"
+                variant="secondary"
+                onPress={() => {
+                  handleActivate(item.text);
+                }}
+              >
+                <Download />
+                Activate
+              </Button>
             </div>
           );
         })}
@@ -259,7 +279,11 @@ export function WorkspaceCustomInstructions({
           <DialogModalOverlay isDismissable>
             <DialogModal>
               <Dialog width="lg" className="flex flex-col p-4 gap-4">
-                <PromptPresetPicker />
+                <PromptPresetPicker
+                  onActivate={(prompt: string) => {
+                    setValue(prompt);
+                  }}
+                />
               </Dialog>
             </DialogModal>
           </DialogModalOverlay>
