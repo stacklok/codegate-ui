@@ -16,6 +16,7 @@ import { useModelOverridesWorkspace } from "../hooks/use-model-overrides-workspa
 import { useMutationModelOverridesWorkspace } from "../hooks/use-mutation-model-overrides-workspace";
 import { MuxMatcherType } from "@/api/generated";
 import { useModelsData } from "@/hooks/useModelsData";
+import { FormEvent } from "react";
 
 export function WorkspaceModelOverrides({
   className,
@@ -31,7 +32,8 @@ export function WorkspaceModelOverrides({
   const { data: models = [] } = useModelsData();
 
   console.log(overrides);
-  const handleSubmit = () => {
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
     mutateAsync({
       path: { workspace_name: workspaceName },
       body: overrides.map((item) => ({
