@@ -43,6 +43,7 @@ import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-w
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
 import { Search } from "lucide-react";
 import Fuse from "fuse.js";
+import systemPrompts from "../constants/built-in-system-prompts.json";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -141,25 +142,9 @@ function useCustomInstructionsValue({
 
 function PromptPresetPicker() {
   const [query, setQuery] = useState<string>("");
-  const books = [
-    {
-      title: "Old Man's War",
-      author: {
-        firstName: "John",
-        lastName: "Scalzi",
-      },
-    },
-    {
-      title: "The Lock Artist",
-      author: {
-        firstName: "Steve",
-        lastName: "Hamilton",
-      },
-    },
-  ];
 
-  const fuse = new Fuse(books, {
-    keys: ["title", "author.firstName"],
+  const fuse = new Fuse(systemPrompts, {
+    keys: ["name", "text"],
   });
 
   return (
@@ -172,9 +157,17 @@ function PromptPresetPicker() {
           </FieldGroup>
         </SearchField>
       </div>
-      <div>
-        {fuse.search(query.length > 0 ? query : " ").map((item) => {
-          return <div>{item.item.title}</div>;
+      <div className="flex flex-wrap gap-6 overflow-auto justify-around ">
+        {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
+          return (
+            <div className="border rounded-md text-clip w-96 p-2 flex flex-col gap-2">
+              <h2 className="font-bold truncate">{item.name}</h2>
+              <pre className="h-40 overflow-hidden text-wrap text-sm">
+                {item.text}
+              </pre>
+              <Button variant="secondary">Activate</Button>
+            </div>
+          );
         })}
       </div>
     </>
