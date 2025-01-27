@@ -62,14 +62,15 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
     case "leaked_secret":
       return (
         <>
-          <KeyRoundIcon className="size-4" />
+          <KeyRoundIcon className="size-4 text-blue-700" />
           Blocked secret exposure
         </>
       );
     case "malicious_package":
       return (
         <>
-          <PackageX className="size-4" />
+          <PackageX className="size-4 text-blue-700" />
+
           Blocked malicious package
         </>
       );
@@ -178,10 +179,10 @@ export function AlertsTable() {
           <Table data-testid="alerts-table" aria-label="Alerts table">
             <TableHeader>
               <Row>
-                <Column width={150}>
+                <Column isRowHeader width={150}>
                   Time
                 </Column>
-                <Column isRowHeader width={150}>Type</Column>
+                <Column width={150}>Type</Column>
                 <Column>Event</Column>
                 <Column width={325}>Issue Detected</Column>
               </Row>

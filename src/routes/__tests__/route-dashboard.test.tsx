@@ -226,7 +226,7 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getAllByRole("row", {
+      screen.getAllByRole("gridcell", {
         name: /chat/i,
       }).length,
     ).toBeGreaterThanOrEqual(1);
@@ -267,7 +267,7 @@ describe("Dashboard", () => {
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
-      screen.getAllByRole("row", {
+      screen.getAllByRole("gridcell", {
         name: /chat/i,
       }).length,
     ).toBeGreaterThanOrEqual(1);
