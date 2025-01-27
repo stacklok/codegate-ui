@@ -5,6 +5,13 @@ import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 import {
   client,
   healthCheckHealthGet,
+  v1ListProviderEndpoints,
+  v1AddProviderEndpoint,
+  v1GetProviderEndpoint,
+  v1UpdateProviderEndpoint,
+  v1DeleteProviderEndpoint,
+  v1ListModelsByProvider,
+  v1ListAllModelsForAllProviders,
   v1ListWorkspaces,
   v1CreateWorkspace,
   v1ListActiveWorkspaces,
@@ -18,10 +25,24 @@ import {
   v1GetWorkspaceCustomInstructions,
   v1SetWorkspaceCustomInstructions,
   v1DeleteWorkspaceCustomInstructions,
+  v1GetWorkspaceMuxes,
+  v1SetWorkspaceMuxes,
   v1StreamSse,
   v1VersionCheck,
 } from "../sdk.gen";
 import type {
+  V1ListProviderEndpointsData,
+  V1AddProviderEndpointData,
+  V1AddProviderEndpointError,
+  V1AddProviderEndpointResponse,
+  V1GetProviderEndpointData,
+  V1UpdateProviderEndpointData,
+  V1UpdateProviderEndpointError,
+  V1UpdateProviderEndpointResponse,
+  V1DeleteProviderEndpointData,
+  V1DeleteProviderEndpointError,
+  V1DeleteProviderEndpointResponse,
+  V1ListModelsByProviderData,
   V1CreateWorkspaceData,
   V1CreateWorkspaceError,
   V1CreateWorkspaceResponse,
@@ -46,6 +67,10 @@ import type {
   V1DeleteWorkspaceCustomInstructionsData,
   V1DeleteWorkspaceCustomInstructionsError,
   V1DeleteWorkspaceCustomInstructionsResponse,
+  V1GetWorkspaceMuxesData,
+  V1SetWorkspaceMuxesData,
+  V1SetWorkspaceMuxesError,
+  V1SetWorkspaceMuxesResponse,
 } from "../types.gen";
 
 type QueryKey<TOptions extends OptionsLegacyParser> = [
@@ -98,6 +123,171 @@ export const healthCheckHealthGetOptions = (options?: OptionsLegacyParser) => {
       return data;
     },
     queryKey: healthCheckHealthGetQueryKey(options),
+  });
+};
+
+export const v1ListProviderEndpointsQueryKey = (
+  options?: OptionsLegacyParser<V1ListProviderEndpointsData>,
+) => [createQueryKey("v1ListProviderEndpoints", options)];
+
+export const v1ListProviderEndpointsOptions = (
+  options?: OptionsLegacyParser<V1ListProviderEndpointsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListProviderEndpoints({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1ListProviderEndpointsQueryKey(options),
+  });
+};
+
+export const v1AddProviderEndpointQueryKey = (
+  options: OptionsLegacyParser<V1AddProviderEndpointData>,
+) => [createQueryKey("v1AddProviderEndpoint", options)];
+
+export const v1AddProviderEndpointOptions = (
+  options: OptionsLegacyParser<V1AddProviderEndpointData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1AddProviderEndpoint({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1AddProviderEndpointQueryKey(options),
+  });
+};
+
+export const v1AddProviderEndpointMutation = (
+  options?: Partial<OptionsLegacyParser<V1AddProviderEndpointData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1AddProviderEndpointResponse,
+    V1AddProviderEndpointError,
+    OptionsLegacyParser<V1AddProviderEndpointData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1AddProviderEndpoint({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1GetProviderEndpointQueryKey = (
+  options: OptionsLegacyParser<V1GetProviderEndpointData>,
+) => [createQueryKey("v1GetProviderEndpoint", options)];
+
+export const v1GetProviderEndpointOptions = (
+  options: OptionsLegacyParser<V1GetProviderEndpointData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetProviderEndpoint({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1GetProviderEndpointQueryKey(options),
+  });
+};
+
+export const v1UpdateProviderEndpointMutation = (
+  options?: Partial<OptionsLegacyParser<V1UpdateProviderEndpointData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1UpdateProviderEndpointResponse,
+    V1UpdateProviderEndpointError,
+    OptionsLegacyParser<V1UpdateProviderEndpointData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1UpdateProviderEndpoint({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1DeleteProviderEndpointMutation = (
+  options?: Partial<OptionsLegacyParser<V1DeleteProviderEndpointData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1DeleteProviderEndpointResponse,
+    V1DeleteProviderEndpointError,
+    OptionsLegacyParser<V1DeleteProviderEndpointData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1DeleteProviderEndpoint({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1ListModelsByProviderQueryKey = (
+  options: OptionsLegacyParser<V1ListModelsByProviderData>,
+) => [createQueryKey("v1ListModelsByProvider", options)];
+
+export const v1ListModelsByProviderOptions = (
+  options: OptionsLegacyParser<V1ListModelsByProviderData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListModelsByProvider({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1ListModelsByProviderQueryKey(options),
+  });
+};
+
+export const v1ListAllModelsForAllProvidersQueryKey = (
+  options?: OptionsLegacyParser,
+) => [createQueryKey("v1ListAllModelsForAllProviders", options)];
+
+export const v1ListAllModelsForAllProvidersOptions = (
+  options?: OptionsLegacyParser,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListAllModelsForAllProviders({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1ListAllModelsForAllProvidersQueryKey(options),
   });
 };
 
@@ -420,6 +610,47 @@ export const v1DeleteWorkspaceCustomInstructionsMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await v1DeleteWorkspaceCustomInstructions({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1GetWorkspaceMuxesQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceMuxesData>,
+) => [createQueryKey("v1GetWorkspaceMuxes", options)];
+
+export const v1GetWorkspaceMuxesOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceMuxesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetWorkspaceMuxes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1GetWorkspaceMuxesQueryKey(options),
+  });
+};
+
+export const v1SetWorkspaceMuxesMutation = (
+  options?: Partial<OptionsLegacyParser<V1SetWorkspaceMuxesData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1SetWorkspaceMuxesResponse,
+    V1SetWorkspaceMuxesError,
+    OptionsLegacyParser<V1SetWorkspaceMuxesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1SetWorkspaceMuxes({
         ...options,
         ...localOptions,
         throwOnError: true,

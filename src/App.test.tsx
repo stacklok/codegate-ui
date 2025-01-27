@@ -44,13 +44,13 @@ describe("App", () => {
 
     expect(
       screen.getByRole("menuitem", {
-        name: /set up in continue/i,
+        name: /use with continue/i,
       }),
     ).toBeVisible();
 
     expect(
       screen.getByRole("menuitem", {
-        name: /set up in copilot/i,
+        name: /use with copilot/i,
       }),
     ).toBeVisible();
 
