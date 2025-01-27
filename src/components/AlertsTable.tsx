@@ -12,6 +12,7 @@ import {
   SearchFieldClearButton,
   Badge,
   Button,
+  ResizableTableContainer,
 } from "@stacklok/ui-kit";
 import { Switch } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
@@ -173,44 +174,46 @@ export function AlertsTable() {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <Table data-testid="alerts-table" aria-label="Alerts table">
-          <TableHeader>
-            <Row>
-              <Column className="w-[150px]">Time</Column>
-              <Column isRowHeader className="w-[150px]">
-                Type
-              </Column>
-              <Column>Event</Column>
-              <Column width={325}>Issue Detected</Column>
-            </Row>
-          </TableHeader>
-          <TableBody>
-            {dataView.map((alert) => (
-              <Row
-                key={alert.alert_id}
-                className="h-20"
-                onAction={() =>
-                  navigate(`/prompt/${alert.conversation.chat_id}`)
-                }
-              >
-                <Cell className="truncate">
-                  {formatDistanceToNow(new Date(alert.timestamp), {
-                    addSuffix: true,
-                  })}
-                </Cell>
-                <Cell className="truncate">
-                  <TypeCellContent alert={alert} />
-                </Cell>
-                <Cell className="truncate">{getTitle(alert)}</Cell>
-                <Cell>
-                  <div className="truncate flex gap-2 text-blue-800 items-center">
-                    <IssueDetectedCellContent alert={alert} />
-                  </div>
-                </Cell>
+        <ResizableTableContainer>
+          <Table data-testid="alerts-table" aria-label="Alerts table">
+            <TableHeader>
+              <Row>
+                <Column width={150}>
+                  Time
+                </Column>
+                <Column isRowHeader width={150}>Type</Column>
+                <Column>Event</Column>
+                <Column width={325}>Issue Detected</Column>
               </Row>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {dataView.map((alert) => (
+                <Row
+                  key={alert.alert_id}
+                  className="h-20"
+                  onAction={() =>
+                    navigate(`/prompt/${alert.conversation.chat_id}`)
+                  }
+                >
+                  <Cell className="truncate">
+                    {formatDistanceToNow(new Date(alert.timestamp), {
+                      addSuffix: true,
+                    })}
+                  </Cell>
+                  <Cell className="truncate">
+                    <TypeCellContent alert={alert} />
+                  </Cell>
+                  <Cell className="truncate">{getTitle(alert)}</Cell>
+                  <Cell>
+                    <div className="truncate flex gap-2  items-center">
+                      <IssueDetectedCellContent alert={alert} />
+                    </div>
+                  </Cell>
+                </Row>
+              ))}
+            </TableBody>
+          </Table>
+        </ResizableTableContainer>
       </div>
 
       <div className="flex justify-center w-full p-4">
