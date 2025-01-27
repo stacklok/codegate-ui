@@ -18,9 +18,14 @@ type State = {
 export const useModelOverridesWorkspace = create<State>((set, get) => ({
   overrides: [
     {
-      provider: "Anthropic",
-      model: "claude_3.5",
+      provider: "anthropic",
+      model: "claude-3.5",
       matcher: "",
+    },
+    {
+      provider: "anthropic",
+      model: "claude-3.7",
+      matcher: "hello",
     },
   ],
   setOverrides: () => {},

@@ -41,6 +41,8 @@ export function WorkspaceModelOverrides({
     });
   };
 
+  console.log({ models, overrides });
+
   return (
     <Form onSubmit={handleSubmit} validationBehavior="aria">
       <Card className={twMerge(className, "shrink-0")}>
@@ -52,33 +54,39 @@ export function WorkspaceModelOverrides({
               individual files, or repository.
             </Text>
           </div>
-          <div className="flex items-center gap-2">
-            <TextField
-              aria-label="Filter by (Regex)"
-              value={overrides[0]?.matcher ?? ""}
-              name="matcher"
-              onChange={(matcher) => setOverrideItem({ id: 0, matcher })}
-            >
-              <Label>Filter by</Label>
-              <Input placeholder="eg file type, file name, or repository" />
-            </TextField>
-            <Select
-              name="model"
-              isRequired
-              selectedKey={overrides[0]?.model}
-              placeholder="Select the model"
-              onSelectionChange={(model) =>
-                setOverrideItem({ id: 0, model: model.toString() })
-              }
-              items={models.map((model) => ({
-                textValue: model.name,
-                id: model.name,
-                provider: model.provider,
-              }))}
-            >
-              <Label>Preferred Model</Label>
-              <SelectButton className="w-96" />
-            </Select>
+          <div className="flex flex-col gap-4">
+            {overrides.map((override, index) => (
+              <div className="flex items-center gap-2" key={index}>
+                <TextField
+                  aria-label="Filter by (Regex)"
+                  value={override?.matcher ?? ""}
+                  name="matcher"
+                  onChange={(matcher) =>
+                    setOverrideItem({ id: index, matcher })
+                  }
+                >
+                  <Label>Filter by</Label>
+                  <Input placeholder="eg file type, file name, or repository" />
+                </TextField>
+                <Select
+                  name="model"
+                  isRequired
+                  selectedKey={override?.model}
+                  placeholder="Select the model"
+                  onSelectionChange={(model) =>
+                    setOverrideItem({ id: index, model: model.toString() })
+                  }
+                  items={models.map((model) => ({
+                    textValue: model.name,
+                    id: model.name,
+                    provider: model.provider,
+                  }))}
+                >
+                  <Label>Preferred Model</Label>
+                  <SelectButton className="w-96" />
+                </Select>
+              </div>
+            ))}
           </div>
         </CardBody>
         <CardFooter className="justify-end gap-2">
