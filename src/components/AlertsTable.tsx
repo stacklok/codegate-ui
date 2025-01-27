@@ -62,14 +62,14 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
     case "leaked_secret":
       return (
         <>
-          <KeyRoundIcon className="size-4" />
+          <KeyRoundIcon className="size-4 text-blue-700" />
           Blocked secret exposure
         </>
       );
     case "malicious_package":
       return (
         <>
-          <PackageX className="size-4" />
+          <PackageX className="size-4 text-blue-700" />
           Blocked malicious package
         </>
       );
