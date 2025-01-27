@@ -7,6 +7,6 @@ test("matches secret alert", () => {
   expect(isAlertSecret(ALERT_SECRET)).toBe(true);
 });
 
-test("doesn't match secret", () => {
+test("doesn't match malicious", () => {
   expect(isAlertSecret(ALERT_MALICIOUS)).toBe(false);
 });
