@@ -176,10 +176,10 @@ export function AlertsTable() {
         <Table data-testid="alerts-table" aria-label="Alerts table">
           <TableHeader>
             <Row>
+              <Column className="w-[150px]">Time</Column>
               <Column isRowHeader className="w-[150px]">
-                Time
+                Type
               </Column>
-              <Column className="w-[150px]">Type</Column>
               <Column>Event</Column>
               <Column width={325}>Issue Detected</Column>
             </Row>
