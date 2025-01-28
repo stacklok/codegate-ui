@@ -5,8 +5,7 @@ import { V1ListAllModelsForAllProvidersResponse } from "@/api/generated";
 export const useModelsData = () => {
   return useQuery({
     ...v1ListAllModelsForAllProvidersOptions(),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    queryFn: async ({ queryKey, signal }) => {
+    queryFn: async () => {
       const response: V1ListAllModelsForAllProvidersResponse = [
         { name: "claude-3.5", provider: "anthropic" },
         { name: "claude-3.6", provider: "anthropic" },
