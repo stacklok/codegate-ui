@@ -46,8 +46,7 @@ export function SortableItem({ override, index }: Props) {
           value={override?.matcher ?? ""}
           name="matcher"
           onChange={(matcher) => {
-            console.log("event handler", matcher, override.id);
-            //setOverrideItem(override.id, { matcher });
+            setOverrideItem(override.id, { matcher });
           }}
         >
           {index === 0 && <Label>Filter by</Label>}
