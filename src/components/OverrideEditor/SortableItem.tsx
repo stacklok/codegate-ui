@@ -2,7 +2,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import {
   Button,
   Input,
-  Label,
   Select,
   SelectButton,
   TextField,
@@ -36,26 +35,25 @@ export function SortableItem({ override, index }: Props) {
 
   return (
     <div className="flex items-center gap-2 " key={override.id} style={style}>
-      <div ref={setNodeRef} {...attributes} {...listeners}>
-        <GripVertical />
+      <div ref={setNodeRef} {...attributes} {...listeners} className="size-8">
+        <GripVertical className="size-full" />
       </div>
       <div className="flex w-full justify-between">
         <TextField
+          aria-labelledby="filter-by-label-id"
           onFocus={(event) => event.preventDefault()}
-          aria-label="Filter by (Regex)"
           value={override?.matcher ?? ""}
           name="matcher"
           onChange={(matcher) => {
             setOverrideItem(override.id, { matcher });
           }}
         >
-          {index === 0 && <Label>Filter by</Label>}
           <Input placeholder="eg file type, file name, or repository" />
         </TextField>
       </div>
       <div className="flex w-2/5 gap-2">
         <Select
-          aria-label="TODO"
+          aria-labelledby="preferred-model-id"
           name="model"
           isRequired
           className="w-full"
@@ -70,7 +68,6 @@ export function SortableItem({ override, index }: Props) {
             provider: model.provider,
           }))}
         >
-          {index === 0 && <Label>Preferred Model</Label>}
           <SelectButton />
         </Select>
         {index !== 0 && (

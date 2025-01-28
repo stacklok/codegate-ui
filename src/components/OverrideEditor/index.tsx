@@ -15,6 +15,7 @@ import {
 
 import { useModelOverridesWorkspace } from "@/features/workspace/hooks/use-model-overrides-workspace";
 import { SortableItem } from "./SortableItem";
+import { Label } from "@stacklok/ui-kit";
 
 export function OverrideEditor() {
   const { overrides, setOverrides } = useModelOverridesWorkspace();
@@ -47,6 +48,15 @@ export function OverrideEditor() {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
+        <div className="flex gap-2">
+          <div className="size-8">&nbsp;</div>
+          <div className="w-full">
+            <Label id="filter-by-label-id">Preferred Model</Label>
+          </div>
+          <div className="w-2/5">
+            <Label id="preferred-model-id">Preferred Model</Label>
+          </div>
+        </div>
         <SortableContext
           items={overrides}
           strategy={verticalListSortingStrategy}
