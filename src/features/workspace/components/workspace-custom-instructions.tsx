@@ -177,7 +177,7 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
         <div className="flex flex-wrap gap-6 overflow-auto justify-around ">
           {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
             return (
-              <Card className="w-96 flex flex-col">
+              <Card className="w-[380px] flex flex-col">
                 <h2 className="font-bold p-2 flex gap-2 items-center">
                   <Bot className="size-4" />
                   <div className="truncate">{item.name}</div>
@@ -306,7 +306,7 @@ export function WorkspaceCustomInstructions({
         <DialogTrigger>
           <Button>Use a preset</Button>
           <DialogModalOverlay isDismissable>
-            <DialogModal>
+            <DialogModal isDismissable>
               <Dialog width="lg" className="flex flex-col p-4 gap-4">
                 <PromptPresetPicker
                   onActivate={(prompt: string) => {
