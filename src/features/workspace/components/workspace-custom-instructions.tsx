@@ -172,12 +172,12 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
       <div className="flex flex-wrap gap-6 overflow-auto justify-around ">
         {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
           return (
-            <div className="border rounded-md text-clip w-96 p-2 flex flex-col gap-2">
-              <h2 className="font-bold truncate">{item.name}</h2>
-              <pre className="h-40 overflow-hidden text-wrap text-sm">
+            <Card className="w-96 flex flex-col">
+              <h2 className="font-bold truncate p-2">{item.name}</h2>
+              <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
                 {item.text}
               </pre>
-              <div className="flex gap-4 justify-between">
+              <div className="flex gap-4 justify-between p-2">
                 <div className="h-full items-center">
                   <div className="flex h-full items-center max-w-52 text-clip">
                     {item.contributors.map((contributor) => (
@@ -206,7 +206,7 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
                   <Download />
                 </Button>
               </div>
-            </div>
+            </Card>
           );
         })}
       </div>
