@@ -19,9 +19,9 @@ export function OverrideEditor() {
 
       <div className="flex flex-col gap-2">
         <SortableArea items={overrides} setItems={setOverrides}>
-          {overrides.map((override, index) => (
+          {(override, index) => (
             <SortableItem key={override.id} index={index} override={override} />
-          ))}
+          )}
         </SortableArea>
       </div>
     </div>

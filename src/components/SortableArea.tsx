@@ -16,7 +16,8 @@ import {
 } from "@dnd-kit/sortable";
 
 type Props<T> = {
-  children: React.ReactNode;
+  children: (item: T, index: number) => React.ReactNode;
+
   setItems: (items: T[]) => void;
   items: T[];
 };
@@ -55,7 +56,7 @@ export function SortableArea<T extends { id: UniqueIdentifier }>({
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {children}
+        {items.map((item, index) => children(item, index))}
       </SortableContext>
     </DndContext>
   );
