@@ -10,7 +10,7 @@ import {
 } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
 import { useMutationCreateWorkspace } from "../hooks/use-mutation-create-workspace";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function WorkspaceName({
@@ -24,6 +24,12 @@ export function WorkspaceName({
 }) {
   const navigate = useNavigate();
   const [name, setName] = useState(workspaceName);
+  // NOTE: When navigating from one settings page to another, this value is not
+  // updated, hence the synchronization effect
+  useEffect(() => {
+    if (name !== workspaceName) setName(workspaceName);
+  }, [name, workspaceName]);
+
   const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
 
