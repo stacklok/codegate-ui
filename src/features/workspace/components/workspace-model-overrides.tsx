@@ -4,20 +4,16 @@ import {
   CardBody,
   CardFooter,
   Form,
-  Input,
-  Label,
-  Select,
-  SelectButton,
   Text,
-  TextField,
 } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
-import { useModelOverridesWorkspace } from "../hooks/use-model-overrides-workspace";
 import { useMutationModelOverridesWorkspace } from "../hooks/use-mutation-model-overrides-workspace";
 import { MuxMatcherType } from "@/api/generated";
 import { useModelsData } from "@/hooks/useModelsData";
 import { FormEvent } from "react";
-import { Plus, Trash01 } from "@untitled-ui/icons-react";
+import { Plus } from "@untitled-ui/icons-react";
+import { useModelOverridesWorkspace } from "../hooks/use-model-overrides-workspace";
+import { OverrideEditor } from "@/components/OverrideEditor";
 
 export function WorkspaceModelOverrides({
   className,
@@ -28,12 +24,10 @@ export function WorkspaceModelOverrides({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { removeOverride, setOverrideItem, overrides, addOverride } =
-    useModelOverridesWorkspace();
+  const { overrides, addOverride } = useModelOverridesWorkspace();
   const { mutateAsync } = useMutationModelOverridesWorkspace();
   const { data: models = [] } = useModelsData();
 
-  console.log(overrides);
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     mutateAsync({
@@ -58,54 +52,7 @@ export function WorkspaceModelOverrides({
               individual files, or repository.
             </Text>
           </div>
-          <div className="flex flex-col gap-2">
-            {overrides.map((override, index) => (
-              <div className="flex items-center gap-2 " key={index}>
-                <div className="flex w-full justify-between">
-                  <TextField
-                    aria-label="Filter by (Regex)"
-                    value={override?.matcher ?? ""}
-                    name="matcher"
-                    onChange={(matcher) =>
-                      setOverrideItem({ id: index, matcher })
-                    }
-                  >
-                    {index === 0 && <Label>Filter by</Label>}
-                    <Input placeholder="eg file type, file name, or repository" />
-                  </TextField>
-                </div>
-                <div className="flex w-2/5 gap-2">
-                  <Select
-                    name="model"
-                    isRequired
-                    className="w-full"
-                    selectedKey={override?.model}
-                    placeholder="Select the model"
-                    onSelectionChange={(model) =>
-                      setOverrideItem({ id: index, model: model.toString() })
-                    }
-                    items={models.map((model) => ({
-                      textValue: model.name,
-                      id: model.name,
-                      provider: model.provider,
-                    }))}
-                  >
-                    {index === 0 && <Label>Preferred Model</Label>}
-                    <SelectButton />
-                  </Select>
-                  {index !== 0 && (
-                    <Button
-                      isIcon
-                      variant="tertiary"
-                      onPress={() => removeOverride(index)}
-                    >
-                      <Trash01 />
-                    </Button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <OverrideEditor />
         </CardBody>
         <CardFooter className="justify-between">
           <Button className="w-fit" variant="tertiary" onPress={addOverride}>

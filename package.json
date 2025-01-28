@@ -20,6 +20,8 @@
     "generate-icons": "npx @svgr/cli --typescript --no-dimensions --replace-attr-values '#2E323A=currentColor' --jsx-runtime automatic --out-dir ./src/components/icons/ -- icons"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
     "@hey-api/client-fetch": "^0.7.1",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-dialog": "^1.1.4",
