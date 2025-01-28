@@ -66,6 +66,7 @@ export function SortableItem({ override, index }: SortableItemProps) {
         </Select>
         {index !== 0 && (
           <Button
+            aria-label="remove override"
             isIcon
             variant="tertiary"
             onPress={() => removeOverride(index)}
@@ -114,8 +115,9 @@ export function WorkspaceModelOverrides({
           </div>
           <div>
             <div className="flex gap-2">
-              <div className="w-full pl-8">
-                <Label id="filter-by-label-id">Preferred Model</Label>
+              <div className="w-12">&nbsp;</div>
+              <div className="w-full">
+                <Label id="filter-by-label-id">Filter by</Label>
               </div>
               <div className="w-2/5">
                 <Label id="preferred-model-id">Preferred Model</Label>
