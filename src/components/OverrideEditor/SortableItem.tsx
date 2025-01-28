@@ -21,11 +21,10 @@ type Props = {
   override: OverrideRule;
 };
 
-export function SortableItem({ index, override }: Props) {
+export function SortableItem({ override, index }: Props) {
   const { removeOverride, setOverrideItem } = useModelOverridesWorkspace();
-  const { id } = override;
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+    useSortable({ id: override.id });
   const { data: models = [] } = useModelsData();
 
   const style = {
@@ -36,7 +35,7 @@ export function SortableItem({ index, override }: Props) {
   return (
     <div
       className="flex items-center gap-2 "
-      key={index}
+      key={override.id}
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -48,7 +47,7 @@ export function SortableItem({ index, override }: Props) {
           aria-label="Filter by (Regex)"
           value={override?.matcher ?? ""}
           name="matcher"
-          onChange={(matcher) => setOverrideItem(index, { matcher })}
+          onChange={(matcher) => setOverrideItem(override.id, { matcher })}
         >
           {index === 0 && <Label>Filter by</Label>}
           <Input placeholder="eg file type, file name, or repository" />
@@ -62,7 +61,7 @@ export function SortableItem({ index, override }: Props) {
           selectedKey={override?.model}
           placeholder="Select the model"
           onSelectionChange={(model) =>
-            setOverrideItem(index, { model: model.toString() })
+            setOverrideItem(override.id, { model: model.toString() })
           }
           items={models.map((model) => ({
             textValue: model.name,

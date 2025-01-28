@@ -1,8 +1,9 @@
 import { MuxRule } from "@/api/generated";
 import { create } from "zustand";
+import { v4 as uuidv4 } from "uuid";
 
 export type OverrideRule = Omit<MuxRule, "matcher_type"> & {
-  id: number;
+  id: string;
 };
 
 type State = {
@@ -10,14 +11,14 @@ type State = {
   addOverride: () => void;
   setOverrides: (overrides: OverrideRule[]) => void;
   setOverrideItem: (
-    index: number,
+    idToChange: string,
     {
       id,
       model,
       matcher,
     }: {
       matcher?: string;
-      id?: number;
+      id?: string;
       model?: string;
     },
   ) => void;
@@ -27,13 +28,13 @@ type State = {
 export const useModelOverridesWorkspace = create<State>((set, get) => ({
   overrides: [
     {
-      id: 0,
+      id: uuidv4(),
       provider: "anthropic",
       model: "claude-3.5",
       matcher: "",
     },
     {
-      id: 1,
+      id: uuidv4(),
       provider: "anthropic",
       model: "claude-3.7",
       matcher: "hello",
@@ -44,7 +45,7 @@ export const useModelOverridesWorkspace = create<State>((set, get) => ({
     set({
       overrides: [
         ...overrides,
-        { id: overrides.length, matcher: "", model: "", provider: "" },
+        { id: uuidv4(), matcher: "", model: "", provider: "" },
       ],
     });
   },
@@ -58,12 +59,12 @@ export const useModelOverridesWorkspace = create<State>((set, get) => ({
     console.log("setting overrides", overrides);
     set({ overrides });
   },
-  setOverrideItem: (index, { id, model, matcher }) => {
+  setOverrideItem: (idToChange, { id, model, matcher }) => {
     const { overrides } = get();
 
     set({
-      overrides: overrides.map((item, jndex) =>
-        jndex === index
+      overrides: overrides.map((item) =>
+        item.id === idToChange
           ? {
               ...item,
               model: model ?? item.model,

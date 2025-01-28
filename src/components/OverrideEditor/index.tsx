@@ -28,9 +28,13 @@ export function OverrideEditor() {
   function handleDragEnd(event) {
     const { active, over } = event;
 
+    console.log({ active, over, overrides });
+
     if (active.id !== over.id) {
-      const oldIndex = overrides.indexOf(active.id);
-      const newIndex = overrides.indexOf(over.id);
+      const oldIndex = overrides.findIndex(({ id }) => id === active.id);
+      const newIndex = overrides.findIndex(({ id }) => id === over.id);
+
+      console.log({ oldIndex, newIndex });
 
       setOverrides(arrayMove(overrides, oldIndex, newIndex));
     }
@@ -48,7 +52,7 @@ export function OverrideEditor() {
           strategy={verticalListSortingStrategy}
         >
           {overrides.map((override, index) => (
-            <SortableItem key={index} index={index} override={override} />
+            <SortableItem key={override.id} index={index} override={override} />
           ))}
         </SortableContext>
       </DndContext>
