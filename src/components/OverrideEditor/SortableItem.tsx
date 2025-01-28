@@ -35,17 +35,13 @@ export function SortableItem({ override, index }: Props) {
   console.log("asdfãõãfadf", { override });
 
   return (
-    <div
-      className="flex items-center gap-2 "
-      key={override.id}
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
-      <GripVertical />
+    <div className="flex items-center gap-2 " key={override.id} style={style}>
+      <div ref={setNodeRef} {...attributes} {...listeners}>
+        <GripVertical />
+      </div>
       <div className="flex w-full justify-between">
         <TextField
+          onFocus={(event) => event.preventDefault()}
           aria-label="Filter by (Regex)"
           value={override?.matcher ?? ""}
           name="matcher"
