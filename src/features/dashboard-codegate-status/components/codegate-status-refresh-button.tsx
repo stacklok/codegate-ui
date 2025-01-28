@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { PollingInterval } from "./codegate-status-polling-control";
-import { getQueryOptionsCodeGateStatus } from "../hooks/use-codegate-status";
+import { getQueryOptionsCodeGateStatus } from "../../header/hooks/use-codegate-status";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@stacklok/ui-kit";
 import { RefreshCcw } from "lucide-react";

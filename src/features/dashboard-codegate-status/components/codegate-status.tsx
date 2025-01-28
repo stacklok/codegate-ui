@@ -14,7 +14,7 @@ import {
 
 import { format } from "date-fns";
 import { useState } from "react";
-import { useCodeGateStatus } from "../hooks/use-codegate-status";
+import { useCodeGateStatus } from "../../header/hooks/use-codegate-status";
 import { CodegateStatusErrorUI } from "./codegate-status-error-ui";
 import {
   DEFAULT_INTERVAL,

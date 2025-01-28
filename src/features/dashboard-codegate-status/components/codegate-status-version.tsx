@@ -1,6 +1,6 @@
 import { LoaderCircle, CheckCircle2, CircleAlert, XCircle } from "lucide-react";
 import { Link, Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
-import { VersionResponse } from "../types";
+import { VersionResponse } from "../../header/types";
 
 export const CodegateStatusVersion = ({
   data,

@@ -1,4 +1,4 @@
-import { Header } from "./components/Header";
+import { Header } from "./features/header/components/header";
 import { PromptList } from "./components/PromptList";
 import { usePromptsData } from "./hooks/usePromptsData";
 import { Sidebar } from "./components/Sidebar";

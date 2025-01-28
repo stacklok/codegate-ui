@@ -29,7 +29,7 @@ export function DropdownMenu({
         {title}
         <PopoverIcon />
       </Button>
-      <Popover>
+      <Popover placement="bottom end">
         <Menu items={items} />
       </Popover>
     </MenuTrigger>
