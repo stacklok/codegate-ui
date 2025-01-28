@@ -1,4 +1,3 @@
-import { useSortable } from "@dnd-kit/sortable";
 import {
   Button,
   Input,
@@ -6,14 +5,12 @@ import {
   SelectButton,
   TextField,
 } from "@stacklok/ui-kit";
-import { CSS } from "@dnd-kit/utilities";
 import { Trash01 } from "@untitled-ui/icons-react";
 import {
   OverrideRule,
   useModelOverridesWorkspace,
 } from "@/features/workspace/hooks/use-model-overrides-workspace";
 import { useModelsData } from "@/hooks/useModelsData";
-import { GripVertical } from "lucide-react";
 
 type Props = {
   index: number;
@@ -22,20 +19,11 @@ type Props = {
 
 export function SortableItem({ override, index }: Props) {
   const { removeOverride, setOverrideItem } = useModelOverridesWorkspace();
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: override.id });
+
   const { data: models = [] } = useModelsData();
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
-    <div className="flex items-center gap-2 " key={override.id} style={style}>
-      <div ref={setNodeRef} {...attributes} {...listeners} className="size-8">
-        <GripVertical className="size-full" />
-      </div>
+    <div className="flex items-center gap-2" key={override.id}>
       <div className="flex w-full justify-between">
         <TextField
           aria-labelledby="filter-by-label-id"

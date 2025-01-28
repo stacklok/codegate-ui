@@ -14,6 +14,9 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
+import { GripVertical } from "lucide-react";
 
 type Props<T> = {
   children: (item: T, index: number) => React.ReactNode;
@@ -21,6 +24,29 @@ type Props<T> = {
   setItems: (items: T[]) => void;
   items: T[];
 };
+
+function ItemWrapper({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id: UniqueIdentifier;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+  return (
+    <div style={style} className="flex items-center gap-2 w-full">
+      <div ref={setNodeRef} {...attributes} {...listeners} className="size-8">
+        <GripVertical className="size-full" />
+      </div>
+      <div className="grow">{children}</div>
+    </div>
+  );
+}
 
 export function SortableArea<T extends { id: UniqueIdentifier }>({
   children,
@@ -56,7 +82,9 @@ export function SortableArea<T extends { id: UniqueIdentifier }>({
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {items.map((item, index) => children(item, index))}
+        {items.map((item, index) => (
+          <ItemWrapper id={item.id}>{children(item, index)}</ItemWrapper>
+        ))}
       </SortableContext>
     </DndContext>
   );
