@@ -18,12 +18,12 @@ import { GripVertical } from "lucide-react";
 
 type Props = {
   index: number;
-  id: number;
   override: OverrideRule;
 };
 
-export function SortableItem({ index, id, override }: Props) {
+export function SortableItem({ index, override }: Props) {
   const { removeOverride, setOverrideItem } = useModelOverridesWorkspace();
+  const { id } = override;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
   const { data: models = [] } = useModelsData();
