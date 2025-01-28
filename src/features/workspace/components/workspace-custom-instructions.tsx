@@ -42,7 +42,7 @@ import {
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
-import { Download, Search } from "lucide-react";
+import { Bot, Download, Search } from "lucide-react";
 import Fuse from "fuse.js";
 import systemPrompts from "../constants/built-in-system-prompts.json";
 
@@ -173,7 +173,10 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
         {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
           return (
             <Card className="w-96 flex flex-col">
-              <h2 className="font-bold truncate p-2">{item.name}</h2>
+              <h2 className="font-bold p-2 flex gap-2 items-center">
+                <Bot className="size-4" />
+                <div className="truncate">{item.name}</div>
+              </h2>
               <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
                 {item.text}
               </pre>
