@@ -9,7 +9,6 @@ import {
 import { twMerge } from "tailwind-merge";
 import { useMutationModelOverridesWorkspace } from "../hooks/use-mutation-model-overrides-workspace";
 import { MuxMatcherType } from "@/api/generated";
-import { useModelsData } from "@/hooks/useModelsData";
 import { FormEvent } from "react";
 import { Plus } from "@untitled-ui/icons-react";
 import { useModelOverridesWorkspace } from "../hooks/use-model-overrides-workspace";
@@ -26,7 +25,6 @@ export function WorkspaceModelOverrides({
 }) {
   const { overrides, addOverride } = useModelOverridesWorkspace();
   const { mutateAsync } = useMutationModelOverridesWorkspace();
-  const { data: models = [] } = useModelsData();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -38,8 +36,6 @@ export function WorkspaceModelOverrides({
       })),
     });
   };
-
-  console.log({ models, overrides });
 
   return (
     <Form onSubmit={handleSubmit} validationBehavior="aria">

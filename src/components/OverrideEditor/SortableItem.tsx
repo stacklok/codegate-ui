@@ -31,8 +31,6 @@ export function SortableItem({ override, index }: Props) {
     transition,
   };
 
-  console.log("asdfãõãfadf", { override });
-
   return (
     <div className="flex items-center gap-2 " key={override.id} style={style}>
       <div ref={setNodeRef} {...attributes} {...listeners} className="size-8">

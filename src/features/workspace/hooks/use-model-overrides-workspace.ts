@@ -54,11 +54,9 @@ export const useModelOverridesWorkspace = create<State>((set, get) => ({
     });
   },
   setOverrides: (overrides: OverrideRule[]) => {
-    console.log("setting overrides", overrides);
     set({ overrides });
   },
   setOverrideItem: (idToChange, { model, matcher }) => {
-    console.log("setting override item", idToChange, { model, matcher });
     const { overrides } = get();
 
     set({
