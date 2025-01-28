@@ -2,6 +2,10 @@ import { AlertConversation, QuestionType } from "@/api/generated";
 
 export const ALERT_SECRET = {
   conversation: {
+    token_usage: {
+      tokens_by_model: [],
+      used_tokens: 1000,
+    },
     question_answers: [
       {
         question: {
