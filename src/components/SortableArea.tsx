@@ -83,7 +83,9 @@ export function SortableArea<T extends { id: UniqueIdentifier }>({
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         {items.map((item, index) => (
-          <ItemWrapper id={item.id}>{children(item, index)}</ItemWrapper>
+          <ItemWrapper key={index} id={item.id}>
+            {children(item, index)}
+          </ItemWrapper>
         ))}
       </SortableContext>
     </DndContext>
