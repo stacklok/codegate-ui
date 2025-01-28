@@ -6,8 +6,11 @@ import {
   CardFooter,
   DarkModeContext,
   Dialog,
+  DialogContent,
+  DialogHeader,
   DialogModal,
   DialogModalOverlay,
+  DialogTitle,
   DialogTrigger,
   FieldGroup,
   Input,
@@ -161,58 +164,61 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
 
   return (
     <>
-      <div className="flex justify-end">
+      <DialogHeader>
+        <DialogTitle>Choose a prompt template</DialogTitle>
         <SearchField className="max-w-96" value={query} onChange={setQuery}>
           <FieldGroup>
             <Input icon={<Search />} />
             <SearchFieldClearButton />
           </FieldGroup>
         </SearchField>
-      </div>
-      <div className="flex flex-wrap gap-6 overflow-auto justify-around ">
-        {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
-          return (
-            <Card className="w-96 flex flex-col">
-              <h2 className="font-bold p-2 flex gap-2 items-center">
-                <Bot className="size-4" />
-                <div className="truncate">{item.name}</div>
-              </h2>
-              <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
-                {item.text}
-              </pre>
-              <div className="flex gap-4 justify-between p-2">
-                <div className="h-full items-center">
-                  <div className="flex h-full items-center max-w-52 text-clip">
-                    {item.contributors.map((contributor) => (
-                      <Link
-                        className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
-                        target="_blank"
-                        href={`https://github.com/${contributor}/`}
-                      >
-                        <img
-                          className="size-6 rounded-full"
-                          src={`https://github.com/${contributor}.png?size=24`}
-                        />
-                        <span className="truncate">{contributor}</span>
-                      </Link>
-                    ))}
+      </DialogHeader>
+      <DialogContent>
+        <div className="flex flex-wrap gap-6 overflow-auto justify-around ">
+          {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
+            return (
+              <Card className="w-96 flex flex-col">
+                <h2 className="font-bold p-2 flex gap-2 items-center">
+                  <Bot className="size-4" />
+                  <div className="truncate">{item.name}</div>
+                </h2>
+                <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
+                  {item.text}
+                </pre>
+                <div className="flex gap-4 justify-between p-2">
+                  <div className="h-full items-center">
+                    <div className="flex h-full items-center max-w-52 text-clip">
+                      {item.contributors.map((contributor) => (
+                        <Link
+                          className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
+                          target="_blank"
+                          href={`https://github.com/${contributor}/`}
+                        >
+                          <img
+                            className="size-6 rounded-full"
+                            src={`https://github.com/${contributor}.png?size=24`}
+                          />
+                          <span className="truncate">{contributor}</span>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
+                  <Button
+                    isIcon
+                    slot="close"
+                    variant="secondary"
+                    onPress={() => {
+                      handleActivate(item.text);
+                    }}
+                  >
+                    <Download />
+                  </Button>
                 </div>
-                <Button
-                  isIcon
-                  slot="close"
-                  variant="secondary"
-                  onPress={() => {
-                    handleActivate(item.text);
-                  }}
-                >
-                  <Download />
-                </Button>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
+              </Card>
+            );
+          })}
+        </div>
+      </DialogContent>
     </>
   );
 }
