@@ -40,8 +40,7 @@ export function OverrideEditor() {
   return (
     <div>
       <div className="flex gap-2">
-        <div className="size-8">&nbsp;</div>
-        <div className="w-full">
+        <div className="w-full pl-8">
           <Label id="filter-by-label-id">Preferred Model</Label>
         </div>
         <div className="w-2/5">
