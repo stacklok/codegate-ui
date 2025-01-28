@@ -10,7 +10,7 @@ import {
   useMaliciousPackagesChartData,
 } from "@/hooks/useAlertsData";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
-import { AlertsTable } from "@/components/AlertsTable";
+import { TableAlerts } from "@/features/alerts/components/table-alerts";
 
 export function RouteDashboard() {
   const [searchParams] = useSearchParams();
@@ -43,7 +43,7 @@ export function RouteDashboard() {
 
       <Separator className="my-8" />
 
-      <AlertsTable />
+      <TableAlerts />
     </div>
   );
 }
