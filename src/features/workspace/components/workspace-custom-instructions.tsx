@@ -11,6 +11,7 @@ import {
   DialogTrigger,
   FieldGroup,
   Input,
+  Link,
   Loader,
   SearchField,
   SearchFieldClearButton,
@@ -176,16 +177,35 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
               <pre className="h-40 overflow-hidden text-wrap text-sm">
                 {item.text}
               </pre>
-              <Button
-                slot="close"
-                variant="secondary"
-                onPress={() => {
-                  handleActivate(item.text);
-                }}
-              >
-                <Download />
-                Activate
-              </Button>
+              <div className="flex gap-4 justify-between">
+                <div className="h-full items-center">
+                  <div className="flex h-full items-center max-w-52 text-clip">
+                    {item.contributors.map((contributor) => (
+                      <Link
+                        className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
+                        target="_blank"
+                        href={`https://github.com/${contributor}/`}
+                      >
+                        <img
+                          className="size-6 rounded-full"
+                          src={`https://github.com/${contributor}.png?size=24`}
+                        />
+                        <span className="truncate">{contributor}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <Button
+                  isIcon
+                  slot="close"
+                  variant="secondary"
+                  onPress={() => {
+                    handleActivate(item.text);
+                  }}
+                >
+                  <Download />
+                </Button>
+              </div>
             </div>
           );
         })}
