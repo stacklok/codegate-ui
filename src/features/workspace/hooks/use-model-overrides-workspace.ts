@@ -2,6 +2,8 @@ import { MuxRule } from "@/api/generated";
 import { create } from "zustand";
 
 type State = {
+  removeOverride: (index: number) => void;
+  addOverride: () => void;
   setOverrides: () => void;
   setOverrideItem: ({
     id,
@@ -28,6 +30,18 @@ export const useModelOverridesWorkspace = create<State>((set, get) => ({
       matcher: "hello",
     },
   ],
+  addOverride: () => {
+    const { overrides } = get();
+    set({
+      overrides: [...overrides, { matcher: "", model: "", provider: "" }],
+    });
+  },
+  removeOverride: (overrideIndex: number) => {
+    const { overrides } = get();
+    set({
+      overrides: overrides.filter((_, index) => index !== overrideIndex),
+    });
+  },
   setOverrides: () => {},
   setOverrideItem: ({ id, model, matcher }) => {
     const { overrides } = get();

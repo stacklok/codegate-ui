@@ -17,6 +17,7 @@ import { useMutationModelOverridesWorkspace } from "../hooks/use-mutation-model-
 import { MuxMatcherType } from "@/api/generated";
 import { useModelsData } from "@/hooks/useModelsData";
 import { FormEvent } from "react";
+import { Plus, Trash01 } from "@untitled-ui/icons-react";
 
 export function WorkspaceModelOverrides({
   className,
@@ -27,7 +28,8 @@ export function WorkspaceModelOverrides({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { setOverrideItem, overrides } = useModelOverridesWorkspace();
+  const { removeOverride, setOverrideItem, overrides, addOverride } =
+    useModelOverridesWorkspace();
   const { mutateAsync } = useMutationModelOverridesWorkspace();
   const { data: models = [] } = useModelsData();
 
@@ -48,7 +50,7 @@ export function WorkspaceModelOverrides({
   return (
     <Form onSubmit={handleSubmit} validationBehavior="aria">
       <Card className={twMerge(className, "shrink-0")}>
-        <CardBody className="flex flex-col gap-4">
+        <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">
             <Text className="text-primary">Model Overrides</Text>
             <Text className="flex items-center text-secondary mb-0 text-balance">
@@ -56,42 +58,59 @@ export function WorkspaceModelOverrides({
               individual files, or repository.
             </Text>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             {overrides.map((override, index) => (
-              <div className="flex items-center gap-2" key={index}>
-                <TextField
-                  aria-label="Filter by (Regex)"
-                  value={override?.matcher ?? ""}
-                  name="matcher"
-                  onChange={(matcher) =>
-                    setOverrideItem({ id: index, matcher })
-                  }
-                >
-                  <Label>Filter by</Label>
-                  <Input placeholder="eg file type, file name, or repository" />
-                </TextField>
-                <Select
-                  name="model"
-                  isRequired
-                  selectedKey={override?.model}
-                  placeholder="Select the model"
-                  onSelectionChange={(model) =>
-                    setOverrideItem({ id: index, model: model.toString() })
-                  }
-                  items={models.map((model) => ({
-                    textValue: model.name,
-                    id: model.name,
-                    provider: model.provider,
-                  }))}
-                >
-                  <Label>Preferred Model</Label>
-                  <SelectButton className="w-96" />
-                </Select>
+              <div className="flex items-center gap-2 " key={index}>
+                <div className="flex w-full justify-between">
+                  <TextField
+                    aria-label="Filter by (Regex)"
+                    value={override?.matcher ?? ""}
+                    name="matcher"
+                    onChange={(matcher) =>
+                      setOverrideItem({ id: index, matcher })
+                    }
+                  >
+                    {index === 0 && <Label>Filter by</Label>}
+                    <Input placeholder="eg file type, file name, or repository" />
+                  </TextField>
+                </div>
+                <div className="flex w-2/5 gap-2">
+                  <Select
+                    name="model"
+                    isRequired
+                    className="w-full"
+                    selectedKey={override?.model}
+                    placeholder="Select the model"
+                    onSelectionChange={(model) =>
+                      setOverrideItem({ id: index, model: model.toString() })
+                    }
+                    items={models.map((model) => ({
+                      textValue: model.name,
+                      id: model.name,
+                      provider: model.provider,
+                    }))}
+                  >
+                    {index === 0 && <Label>Preferred Model</Label>}
+                    <SelectButton />
+                  </Select>
+                  {index !== 0 && (
+                    <Button
+                      isIcon
+                      variant="tertiary"
+                      onPress={() => removeOverride(index)}
+                    >
+                      <Trash01 />
+                    </Button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
         </CardBody>
-        <CardFooter className="justify-end gap-2">
+        <CardFooter className="justify-between">
+          <Button className="w-fit" variant="tertiary" onPress={addOverride}>
+            <Plus /> Additional Filter
+          </Button>
           <Button
             variant="secondary"
             isDisabled={isArchived || workspaceName === ""}

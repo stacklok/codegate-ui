@@ -9,6 +9,7 @@ export function useMutationModelOverridesWorkspace() {
     onSuccess: async () => {
       await invalidate();
     },
-    successMsg: () => "Model overrides properly submitted!",
+    successMsg: (variables) =>
+      `Model overrides on ${variables.path.workspace_name} successfully submitted! `,
   });
 }

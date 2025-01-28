@@ -131,9 +131,21 @@ export const handlers = [
     () => new HttpResponse(null, { status: 204 }),
   ),
   http.get("*/api/v1/provider-endpoints/:provider_name/models", () =>
-    HttpResponse.json({ name: "dummy", provider: "dummy" }),
+    HttpResponse.json([
+      { name: "claude-3.5", provider: "anthropic" },
+      { name: "claude-3.6", provider: "anthropic" },
+      { name: "claude-3.7", provider: "anthropic" },
+      { name: "chatgpt-4o", provider: "openai" },
+      { name: "chatgpt-4p", provider: "openai" },
+    ]),
   ),
   http.get("*/api/v1/provider-endpoints/models", () =>
-    HttpResponse.json({ name: "dummy", provider: "dummy" }),
+    HttpResponse.json([
+      { name: "claude-3.5", provider: "anthropic" },
+      { name: "claude-3.6", provider: "anthropic" },
+      { name: "claude-3.7", provider: "anthropic" },
+      { name: "chatgpt-4o", provider: "openai" },
+      { name: "chatgpt-4p", provider: "openai" },
+    ]),
   ),
 ];
