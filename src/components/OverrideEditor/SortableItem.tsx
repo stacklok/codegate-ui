@@ -32,6 +32,8 @@ export function SortableItem({ override, index }: Props) {
     transition,
   };
 
+  console.log("asdfãõãfadf", { override });
+
   return (
     <div
       className="flex items-center gap-2 "
@@ -47,7 +49,10 @@ export function SortableItem({ override, index }: Props) {
           aria-label="Filter by (Regex)"
           value={override?.matcher ?? ""}
           name="matcher"
-          onChange={(matcher) => setOverrideItem(override.id, { matcher })}
+          onChange={(matcher) => {
+            console.log("event handler", matcher, override.id);
+            //setOverrideItem(override.id, { matcher });
+          }}
         >
           {index === 0 && <Label>Filter by</Label>}
           <Input placeholder="eg file type, file name, or repository" />
@@ -55,6 +60,7 @@ export function SortableItem({ override, index }: Props) {
       </div>
       <div className="flex w-2/5 gap-2">
         <Select
+          aria-label="TODO"
           name="model"
           isRequired
           className="w-full"

@@ -13,12 +13,10 @@ type State = {
   setOverrideItem: (
     idToChange: string,
     {
-      id,
       model,
       matcher,
     }: {
       matcher?: string;
-      id?: string;
       model?: string;
     },
   ) => void;
@@ -59,7 +57,8 @@ export const useModelOverridesWorkspace = create<State>((set, get) => ({
     console.log("setting overrides", overrides);
     set({ overrides });
   },
-  setOverrideItem: (idToChange, { id, model, matcher }) => {
+  setOverrideItem: (idToChange, { model, matcher }) => {
+    console.log("setting override item", idToChange, { model, matcher });
     const { overrides } = get();
 
     set({
@@ -69,7 +68,6 @@ export const useModelOverridesWorkspace = create<State>((set, get) => ({
               ...item,
               model: model ?? item.model,
               matcher: matcher ?? item.matcher,
-              id: id ?? item.id,
             }
           : item,
       ),
