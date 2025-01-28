@@ -42,30 +42,37 @@ export function OverrideEditor() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <div className="flex gap-2">
-          <div className="size-8">&nbsp;</div>
-          <div className="w-full">
-            <Label id="filter-by-label-id">Preferred Model</Label>
-          </div>
-          <div className="w-2/5">
-            <Label id="preferred-model-id">Preferred Model</Label>
-          </div>
+    <div>
+      <div className="flex gap-2">
+        <div className="size-8">&nbsp;</div>
+        <div className="w-full">
+          <Label id="filter-by-label-id">Preferred Model</Label>
         </div>
-        <SortableContext
-          items={overrides}
-          strategy={verticalListSortingStrategy}
+        <div className="w-2/5">
+          <Label id="preferred-model-id">Preferred Model</Label>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          {overrides.map((override, index) => (
-            <SortableItem key={override.id} index={index} override={override} />
-          ))}
-        </SortableContext>
-      </DndContext>
+          <SortableContext
+            items={overrides}
+            strategy={verticalListSortingStrategy}
+          >
+            {overrides.map((override, index) => (
+              <SortableItem
+                key={override.id}
+                index={index}
+                override={override}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
     </div>
   );
 }
