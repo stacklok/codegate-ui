@@ -23,15 +23,16 @@ export function WorkspaceName({
   isArchived: boolean | undefined;
 }) {
   const navigate = useNavigate();
-  const [name, setName] = useState(workspaceName);
+  const { mutateAsync, isPending, error, reset } = useMutationCreateWorkspace();
+  const errorMsg = error?.detail ? `${error?.detail}` : "";
+
+  const [name, setName] = useState(() => workspaceName);
   // NOTE: When navigating from one settings page to another, this value is not
   // updated, hence the synchronization effect
   useEffect(() => {
-    if (name !== workspaceName) setName(workspaceName);
-  }, [name, workspaceName]);
-
-  const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
-  const errorMsg = error?.detail ? `${error?.detail}` : "";
+    setName(workspaceName);
+    reset();
+  }, [reset, workspaceName]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,13 +45,14 @@ export function WorkspaceName({
   };
 
   return (
-    <Form onSubmit={handleSubmit} validationBehavior="aria">
+    <Form onSubmit={handleSubmit} validationBehavior="aria" key={workspaceName}>
       <Card
         className={twMerge(className, "shrink-0")}
         data-testid="workspace-name"
       >
         <CardBody>
           <TextField
+            key={workspaceName}
             aria-label="Workspace name"
             value={name}
             name="Workspace name"

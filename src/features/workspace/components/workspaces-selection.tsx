@@ -76,6 +76,7 @@ export function WorkspacesSelection() {
               <ListBoxItem
                 id={item.name}
                 key={item.name}
+                textValue={item.name}
                 data-is-selected={item.name === activeWorkspaceName}
                 className={clsx(
                   "grid grid-cols-[auto_1.5rem] group/selector cursor-pointer py-2 m-1 text-base hover:bg-gray-200 rounded-sm",
