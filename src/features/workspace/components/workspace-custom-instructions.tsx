@@ -165,19 +165,25 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
 
   return (
     <>
-      <DialogHeader className="relative">
-        <div>
+      <DialogHeader>
+        <div className="w-1/3">
           <DialogTitle>Choose a prompt template</DialogTitle>
         </div>
-        <div className="absolute left-1/2 -ml-40">
-          <SearchField className="w-80" value={query} onChange={setQuery}>
+        <div className="w-1/3">
+          <SearchField
+            className="w-full max-w-96"
+            value={query}
+            onChange={setQuery}
+          >
             <FieldGroup>
               <Input icon={<Search />} placeholder="Type to search" autoFocus />
               {query.length > 0 ? <SearchFieldClearButton /> : null}
             </FieldGroup>
           </SearchField>
         </div>
-        <DialogCloseButton />
+        <div className="w-1/3 flex justify-end">
+          <DialogCloseButton />
+        </div>
       </DialogHeader>
       <DialogContent>
         <div className="grid grid-flow-row grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-4 overflow-auto justify-around ">
