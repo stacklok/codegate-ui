@@ -22,6 +22,7 @@ export const ALERT_MALICIOUS = {
     type: QuestionType.CHAT,
     chat_id: "bf92bf3c-fcec-4064-ad02-c792026c3555",
     conversation_timestamp: "2025-01-14T16:29:49.602403Z",
+    token_usage_agg: null,
   },
   alert_id: "bf92bf3c-fcec-4064-ad02-c792026c3555",
   code_snippet: null,

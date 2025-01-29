@@ -74,6 +74,9 @@ import type {
   V1StreamSseResponse,
   V1VersionCheckError,
   V1VersionCheckResponse,
+  V1GetWorkspaceTokenUsageData,
+  V1GetWorkspaceTokenUsageError,
+  V1GetWorkspaceTokenUsageResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -519,5 +522,22 @@ export const v1VersionCheck = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/api/v1/version",
+  });
+};
+
+/**
+ * Get Workspace Token Usage
+ * Get the token usage of a workspace.
+ */
+export const v1GetWorkspaceTokenUsage = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetWorkspaceTokenUsageData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceTokenUsageResponse,
+    V1GetWorkspaceTokenUsageError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/workspaces/{workspace_name}/token-usage",
   });
 };

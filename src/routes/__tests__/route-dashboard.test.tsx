@@ -163,6 +163,12 @@ describe("Dashboard", () => {
     ).toBeVisible();
 
     expect(
+      screen.getByRole("columnheader", {
+        name: /token usage/i,
+      }),
+    ).toBeVisible();
+
+    expect(
       screen.getByRole("switch", {
         name: /malicious packages/i,
       }),

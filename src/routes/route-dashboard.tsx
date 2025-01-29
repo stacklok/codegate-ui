@@ -4,13 +4,12 @@ import { BarChart } from "@/viz/BarChart";
 import { LineChart } from "@/viz/LineChart";
 import { PieChart } from "@/viz/PieChart";
 import { useSearchParams } from "react-router-dom";
-import { CodegateStatus } from "@/features/dashboard-codegate-status/components/codegate-status";
 import {
   useAlertsData,
   useMaliciousPackagesChartData,
 } from "@/hooks/useAlertsData";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
-import { AlertsTable } from "@/components/AlertsTable";
+import { TableAlerts } from "@/features/alerts/components/table-alerts";
 
 export function RouteDashboard() {
   const [searchParams] = useSearchParams();
@@ -34,8 +33,7 @@ export function RouteDashboard() {
 
   return (
     <div className="flex-col">
-      <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
-        <CodegateStatus />
+      <div className="grid 2xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
         <BarChart data={alerts} loading={isLoading} />
         <PieChart data={maliciousPackages} loading={isLoading} />
         <LineChart data={alerts} loading={isLoading} />
@@ -43,7 +41,7 @@ export function RouteDashboard() {
 
       <Separator className="my-8" />
 
-      <AlertsTable />
+      <TableAlerts />
     </div>
   );
 }

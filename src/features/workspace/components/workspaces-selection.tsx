@@ -16,6 +16,8 @@ import { useState } from "react";
 import { useMutationActivateWorkspace } from "../hooks/use-mutation-activate-workspace";
 import clsx from "clsx";
 import { useActiveWorkspaceName } from "../hooks/use-active-workspace-name";
+import { hrefs } from "@/lib/hrefs";
+import { twMerge } from "tailwind-merge";
 
 export function WorkspacesSelection() {
   const queryClient = useQueryClient();
@@ -46,7 +48,7 @@ export function WorkspacesSelection() {
         <ChevronDown />
       </Button>
 
-      <Popover className="w-1/4 p-4" placement="bottom left">
+      <Popover className="w-[32rem] p-3" placement="bottom left">
         <div>
           <div>
             <SearchField
@@ -65,7 +67,7 @@ export function WorkspacesSelection() {
             onAction={(v) => {
               handleWorkspaceClick(v?.toString());
             }}
-            className="py-2 pt-3 max-h-80 overflow-auto"
+            className="-mx-1 my-2 max-h-80 overflow-auto"
             renderEmptyState={() => (
               <p className="text-center">No workspaces found</p>
             )}
@@ -74,16 +76,36 @@ export function WorkspacesSelection() {
               <ListBoxItem
                 id={item.name}
                 key={item.name}
+                textValue={item.name}
                 data-is-selected={item.name === activeWorkspaceName}
                 className={clsx(
-                  "cursor-pointer py-2 m-1 text-base hover:bg-gray-300",
+                  "grid grid-cols-[auto_1.5rem] group/selector cursor-pointer py-2 m-1 text-base hover:bg-gray-200 rounded-sm",
                   {
                     "!bg-gray-900 hover:bg-gray-900 !text-gray-25 hover:!text-gray-25":
                       item.is_active,
                   },
                 )}
               >
-                {item.name}
+                <span className="block truncate">{item.name}</span>
+
+                <LinkButton
+                  href={hrefs.workspaces.edit(item.name)}
+                  onPress={() => setIsOpen(false)}
+                  isIcon
+                  variant="tertiary"
+                  className={twMerge(
+                    "ml-auto size-6 group-hover/selector:opacity-100 opacity-0 transition-opacity",
+                    item.is_active
+                      ? "hover:bg-gray-800 pressed:bg-gray-700"
+                      : "hover:bg-gray-50 hover:text-primary",
+                  )}
+                >
+                  <Settings
+                    className={twMerge(
+                      item.is_active ? "text-gray-25" : "text-secondary",
+                    )}
+                  />
+                </LinkButton>
               </ListBoxItem>
             )}
           </ListBox>
@@ -92,7 +114,7 @@ export function WorkspacesSelection() {
             href="/workspaces"
             onPress={() => setIsOpen(false)}
             variant="tertiary"
-            className="text-secondary h-8 pl-2 gap-2 flex mt-2 justify-start"
+            className="text-secondary h-10 pl-2 gap-2 flex mt-2 justify-start"
           >
             <Settings />
             Manage Workspaces
