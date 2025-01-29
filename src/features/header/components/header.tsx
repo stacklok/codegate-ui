@@ -37,7 +37,7 @@ export function Header({ hasError }: { hasError?: boolean }) {
         <Separator orientation="vertical" className="h-8 ml-4" />
         <WorkspacesSelection />
       </div>
-      <div className="flex items-center gap-4 mr-2">
+      <div className="flex items-center mr-2">
         <HeaderStatusMenu />
         <DropdownMenu title="Certificates" items={CERTIFICATE_MENU_ITEMS} />
         <DropdownMenu title="Help" items={HELP_MENU_ITEMS} />
