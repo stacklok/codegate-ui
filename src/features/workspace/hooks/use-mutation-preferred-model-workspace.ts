@@ -2,7 +2,7 @@ import { useToastMutation } from "@/hooks/use-toast-mutation";
 import { useInvalidateWorkspaceQueries } from "./use-invalidate-workspace-queries";
 import { v1SetWorkspaceMuxesMutation } from "@/api/generated/@tanstack/react-query.gen";
 
-export function useMutationModelOverridesWorkspace() {
+export function useMutationPreferredModelWorkspace() {
   const invalidate = useInvalidateWorkspaceQueries();
   return useToastMutation({
     ...v1SetWorkspaceMuxesMutation(),
@@ -10,6 +10,6 @@ export function useMutationModelOverridesWorkspace() {
       await invalidate();
     },
     successMsg: (variables) =>
-      `Model overrides on ${variables.path.workspace_name} successfully submitted!`,
+      `Preferred model on ${variables.path.workspace_name} successfully submitted!`,
   });
 }

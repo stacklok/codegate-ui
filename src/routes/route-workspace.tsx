@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useArchivedWorkspaces } from "@/features/workspace/hooks/use-archived-workspaces";
 import { useRestoreWorkspaceButton } from "@/features/workspace/hooks/use-restore-workspace-button";
 import { WorkspaceCustomInstructions } from "@/features/workspace/components/workspace-custom-instructions";
-import { WorkspaceModelOverrides } from "@/features/workspace/components/workspace-model-overrides";
+import { WorkspacePreferredModel } from "@/features/workspace/components/workspace-preferred-model";
 
 function WorkspaceArchivedBanner({ name }: { name: string }) {
   const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name });
@@ -53,7 +53,7 @@ export function RouteWorkspace() {
         className="mb-4"
         workspaceName={name}
       />
-      <WorkspaceModelOverrides
+      <WorkspacePreferredModel
         className="mb-4"
         isArchived={isArchived}
         workspaceName={name}
