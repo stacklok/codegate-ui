@@ -28,6 +28,9 @@ import type {
   V1DeleteProviderEndpointData,
   V1DeleteProviderEndpointError,
   V1DeleteProviderEndpointResponse,
+  V1ConfigureAuthMaterialData,
+  V1ConfigureAuthMaterialError,
+  V1ConfigureAuthMaterialResponse,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
   V1CreateWorkspaceData,
@@ -215,6 +218,23 @@ export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/api/v1/provider-endpoints/{provider_id}",
+  });
+};
+
+/**
+ * Configure Auth Material
+ * Configure auth material for a provider.
+ */
+export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1ConfigureAuthMaterialData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).put<
+    V1ConfigureAuthMaterialResponse,
+    V1ConfigureAuthMaterialError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/{provider_id}/auth-material",
   });
 };
 

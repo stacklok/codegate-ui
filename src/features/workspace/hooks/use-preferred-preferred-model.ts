@@ -10,10 +10,10 @@ type State = {
 
 export const usePreferredModelWorkspace = create<State>((set) => ({
   preferredModel: {
-    provider: "",
+    provider_id: "",
     model: "",
   },
-  setPreferredModel: ({ model, provider }: ModelRule) => {
-    set({ preferredModel: { provider, model } });
+  setPreferredModel: ({ model, provider_id }: ModelRule) => {
+    set({ preferredModel: { provider_id, model } });
   },
 }));

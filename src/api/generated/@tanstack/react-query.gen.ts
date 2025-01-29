@@ -12,6 +12,7 @@ import {
   v1GetProviderEndpoint,
   v1UpdateProviderEndpoint,
   v1DeleteProviderEndpoint,
+  v1ConfigureAuthMaterial,
   v1ListWorkspaces,
   v1CreateWorkspace,
   v1ListActiveWorkspaces,
@@ -44,6 +45,9 @@ import type {
   V1DeleteProviderEndpointData,
   V1DeleteProviderEndpointError,
   V1DeleteProviderEndpointResponse,
+  V1ConfigureAuthMaterialData,
+  V1ConfigureAuthMaterialError,
+  V1ConfigureAuthMaterialResponse,
   V1CreateWorkspaceData,
   V1CreateWorkspaceError,
   V1CreateWorkspaceResponse,
@@ -283,6 +287,26 @@ export const v1DeleteProviderEndpointMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await v1DeleteProviderEndpoint({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const v1ConfigureAuthMaterialMutation = (
+  options?: Partial<OptionsLegacyParser<V1ConfigureAuthMaterialData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1ConfigureAuthMaterialResponse,
+    V1ConfigureAuthMaterialError,
+    OptionsLegacyParser<V1ConfigureAuthMaterialData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1ConfigureAuthMaterial({
         ...options,
         ...localOptions,
         throwOnError: true,

@@ -96,13 +96,13 @@ export const handlers = [
   http.get("*/api/v1/workspaces/:workspace_name/muxes", () =>
     HttpResponse.json([
       {
-        provider: "openai",
+        provider_id: "openai",
         model: "gpt-3.5-turbo",
         matcher_type: "file_regex",
         matcher: ".*\\.txt",
       },
       {
-        provider: "anthropic",
+        provider_id: "anthropic",
         model: "davinci",
         matcher_type: "catch_all",
       },

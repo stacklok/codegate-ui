@@ -45,6 +45,14 @@ export type CodeSnippet = {
 };
 
 /**
+ * Represents a request to configure auth material for a provider.
+ */
+export type ConfigureAuthMaterial = {
+  auth_type: ProviderAuthType;
+  api_key?: string | null;
+};
+
+/**
  * Represents a conversation.
  */
 export type Conversation = {
@@ -100,10 +108,10 @@ export enum MuxMatcherType {
  * Represents a mux rule for a provider.
  */
 export type MuxRule = {
-  provider: string;
+  provider_id: string;
   model: string;
   matcher_type: MuxMatcherType;
-  matcher: string | null;
+  matcher?: string | null;
 };
 
 /**
@@ -126,7 +134,7 @@ export type ProviderEndpoint = {
   description?: string;
   provider_type: ProviderType;
   endpoint: string;
-  auth_type: ProviderAuthType;
+  auth_type?: ProviderAuthType | null;
 };
 
 /**
@@ -262,6 +270,17 @@ export type V1DeleteProviderEndpointData = {
 export type V1DeleteProviderEndpointResponse = unknown;
 
 export type V1DeleteProviderEndpointError = HTTPValidationError;
+
+export type V1ConfigureAuthMaterialData = {
+  body: ConfigureAuthMaterial;
+  path: {
+    provider_id: string;
+  };
+};
+
+export type V1ConfigureAuthMaterialResponse = void;
+
+export type V1ConfigureAuthMaterialError = HTTPValidationError;
 
 export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 

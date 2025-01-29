@@ -26,7 +26,7 @@ export function WorkspacePreferredModel({
   const { preferredModel, setPreferredModel } = usePreferredModelWorkspace();
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useModelsData();
-  const { model, provider } = preferredModel;
+  const { model, provider_id } = preferredModel;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -35,7 +35,7 @@ export function WorkspacePreferredModel({
       body: [
         {
           matcher: "",
-          provider,
+          provider_id,
           model,
           matcher_type: MuxMatcherType.CATCH_ALL,
         },
@@ -69,7 +69,7 @@ export function WorkspacePreferredModel({
                   if (preferredModelProvider) {
                     setPreferredModel({
                       model: preferredModelProvider.name,
-                      provider: preferredModelProvider.provider_id,
+                      provider_id: preferredModelProvider.provider_id,
                     });
                   }
                 }}
