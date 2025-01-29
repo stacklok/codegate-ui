@@ -217,7 +217,7 @@ function VersionIcon({
   }
 }
 
-function ButtonContent({
+function StatusMenuTrigger({
   status,
   isPending,
 }: {
@@ -225,10 +225,7 @@ function ButtonContent({
   isPending: boolean;
 }) {
   return (
-    <Button
-      variant="tertiary"
-      className="flex gap-1 items-center text-secondary"
-    >
+    <Button variant="tertiary" className="flex gap-1 items-center">
       {getButtonText(status)}{" "}
       {isPending ? (
         <Loader className="size-4" />
@@ -301,7 +298,7 @@ export function HeaderStatusMenu() {
 
   return (
     <DialogTrigger>
-      <ButtonContent status={status} isPending={isPending} />
+      <StatusMenuTrigger status={status} isPending={isPending} />
       <StatusPopover
         healthCheckStatus={healthCheckStatus}
         versionStatus={versionStatus}
