@@ -171,61 +171,69 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
         <DialogTitle>Choose a prompt template</DialogTitle>
         <DialogCloseButton />
       </DialogHeader>
-      <DialogContent className="shrink-0 py-4">
-        <SearchField className="w-full" value={query} onChange={setQuery}>
-          <FieldGroup>
-            <Input
-              isBorderless
-              icon={<SearchMd />}
-              placeholder="Type to search"
-              autoFocus
-            />
-            {query.length > 0 ? <SearchFieldClearButton /> : null}
-          </FieldGroup>
-        </SearchField>
-      </DialogContent>
-      <DialogContent className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 pt-0">
-        {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
-          return (
-            <Card className="min-h-96">
-              <h2 className="font-bold p-2 flex gap-2 items-center">
-                <MessageTextSquare02 className="size-4" />
-                <div className="truncate">{item.name}</div>
-              </h2>
-              <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
-                {item.text}
-              </pre>
-              <div className="flex gap-4 justify-between p-2">
-                <div className="h-full items-center">
-                  <div className="flex h-full items-center max-w-52 text-clip">
-                    {item.contributors.map((contributor) => (
-                      <Link
-                        className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
-                        target="_blank"
-                        href={`https://github.com/${contributor}/`}
-                      >
-                        <img
-                          className="size-6 rounded-full"
-                          src={`https://github.com/${contributor}.png?size=24`}
-                        />
-                        <span className="truncate">{contributor}</span>
-                      </Link>
-                    ))}
+      <DialogContent className="p-0 relative">
+        <div
+          className="bg-base pt-4 px-4 pb-2 mb-2 sticky top-0 z-10"
+          style={{
+            boxShadow: "0px 4px 4px 4px var(--bg-base)",
+          }}
+        >
+          <SearchField className="w-full" value={query} onChange={setQuery}>
+            <FieldGroup>
+              <Input
+                isBorderless
+                icon={<SearchMd />}
+                placeholder="Type to search"
+                autoFocus
+              />
+              {query.length > 0 ? <SearchFieldClearButton /> : null}
+            </FieldGroup>
+          </SearchField>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4 pb-4">
+          {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
+            return (
+              <Card className="min-h-96">
+                <h2 className="font-bold p-2 flex gap-2 items-center">
+                  <MessageTextSquare02 className="size-4" />
+                  <div className="truncate">{item.name}</div>
+                </h2>
+                <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
+                  {item.text}
+                </pre>
+                <div className="flex gap-4 justify-between p-2">
+                  <div className="h-full items-center">
+                    <div className="flex h-full items-center max-w-52 text-clip">
+                      {item.contributors.map((contributor) => (
+                        <Link
+                          className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
+                          target="_blank"
+                          href={`https://github.com/${contributor}/`}
+                        >
+                          <img
+                            className="size-6 rounded-full"
+                            src={`https://github.com/${contributor}.png?size=24`}
+                          />
+                          <span className="truncate">{contributor}</span>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
+                  <Button
+                    slot="close"
+                    variant="secondary"
+                    onPress={() => {
+                      handleActivate(item.text);
+                    }}
+                  >
+                    Use prompt
+                  </Button>
                 </div>
-                <Button
-                  slot="close"
-                  variant="secondary"
-                  onPress={() => {
-                    handleActivate(item.text);
-                  }}
-                >
-                  Use prompt
-                </Button>
-              </div>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          })}
+        </div>
       </DialogContent>
       <DialogFooter>
         <span className="ml-auto">
