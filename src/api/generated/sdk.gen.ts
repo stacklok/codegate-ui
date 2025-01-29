@@ -14,6 +14,11 @@ import type {
   V1AddProviderEndpointData,
   V1AddProviderEndpointError,
   V1AddProviderEndpointResponse,
+  V1ListAllModelsForAllProvidersError,
+  V1ListAllModelsForAllProvidersResponse,
+  V1ListModelsByProviderData,
+  V1ListModelsByProviderError,
+  V1ListModelsByProviderResponse,
   V1GetProviderEndpointData,
   V1GetProviderEndpointError,
   V1GetProviderEndpointResponse,
@@ -23,11 +28,9 @@ import type {
   V1DeleteProviderEndpointData,
   V1DeleteProviderEndpointError,
   V1DeleteProviderEndpointResponse,
-  V1ListModelsByProviderData,
-  V1ListModelsByProviderError,
-  V1ListModelsByProviderResponse,
-  V1ListAllModelsForAllProvidersError,
-  V1ListAllModelsForAllProvidersResponse,
+  V1ConfigureAuthMaterialData,
+  V1ConfigureAuthMaterialError,
+  V1ConfigureAuthMaterialResponse,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
   V1CreateWorkspaceData,
@@ -132,6 +135,42 @@ export const v1AddProviderEndpoint = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List All Models For All Providers
+ * List all models for all providers.
+ */
+export const v1ListAllModelsForAllProviders = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListAllModelsForAllProvidersResponse,
+    V1ListAllModelsForAllProvidersError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/models",
+  });
+};
+
+/**
+ * List Models By Provider
+ * List models by provider.
+ */
+export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1ListModelsByProviderData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    V1ListModelsByProviderResponse,
+    V1ListModelsByProviderError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/provider-endpoints/{provider_id}/models",
+  });
+};
+
+/**
  * Get Provider Endpoint
  * Get a provider endpoint by ID.
  */
@@ -183,38 +222,19 @@ export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List Models By Provider
- * List models by provider.
+ * Configure Auth Material
+ * Configure auth material for a provider.
  */
-export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1ListModelsByProviderData, ThrowOnError>,
+export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1ConfigureAuthMaterialData, ThrowOnError>,
 ) => {
-  return (options?.client ?? client).get<
-    V1ListModelsByProviderResponse,
-    V1ListModelsByProviderError,
+  return (options?.client ?? client).put<
+    V1ConfigureAuthMaterialResponse,
+    V1ConfigureAuthMaterialError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints/{provider_name}/models",
-  });
-};
-
-/**
- * List All Models For All Providers
- * List all models for all providers.
- */
-export const v1ListAllModelsForAllProviders = <
-  ThrowOnError extends boolean = false,
->(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
-) => {
-  return (options?.client ?? client).get<
-    V1ListAllModelsForAllProvidersResponse,
-    V1ListAllModelsForAllProvidersError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/v1/provider-endpoints/models",
+    url: "/api/v1/provider-endpoints/{provider_id}/auth-material",
   });
 };
 

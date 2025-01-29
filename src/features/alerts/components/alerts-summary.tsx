@@ -11,11 +11,7 @@ function AlertsSummaryStatistic({
   Icon: (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element;
 }) {
   return (
-    <div
-      data-testid={id}
-      data-count={count}
-      className="text-5xl flex items-center gap-1"
-    >
+    <div data-testid={id} className="text-5xl flex items-center gap-1">
       <Icon className="size-11" />
       {count}
     </div>

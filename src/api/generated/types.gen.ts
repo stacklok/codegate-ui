@@ -45,6 +45,14 @@ export type CodeSnippet = {
 };
 
 /**
+ * Represents a request to configure auth material for a provider.
+ */
+export type ConfigureAuthMaterial = {
+  auth_type: ProviderAuthType;
+  api_key?: string | null;
+};
+
+/**
  * Represents a conversation.
  */
 export type Conversation = {
@@ -84,7 +92,8 @@ export type ListWorkspacesResponse = {
  */
 export type ModelByProvider = {
   name: string;
-  provider: string;
+  provider_id: string;
+  provider_name: string;
 };
 
 /**
@@ -99,10 +108,10 @@ export enum MuxMatcherType {
  * Represents a mux rule for a provider.
  */
 export type MuxRule = {
-  provider: string;
+  provider_id: string;
   model: string;
   matcher_type: MuxMatcherType;
-  matcher: string | null;
+  matcher?: string | null;
 };
 
 /**
@@ -120,12 +129,12 @@ export enum ProviderAuthType {
  * so we can use this for muxing messages.
  */
 export type ProviderEndpoint = {
-  id: number;
+  id?: string | null;
   name: string;
   description?: string;
   provider_type: ProviderType;
   endpoint: string;
-  auth_type: ProviderAuthType;
+  auth_type?: ProviderAuthType | null;
 };
 
 /**
@@ -135,8 +144,9 @@ export enum ProviderType {
   OPENAI = "openai",
   ANTHROPIC = "anthropic",
   VLLM = "vllm",
-  LLAMACPP = "llamacpp",
   OLLAMA = "ollama",
+  LM_STUDIO = "lm_studio",
+  LLAMACPP = "llamacpp",
 }
 
 /**
@@ -216,9 +226,23 @@ export type V1AddProviderEndpointResponse = ProviderEndpoint;
 
 export type V1AddProviderEndpointError = HTTPValidationError;
 
+export type V1ListAllModelsForAllProvidersResponse = Array<ModelByProvider>;
+
+export type V1ListAllModelsForAllProvidersError = unknown;
+
+export type V1ListModelsByProviderData = {
+  path: {
+    provider_id: string;
+  };
+};
+
+export type V1ListModelsByProviderResponse = Array<ModelByProvider>;
+
+export type V1ListModelsByProviderError = HTTPValidationError;
+
 export type V1GetProviderEndpointData = {
   path: {
-    provider_id: number;
+    provider_id: string;
   };
 };
 
@@ -229,7 +253,7 @@ export type V1GetProviderEndpointError = HTTPValidationError;
 export type V1UpdateProviderEndpointData = {
   body: ProviderEndpoint;
   path: {
-    provider_id: number;
+    provider_id: string;
   };
 };
 
@@ -239,7 +263,7 @@ export type V1UpdateProviderEndpointError = HTTPValidationError;
 
 export type V1DeleteProviderEndpointData = {
   path: {
-    provider_id: number;
+    provider_id: string;
   };
 };
 
@@ -247,19 +271,16 @@ export type V1DeleteProviderEndpointResponse = unknown;
 
 export type V1DeleteProviderEndpointError = HTTPValidationError;
 
-export type V1ListModelsByProviderData = {
+export type V1ConfigureAuthMaterialData = {
+  body: ConfigureAuthMaterial;
   path: {
-    provider_name: string;
+    provider_id: string;
   };
 };
 
-export type V1ListModelsByProviderResponse = Array<ModelByProvider>;
+export type V1ConfigureAuthMaterialResponse = void;
 
-export type V1ListModelsByProviderError = HTTPValidationError;
-
-export type V1ListAllModelsForAllProvidersResponse = Array<ModelByProvider>;
-
-export type V1ListAllModelsForAllProvidersError = unknown;
+export type V1ConfigureAuthMaterialError = HTTPValidationError;
 
 export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 

@@ -96,13 +96,13 @@ export const handlers = [
   http.get("*/api/v1/workspaces/:workspace_name/muxes", () =>
     HttpResponse.json([
       {
-        provider: "openai",
+        provider_id: "openai",
         model: "gpt-3.5-turbo",
         matcher_type: "file_regex",
         matcher: ".*\\.txt",
       },
       {
-        provider: "anthropic",
+        provider_id: "anthropic",
         model: "davinci",
         matcher_type: "catch_all",
       },
@@ -131,9 +131,21 @@ export const handlers = [
     () => new HttpResponse(null, { status: 204 }),
   ),
   http.get("*/api/v1/provider-endpoints/:provider_name/models", () =>
-    HttpResponse.json({ name: "dummy", provider: "dummy" }),
+    HttpResponse.json([
+      { name: "claude-3.5", provider: "anthropic" },
+      { name: "claude-3.6", provider: "anthropic" },
+      { name: "claude-3.7", provider: "anthropic" },
+      { name: "chatgpt-4o", provider: "openai" },
+      { name: "chatgpt-4p", provider: "openai" },
+    ]),
   ),
   http.get("*/api/v1/provider-endpoints/models", () =>
-    HttpResponse.json({ name: "dummy", provider: "dummy" }),
+    HttpResponse.json([
+      { name: "claude-3.5", provider: "anthropic" },
+      { name: "claude-3.6", provider: "anthropic" },
+      { name: "claude-3.7", provider: "anthropic" },
+      { name: "chatgpt-4o", provider: "openai" },
+      { name: "chatgpt-4p", provider: "openai" },
+    ]),
   ),
 ];
