@@ -43,10 +43,6 @@ test("submit preferred model", async () => {
   await userEvent.click(screen.getByRole("button", { name: /save/i }));
 
   await waitFor(() => {
-    expect(
-      screen.getByText(
-        /preferred model on fake-workspace successfully submitted!/i,
-      ),
-    );
+    expect(screen.getByText(/preferred model for fake-workspace updated/i));
   });
 });

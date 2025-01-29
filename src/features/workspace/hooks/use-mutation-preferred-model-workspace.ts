@@ -10,6 +10,6 @@ export function useMutationPreferredModelWorkspace() {
       await invalidate();
     },
     successMsg: (variables) =>
-      `Preferred model on ${variables.path.workspace_name} successfully submitted!`,
+      `Preferred model for ${variables.path.workspace_name} updated`,
   });
 }
