@@ -7,7 +7,6 @@ import {
 import { getMaliciousPackage } from "@/lib/utils";
 import { MaliciousPkgType, TriggerType } from "@/types";
 import { useAlertSearch } from "./useAlertSearch";
-import { v1GetWorkspaceAlertsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 import { useActiveWorkspaceName } from "@/features/workspace/hooks/use-active-workspace-name";
 
 const fetchAlerts = async (
@@ -31,6 +30,8 @@ const fetchAlerts = async (
   return results;
 };
 
+/** @deprecated — incrementally aiming to replace this with more granular
+ * approach - AMG */
 export const useAlertsData = ({ ...args } = {}) => {
   const { data: activeWorkspaceName } = useActiveWorkspaceName();
 
@@ -41,7 +42,7 @@ export const useAlertsData = ({ ...args } = {}) => {
   };
 
   return useQuery({
-    queryKey: v1GetWorkspaceAlertsQueryKey(options),
+    queryKey: ["useAlertsData", options],
     queryFn: () => fetchAlerts(options),
     ...args,
   });

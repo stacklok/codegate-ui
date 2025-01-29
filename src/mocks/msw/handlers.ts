@@ -3,6 +3,7 @@ import mockedPrompts from "@/mocks/msw/fixtures/GET_MESSAGES.json";
 import mockedAlerts from "@/mocks/msw/fixtures/GET_ALERTS.json";
 import mockedWorkspaces from "@/mocks/msw/fixtures/GET_WORKSPACES.json";
 import mockedProviders from "@/mocks/msw/fixtures/GET_PROVIDERS.json";
+import { ProviderType } from "@/api/generated";
 
 export const handlers = [
   http.get("*/health", () =>
@@ -65,6 +66,28 @@ export const handlers = [
   ),
   http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
     return HttpResponse.json({ prompt: "foo" });
+  }),
+  http.get("*/api/v1/workspaces/:name/token-usage", () => {
+    return HttpResponse.json({
+      tokens_by_model: {
+        "claude-3-5-sonnet-latest": {
+          provider_type: ProviderType.ANTHROPIC,
+          model: "claude-3-5-sonnet-latest",
+          token_usage: {
+            input_tokens: 1183,
+            output_tokens: 433,
+            input_cost: 0.003549,
+            output_cost: 0.006495,
+          },
+        },
+      },
+      token_usage: {
+        input_tokens: 1183,
+        output_tokens: 433,
+        input_cost: 0.003549,
+        output_cost: 0.006495,
+      },
+    });
   }),
   http.put(
     "*/api/v1/workspaces/:name/custom-instructions",

@@ -1,23 +1,13 @@
 import { render } from "@/lib/test-utils";
 import { screen, waitFor, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { faker } from "@faker-js/faker";
-import React from "react";
+
 import { server } from "@/mocks/msw/node";
 import { HttpResponse, http } from "msw";
 import mockedAlerts from "@/mocks/msw/fixtures/GET_ALERTS.json";
 import userEvent from "@testing-library/user-event";
 import { RouteDashboard } from "../route-dashboard";
-
-vi.mock("recharts", async (importOriginal) => {
-  const originalModule = (await importOriginal()) as Record<string, unknown>;
-  return {
-    ...originalModule,
-    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => {
-      return <div data-testid="mock-responsive-container">{children}</div>;
-    },
-  };
-});
 
 const fakeConversionation1 = {
   conversation: {
@@ -112,11 +102,24 @@ function mockManyAlerts() {
 }
 
 describe("Dashboard", () => {
-  it("should render charts and table", async () => {
+  it("should mount alert summaries", async () => {
     render(<RouteDashboard />);
-    expect(screen.getByText(/security issues detected/i)).toBeVisible();
-    expect(screen.getByText(/malicious packages by type/i)).toBeVisible();
-    expect(screen.getByText(/alerts by date/i)).toBeVisible();
+
+    expect(
+      screen.getByRole("heading", { name: /workspace token usage/i }),
+    ).toBeVisible();
+
+    expect(
+      screen.getByRole("heading", { name: /secrets redacted/i }),
+    ).toBeVisible();
+
+    expect(
+      screen.getByRole("heading", { name: /malicious packages/i }),
+    ).toBeVisible();
+  });
+
+  it("should render alerts table", async () => {
+    render(<RouteDashboard />);
 
     expect(
       screen.getByRole("heading", {
@@ -124,20 +127,6 @@ describe("Dashboard", () => {
       }),
     ).toBeVisible();
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("0");
-    expect(
-      (await screen.findAllByTestId(/mock-responsive-container/i)).length,
-    ).toEqual(1);
-    await waitFor(() => expect(screen.getByText("Jan 02")).toBeVisible());
-    await waitFor(() => expect(screen.getByText("Jan 03")).toBeVisible());
-    await waitFor(() => expect(screen.getByText("Jan 07")).toBeVisible());
-
-    expect(screen.getByTestId("codegate-secrets-count")).toHaveTextContent(
-      "13",
-    );
-
-    expect(
-      within(screen.getByTestId("malicious-piechart")).getByText("N/A"),
-    ).toBeVisible();
 
     expect(
       screen.getByRole("columnheader", {
@@ -175,6 +164,12 @@ describe("Dashboard", () => {
     ).toBeVisible();
     expect(screen.getByRole("searchbox")).toBeVisible();
 
+    await waitFor(() => {
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toBeGreaterThan(1);
+    });
+
     const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
     )[1] as HTMLElement;
@@ -188,23 +183,15 @@ describe("Dashboard", () => {
     ).toBeGreaterThanOrEqual(1);
   });
 
-  it("should render malicious pkg", async () => {
+  it("should render malicious pkg table column", async () => {
     mockAlertsWithMaliciousPkg();
     render(<RouteDashboard />);
 
-    expect(
-      (await screen.findAllByTestId(/mock-responsive-container/i)).length,
-    ).toEqual(2);
-
-    expect(
-      within(screen.getByTestId("malicious-piechart")).getByText(/1/i),
-    ).toBeVisible();
-
-    expect(
-      within(screen.getByTestId("security-issues-barchart")).getByText(
-        /codegate-context-retriever/i,
-      ),
-    ).toBeVisible();
+    await waitFor(() => {
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toBeGreaterThan(1);
+    });
 
     expect(
       screen.getByRole("gridcell", {
@@ -226,9 +213,11 @@ describe("Dashboard", () => {
     mockAlertsWithMaliciousPkg();
     render(<RouteDashboard />);
 
-    expect(
-      (await screen.findAllByTestId(/mock-responsive-container/i)).length,
-    ).toEqual(2);
+    await waitFor(() => {
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toBeGreaterThan(1);
+    });
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
@@ -267,9 +256,11 @@ describe("Dashboard", () => {
     mockAlertsWithMaliciousPkg();
     render(<RouteDashboard />);
 
-    expect(
-      (await screen.findAllByTestId(/mock-responsive-container/i)).length,
-    ).toEqual(2);
+    await waitFor(() => {
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toBeGreaterThan(1);
+    });
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
     expect(
@@ -291,9 +282,12 @@ describe("Dashboard", () => {
 
   it("should sort alerts by date desc", async () => {
     render(<RouteDashboard />);
-    expect(
-      (await screen.findAllByTestId(/mock-responsive-container/i)).length,
-    ).toEqual(1);
+
+    await waitFor(() => {
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toBeGreaterThan(1);
+    });
 
     const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
