@@ -1,4 +1,4 @@
-import { Key } from "lucide-react";
+import { Key01 } from "@untitled-ui/icons-react";
 import { AlertsSummary } from "./alerts-summary";
 import { useQueryGetWorkspaceAlertSecrets } from "../hooks/use-query-get-workspace-alerts-secrets";
 
@@ -9,7 +9,7 @@ export function AlertsSummaryMaliciousSecrets() {
     <AlertsSummary
       isPending={isPending}
       title="Secrets redacted"
-      statistics={[{ count: data.length, id: "secrets-count", Icon: Key }]}
+      statistics={[{ count: data.length, id: "secrets-count", Icon: Key01 }]}
     />
   );
 }

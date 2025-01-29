@@ -1,5 +1,4 @@
 import { Card, CardBody, Heading, Skeleton } from "@stacklok/ui-kit";
-import { LucideProps } from "lucide-react";
 import { ComponentProps } from "react";
 
 function AlertsSummaryStatistic({
@@ -9,9 +8,7 @@ function AlertsSummaryStatistic({
 }: {
   count: number;
   id: string;
-  Icon: React.ForwardRefExoticComponent<
-    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
-  >;
+  Icon: (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element;
 }) {
   return (
     <div id={id} className="text-5xl flex items-center gap-1">
