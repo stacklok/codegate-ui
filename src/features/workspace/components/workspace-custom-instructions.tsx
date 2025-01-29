@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogCloseButton,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogModal,
   DialogModalOverlay,
@@ -20,6 +21,7 @@ import {
   SearchField,
   SearchFieldClearButton,
   Text,
+  TextLink,
 } from "@stacklok/ui-kit";
 import {
   Dispatch,
@@ -48,11 +50,7 @@ import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-w
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
 import Fuse from "fuse.js";
 import systemPrompts from "../constants/built-in-system-prompts.json";
-import {
-  Download01,
-  MessageTextSquare02,
-  SearchMd,
-} from "@untitled-ui/icons-react";
+import { MessageTextSquare02, SearchMd } from "@untitled-ui/icons-react";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -170,17 +168,20 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
   return (
     <>
       <DialogHeader>
-        <div className="w-1/3">
-          <DialogTitle>Choose a prompt template</DialogTitle>
-        </div>
-        <div className="w-1/3">
-          <SearchField
-            className="w-full max-w-96"
-            value={query}
-            onChange={setQuery}
-          >
+        <DialogTitle>Choose a prompt template</DialogTitle>
+        <DialogCloseButton />
+      </DialogHeader>
+      <DialogContent className="p-0 relative">
+        <div
+          className="bg-base pt-4 px-4 pb-2 mb-2 sticky top-0 z-10"
+          style={{
+            boxShadow: "0px 4px 4px 4px var(--bg-base)",
+          }}
+        >
+          <SearchField className="w-full" value={query} onChange={setQuery}>
             <FieldGroup>
               <Input
+                isBorderless
                 icon={<SearchMd />}
                 placeholder="Type to search"
                 autoFocus
@@ -189,15 +190,11 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
             </FieldGroup>
           </SearchField>
         </div>
-        <div className="w-1/3 flex justify-end">
-          <DialogCloseButton />
-        </div>
-      </DialogHeader>
-      <DialogContent>
-        <div className="grid grid-flow-row grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-4 overflow-auto justify-around ">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4 pb-4">
           {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
             return (
-              <Card className=" flex flex-col">
+              <Card className="min-h-96">
                 <h2 className="font-bold p-2 flex gap-2 items-center">
                   <MessageTextSquare02 className="size-4" />
                   <div className="truncate">{item.name}</div>
@@ -224,14 +221,13 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
                     </div>
                   </div>
                   <Button
-                    isIcon
                     slot="close"
                     variant="secondary"
                     onPress={() => {
                       handleActivate(item.text);
                     }}
                   >
-                    <Download01 />
+                    Use prompt
                   </Button>
                 </div>
               </Card>
@@ -239,6 +235,17 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
           })}
         </div>
       </DialogContent>
+      <DialogFooter>
+        <span className="ml-auto">
+          Prompt templates sourced from{" "}
+          <TextLink
+            className="text-primary"
+            href="https://github.com/PatrickJS/awesome-cursorrules"
+          >
+            PatrickJS/awesome-cursorrules
+          </TextLink>
+        </span>
+      </DialogFooter>
     </>
   );
 }
@@ -324,12 +331,12 @@ export function WorkspaceCustomInstructions({
       </CardBody>
       <CardFooter className="justify-end gap-2">
         <DialogTrigger>
-          <Button>Use a preset</Button>
+          <Button variant="secondary">Use a preset</Button>
           <DialogModalOverlay isDismissable>
             <DialogModal isDismissable>
               <Dialog
                 width="lg"
-                className="flex flex-col p-4 gap-4 "
+                className="min-h-[44rem]"
                 style={{ maxWidth: "min(calc(100vw - 64px), 1200px)" }}
               >
                 <PromptPresetPicker
