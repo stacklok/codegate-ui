@@ -29,6 +29,7 @@ import {
   v1SetWorkspaceMuxes,
   v1StreamSse,
   v1VersionCheck,
+  v1GetWorkspaceTokenUsage,
 } from "../sdk.gen";
 import type {
   V1ListProviderEndpointsData,
@@ -71,6 +72,7 @@ import type {
   V1SetWorkspaceMuxesData,
   V1SetWorkspaceMuxesError,
   V1SetWorkspaceMuxesResponse,
+  V1GetWorkspaceTokenUsageData,
 } from "../types.gen";
 
 type QueryKey<TOptions extends OptionsLegacyParser> = [
@@ -696,5 +698,26 @@ export const v1VersionCheckOptions = (options?: OptionsLegacyParser) => {
       return data;
     },
     queryKey: v1VersionCheckQueryKey(options),
+  });
+};
+
+export const v1GetWorkspaceTokenUsageQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceTokenUsageData>,
+) => [createQueryKey("v1GetWorkspaceTokenUsage", options)];
+
+export const v1GetWorkspaceTokenUsageOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceTokenUsageData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetWorkspaceTokenUsage({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1GetWorkspaceTokenUsageQueryKey(options),
   });
 };
