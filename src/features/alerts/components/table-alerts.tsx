@@ -185,7 +185,7 @@ export function TableAlerts() {
                 <Column width={150}>Type</Column>
                 <Column>Event</Column>
                 <Column width={325}>Issue Detected</Column>
-                <Column width={150}>Token usage</Column>
+                <Column width={200}>Token usage</Column>
               </Row>
             </TableHeader>
             <TableBody>

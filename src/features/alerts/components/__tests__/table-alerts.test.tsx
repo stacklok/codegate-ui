@@ -12,8 +12,8 @@ vi.mock("@untitled-ui/icons-react", async () => {
   >("@untitled-ui/icons-react");
   return {
     ...original,
-    ArrowDown: () => <div data-testid="icon-arrow-down" />,
-    ArrowUp: () => <div data-testid="icon-arrow-up" />,
+    Download01: () => <div data-testid="icon-arrow-down" />,
+    Upload01: () => <div data-testid="icon-arrow-up" />,
   };
 });
 
