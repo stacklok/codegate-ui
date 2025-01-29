@@ -7,11 +7,11 @@ import {
   healthCheckHealthGet,
   v1ListProviderEndpoints,
   v1AddProviderEndpoint,
+  v1ListAllModelsForAllProviders,
+  v1ListModelsByProvider,
   v1GetProviderEndpoint,
   v1UpdateProviderEndpoint,
   v1DeleteProviderEndpoint,
-  v1ListModelsByProvider,
-  v1ListAllModelsForAllProviders,
   v1ListWorkspaces,
   v1CreateWorkspace,
   v1ListActiveWorkspaces,
@@ -36,6 +36,7 @@ import type {
   V1AddProviderEndpointData,
   V1AddProviderEndpointError,
   V1AddProviderEndpointResponse,
+  V1ListModelsByProviderData,
   V1GetProviderEndpointData,
   V1UpdateProviderEndpointData,
   V1UpdateProviderEndpointError,
@@ -43,7 +44,6 @@ import type {
   V1DeleteProviderEndpointData,
   V1DeleteProviderEndpointError,
   V1DeleteProviderEndpointResponse,
-  V1ListModelsByProviderData,
   V1CreateWorkspaceData,
   V1CreateWorkspaceError,
   V1CreateWorkspaceResponse,
@@ -190,6 +190,48 @@ export const v1AddProviderEndpointMutation = (
   return mutationOptions;
 };
 
+export const v1ListAllModelsForAllProvidersQueryKey = (
+  options?: OptionsLegacyParser,
+) => [createQueryKey("v1ListAllModelsForAllProviders", options)];
+
+export const v1ListAllModelsForAllProvidersOptions = (
+  options?: OptionsLegacyParser,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListAllModelsForAllProviders({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1ListAllModelsForAllProvidersQueryKey(options),
+  });
+};
+
+export const v1ListModelsByProviderQueryKey = (
+  options: OptionsLegacyParser<V1ListModelsByProviderData>,
+) => [createQueryKey("v1ListModelsByProvider", options)];
+
+export const v1ListModelsByProviderOptions = (
+  options: OptionsLegacyParser<V1ListModelsByProviderData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListModelsByProvider({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: v1ListModelsByProviderQueryKey(options),
+  });
+};
+
 export const v1GetProviderEndpointQueryKey = (
   options: OptionsLegacyParser<V1GetProviderEndpointData>,
 ) => [createQueryKey("v1GetProviderEndpoint", options)];
@@ -249,48 +291,6 @@ export const v1DeleteProviderEndpointMutation = (
     },
   };
   return mutationOptions;
-};
-
-export const v1ListModelsByProviderQueryKey = (
-  options: OptionsLegacyParser<V1ListModelsByProviderData>,
-) => [createQueryKey("v1ListModelsByProvider", options)];
-
-export const v1ListModelsByProviderOptions = (
-  options: OptionsLegacyParser<V1ListModelsByProviderData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1ListModelsByProvider({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: v1ListModelsByProviderQueryKey(options),
-  });
-};
-
-export const v1ListAllModelsForAllProvidersQueryKey = (
-  options?: OptionsLegacyParser,
-) => [createQueryKey("v1ListAllModelsForAllProviders", options)];
-
-export const v1ListAllModelsForAllProvidersOptions = (
-  options?: OptionsLegacyParser,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1ListAllModelsForAllProviders({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: v1ListAllModelsForAllProvidersQueryKey(options),
-  });
 };
 
 export const v1ListWorkspacesQueryKey = (options?: OptionsLegacyParser) => [

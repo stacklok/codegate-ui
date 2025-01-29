@@ -53,7 +53,7 @@ export type Conversation = {
   type: QuestionType;
   chat_id: string;
   conversation_timestamp: string;
-  token_usage: TokenUsage | null;
+  token_usage_agg: TokenUsageAggregate | null;
 };
 
 export type CreateOrRenameWorkspaceRequest = {
@@ -84,7 +84,8 @@ export type ListWorkspacesResponse = {
  */
 export type ModelByProvider = {
   name: string;
-  provider: string;
+  provider_id: string;
+  provider_name: string;
 };
 
 /**
@@ -120,7 +121,7 @@ export enum ProviderAuthType {
  * so we can use this for muxing messages.
  */
 export type ProviderEndpoint = {
-  id: number;
+  id?: string | null;
   name: string;
   description?: string;
   provider_type: ProviderType;
@@ -135,6 +136,9 @@ export enum ProviderType {
   OPENAI = "openai",
   ANTHROPIC = "anthropic",
   VLLM = "vllm",
+  OLLAMA = "ollama",
+  LM_STUDIO = "lm_studio",
+  LLAMACPP = "llamacpp",
 }
 
 /**
@@ -151,12 +155,25 @@ export enum QuestionType {
 }
 
 /**
+ * TokenUsage it's not a table, it's a model to represent the token usage.
+ * The data is stored in the outputs table.
+ */
+export type TokenUsage = {
+  input_tokens?: number;
+  output_tokens?: number;
+  input_cost?: number;
+  output_cost?: number;
+};
+
+/**
  * Represents the tokens used. Includes the information of the tokens used by model.
  * `used_tokens` are the total tokens used in the `tokens_by_model` list.
  */
-export type TokenUsage = {
-  tokens_by_model: Array<TokenUsageByModel>;
-  used_tokens: number;
+export type TokenUsageAggregate = {
+  tokens_by_model: {
+    [key: string]: TokenUsageByModel;
+  };
+  token_usage: TokenUsage;
 };
 
 /**
@@ -165,7 +182,7 @@ export type TokenUsage = {
 export type TokenUsageByModel = {
   provider_type: ProviderType;
   model: string;
-  used_tokens: number;
+  token_usage: TokenUsage;
 };
 
 export type ValidationError = {
@@ -201,9 +218,23 @@ export type V1AddProviderEndpointResponse = ProviderEndpoint;
 
 export type V1AddProviderEndpointError = HTTPValidationError;
 
+export type V1ListAllModelsForAllProvidersResponse = Array<ModelByProvider>;
+
+export type V1ListAllModelsForAllProvidersError = unknown;
+
+export type V1ListModelsByProviderData = {
+  path: {
+    provider_id: string;
+  };
+};
+
+export type V1ListModelsByProviderResponse = Array<ModelByProvider>;
+
+export type V1ListModelsByProviderError = HTTPValidationError;
+
 export type V1GetProviderEndpointData = {
   path: {
-    provider_id: number;
+    provider_id: string;
   };
 };
 
@@ -214,7 +245,7 @@ export type V1GetProviderEndpointError = HTTPValidationError;
 export type V1UpdateProviderEndpointData = {
   body: ProviderEndpoint;
   path: {
-    provider_id: number;
+    provider_id: string;
   };
 };
 
@@ -224,27 +255,13 @@ export type V1UpdateProviderEndpointError = HTTPValidationError;
 
 export type V1DeleteProviderEndpointData = {
   path: {
-    provider_id: number;
+    provider_id: string;
   };
 };
 
 export type V1DeleteProviderEndpointResponse = unknown;
 
 export type V1DeleteProviderEndpointError = HTTPValidationError;
-
-export type V1ListModelsByProviderData = {
-  path: {
-    provider_name: string;
-  };
-};
-
-export type V1ListModelsByProviderResponse = Array<ModelByProvider>;
-
-export type V1ListModelsByProviderError = HTTPValidationError;
-
-export type V1ListAllModelsForAllProvidersResponse = Array<ModelByProvider>;
-
-export type V1ListAllModelsForAllProvidersError = unknown;
 
 export type V1ListWorkspacesResponse = ListWorkspacesResponse;
 
@@ -393,6 +410,6 @@ export type V1GetWorkspaceTokenUsageData = {
   };
 };
 
-export type V1GetWorkspaceTokenUsageResponse = TokenUsage;
+export type V1GetWorkspaceTokenUsageResponse = TokenUsageAggregate;
 
 export type V1GetWorkspaceTokenUsageError = HTTPValidationError;

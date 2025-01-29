@@ -59,7 +59,7 @@ export function SortableItem({ override, index }: SortableItemProps) {
           items={models.map((model) => ({
             textValue: model.name,
             id: model.name,
-            provider: model.provider,
+            provider: model.provider_name,
           }))}
         >
           <SelectButton />

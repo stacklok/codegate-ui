@@ -7,11 +7,23 @@ export const useModelsData = () => {
     ...v1ListAllModelsForAllProvidersOptions(),
     queryFn: async () => {
       const response: V1ListAllModelsForAllProvidersResponse = [
-        { name: "claude-3.5", provider: "anthropic" },
-        { name: "claude-3.6", provider: "anthropic" },
-        { name: "claude-3.7", provider: "anthropic" },
-        { name: "chatgpt-4o", provider: "openai" },
-        { name: "chatgpt-4p", provider: "openai" },
+        {
+          name: "claude-3.5",
+          provider_name: "anthropic",
+          provider_id: "anthropic",
+        },
+        {
+          name: "claude-3.6",
+          provider_name: "anthropic",
+          provider_id: "anthropic",
+        },
+        {
+          name: "claude-3.7",
+          provider_name: "anthropic",
+          provider_id: "anthropic",
+        },
+        { name: "chatgpt-4o", provider_name: "openai", provider_id: "openai" },
+        { name: "chatgpt-4p", provider_name: "openai", provider_id: "openai" },
       ];
 
       return response;
