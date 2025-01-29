@@ -1,7 +1,22 @@
-import { AlertCircle, CheckCircle2, ShieldCheck, ShieldX } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  ShieldCheck,
+  ShieldX,
+  ShieldAlert,
+} from "lucide-react";
 import { useCodeGateStatus } from "../hooks/use-codegate-status";
 import { HealthStatus } from "../types";
-import { Button, DialogTrigger, Loader, Popover } from "@stacklok/ui-kit";
+import {
+  Button,
+  DialogTrigger,
+  Loader,
+  Link,
+  Popover,
+  Tooltip,
+  TooltipTrigger,
+} from "@stacklok/ui-kit";
+import { Dialog } from "react-aria-components";
 
 import { ReactNode } from "react";
 
@@ -11,6 +26,18 @@ type CodeGateStatus =
   | "unhealthy"
   | "loading"
   | "error_checking_status";
+
+type CodeGateVersionStatus =
+  | "up_to_date"
+  | "update_available"
+  | "loading"
+  | "error_checking_version";
+
+type CodeGateHealthCheckStatus =
+  | "healthy"
+  | "unhealthy"
+  | "loading"
+  | "error_checking_health";
 
 function deriveOverallStatus(
   data: ReturnType<typeof useCodeGateStatus>["data"],
@@ -22,6 +49,7 @@ function deriveOverallStatus(
 
   if (
     data?.health === HealthStatus.HEALTHY &&
+    data.version?.error === null &&
     data.version?.is_latest === false
   )
     return "update_available";
@@ -30,12 +58,6 @@ function deriveOverallStatus(
 
   return "unhealthy";
 }
-
-type CodeGateVersionStatus =
-  | "up_to_date"
-  | "update_available"
-  | "loading"
-  | "error_checking_version";
 
 function deriveVersionStatus(
   data: ReturnType<typeof useCodeGateStatus>["data"],
@@ -48,12 +70,6 @@ function deriveVersionStatus(
   if (data?.version?.is_latest === false) return "update_available";
   return "up_to_date";
 }
-
-type CodeGateHealthCheckStatus =
-  | "healthy"
-  | "unhealthy"
-  | "loading"
-  | "error_checking_health";
 
 function deriveHealthCheckStatus(
   data: ReturnType<typeof useCodeGateStatus>["data"],
@@ -72,13 +88,51 @@ function getButtonText(status: CodeGateStatus): string {
     case "error_checking_status":
       return "Error";
     case "healthy":
-      return "Healthy";
+      return "Service healthy";
     case "loading":
       return "Loading";
     case "unhealthy":
-      return "Unhealthy";
+      return "Service unhealthy";
     case "update_available":
       return "Update available";
+    default:
+      return status satisfies never;
+  }
+}
+
+function getVersionText(
+  status: CodeGateVersionStatus,
+  data: ReturnType<typeof useCodeGateStatus>["data"],
+): ReactNode {
+  switch (status) {
+    case "error_checking_version":
+      return "Error";
+    case "loading":
+      return "Loading";
+    case "up_to_date":
+      return "Up to date";
+    case "update_available":
+      return (
+        <TooltipTrigger delay={0}>
+          <Link
+            className="flex gap-2 items-center text-primary justify-end overflow-hidden"
+            variant="secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://docs.codegate.ai/how-to/install#upgrade-codegate"
+          >
+            Update available
+          </Link>
+          <Tooltip className="text-right">
+            <span className="block">
+              Current version: {data?.version?.current_version}
+            </span>
+            <span className="block">
+              Latest version: {data?.version?.latest_version}
+            </span>
+          </Tooltip>
+        </TooltipTrigger>
+      );
     default:
       return status satisfies never;
   }
@@ -94,21 +148,6 @@ function getHealthCheckText(status: CodeGateHealthCheckStatus): string {
       return "Error";
     case "unhealthy":
       return "Unhealthy";
-    default:
-      return status satisfies never;
-  }
-}
-
-function getVersionText(status: CodeGateVersionStatus): string {
-  switch (status) {
-    case "error_checking_version":
-      return "Error";
-    case "loading":
-      return "Loading";
-    case "up_to_date":
-      return "Up to date";
-    case "update_available":
-      return "Update available";
     default:
       return status satisfies never;
   }
@@ -131,7 +170,7 @@ function ButtonIcon({
     case "unhealthy":
       return <ShieldX className={className} />;
     case "update_available":
-      return <ShieldX className={className} />;
+      return <ShieldAlert className={className} />;
     default:
       return status satisfies never;
   }
@@ -186,7 +225,10 @@ function ButtonContent({
   isPending: boolean;
 }) {
   return (
-    <Button variant="tertiary" className="flex gap-1 items-center">
+    <Button
+      variant="tertiary"
+      className="flex gap-1 items-center text-secondary"
+    >
       {getButtonText(status)}{" "}
       {isPending ? (
         <Loader className="size-4" />
@@ -203,11 +245,11 @@ function Row({
   icon,
 }: {
   title: string;
-  value: string;
+  value: ReactNode;
   icon: ReactNode;
 }) {
   return (
-    <div className="py-1 my-1 flex items-center justify-between">
+    <div className="py-1 mb-2 last:mb-0 flex items-center justify-between">
       <div className="text-secondary">{title}</div>
       <div className="text-primary flex gap-1 items-center">
         {value} {icon}
@@ -219,27 +261,33 @@ function Row({
 function StatusPopover({
   versionStatus,
   healthCheckStatus,
+  data,
 }: {
   versionStatus: CodeGateVersionStatus;
   healthCheckStatus: CodeGateHealthCheckStatus;
+  data: ReturnType<typeof useCodeGateStatus>["data"];
 }) {
   return (
     <Popover className="px-3 py-2 min-w-64" placement="bottom end">
-      <Row
-        title="CodeGate server"
-        value={getHealthCheckText(healthCheckStatus)}
-        icon={
-          <HealthCheckIcon
-            className="size-4"
-            healthCheckStatus={healthCheckStatus}
-          />
-        }
-      />
-      <Row
-        title="Updates"
-        value={getVersionText(versionStatus)}
-        icon={<VersionIcon className="size-4" versionStatus={versionStatus} />}
-      />
+      <Dialog aria-label="CodeGate Status" className="outline-0">
+        <Row
+          title="CodeGate server"
+          value={getHealthCheckText(healthCheckStatus)}
+          icon={
+            <HealthCheckIcon
+              className="size-4"
+              healthCheckStatus={healthCheckStatus}
+            />
+          }
+        />
+        <Row
+          title="Updates"
+          value={getVersionText(versionStatus, data)}
+          icon={
+            <VersionIcon className="size-4" versionStatus={versionStatus} />
+          }
+        />
+      </Dialog>
     </Popover>
   );
 }
@@ -257,6 +305,7 @@ export function HeaderStatusMenu() {
       <StatusPopover
         healthCheckStatus={healthCheckStatus}
         versionStatus={versionStatus}
+        data={data}
       />
     </DialogTrigger>
   );
