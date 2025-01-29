@@ -22,13 +22,13 @@ import {
   parsingPromptText,
   getIssueDetectedType,
 } from "@/lib/utils";
-import { KeyRoundIcon, PackageX, Search } from "lucide-react";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFilteredAlerts } from "@/hooks/useAlertsData";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
+import { Key01, PackageX, SearchMd } from "@untitled-ui/icons-react";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -63,7 +63,7 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
     case "leaked_secret":
       return (
         <>
-          <KeyRoundIcon className="size-4 text-blue-700" />
+          <Key01 className="size-4 text-blue-700" />
           Blocked secret exposure
         </>
       );
@@ -167,7 +167,7 @@ export function TableAlerts() {
                 type="search"
                 placeholder="Search..."
                 isBorderless
-                icon={<Search />}
+                icon={<SearchMd />}
               />
               <SearchFieldClearButton />
             </FieldGroup>

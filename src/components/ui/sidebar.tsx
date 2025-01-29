@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { PanelLeft } from "lucide-react";
+
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Tooltip, TooltipTrigger, Button, Skeleton } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
+import { LayoutAlt02 } from "@untitled-ui/icons-react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -271,7 +272,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <PanelLeft className="!w-6 !h-6 text-secondary" />
+      <LayoutAlt02 className="!w-6 !h-6 text-secondary" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

@@ -1,7 +1,7 @@
 import { TokenUsage, TokenUsageAggregate } from "@/api/generated";
 import { formatCurrency } from "@/lib/currency";
 import { TextLinkButton, Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp } from "@untitled-ui/icons-react";
 
 function Icons({
   input_tokens = 0,

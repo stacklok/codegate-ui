@@ -6,7 +6,7 @@ import {
   Youtube,
 } from "@/components/icons";
 import { OptionsSchema } from "@stacklok/ui-kit";
-import { BookOpenText } from "lucide-react";
+import { BookOpen01 } from "@untitled-ui/icons-react";
 
 export const HELP_MENU_ITEMS = [
   {
@@ -28,7 +28,7 @@ export const HELP_MENU_ITEMS = [
         target: "_blank",
       },
       {
-        icon: <BookOpenText />,
+        icon: <BookOpen01 />,
         id: "documentation",
         href: "https://docs.codegate.ai/",
         textValue: "Documentation",
