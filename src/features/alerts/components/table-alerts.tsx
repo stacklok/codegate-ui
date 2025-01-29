@@ -91,7 +91,7 @@ export function TableAlerts() {
   } = useAlertSearch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: filteredAlerts = [] } = useFilteredAlerts();
+  const { data: filteredAlerts = [], isLoading } = useFilteredAlerts();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     filteredAlerts,
@@ -188,7 +188,9 @@ export function TableAlerts() {
                 <Column width={150}>Token usage</Column>
               </Row>
             </TableHeader>
-            <TableBody>
+            <TableBody
+              renderEmptyState={() => <div>Connect CodeGate to your IDE</div>}
+            >
               {dataView.map((alert) => {
                 return (
                   <Row

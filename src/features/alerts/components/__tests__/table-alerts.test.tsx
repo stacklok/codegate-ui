@@ -132,3 +132,29 @@ test("renders N/A when token usage is missing", async () => {
 
   expect(getByText("N/A")).toBeVisible();
 });
+
+test("renders empty state when the API returns no alerts", async () => {
+  server.use(
+    http.get("*/workspaces/:name/alerts", () => {
+      return HttpResponse.json([]);
+    }),
+  );
+
+  const { getByText } = render(<TableAlerts />);
+
+  expect(getByText("Connect CodeGate to your IDE")).toBeVisible();
+});
+
+test("does not render table empty state when the API responds with alerts", async () => {
+  server.use(
+    http.get("*/workspaces/:name/alerts", () => {
+      return HttpResponse.json([makeMockAlert({ token_usage_agg: null })]);
+    }),
+  );
+
+  const { findAllByText } = render(<TableAlerts />);
+
+  expect((await findAllByText("Connect CodeGate to your IDE")).length).toEqual(
+    0,
+  );
+});
