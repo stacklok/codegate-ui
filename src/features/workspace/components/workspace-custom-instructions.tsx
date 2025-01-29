@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogCloseButton,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogModal,
   DialogModalOverlay,
@@ -20,6 +21,7 @@ import {
   SearchField,
   SearchFieldClearButton,
   Text,
+  TextLink,
 } from "@stacklok/ui-kit";
 import {
   Dispatch,
@@ -48,11 +50,7 @@ import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-w
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
 import Fuse from "fuse.js";
 import systemPrompts from "../constants/built-in-system-prompts.json";
-import {
-  Download01,
-  MessageTextSquare02,
-  SearchMd,
-} from "@untitled-ui/icons-react";
+import { MessageTextSquare02, SearchMd } from "@untitled-ui/icons-react";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -170,75 +168,73 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
   return (
     <>
       <DialogHeader>
-        <div className="w-1/3">
-          <DialogTitle>Choose a prompt template</DialogTitle>
-        </div>
-        <div className="w-1/3">
-          <SearchField
-            className="w-full max-w-96"
-            value={query}
-            onChange={setQuery}
-          >
-            <FieldGroup>
-              <Input
-                icon={<SearchMd />}
-                placeholder="Type to search"
-                autoFocus
-              />
-              {query.length > 0 ? <SearchFieldClearButton /> : null}
-            </FieldGroup>
-          </SearchField>
-        </div>
-        <div className="w-1/3 flex justify-end">
-          <DialogCloseButton />
-        </div>
+        <DialogTitle>Choose a prompt template</DialogTitle>
+        <DialogCloseButton />
       </DialogHeader>
-      <DialogContent>
-        <div className="grid grid-flow-row grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-4 overflow-auto justify-around ">
-          {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
-            return (
-              <Card className=" flex flex-col">
-                <h2 className="font-bold p-2 flex gap-2 items-center">
-                  <MessageTextSquare02 className="size-4" />
-                  <div className="truncate">{item.name}</div>
-                </h2>
-                <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
-                  {item.text}
-                </pre>
-                <div className="flex gap-4 justify-between p-2">
-                  <div className="h-full items-center">
-                    <div className="flex h-full items-center max-w-52 text-clip">
-                      {item.contributors.map((contributor) => (
-                        <Link
-                          className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
-                          target="_blank"
-                          href={`https://github.com/${contributor}/`}
-                        >
-                          <img
-                            className="size-6 rounded-full"
-                            src={`https://github.com/${contributor}.png?size=24`}
-                          />
-                          <span className="truncate">{contributor}</span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                  <Button
-                    isIcon
-                    slot="close"
-                    variant="secondary"
-                    onPress={() => {
-                      handleActivate(item.text);
-                    }}
-                  >
-                    <Download01 />
-                  </Button>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
+      <DialogContent className="shrink-0 py-4">
+        <SearchField className="w-full" value={query} onChange={setQuery}>
+          <FieldGroup>
+            <Input
+              isBorderless
+              icon={<SearchMd />}
+              placeholder="Type to search"
+              autoFocus
+            />
+            {query.length > 0 ? <SearchFieldClearButton /> : null}
+          </FieldGroup>
+        </SearchField>
       </DialogContent>
+      <DialogContent className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 pt-0">
+        {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
+          return (
+            <Card className="min-h-96">
+              <h2 className="font-bold p-2 flex gap-2 items-center">
+                <MessageTextSquare02 className="size-4" />
+                <div className="truncate">{item.name}</div>
+              </h2>
+              <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
+                {item.text}
+              </pre>
+              <div className="flex gap-4 justify-between p-2">
+                <div className="h-full items-center">
+                  <div className="flex h-full items-center max-w-52 text-clip">
+                    {item.contributors.map((contributor) => (
+                      <Link
+                        className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
+                        target="_blank"
+                        href={`https://github.com/${contributor}/`}
+                      >
+                        <img
+                          className="size-6 rounded-full"
+                          src={`https://github.com/${contributor}.png?size=24`}
+                        />
+                        <span className="truncate">{contributor}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <Button
+                  slot="close"
+                  variant="secondary"
+                  onPress={() => {
+                    handleActivate(item.text);
+                  }}
+                >
+                  Use prompt
+                </Button>
+              </div>
+            </Card>
+          );
+        })}
+      </DialogContent>
+      <DialogFooter>
+        <span className="ml-auto">
+          Prompt templates sourced from{" "}
+          <TextLink className="text-primary" href="https://cursor.directory">
+            cursor.directory
+          </TextLink>
+        </span>
+      </DialogFooter>
     </>
   );
 }
@@ -324,12 +320,12 @@ export function WorkspaceCustomInstructions({
       </CardBody>
       <CardFooter className="justify-end gap-2">
         <DialogTrigger>
-          <Button>Use a preset</Button>
+          <Button variant="secondary">Use a preset</Button>
           <DialogModalOverlay isDismissable>
             <DialogModal isDismissable>
               <Dialog
                 width="lg"
-                className="flex flex-col p-4 gap-4 "
+                className="min-h-[44rem]"
                 style={{ maxWidth: "min(calc(100vw - 64px), 1200px)" }}
               >
                 <PromptPresetPicker
