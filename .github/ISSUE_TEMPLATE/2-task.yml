@@ -1,6 +1,6 @@
 name: Task
 description: Task request
-type: Task
+type: 'Task ✅'
 title: '[Task]: '
 labels: []
 body:

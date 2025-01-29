@@ -1,6 +1,6 @@
 name: Chore
 description: Chore request
-type: Chore
+type: 'Chore 🧹'
 title: '[Chore]: '
 labels: ["chore", "needs-triage"]
 body:
