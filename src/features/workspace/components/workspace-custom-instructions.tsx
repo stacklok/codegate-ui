@@ -230,8 +230,11 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
       <DialogFooter>
         <span className="ml-auto">
           Prompt templates sourced from{" "}
-          <TextLink className="text-primary" href="https://cursor.directory">
-            cursor.directory
+          <TextLink
+            className="text-primary"
+            href="https://github.com/PatrickJS/awesome-cursorrules"
+          >
+            PatrickJS/awesome-cursorrules
           </TextLink>
         </span>
       </DialogFooter>
