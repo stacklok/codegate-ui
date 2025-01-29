@@ -8,6 +8,7 @@ export type OverrideRule = Omit<MuxRule, "matcher_type"> & {
 
 type State = {
   removeOverride: (index: number) => void;
+  resetOverrides: () => void;
   addOverride: () => void;
   setOverrides: (overrides: OverrideRule[]) => void;
   setOverrideItem: (
@@ -45,6 +46,11 @@ export const useModelOverridesWorkspace = create<State>((set, get) => ({
         ...overrides,
         { id: uuidv4(), matcher: "", model: "", provider: "" },
       ],
+    });
+  },
+  resetOverrides: () => {
+    set({
+      overrides: [{ id: uuidv4(), matcher: "", model: "", provider: "" }],
     });
   },
   removeOverride: (overrideIndex: number) => {

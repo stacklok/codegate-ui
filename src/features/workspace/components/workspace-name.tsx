@@ -71,7 +71,6 @@ export function WorkspaceName({
             isDisabled={isArchived || name === ""}
             isPending={isPending}
             type="submit"
-            variant="secondary"
           >
             Save
           </Button>

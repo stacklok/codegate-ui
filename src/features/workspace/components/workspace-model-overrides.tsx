@@ -88,15 +88,18 @@ export function WorkspaceModelOverrides({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { overrides, addOverride, setOverrides } = useModelOverridesWorkspace();
+  const { overrides, addOverride, setOverrides, resetOverrides } =
+    useModelOverridesWorkspace();
   const { mutateAsync } = useMutationModelOverridesWorkspace();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     mutateAsync({
       path: { workspace_name: workspaceName },
-      body: overrides.map((item) => ({
-        ...item,
+      body: overrides.map(({ matcher, model, provider }) => ({
+        matcher,
+        provider,
+        model,
         matcher_type: MuxMatcherType.FILE_REGEX,
       })),
     });
@@ -141,13 +144,22 @@ export function WorkspaceModelOverrides({
           <Button className="w-fit" variant="tertiary" onPress={addOverride}>
             <Plus /> Additional Filter
           </Button>
-          <Button
-            variant="secondary"
-            isDisabled={isArchived || workspaceName === ""}
-            type="submit"
-          >
-            Save
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              isDestructive
+              isDisabled={isArchived || workspaceName === ""}
+              onPress={resetOverrides}
+            >
+              Discard
+            </Button>
+            <Button
+              isDisabled={isArchived || workspaceName === ""}
+              type="submit"
+            >
+              Save
+            </Button>
+          </div>
         </CardFooter>
       </Card>
     </Form>
