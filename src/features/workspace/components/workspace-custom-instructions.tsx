@@ -174,7 +174,7 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
         </SearchField>
       </DialogHeader>
       <DialogContent>
-        <div className="flex flex-wrap gap-6 overflow-auto justify-around ">
+        <div className="grid grid-flow-row grid-cols-3 gap-4 overflow-auto justify-around ">
           {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
             return (
               <Card className="w-[380px] flex flex-col">
