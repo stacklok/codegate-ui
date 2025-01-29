@@ -1,12 +1,11 @@
 import { test, expect } from "vitest";
-import { ALERT_MALICIOUS } from "../../mocks/alert-malicious.mock";
-import { ALERT_SECRET } from "../../mocks/alert-secret.mock";
 import { isAlertSecret } from "../is-alert-secret";
+import { makeMockAlert } from "../../mocks/alert.mock";
 
 test("matches secret alert", () => {
-  expect(isAlertSecret(ALERT_SECRET)).toBe(true);
+  expect(isAlertSecret(makeMockAlert({ type: "secret" }))).toBe(true);
 });
 
 test("doesn't match malicious", () => {
-  expect(isAlertSecret(ALERT_MALICIOUS)).toBe(false);
+  expect(isAlertSecret(makeMockAlert({ type: "malicious" }))).toBe(false);
 });
