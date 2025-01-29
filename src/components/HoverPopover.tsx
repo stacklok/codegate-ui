@@ -7,7 +7,7 @@ import {
 } from "@stacklok/ui-kit";
 import { OverlayTriggerStateContext } from "react-aria-components";
 import { ReactNode, useContext } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from "@untitled-ui/icons-react";
 
 function PopoverIcon() {
   const { isOpen = false } = useContext(OverlayTriggerStateContext) ?? {};
@@ -29,7 +29,7 @@ export function DropdownMenu({
         {title}
         <PopoverIcon />
       </Button>
-      <Popover>
+      <Popover placement="bottom end">
         <Menu items={items} />
       </Popover>
     </MenuTrigger>

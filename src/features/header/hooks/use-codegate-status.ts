@@ -1,9 +1,5 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-import {
-  PollingInterval,
-  POLLING_INTERVAl,
-} from "../components/codegate-status-polling-control";
 import { healthCheckHealthGet, v1VersionCheck } from "@/api/generated";
 import { HealthStatus, VersionResponse } from "../types";
 
@@ -24,9 +20,7 @@ const getVersion = async (): Promise<VersionResponse | null> => {
   return ((await v1VersionCheck()).data as VersionResponse) ?? null;
 };
 
-export function getQueryOptionsCodeGateStatus(
-  pollingInterval: PollingInterval,
-) {
+export function getQueryOptionsCodeGateStatus() {
   return queryOptions({
     queryFn: async () => {
       const health = await getCodeGateHealth();
@@ -37,8 +31,8 @@ export function getQueryOptionsCodeGateStatus(
         version: version as VersionResponse | null,
       };
     },
-    queryKey: ["useHealthCheck", { pollingInterval }],
-    refetchInterval: POLLING_INTERVAl[pollingInterval].value,
+    queryKey: ["useHealthCheck"],
+    refetchInterval: 5_000,
     staleTime: Infinity,
     gcTime: Infinity,
     refetchIntervalInBackground: true,
@@ -49,7 +43,7 @@ export function getQueryOptionsCodeGateStatus(
   });
 }
 
-export const useCodeGateStatus = (pollingInterval: PollingInterval) =>
+export const useCodeGateStatus = () =>
   useQuery({
-    ...getQueryOptionsCodeGateStatus(pollingInterval),
+    ...getQueryOptionsCodeGateStatus(),
   });

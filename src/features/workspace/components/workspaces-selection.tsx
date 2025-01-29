@@ -11,13 +11,14 @@ import {
   Separator,
 } from "@stacklok/ui-kit";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Search, Settings } from "lucide-react";
 import { useState } from "react";
 import { useMutationActivateWorkspace } from "../hooks/use-mutation-activate-workspace";
 import clsx from "clsx";
 import { useActiveWorkspaceName } from "../hooks/use-active-workspace-name";
 import { hrefs } from "@/lib/hrefs";
 import { twMerge } from "tailwind-merge";
+import ChevronDown from "@untitled-ui/icons-react/build/cjs/ChevronDown";
+import { SearchMd, Settings01 } from "@untitled-ui/icons-react";
 
 export function WorkspacesSelection() {
   const queryClient = useQueryClient();
@@ -56,7 +57,7 @@ export function WorkspacesSelection() {
               autoFocus
               aria-label="search"
             >
-              <Input icon={<Search />} />
+              <Input icon={<SearchMd />} />
             </SearchField>
           </div>
 
@@ -100,7 +101,7 @@ export function WorkspacesSelection() {
                       : "hover:bg-gray-50 hover:text-primary",
                   )}
                 >
-                  <Settings
+                  <Settings01
                     className={twMerge(
                       item.is_active ? "text-gray-25" : "text-secondary",
                     )}
@@ -116,7 +117,7 @@ export function WorkspacesSelection() {
             variant="tertiary"
             className="text-secondary h-10 pl-2 gap-2 flex mt-2 justify-start"
           >
-            <Settings />
+            <Settings01 />
             Manage Workspaces
           </LinkButton>
         </div>

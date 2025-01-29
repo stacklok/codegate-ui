@@ -1,6 +1,6 @@
 import { AlertConversation, Conversation } from "@/api/generated/types.gen";
 import { isAlertSecret } from "@/features/alerts/lib/is-alert-secret";
-import { isAlertMalicious } from "@/features/alerts/lib/is-malicious";
+import { isAlertMalicious } from "@/features/alerts/lib/is-alert-malicious";
 import { MaliciousPkgType, TriggerType } from "@/types";
 import { format, isToday, isYesterday } from "date-fns";
 

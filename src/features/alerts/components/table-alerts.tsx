@@ -22,12 +22,13 @@ import {
   parsingPromptText,
   getIssueDetectedType,
 } from "@/lib/utils";
-import { KeyRoundIcon, PackageX, Search } from "lucide-react";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFilteredAlerts } from "@/hooks/useAlertsData";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
+import { TableAlertTokenUsage } from "./table-alert-token-usage";
+import { Key01, PackageX, SearchMd } from "@untitled-ui/icons-react";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -62,7 +63,7 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
     case "leaked_secret":
       return (
         <>
-          <KeyRoundIcon className="size-4 text-blue-700" />
+          <Key01 className="size-4 text-blue-700" />
           Blocked secret exposure
         </>
       );
@@ -70,7 +71,6 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
       return (
         <>
           <PackageX className="size-4 text-blue-700" />
-
           Blocked malicious package
         </>
       );
@@ -79,7 +79,7 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
   }
 }
 
-export function AlertsTable() {
+export function TableAlerts() {
   const {
     isMaliciousFilterActive,
     setIsMaliciousFilterActive,
@@ -167,7 +167,7 @@ export function AlertsTable() {
                 type="search"
                 placeholder="Search..."
                 isBorderless
-                icon={<Search />}
+                icon={<SearchMd />}
               />
               <SearchFieldClearButton />
             </FieldGroup>
@@ -185,33 +185,41 @@ export function AlertsTable() {
                 <Column width={150}>Type</Column>
                 <Column>Event</Column>
                 <Column width={325}>Issue Detected</Column>
+                <Column width={150}>Token usage</Column>
               </Row>
             </TableHeader>
             <TableBody>
-              {dataView.map((alert) => (
-                <Row
-                  key={alert.alert_id}
-                  className="h-20"
-                  onAction={() =>
-                    navigate(`/prompt/${alert.conversation.chat_id}`)
-                  }
-                >
-                  <Cell className="truncate">
-                    {formatDistanceToNow(new Date(alert.timestamp), {
-                      addSuffix: true,
-                    })}
-                  </Cell>
-                  <Cell className="truncate">
-                    <TypeCellContent alert={alert} />
-                  </Cell>
-                  <Cell className="truncate">{getTitle(alert)}</Cell>
-                  <Cell>
-                    <div className="truncate flex gap-2  items-center">
-                      <IssueDetectedCellContent alert={alert} />
-                    </div>
-                  </Cell>
-                </Row>
-              ))}
+              {dataView.map((alert) => {
+                return (
+                  <Row
+                    key={alert.alert_id}
+                    className="h-20"
+                    onAction={() =>
+                      navigate(`/prompt/${alert.conversation.chat_id}`)
+                    }
+                  >
+                    <Cell className="truncate">
+                      {formatDistanceToNow(new Date(alert.timestamp), {
+                        addSuffix: true,
+                      })}
+                    </Cell>
+                    <Cell className="truncate">
+                      <TypeCellContent alert={alert} />
+                    </Cell>
+                    <Cell className="truncate">{getTitle(alert)}</Cell>
+                    <Cell>
+                      <div className="truncate flex gap-2  items-center">
+                        <IssueDetectedCellContent alert={alert} />
+                      </div>
+                    </Cell>
+                    <Cell>
+                      <TableAlertTokenUsage
+                        usage={alert.conversation.token_usage_agg}
+                      />
+                    </Cell>
+                  </Row>
+                );
+              })}
             </TableBody>
           </Table>
         </ResizableTableContainer>

@@ -53,6 +53,7 @@ export type Conversation = {
   type: QuestionType;
   chat_id: string;
   conversation_timestamp: string;
+  token_usage_agg: TokenUsageAggregate | null;
 };
 
 export type CreateOrRenameWorkspaceRequest = {
@@ -134,6 +135,8 @@ export enum ProviderType {
   OPENAI = "openai",
   ANTHROPIC = "anthropic",
   VLLM = "vllm",
+  LLAMACPP = "llamacpp",
+  OLLAMA = "ollama",
 }
 
 /**
@@ -148,6 +151,37 @@ export enum QuestionType {
   CHAT = "chat",
   FIM = "fim",
 }
+
+/**
+ * TokenUsage it's not a table, it's a model to represent the token usage.
+ * The data is stored in the outputs table.
+ */
+export type TokenUsage = {
+  input_tokens?: number;
+  output_tokens?: number;
+  input_cost?: number;
+  output_cost?: number;
+};
+
+/**
+ * Represents the tokens used. Includes the information of the tokens used by model.
+ * `used_tokens` are the total tokens used in the `tokens_by_model` list.
+ */
+export type TokenUsageAggregate = {
+  tokens_by_model: {
+    [key: string]: TokenUsageByModel;
+  };
+  token_usage: TokenUsage;
+};
+
+/**
+ * Represents the tokens used by a model.
+ */
+export type TokenUsageByModel = {
+  provider_type: ProviderType;
+  model: string;
+  token_usage: TokenUsage;
+};
 
 export type ValidationError = {
   loc: Array<string | number>;
@@ -367,3 +401,13 @@ export type V1StreamSseError = unknown;
 export type V1VersionCheckResponse = unknown;
 
 export type V1VersionCheckError = unknown;
+
+export type V1GetWorkspaceTokenUsageData = {
+  path: {
+    workspace_name: string;
+  };
+};
+
+export type V1GetWorkspaceTokenUsageResponse = TokenUsageAggregate;
+
+export type V1GetWorkspaceTokenUsageError = HTTPValidationError;

@@ -7,13 +7,19 @@ import {
   Popover,
 } from "@stacklok/ui-kit";
 
-import { Undo2, X, SlidersHorizontal, Check, Ellipsis } from "lucide-react";
 import { useMutationArchiveWorkspace } from "@/features/workspace/hooks/use-mutation-archive-workspace";
 import { useMutationRestoreWorkspace } from "../hooks/use-mutation-restore-workspace";
 import { useMutationHardDeleteWorkspace } from "../hooks/use-mutation-hard-delete-workspace";
 import { useMutationActivateWorkspace } from "../hooks/use-mutation-activate-workspace";
 import { useConfirmHardDeleteWorkspace } from "../hooks/use-confirm-hard-delete-workspace";
 import { hrefs } from "@/lib/hrefs";
+import {
+  Check,
+  DotsHorizontal,
+  FlipBackward,
+  Settings04,
+  XClose,
+} from "@untitled-ui/icons-react";
 
 const getWorkspaceActions = ({
   archiveWorkspace,
@@ -41,13 +47,13 @@ const getWorkspaceActions = ({
   },
   {
     textValue: "Edit",
-    icon: <SlidersHorizontal />,
+    icon: <Settings04 />,
     id: "edit",
     href: hrefs.workspaces.edit(workspace.name),
   },
   {
     textValue: "Archive",
-    icon: <X />,
+    icon: <XClose />,
     id: "archive",
     isDisabled:
       workspace.name === activeWorkspaceName || workspace.name === "default",
@@ -73,7 +79,7 @@ const getArchivedWorkspaceActions = ({
 }): OptionsSchema<"menu">[] => [
   {
     textValue: "Restore",
-    icon: <Undo2 />,
+    icon: <FlipBackward />,
     id: "restore",
     onAction: () =>
       restoreWorkspace({ path: { workspace_name: workspace.name } }),
@@ -81,7 +87,7 @@ const getArchivedWorkspaceActions = ({
   {
     textValue: "Permanently delete",
     isDestructive: true,
-    icon: <X />,
+    icon: <XClose />,
     id: "permanently-delete",
     onAction: () =>
       hardDeleteWorkspace({ path: { workspace_name: workspace.name } }),
@@ -103,7 +109,7 @@ export function TableActionsWorkspaces({
   return (
     <MenuTrigger>
       <Button aria-label="Actions" isIcon variant="tertiary">
-        <Ellipsis />
+        <DotsHorizontal />
       </Button>
       <Popover placement="bottom end">
         <Menu

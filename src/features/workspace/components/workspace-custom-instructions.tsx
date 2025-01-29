@@ -5,7 +5,20 @@ import {
   CardBody,
   CardFooter,
   DarkModeContext,
+  Dialog,
+  DialogCloseButton,
+  DialogContent,
+  DialogHeader,
+  DialogModal,
+  DialogModalOverlay,
+  DialogTitle,
+  DialogTrigger,
+  FieldGroup,
+  Input,
+  Link,
   Loader,
+  SearchField,
+  SearchFieldClearButton,
   Text,
 } from "@stacklok/ui-kit";
 import {
@@ -33,6 +46,13 @@ import {
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
+import Fuse from "fuse.js";
+import systemPrompts from "../constants/built-in-system-prompts.json";
+import {
+  Download01,
+  MessageTextSquare02,
+  SearchMd,
+} from "@untitled-ui/icons-react";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -129,6 +149,100 @@ function useCustomInstructionsValue({
   return { value, setValue };
 }
 
+type PromptPresetPickerProps = {
+  onActivate: (text: string) => void;
+};
+
+function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
+  const [query, setQuery] = useState<string>("");
+
+  const fuse = new Fuse(systemPrompts, {
+    keys: ["name", "text"],
+  });
+
+  const handleActivate = useCallback(
+    (prompt: string) => {
+      onActivate(prompt);
+    },
+    [onActivate],
+  );
+
+  return (
+    <>
+      <DialogHeader>
+        <div className="w-1/3">
+          <DialogTitle>Choose a prompt template</DialogTitle>
+        </div>
+        <div className="w-1/3">
+          <SearchField
+            className="w-full max-w-96"
+            value={query}
+            onChange={setQuery}
+          >
+            <FieldGroup>
+              <Input
+                icon={<SearchMd />}
+                placeholder="Type to search"
+                autoFocus
+              />
+              {query.length > 0 ? <SearchFieldClearButton /> : null}
+            </FieldGroup>
+          </SearchField>
+        </div>
+        <div className="w-1/3 flex justify-end">
+          <DialogCloseButton />
+        </div>
+      </DialogHeader>
+      <DialogContent>
+        <div className="grid grid-flow-row grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-4 overflow-auto justify-around ">
+          {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
+            return (
+              <Card className=" flex flex-col">
+                <h2 className="font-bold p-2 flex gap-2 items-center">
+                  <MessageTextSquare02 className="size-4" />
+                  <div className="truncate">{item.name}</div>
+                </h2>
+                <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
+                  {item.text}
+                </pre>
+                <div className="flex gap-4 justify-between p-2">
+                  <div className="h-full items-center">
+                    <div className="flex h-full items-center max-w-52 text-clip">
+                      {item.contributors.map((contributor) => (
+                        <Link
+                          className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
+                          target="_blank"
+                          href={`https://github.com/${contributor}/`}
+                        >
+                          <img
+                            className="size-6 rounded-full"
+                            src={`https://github.com/${contributor}.png?size=24`}
+                          />
+                          <span className="truncate">{contributor}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                  <Button
+                    isIcon
+                    slot="close"
+                    variant="secondary"
+                    onPress={() => {
+                      handleActivate(item.text);
+                    }}
+                  >
+                    <Download01 />
+                  </Button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </DialogContent>
+    </>
+  );
+}
+
 export function WorkspaceCustomInstructions({
   className,
   workspaceName,
@@ -209,6 +323,24 @@ export function WorkspaceCustomInstructions({
         </div>
       </CardBody>
       <CardFooter className="justify-end gap-2">
+        <DialogTrigger>
+          <Button>Use a preset</Button>
+          <DialogModalOverlay isDismissable>
+            <DialogModal isDismissable>
+              <Dialog
+                width="lg"
+                className="flex flex-col p-4 gap-4 "
+                style={{ maxWidth: "min(calc(100vw - 64px), 1200px)" }}
+              >
+                <PromptPresetPicker
+                  onActivate={(prompt: string) => {
+                    setValue(prompt);
+                  }}
+                />
+              </Dialog>
+            </DialogModal>
+          </DialogModalOverlay>
+        </DialogTrigger>
         <Button
           isPending={isMutationPending}
           isDisabled={Boolean(isArchived ?? isCustomInstructionsPending)}

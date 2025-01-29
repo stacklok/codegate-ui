@@ -20,6 +20,7 @@ export const ALERT_SECRET = {
     type: QuestionType.CHAT,
     chat_id: "11ab8b11-0338-4fdb-b329-2184d3e71a14",
     conversation_timestamp: "2025-01-13T17:15:06.942856Z",
+    token_usage_agg: null,
   },
   alert_id: "11ab8b11-0338-4fdb-b329-2184d3e71a14",
   code_snippet: null,

@@ -1,19 +1,8 @@
 import { render } from "@/lib/test-utils";
 import { screen, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import App from "./App";
-import React from "react";
 import userEvent from "@testing-library/user-event";
-
-vi.mock("recharts", async (importOriginal) => {
-  const originalModule = (await importOriginal()) as Record<string, unknown>;
-  return {
-    ...originalModule,
-    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => {
-      return <div data-testid="mock-responsive-container">{children}</div>;
-    },
-  };
-});
 
 describe("App", () => {
   it("should render header", async () => {

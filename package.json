@@ -9,6 +9,7 @@
     "generate-client": "npm run fetch-openapi-schema && npm run openapi-ts",
     "fetch-openapi-schema": "curl https://raw.githubusercontent.com/stacklok/codegate/refs/heads/main/api/openapi.json > src/api/openapi.json",
     "openapi-ts": "openapi-ts",
+    "knip": "knip",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "prepare": "husky",
@@ -28,17 +29,17 @@
     "@tanstack/react-query": "^5.64.1",
     "@types/prismjs": "^1.26.5",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@untitled-ui/icons-react": "^0.1.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "fuse.js": "^7.0.0",
     "highlight.js": "^11.11.1",
-    "lucide-react": "^0.471.1",
     "prismjs": "^1.29.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^7.1.1",
     "react-syntax-highlighter": "^15.6.1",
-    "recharts": "^2.15.0",
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.5.5",
     "tailwind-variants": "^0.3.0",
@@ -69,6 +70,7 @@
     "globals": "^15.12.0",
     "husky": "^9.1.6",
     "jsdom": "^25.0.1",
+    "knip": "^5.43.6",
     "lint-staged": "^15.3.0",
     "msw": "^2.7.0",
     "postcss": "^8.4.49",
@@ -83,5 +85,8 @@
   },
   "overrides": {
     "vite": "^6.0.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.32.1"
   }
 }

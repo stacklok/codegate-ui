@@ -1,23 +1,19 @@
 import { Separator } from "@stacklok/ui-kit";
 import { useEffect } from "react";
-import { BarChart } from "@/viz/BarChart";
-import { LineChart } from "@/viz/LineChart";
-import { PieChart } from "@/viz/PieChart";
 import { useSearchParams } from "react-router-dom";
-import { CodegateStatus } from "@/features/dashboard-codegate-status/components/codegate-status";
-import {
-  useAlertsData,
-  useMaliciousPackagesChartData,
-} from "@/hooks/useAlertsData";
+import { useAlertsData } from "@/hooks/useAlertsData";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
-import { AlertsTable } from "@/components/AlertsTable";
+import { TableAlerts } from "@/features/alerts/components/table-alerts";
+import { AlertsSummaryMaliciousPkg } from "@/features/alerts/components/alerts-summary-malicious-pkg";
+import { AlertsSummaryWorkspaceTokenUsage } from "@/features/alerts/components/alerts-summary-workspace-token-usage";
+import { AlertsSummaryMaliciousSecrets } from "@/features/alerts/components/alerts-summary-secrets";
 
 export function RouteDashboard() {
   const [searchParams] = useSearchParams();
 
   const { setIsMaliciousFilterActive, setSearch } = useAlertSearch();
 
-  const { data: alerts = [], isLoading } = useAlertsData();
+  const { data: alerts = [] } = useAlertsData();
 
   useEffect(() => {
     const isMaliciousFilterActive = searchParams.get("maliciousPkg") === "true";
@@ -30,20 +26,17 @@ export function RouteDashboard() {
     }
   }, [searchParams, setIsMaliciousFilterActive, setSearch, alerts]);
 
-  const maliciousPackages = useMaliciousPackagesChartData();
-
   return (
     <div className="flex-col">
-      <div className="grid 2xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-stretch gap-4 w-full">
-        <CodegateStatus />
-        <BarChart data={alerts} loading={isLoading} />
-        <PieChart data={maliciousPackages} loading={isLoading} />
-        <LineChart data={alerts} loading={isLoading} />
+      <div className="grid 2xl:grid-cols-3 sm:grid-cols-3 grid-cols-1 items-stretch gap-4 w-full">
+        <AlertsSummaryMaliciousPkg />
+        <AlertsSummaryMaliciousSecrets />
+        <AlertsSummaryWorkspaceTokenUsage />
       </div>
 
       <Separator className="my-8" />
 
-      <AlertsTable />
+      <TableAlerts />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Button, Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
-import { ClipboardCheck, ClipboardCopy } from "lucide-react";
+import { ClipboardCheck, Copy02 } from "@untitled-ui/icons-react";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -34,7 +34,7 @@ export function CopyToClipboard({
         {copied ? (
           <ClipboardCheck data-testid="icon-clipboard-check" />
         ) : (
-          <ClipboardCopy data-testid="icon-clipboard-copy" />
+          <Copy02 data-testid="icon-clipboard-copy" />
         )}
       </Button>
 
