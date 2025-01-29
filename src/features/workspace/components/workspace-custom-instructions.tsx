@@ -46,9 +46,13 @@ import {
 import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
 import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
 import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
-import { Bot, Download, Search } from "lucide-react";
 import Fuse from "fuse.js";
 import systemPrompts from "../constants/built-in-system-prompts.json";
+import {
+  Download01,
+  MessageTextSquare02,
+  SearchMd,
+} from "@untitled-ui/icons-react";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -176,7 +180,11 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
             onChange={setQuery}
           >
             <FieldGroup>
-              <Input icon={<Search />} placeholder="Type to search" autoFocus />
+              <Input
+                icon={<SearchMd />}
+                placeholder="Type to search"
+                autoFocus
+              />
               {query.length > 0 ? <SearchFieldClearButton /> : null}
             </FieldGroup>
           </SearchField>
@@ -191,7 +199,7 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
             return (
               <Card className=" flex flex-col">
                 <h2 className="font-bold p-2 flex gap-2 items-center">
-                  <Bot className="size-4" />
+                  <MessageTextSquare02 className="size-4" />
                   <div className="truncate">{item.name}</div>
                 </h2>
                 <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
@@ -223,7 +231,7 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
                       handleActivate(item.text);
                     }}
                   >
-                    <Download />
+                    <Download01 />
                   </Button>
                 </div>
               </Card>

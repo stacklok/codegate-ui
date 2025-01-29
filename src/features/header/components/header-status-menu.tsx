@@ -1,10 +1,3 @@
-import {
-  AlertCircle,
-  CheckCircle2,
-  ShieldCheck,
-  ShieldX,
-  ShieldAlert,
-} from "lucide-react";
 import { useCodeGateStatus } from "../hooks/use-codegate-status";
 import { HealthStatus } from "../types";
 import {
@@ -19,6 +12,13 @@ import {
 import { Dialog } from "react-aria-components";
 
 import { ReactNode } from "react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle,
+  ShieldOff,
+  ShieldTick,
+} from "@untitled-ui/icons-react";
 
 type CodeGateStatus =
   | "healthy"
@@ -164,13 +164,13 @@ function ButtonIcon({
     case "error_checking_status":
       return <AlertCircle className={className} />;
     case "healthy":
-      return <ShieldCheck className={className} />;
+      return <ShieldTick className={className} />;
     case "loading":
       return <Loader className={className} />;
     case "unhealthy":
-      return <ShieldX className={className} />;
+      return <ShieldOff className={className} />;
     case "update_available":
-      return <ShieldAlert className={className} />;
+      return <AlertTriangle className={className} />;
     default:
       return status satisfies never;
   }
@@ -188,7 +188,7 @@ function HealthCheckIcon({
     case "unhealthy":
       return <AlertCircle className={className} />;
     case "healthy":
-      return <CheckCircle2 className={className} />;
+      return <CheckCircle className={className} />;
     case "loading":
       return <Loader className={className} />;
     default:
@@ -209,7 +209,7 @@ function VersionIcon({
     case "update_available":
       return <AlertCircle className={className} />;
     case "up_to_date":
-      return <CheckCircle2 className={className} />;
+      return <CheckCircle className={className} />;
     case "loading":
       return <Loader className={className} />;
     default:

@@ -1,4 +1,4 @@
-import { CircleAlert } from "lucide-react";
+import { AlertCircle } from "@untitled-ui/icons-react";
 import { Header } from "../features/header/components/header";
 import { Card } from "@stacklok/ui-kit";
 
@@ -10,7 +10,7 @@ export function Error() {
       </div>
       <div className="h-24 flex flex-col flex-1 justify-center">
         <Card className="p-8 flex flex-col items-center">
-          <CircleAlert className="text-red-600 mb-2 size-16" />
+          <AlertCircle className="text-red-600 mb-2 size-16" />
           <div className="text-xl font-semibold text-secondary text-center">
             An error occurred
           </div>

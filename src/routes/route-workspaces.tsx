@@ -8,11 +8,11 @@ import {
   Tooltip,
   TooltipTrigger,
 } from "@stacklok/ui-kit";
-import { SquarePlus } from "lucide-react";
 import { TableWorkspaces } from "@/features/workspace/components/table-workspaces";
 import { useKbdShortcuts } from "@/hooks/use-kbd-shortcuts";
 import { useNavigate } from "react-router-dom";
 import { hrefs } from "@/lib/hrefs";
+import { PlusSquare } from "@untitled-ui/icons-react";
 
 export function RouteWorkspaces() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export function RouteWorkspaces() {
       <WorkspaceHeading title="Manage Workspaces">
         <TooltipTrigger delay={0}>
           <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
-            <SquarePlus /> Create
+            <PlusSquare /> Create
           </LinkButton>
           <Tooltip className="flex gap-2 items-center">
             <span className="block">Create a new workspace</span>

@@ -10,9 +10,10 @@ import {
   TokenUsageAggregate,
 } from "@/api/generated";
 
-vi.mock("lucide-react", async () => {
-  const original =
-    await vi.importActual<typeof import("lucide-react")>("lucide-react");
+vi.mock("@untitled-ui/icons-react", async () => {
+  const original = await vi.importActual<
+    typeof import("@untitled-ui/icons-react")
+  >("@untitled-ui/icons-react");
   return {
     ...original,
     ArrowDown: () => <div data-testid="icon-arrow-down" />,
