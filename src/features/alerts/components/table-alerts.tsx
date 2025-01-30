@@ -89,7 +89,7 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
 
 function EmptyState() {
   return (
-    <div className="w-full flex flex-col items-center py-9 gap-2">
+    <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
       <IllustrationDragAndDrop className="size-36" />
       <p className="font-bold text-4xl">Connect CodeGate to your IDE</p>
       <p className="text-secondary text-xl">
