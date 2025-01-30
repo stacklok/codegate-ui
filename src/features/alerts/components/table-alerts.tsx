@@ -31,7 +31,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFilteredAlerts } from "@/hooks/useAlertsData";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
-import { Key01, PackageX, SearchMd } from "@untitled-ui/icons-react";
+import {
+  Key01,
+  LinkExternal02,
+  PackageX,
+  SearchMd,
+} from "@untitled-ui/icons-react";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -87,22 +92,28 @@ function EmptyState() {
     <div className="w-full flex flex-col items-center py-9 gap-2">
       <IllustrationDragAndDrop className="size-36" />
       <p className="font-bold text-4xl">Connect CodeGate to your IDE</p>
-      <p>
+      <p className="text-secondary text-xl">
         Learn how to get set up using{" "}
         <Link
           href="https://docs.codegate.ai/quickstart-continue"
           target="_blank"
+          className="no-underline"
         >
           Continue
         </Link>
         ,{" "}
-        <Link target="_blank" href="https://docs.codegate.ai/quickstart">
+        <Link
+          target="_blank"
+          href="https://docs.codegate.ai/quickstart"
+          className="no-underline"
+        >
           Copilot
         </Link>
         , or{" "}
         <Link
           target="_blank"
           href="https://docs.codegate.ai/how-to/use-with-aider"
+          className="no-underline"
         >
           Aider
         </Link>
@@ -111,9 +122,10 @@ function EmptyState() {
       <LinkButton
         href="https://docs.codegate.ai/"
         target="_blank"
-        className="pt-4"
+        className="mt-4"
       >
         CodeGate Documentation
+        <LinkExternal02 />
       </LinkButton>
     </div>
   );
