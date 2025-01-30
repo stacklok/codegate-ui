@@ -15,6 +15,7 @@ import {
   ResizableTableContainer,
   Link,
   LinkButton,
+  IllustrationDragAndDrop,
 } from "@stacklok/ui-kit";
 import { Switch } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
@@ -83,8 +84,9 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
 
 function EmptyState() {
   return (
-    <div>
-      <p>Connect CodeGate to your IDE</p>
+    <div className="w-full flex flex-col items-center py-9 gap-2">
+      <IllustrationDragAndDrop className="size-36" />
+      <p className="font-bold text-4xl">Connect CodeGate to your IDE</p>
       <p>
         Learn how to get set up using{" "}
         <Link
@@ -106,7 +108,11 @@ function EmptyState() {
         </Link>
         .
       </p>
-      <LinkButton href="https://docs.codegate.ai/" target="_blank">
+      <LinkButton
+        href="https://docs.codegate.ai/"
+        target="_blank"
+        className="pt-4"
+      >
         CodeGate Documentation
       </LinkButton>
     </div>
