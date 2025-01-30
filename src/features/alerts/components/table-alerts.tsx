@@ -37,6 +37,7 @@ import {
   PackageX,
   SearchMd,
 } from "@untitled-ui/icons-react";
+import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -87,7 +88,31 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
   }
 }
 
-function EmptyState() {
+function EmptyState({
+  hasMultipleWorkspaces,
+}: {
+  hasMultipleWorkspaces: boolean;
+}) {
+  if (hasMultipleWorkspaces) {
+    return (
+      <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
+        <IllustrationDragAndDrop className="size-36" />
+        <p className="font-bold text-4xl text-gray-900">No alerts found</p>
+        <p className="text-secondary text-xl">
+          Alerts will show up here when you use this workspace in your IDE
+        </p>
+        <LinkButton
+          href="https://docs.codegate.ai/features/workspaces"
+          target="_blank"
+          className="mt-4"
+        >
+          Learn about Workspaces
+          <LinkExternal02 />
+        </LinkButton>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
       <IllustrationDragAndDrop className="size-36" />
@@ -145,7 +170,14 @@ export function TableAlerts() {
   } = useAlertSearch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: filteredAlerts = [], isLoading } = useFilteredAlerts();
+  const { data: filteredAlerts = [], isLoading: isLoadingAlerts } =
+    useFilteredAlerts();
+  const {
+    data: { workspaces } = { workspaces: [] },
+    isLoading: isLoadingWorkspaces,
+  } = useListWorkspaces();
+
+  const isLoading = isLoadingAlerts || isLoadingWorkspaces;
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     filteredAlerts,
@@ -244,7 +276,11 @@ export function TableAlerts() {
             </TableHeader>
             <TableBody
               renderEmptyState={() =>
-                isLoading ? <div>Loading alerts</div> : <EmptyState />
+                isLoading ? (
+                  <div>Loading alerts</div>
+                ) : (
+                  <EmptyState hasMultipleWorkspaces={workspaces.length > 1} />
+                )
               }
             >
               {dataView.map((alert) => {
