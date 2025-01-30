@@ -89,13 +89,27 @@ test("renders empty state when the API returns no alerts", async () => {
     }),
   );
 
-  const { getByText, queryByText } = render(<TableAlerts />);
+  const { getByText, queryByText, getByRole } = render(<TableAlerts />);
 
   await waitFor(() => {
     expect(queryByText(/loading alerts/i)).not.toBeInTheDocument();
   });
 
   expect(getByText("Connect CodeGate to your IDE")).toBeVisible();
+  expect(getByText(/learn how to get set up using/i)).toBeVisible();
+
+  expect(getByRole("link", { name: /continue/i })).toHaveAttribute(
+    "href",
+    "https://docs.codegate.ai/quickstart-continue",
+  );
+  expect(getByRole("link", { name: /copilot/i })).toHaveAttribute(
+    "href",
+    "https://docs.codegate.ai/quickstart",
+  );
+  expect(getByRole("link", { name: /aider/i })).toHaveAttribute(
+    "href",
+    "https://docs.codegate.ai/how-to/use-with-aider",
+  );
 });
 
 test("does not render table empty state when the API responds with alerts", async () => {

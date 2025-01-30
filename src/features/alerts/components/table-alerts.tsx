@@ -13,6 +13,7 @@ import {
   Badge,
   Button,
   ResizableTableContainer,
+  Link,
 } from "@stacklok/ui-kit";
 import { Switch } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
@@ -77,6 +78,23 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
     default:
       return "";
   }
+}
+
+function EmptyState() {
+  return (
+    <div>
+      <p>Connect CodeGate to your IDE</p>
+      <p>
+        Learn how to get set up using{" "}
+        <Link href="https://docs.codegate.ai/quickstart-continue">
+          Continue
+        </Link>
+        ,<Link href="https://docs.codegate.ai/quickstart">Copilot</Link>, or
+        <Link href="https://docs.codegate.ai/how-to/use-with-aider">Aider</Link>
+        .
+      </p>
+    </div>
+  );
 }
 
 export function TableAlerts() {
@@ -190,11 +208,7 @@ export function TableAlerts() {
             </TableHeader>
             <TableBody
               renderEmptyState={() =>
-                isLoading ? (
-                  <div>Loading alerts</div>
-                ) : (
-                  <div>Connect CodeGate to your IDE</div>
-                )
+                isLoading ? <div>Loading alerts</div> : <EmptyState />
               }
             >
               {dataView.map((alert) => {
