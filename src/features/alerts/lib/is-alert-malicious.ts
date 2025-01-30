@@ -1,14 +1,13 @@
 import { AlertConversation } from "@/api/generated";
 
-export function isAlertMalicious({
-  trigger_string,
-  trigger_category,
-}: AlertConversation) {
+export function isAlertMalicious(
+  alert: AlertConversation | null,
+): alert is AlertConversation {
   return (
-    trigger_category === "critical" &&
-    trigger_string !== null &&
-    typeof trigger_string === "object" &&
-    "status" in trigger_string &&
-    trigger_string.status === "malicious"
+    alert?.trigger_category === "critical" &&
+    alert.trigger_string !== null &&
+    typeof alert.trigger_string === "object" &&
+    "status" in alert.trigger_string &&
+    alert.trigger_string.status === "malicious"
   );
 }

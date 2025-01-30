@@ -1,7 +1,6 @@
 import { AlertConversation, Conversation } from "@/api/generated/types.gen";
 import { isAlertSecret } from "@/features/alerts/lib/is-alert-secret";
 import { isAlertMalicious } from "@/features/alerts/lib/is-alert-malicious";
-import { MaliciousPkgType, TriggerType } from "@/types";
 import { format, isToday, isYesterday } from "date-fns";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -97,45 +96,6 @@ export function groupPromptsByRelativeDate(prompts: Conversation[]) {
   return grouped;
 }
 
-export function getAllIssues(alerts: AlertConversation[]) {
-  const groupedTriggerCounts = alerts.reduce<Record<string, number>>(
-    (acc, alert) => {
-      const triggerType: TriggerType = alert.trigger_type;
-      if (triggerType) {
-        acc[triggerType] = (acc[triggerType] || 0) + 1;
-      }
-      return acc;
-    },
-    {},
-  );
-
-  const maxCount = Math.max(...Object.values(groupedTriggerCounts));
-
-  const sortedTagCounts = Object.entries(groupedTriggerCounts).sort(
-    ([, countA], [, countB]) => countB - countA,
-  );
-  return { maxCount, sortedTagCounts };
-}
-
-export function getMaliciousPackages() {
-  const packageCounts = ([] as { packages: [] }[]).reduce<
-    Record<string, number>
-  >((acc, prompt) => {
-    (prompt?.packages ?? []).forEach((pkg) => {
-      acc[pkg] = (acc[pkg] || 0) + 1;
-    });
-    return acc;
-  }, {});
-
-  const chartData = Object.entries(packageCounts).map(([pkg, count]) => ({
-    id: pkg,
-    label: pkg,
-    value: count,
-  }));
-
-  return chartData;
-}
-
 export function sanitizeQuestionPrompt({
   question,
   answer,
@@ -162,20 +122,6 @@ export function sanitizeQuestionPrompt({
     console.error("Error processing the question:", error);
     return question;
   }
-}
-
-export function getMaliciousPackage(
-  value: AlertConversation["trigger_string"],
-): string | (MaliciousPkgType & { [key: string]: string }) | null {
-  if (typeof value === "string") {
-    return value;
-  }
-
-  if (typeof value === "object" && value !== null) {
-    return value as MaliciousPkgType;
-  }
-
-  return null;
 }
 
 export function getIssueDetectedType(

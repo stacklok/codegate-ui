@@ -2,33 +2,28 @@ import { formatDistanceToNow } from "date-fns";
 import {
   Cell,
   Column,
-  Input,
   Row,
-  SearchField,
   Table,
   TableBody,
-  FieldGroup,
   TableHeader,
-  SearchFieldClearButton,
   Badge,
   Button,
   ResizableTableContainer,
 } from "@stacklok/ui-kit";
-import { Switch } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
-import { Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
 import {
   sanitizeQuestionPrompt,
   parsingPromptText,
   getIssueDetectedType,
 } from "@/lib/utils";
 import { useAlertSearch } from "@/hooks/useAlertSearch";
-import { useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useFilteredAlerts } from "@/hooks/useAlertsData";
+import { useNavigate } from "react-router-dom";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
-import { Key01, PackageX, SearchMd } from "@untitled-ui/icons-react";
+import { Key01, PackageX } from "@untitled-ui/icons-react";
+import { SearchFieldAlerts } from "./search-field-alerts";
+import { useQueryGetWorkspaceAlertTable } from "../hooks/use-query-get-workspace-alerts-table";
+import { SwitchMaliciousAlertsFilter } from "./switch-malicious-alerts-filter";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -80,54 +75,14 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
 }
 
 export function TableAlerts() {
-  const {
-    isMaliciousFilterActive,
-    setIsMaliciousFilterActive,
-    setSearch,
-    search,
-    page,
-    nextPage,
-    prevPage,
-  } = useAlertSearch();
+  const { page, nextPage, prevPage } = useAlertSearch();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { data: filteredAlerts = [] } = useFilteredAlerts();
+  const { data: filteredAlerts = [] } = useQueryGetWorkspaceAlertTable();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     filteredAlerts,
     page,
     15,
-  );
-
-  const handleToggleFilter = useCallback(
-    (isChecked: boolean) => {
-      if (isChecked) {
-        searchParams.set("maliciousPkg", "true");
-        searchParams.delete("search");
-        setSearch("");
-      } else {
-        searchParams.delete("maliciousPkg");
-      }
-      setSearchParams(searchParams);
-      setIsMaliciousFilterActive(isChecked);
-    },
-    [setSearchParams, setSearch, searchParams, setIsMaliciousFilterActive],
-  );
-
-  const handleSearch = useCallback(
-    (value: string) => {
-      if (value) {
-        searchParams.set("search", value);
-        searchParams.delete("maliciousPkg");
-        setSearch(value);
-        setIsMaliciousFilterActive(false);
-      } else {
-        searchParams.delete("search");
-        setSearch("");
-      }
-      setSearchParams(searchParams);
-    },
-    [searchParams, setIsMaliciousFilterActive, setSearch, setSearchParams],
   );
 
   return (
@@ -141,37 +96,8 @@ export function TableAlerts() {
         </div>
 
         <div className="flex items-center gap-8">
-          <div className="flex items-center space-x-2">
-            <TooltipTrigger>
-              <Switch
-                id="malicious-packages"
-                isSelected={isMaliciousFilterActive}
-                onChange={handleToggleFilter}
-              >
-                Malicious Packages
-              </Switch>
-
-              <Tooltip>
-                <p>Filter by malicious packages</p>
-              </Tooltip>
-            </TooltipTrigger>
-          </div>
-          <SearchField
-            type="text"
-            aria-label="Search alerts"
-            value={search}
-            onChange={(value) => handleSearch(value.toLowerCase().trim())}
-          >
-            <FieldGroup>
-              <Input
-                type="search"
-                placeholder="Search..."
-                isBorderless
-                icon={<SearchMd />}
-              />
-              <SearchFieldClearButton />
-            </FieldGroup>
-          </SearchField>
+          <SwitchMaliciousAlertsFilter />
+          <SearchFieldAlerts />
         </div>
       </div>
       <div className="overflow-x-auto">
