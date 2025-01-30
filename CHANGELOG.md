@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.10.0](https://github.com/stacklok/codegate-ui/compare/v0.9.0...v0.10.0) (2025-01-30)
+
+
+### Features
+
+* add prompt picker ([#212](https://github.com/stacklok/codegate-ui/issues/212)) ([25a531e](https://github.com/stacklok/codegate-ui/commit/25a531eba9b75cc7533a2824ec647894019bb09d))
+* add workspace preferred model ([#217](https://github.com/stacklok/codegate-ui/issues/217)) ([90dfbe9](https://github.com/stacklok/codegate-ui/commit/90dfbe9befc97d800f2a55f23390e9a1754c0aa2))
+* bump UIKit to incorporate color palette change ([#229](https://github.com/stacklok/codegate-ui/issues/229)) ([0e877b4](https://github.com/stacklok/codegate-ui/commit/0e877b4d3dd4a6cc1ebaef7f2a394e23aeaff22d))
+* implement new table design ([#189](https://github.com/stacklok/codegate-ui/issues/189)) ([97bc4ea](https://github.com/stacklok/codegate-ui/commit/97bc4ea104cbd88e81dbd1aadd055fc04687f977))
+* initial work on alerts summary cards ([#222](https://github.com/stacklok/codegate-ui/issues/222)) ([2732434](https://github.com/stacklok/codegate-ui/commit/2732434e45e0ff2862b0173cc708581992e63d18))
+* move health check to header ([#218](https://github.com/stacklok/codegate-ui/issues/218)) ([d9652bb](https://github.com/stacklok/codegate-ui/commit/d9652bb3ac005d5140031f4378d54f41b3adafd1))
+* quick "go to settings" for workspace selector ([#213](https://github.com/stacklok/codegate-ui/issues/213)) ([b683d56](https://github.com/stacklok/codegate-ui/commit/b683d56ae7ab5cfceb527727fc86a298583bc8cc))
+* replace lucide icons with untitled icons ([#221](https://github.com/stacklok/codegate-ui/issues/221)) ([2c3c7fc](https://github.com/stacklok/codegate-ui/commit/2c3c7fc06e3d13489c3e424689013a6431eb1977))
+* show token usage on alerts table ([#216](https://github.com/stacklok/codegate-ui/issues/216)) ([f9461bc](https://github.com/stacklok/codegate-ui/commit/f9461bcf8452715086362154659998f287b965d5))
+
+
+### Bug Fixes
+
+* **alert detected type:** don't default to leaked secret ([#208](https://github.com/stacklok/codegate-ui/issues/208)) ([0e64263](https://github.com/stacklok/codegate-ui/commit/0e64263f00258d0d8a7139ae5256696701673959))
+* **alerts:** memoize selecting alerts ([#231](https://github.com/stacklok/codegate-ui/issues/231)) ([f810e2b](https://github.com/stacklok/codegate-ui/commit/f810e2b0e77b1992e8b54b91f301943505fcf03b))
+* issue templates fix ([#224](https://github.com/stacklok/codegate-ui/issues/224)) ([4a1cc7d](https://github.com/stacklok/codegate-ui/commit/4a1cc7d3f70d1ce78d1933de56467f844a4308cb))
+* issue templates validation fix ([#225](https://github.com/stacklok/codegate-ui/issues/225)) ([efec5fa](https://github.com/stacklok/codegate-ui/commit/efec5fa1e82195a09245cfbc8c6ec7ed58f7c3b9))
+* restore lockfile ([#223](https://github.com/stacklok/codegate-ui/issues/223)) ([a3e86e5](https://github.com/stacklok/codegate-ui/commit/a3e86e58272cd4c434ae2d816f80d4c278461786))
+
 ## [0.9.0](https://github.com/stacklok/codegate-ui/compare/v0.8.0...v0.9.0) (2025-01-24)
 
 
