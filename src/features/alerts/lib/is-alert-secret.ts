@@ -1,8 +1,8 @@
-import { AlertConversation } from "@/api/generated";
+import { V1GetWorkspaceAlertsResponse } from "@/api/generated";
 
-export function isAlertSecret({
-  trigger_type,
-  trigger_category,
-}: AlertConversation) {
-  return trigger_category === "critical" && trigger_type === "codegate-secrets";
+export function isAlertSecret(alert: V1GetWorkspaceAlertsResponse[number]) {
+  return (
+    alert?.trigger_category === "critical" &&
+    alert.trigger_type === "codegate-secrets"
+  );
 }
