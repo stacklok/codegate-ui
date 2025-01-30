@@ -91,7 +91,7 @@ export function TableAlerts() {
   } = useAlertSearch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: filteredAlerts = [] } = useFilteredAlerts();
+  const { data: filteredAlerts = [], isLoading } = useFilteredAlerts();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     filteredAlerts,
@@ -189,7 +189,13 @@ export function TableAlerts() {
               </Row>
             </TableHeader>
             <TableBody
-              renderEmptyState={() => <div>Connect CodeGate to your IDE</div>}
+              renderEmptyState={() =>
+                isLoading ? (
+                  <div>Loading alerts</div>
+                ) : (
+                  <div>Connect CodeGate to your IDE</div>
+                )
+              }
             >
               {dataView.map((alert) => {
                 return (

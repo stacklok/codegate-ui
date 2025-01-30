@@ -200,9 +200,7 @@ describe("Dashboard", () => {
     });
 
     await waitFor(() => {
-      expect(
-        screen.queryByText("Connect CodeGate to your IDE"),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
     });
 
     expect(
@@ -232,9 +230,7 @@ describe("Dashboard", () => {
     });
 
     await waitFor(() => {
-      expect(
-        screen.queryByText("Connect CodeGate to your IDE"),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
     });
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
@@ -281,9 +277,7 @@ describe("Dashboard", () => {
     });
 
     await waitFor(() => {
-      expect(
-        screen.queryByText("Connect CodeGate to your IDE"),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
     });
 
     expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");

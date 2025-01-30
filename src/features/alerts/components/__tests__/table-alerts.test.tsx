@@ -45,7 +45,7 @@ test("renders token usage cell correctly", async () => {
   });
 
   await waitFor(() => {
-    expect(queryByText("Connect CodeGate to your IDE")).not.toBeInTheDocument();
+    expect(queryByText(/loading alerts/i)).not.toBeInTheDocument();
   });
 
   expect(getByTestId("icon-arrow-up")).toBeVisible();
@@ -76,7 +76,7 @@ test("renders N/A when token usage is missing", async () => {
   });
 
   await waitFor(() => {
-    expect(queryByText("Connect CodeGate to your IDE")).not.toBeInTheDocument();
+    expect(queryByText(/loading alerts/i)).not.toBeInTheDocument();
   });
 
   expect(getByText("N/A")).toBeVisible();
@@ -89,7 +89,11 @@ test("renders empty state when the API returns no alerts", async () => {
     }),
   );
 
-  const { getByText } = render(<TableAlerts />);
+  const { getByText, queryByText } = render(<TableAlerts />);
+
+  await waitFor(() => {
+    expect(queryByText(/loading alerts/i)).not.toBeInTheDocument();
+  });
 
   expect(getByText("Connect CodeGate to your IDE")).toBeVisible();
 });
