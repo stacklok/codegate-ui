@@ -12,6 +12,7 @@ import {
   Link,
   LinkButton,
   IllustrationDragAndDrop,
+  IllustrationPackage,
 } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
 import {
@@ -86,7 +87,7 @@ function EmptyState({
   if (hasMultipleWorkspaces) {
     return (
       <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
-        <IllustrationDragAndDrop className="size-36" />
+        <IllustrationPackage className="size-36" />
         <p className="font-bold text-4xl text-gray-900">No alerts found</p>
         <p className="text-secondary text-xl">
           Alerts will show up here when you use this workspace in your IDE
