@@ -91,7 +91,7 @@ export function TableAlerts() {
   } = useAlertSearch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: filteredAlerts = [], isLoading } = useFilteredAlerts();
+  const { data: filteredAlerts = [] } = useFilteredAlerts();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     filteredAlerts,

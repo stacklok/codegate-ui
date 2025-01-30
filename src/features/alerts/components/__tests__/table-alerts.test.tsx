@@ -89,7 +89,9 @@ test("renders empty state when the API returns no alerts", async () => {
 test("does not render table empty state when the API responds with alerts", async () => {
   server.use(
     http.get("*/workspaces/:name/alerts", () => {
-      return HttpResponse.json([makeMockAlert({ token_usage_agg: null })]);
+      return HttpResponse.json([
+        makeMockAlert({ token_usage: false, type: "malicious" }),
+      ]);
     }),
   );
 
