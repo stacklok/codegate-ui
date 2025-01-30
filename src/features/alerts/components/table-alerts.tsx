@@ -8,6 +8,10 @@ import {
   TableHeader,
   Button,
   ResizableTableContainer,
+  Link,
+  LinkButton,
+  IllustrationDragAndDrop,
+  IllustrationPackage,
 } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
 import {
@@ -18,9 +22,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
-import { Key01, PackageX } from "@untitled-ui/icons-react";
+
 import { useQueryGetWorkspaceAlertTable } from "../hooks/use-query-get-workspace-alerts-table";
 import { useAlertsFilterSearchParams } from "../hooks/use-alerts-filter-search-params";
+import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
+import { Key01, LinkExternal02, PackageX } from "@untitled-ui/icons-react";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -71,11 +77,89 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
   }
 }
 
+function EmptyState({
+  hasMultipleWorkspaces,
+}: {
+  hasMultipleWorkspaces: boolean;
+}) {
+  if (hasMultipleWorkspaces) {
+    return (
+      <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
+        <IllustrationPackage className="size-36" />
+        <p className="font-bold text-4xl text-gray-900">No alerts found</p>
+        <p className="text-secondary text-xl">
+          Alerts will show up here when you use this workspace in your IDE
+        </p>
+        <LinkButton
+          href="https://docs.codegate.ai/features/workspaces"
+          target="_blank"
+          className="mt-4"
+        >
+          Learn about Workspaces
+          <LinkExternal02 />
+        </LinkButton>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
+      <IllustrationDragAndDrop className="size-36" />
+      <p className="font-bold text-4xl text-gray-900">
+        Connect CodeGate to your IDE
+      </p>
+      <p className="text-secondary text-xl">
+        Learn how to get set up using{" "}
+        <Link
+          href="https://docs.codegate.ai/quickstart-continue"
+          target="_blank"
+          className="no-underline"
+        >
+          Continue
+        </Link>
+        ,{" "}
+        <Link
+          target="_blank"
+          href="https://docs.codegate.ai/quickstart"
+          className="no-underline"
+        >
+          Copilot
+        </Link>
+        , or{" "}
+        <Link
+          target="_blank"
+          href="https://docs.codegate.ai/how-to/use-with-aider"
+          className="no-underline"
+        >
+          Aider
+        </Link>
+        .
+      </p>
+      <LinkButton
+        href="https://docs.codegate.ai/"
+        target="_blank"
+        className="mt-4"
+      >
+        CodeGate Documentation
+        <LinkExternal02 />
+      </LinkButton>
+    </div>
+  );
+}
+
 export function TableAlerts() {
   const navigate = useNavigate();
   const { state, prevPage, nextPage } = useAlertsFilterSearchParams();
 
-  const { data: filteredAlerts = [] } = useQueryGetWorkspaceAlertTable();
+  const { data: filteredAlerts = [], isLoading: isLoadingAlerts } =
+    useQueryGetWorkspaceAlertTable();
+
+  const {
+    data: { workspaces } = { workspaces: [] },
+    isLoading: isLoadingWorkspaces,
+  } = useListWorkspaces();
+
+  const isLoading = isLoadingAlerts || isLoadingWorkspaces;
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     filteredAlerts,
@@ -98,7 +182,15 @@ export function TableAlerts() {
               <Column width={200}>Token usage</Column>
             </Row>
           </TableHeader>
-          <TableBody>
+          <TableBody
+            renderEmptyState={() =>
+              isLoading ? (
+                <div>Loading alerts</div>
+              ) : (
+                <EmptyState hasMultipleWorkspaces={workspaces.length > 1} />
+              )
+            }
+          >
             {dataView.map((alert) => {
               return (
                 <Row

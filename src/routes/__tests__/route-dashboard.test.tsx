@@ -165,6 +165,12 @@ describe("Dashboard", () => {
       ).toBeGreaterThan(1);
     });
 
+    await waitFor(() => {
+      expect(
+        screen.queryByText("Connect CodeGate to your IDE"),
+      ).not.toBeInTheDocument();
+    });
+
     const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",
     )[1] as HTMLElement;
@@ -186,6 +192,10 @@ describe("Dashboard", () => {
       expect(
         within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
       ).toBeGreaterThan(1);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
     });
 
     expect(
@@ -214,7 +224,11 @@ describe("Dashboard", () => {
       ).toBeGreaterThan(1);
     });
 
+    await waitFor(() => {
+      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
+    });
     expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
+
     expect(
       screen.getAllByRole("gridcell", {
         name: /chat/i,
@@ -260,6 +274,9 @@ describe("Dashboard", () => {
       ).toBeGreaterThan(1);
     });
 
+    await waitFor(() => {
+      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
+    });
     expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
     expect(
       screen.getAllByRole("gridcell", {
@@ -306,7 +323,12 @@ describe("Dashboard", () => {
       ).toBeGreaterThan(1);
     });
 
+    await waitFor(() => {
+      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
+    });
+
     expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
+
     expect(
       screen.getAllByRole("gridcell", {
         name: /chat/i,
@@ -331,6 +353,12 @@ describe("Dashboard", () => {
       expect(
         within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
       ).toBeGreaterThan(1);
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText("Connect CodeGate to your IDE"),
+      ).not.toBeInTheDocument();
     });
 
     const firstRow = within(screen.getByTestId("alerts-table")).getAllByRole(
