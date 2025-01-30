@@ -7,7 +7,7 @@ import {
 import { useAlertsFilterSearchParams } from "../hooks/use-alerts-filter-search-params";
 import { SearchMd } from "@untitled-ui/icons-react";
 
-export function SearchFieldAlerts() {
+export function SearchFieldAlerts({ className }: { className?: string }) {
   const { setSearch, state } = useAlertsFilterSearchParams();
 
   return (
@@ -16,6 +16,7 @@ export function SearchFieldAlerts() {
       aria-label="Search alerts"
       value={state.search ?? ""}
       onChange={(value) => setSearch(value.toLowerCase().trim())}
+      className={className}
     >
       <FieldGroup>
         <Input

@@ -122,11 +122,11 @@ describe("Dashboard", () => {
     render(<RouteDashboard />);
 
     expect(
-      screen.getByRole("heading", {
-        name: /all alerts/i,
+      screen.getByRole("grid", {
+        name: /alerts table/i,
       }),
     ).toBeVisible();
-    expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("0");
+    expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("0");
 
     expect(
       screen.getByRole("columnheader", {
@@ -157,11 +157,6 @@ describe("Dashboard", () => {
       }),
     ).toBeVisible();
 
-    expect(
-      screen.getByRole("switch", {
-        name: /malicious packages/i,
-      }),
-    ).toBeVisible();
     expect(screen.getByRole("searchbox")).toBeVisible();
 
     await waitFor(() => {
@@ -219,7 +214,7 @@ describe("Dashboard", () => {
       ).toBeGreaterThan(1);
     });
 
-    expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
+    expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
     expect(
       screen.getAllByRole("gridcell", {
         name: /chat/i,
@@ -227,29 +222,78 @@ describe("Dashboard", () => {
     ).toBeGreaterThanOrEqual(1);
 
     userEvent.click(
-      screen.getByRole("switch", {
-        name: /malicious packages/i,
+      screen.getByRole("tab", {
+        name: /malicious/i,
       }),
     );
 
-    await waitFor(() =>
-      expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("1"),
-    );
-
-    expect(
-      screen.queryAllByRole("gridcell", {
-        name: /blocked secret exposure/i,
-      }).length,
-    ).toBe(0);
+    await waitFor(() => {
+      expect(
+        screen.queryAllByRole("gridcell", {
+          name: /blocked secret exposure/i,
+        }).length,
+      ).toBe(0);
+    });
 
     userEvent.click(
-      screen.getByRole("switch", {
-        name: /malicious packages/i,
+      screen.getByRole("tab", {
+        name: /all/i,
       }),
     );
-    await waitFor(() =>
-      expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2"),
+
+    await waitFor(() => {
+      expect(
+        screen.queryAllByRole("gridcell", {
+          name: /blocked secret exposure/i,
+        }).length,
+      ).toBe(1);
+    });
+  });
+
+  it("should filter by secrets", async () => {
+    mockAlertsWithMaliciousPkg();
+    render(<RouteDashboard />);
+
+    await waitFor(() => {
+      expect(
+        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
+      ).toBeGreaterThan(1);
+    });
+
+    expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
+    expect(
+      screen.getAllByRole("gridcell", {
+        name: /chat/i,
+      }).length,
+    ).toBeGreaterThanOrEqual(1);
+
+    userEvent.click(
+      screen.getByRole("tab", {
+        name: /secrets/i,
+      }),
     );
+
+    await waitFor(() => {
+      expect(
+        screen.queryAllByRole("gridcell", {
+          name: /blocked malicious package/i,
+        }).length,
+      ).toBe(0);
+    });
+
+    userEvent.click(
+      screen.getByRole("tab", {
+        name: /all/i,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.queryAllByRole("gridcell", {
+          name: /blocked malicious package/i,
+        }).length,
+      ).toBe(1);
+    });
   });
 
   it("should search by secrets alert", async () => {
@@ -262,7 +306,7 @@ describe("Dashboard", () => {
       ).toBeGreaterThan(1);
     });
 
-    expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("2");
+    expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
     expect(
       screen.getAllByRole("gridcell", {
         name: /chat/i,
@@ -272,7 +316,7 @@ describe("Dashboard", () => {
     await userEvent.type(screen.getByRole("searchbox"), "codegate-secrets");
 
     waitFor(() =>
-      expect(screen.getByTestId(/alerts-count/i)).toHaveTextContent("1"),
+      expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("1"),
     );
     const row = within(screen.getByTestId("alerts-table")).getAllByRole(
       "row",

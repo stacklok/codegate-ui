@@ -6,7 +6,6 @@ import {
   Table,
   TableBody,
   TableHeader,
-  Badge,
   Button,
   ResizableTableContainer,
 } from "@stacklok/ui-kit";
@@ -16,14 +15,12 @@ import {
   parsingPromptText,
   getIssueDetectedType,
 } from "@/lib/utils";
-import { useAlertSearch } from "@/hooks/useAlertSearch";
 import { useNavigate } from "react-router-dom";
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
 import { Key01, PackageX } from "@untitled-ui/icons-react";
-import { SearchFieldAlerts } from "./search-field-alerts";
 import { useQueryGetWorkspaceAlertTable } from "../hooks/use-query-get-workspace-alerts-table";
-import { SwitchMaliciousAlertsFilter } from "./switch-malicious-alerts-filter";
+import { useAlertsFilterSearchParams } from "../hooks/use-alerts-filter-search-params";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -75,84 +72,70 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
 }
 
 export function TableAlerts() {
-  const { page, nextPage, prevPage } = useAlertSearch();
   const navigate = useNavigate();
+  const { state, prevPage, nextPage } = useAlertsFilterSearchParams();
+
   const { data: filteredAlerts = [] } = useQueryGetWorkspaceAlertTable();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     filteredAlerts,
-    page,
+    state.page,
     15,
   );
 
   return (
     <>
-      <div className="flex mb-2 mx-2 justify-between w-[calc(100vw-20rem)]">
-        <div className="flex gap-2 items-center">
-          <h2 className="font-bold text-lg">All Alerts</h2>
-          <Badge size="sm" variant="inverted" data-testid="alerts-count">
-            {filteredAlerts.length}
-          </Badge>
-        </div>
-
-        <div className="flex items-center gap-8">
-          <SwitchMaliciousAlertsFilter />
-          <SearchFieldAlerts />
-        </div>
-      </div>
-      <div className="overflow-x-auto">
-        <ResizableTableContainer>
-          <Table data-testid="alerts-table" aria-label="Alerts table">
-            <TableHeader>
-              <Row>
-                <Column isRowHeader width={150}>
-                  Time
-                </Column>
-                <Column width={150}>Type</Column>
-                <Column>Event</Column>
-                <Column width={325}>Issue Detected</Column>
-                <Column width={200}>Token usage</Column>
-              </Row>
-            </TableHeader>
-            <TableBody>
-              {dataView.map((alert) => {
-                return (
-                  <Row
-                    key={alert.alert_id}
-                    className="h-20"
-                    onAction={() =>
-                      navigate(`/prompt/${alert.conversation.chat_id}`)
-                    }
-                  >
-                    <Cell className="truncate">
-                      {formatDistanceToNow(new Date(alert.timestamp), {
-                        addSuffix: true,
-                      })}
-                    </Cell>
-                    <Cell className="truncate">
-                      <TypeCellContent alert={alert} />
-                    </Cell>
-                    <Cell className="truncate">{getTitle(alert)}</Cell>
-                    <Cell>
-                      <div className="truncate flex gap-2  items-center">
-                        <IssueDetectedCellContent alert={alert} />
-                      </div>
-                    </Cell>
-                    <Cell>
-                      <TableAlertTokenUsage
-                        usage={alert.conversation.token_usage_agg}
-                      />
-                    </Cell>
-                  </Row>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </ResizableTableContainer>
-      </div>
+      <ResizableTableContainer>
+        <Table data-testid="alerts-table" aria-label="Alerts table">
+          <TableHeader>
+            <Row>
+              <Column isRowHeader width={150}>
+                Time
+              </Column>
+              <Column width={150}>Type</Column>
+              <Column>Event</Column>
+              <Column width={325}>Issue Detected</Column>
+              <Column width={200}>Token usage</Column>
+            </Row>
+          </TableHeader>
+          <TableBody>
+            {dataView.map((alert) => {
+              return (
+                <Row
+                  key={alert.alert_id}
+                  className="h-20"
+                  onAction={() =>
+                    navigate(`/prompt/${alert.conversation.chat_id}`)
+                  }
+                >
+                  <Cell className="truncate">
+                    {formatDistanceToNow(new Date(alert.timestamp), {
+                      addSuffix: true,
+                    })}
+                  </Cell>
+                  <Cell className="truncate">
+                    <TypeCellContent alert={alert} />
+                  </Cell>
+                  <Cell className="truncate">{getTitle(alert)}</Cell>
+                  <Cell>
+                    <div className="truncate flex gap-2  items-center">
+                      <IssueDetectedCellContent alert={alert} />
+                    </div>
+                  </Cell>
+                  <Cell>
+                    <TableAlertTokenUsage
+                      usage={alert.conversation.token_usage_agg}
+                    />
+                  </Cell>
+                </Row>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </ResizableTableContainer>
 
       <div className="flex justify-center w-full p-4">
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <Button isDisabled={!hasPreviousPage} onPress={prevPage}>
             Previous
           </Button>

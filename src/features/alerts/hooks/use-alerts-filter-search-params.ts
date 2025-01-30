@@ -10,14 +10,15 @@ export enum AlertsFilterView {
 
 const alertsFilterSchema = z.object({
   search: z.string().optional(),
-  view: z.nativeEnum(AlertsFilterView),
+  view: z.nativeEnum(AlertsFilterView).optional().default(AlertsFilterView.ALL),
+  page: z.coerce.number().optional().default(0),
 });
 
-type AlertsFilterSchema = z.output<typeof alertsFilterSchema>;
+type AlertsFilterSchema = z.input<typeof alertsFilterSchema>;
 
-const DEFAULT_FILTER: AlertsFilterSchema = {
+const DEFAULT_FILTER = {
   view: AlertsFilterView.ALL,
-};
+} as const satisfies AlertsFilterSchema;
 
 export const useAlertsFilterSearchParams = () => {
   const [searchParams, setSearchParams] = useSearchParams(
@@ -29,6 +30,8 @@ export const useAlertsFilterSearchParams = () => {
       setSearchParams((prev) => {
         if (view) prev.set("view", view);
         if (!view) prev.delete("view");
+
+        prev.delete("page");
         return prev;
       });
     },
@@ -46,7 +49,23 @@ export const useAlertsFilterSearchParams = () => {
     [setSearchParams],
   );
 
+  const nextPage = useCallback(() => {
+    setSearchParams((prev) => {
+      const page = Number(prev.get("page") ?? 0);
+      prev.set("page", (page + 1).toString());
+      return prev;
+    });
+  }, [setSearchParams]);
+
+  const prevPage = useCallback(() => {
+    setSearchParams((prev) => {
+      const page = Number(prev.get("page") ?? 0);
+      prev.set("page", (page - 1).toString());
+      return prev;
+    });
+  }, [setSearchParams]);
+
   const state = alertsFilterSchema.parse(Object.fromEntries(searchParams));
 
-  return { state, setView, setSearch };
+  return { state, setView, setSearch, nextPage, prevPage };
 };
