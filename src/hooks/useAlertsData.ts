@@ -52,6 +52,8 @@ export const useFilteredAlerts = () => {
   const { isMaliciousFilterActive, search } = useAlertSearch();
 
   return useAlertsData({
+    // NOTE: Inlined select will run on every render, we'll remove this over
+    // time though - AMG
     select: (
       data: Exclude<ReturnType<typeof useAlertsData>["data"], undefined>,
     ) => {
