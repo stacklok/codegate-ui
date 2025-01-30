@@ -14,6 +14,7 @@ import {
   Button,
   ResizableTableContainer,
   Link,
+  LinkButton,
 } from "@stacklok/ui-kit";
 import { Switch } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
@@ -86,13 +87,28 @@ function EmptyState() {
       <p>Connect CodeGate to your IDE</p>
       <p>
         Learn how to get set up using{" "}
-        <Link href="https://docs.codegate.ai/quickstart-continue">
+        <Link
+          href="https://docs.codegate.ai/quickstart-continue"
+          target="_blank"
+        >
           Continue
         </Link>
-        ,<Link href="https://docs.codegate.ai/quickstart">Copilot</Link>, or
-        <Link href="https://docs.codegate.ai/how-to/use-with-aider">Aider</Link>
+        ,{" "}
+        <Link target="_blank" href="https://docs.codegate.ai/quickstart">
+          Copilot
+        </Link>
+        , or{" "}
+        <Link
+          target="_blank"
+          href="https://docs.codegate.ai/how-to/use-with-aider"
+        >
+          Aider
+        </Link>
         .
       </p>
+      <LinkButton href="https://docs.codegate.ai/" target="_blank">
+        CodeGate Documentation
+      </LinkButton>
     </div>
   );
 }

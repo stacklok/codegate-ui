@@ -102,14 +102,33 @@ test("renders empty state when the API returns no alerts", async () => {
     "href",
     "https://docs.codegate.ai/quickstart-continue",
   );
+  expect(getByRole("link", { name: /continue/i })).toHaveAttribute(
+    "target",
+    "_blank",
+  );
   expect(getByRole("link", { name: /copilot/i })).toHaveAttribute(
     "href",
     "https://docs.codegate.ai/quickstart",
+  );
+  expect(getByRole("link", { name: /copilot/i })).toHaveAttribute(
+    "target",
+    "_blank",
   );
   expect(getByRole("link", { name: /aider/i })).toHaveAttribute(
     "href",
     "https://docs.codegate.ai/how-to/use-with-aider",
   );
+  expect(getByRole("link", { name: /aider/i })).toHaveAttribute(
+    "target",
+    "_blank",
+  );
+
+  expect(
+    getByRole("link", { name: /codegate documentation/i }),
+  ).toHaveAttribute("href", "https://docs.codegate.ai/");
+  expect(
+    getByRole("link", { name: /codegate documentation/i }),
+  ).toHaveAttribute("target", "_blank");
 });
 
 test("does not render table empty state when the API responds with alerts", async () => {
