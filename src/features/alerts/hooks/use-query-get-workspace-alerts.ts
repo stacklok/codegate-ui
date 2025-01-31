@@ -11,7 +11,13 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
 }: {
   select?: (data: V1GetWorkspaceAlertsResponse) => T;
 } = {}) {
-  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  const {
+    data: activeWorkspaceName,
+    isPending: isWorkspacePending,
+    isFetching: isWorkspaceFetching,
+    isLoading: isWorkspaceLoading,
+    isRefetching: isWorkspaceRefetching,
+  } = useActiveWorkspaceName();
 
   const options: V1GetWorkspaceAlertsData = {
     path: {
@@ -19,11 +25,25 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     },
   };
 
-  return useQuery({
+  const {
+    isPending: isAlertsPending,
+    isFetching: isAlertsFetching,
+    isLoading: isAlertsLoading,
+    isRefetching: isAlertsRefetching,
+    ...rest
+  } = useQuery({
     ...v1GetWorkspaceAlertsOptions(options),
     refetchOnMount: true,
     refetchOnReconnect: true,
     refetchOnWindowFocus: true,
     select,
   });
+
+  return {
+    ...rest,
+    isPending: isAlertsPending || isWorkspacePending,
+    isFetching: isAlertsFetching || isWorkspaceFetching,
+    isLoading: isAlertsLoading || isWorkspaceLoading,
+    isRefetching: isAlertsRefetching || isWorkspaceRefetching,
+  };
 }

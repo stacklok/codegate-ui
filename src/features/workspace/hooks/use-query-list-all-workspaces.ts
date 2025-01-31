@@ -48,6 +48,7 @@ const combine = (results: UseQueryDataReturn) => {
     data: [...active, ...archived],
     isPending: results.some((r) => r.isPending),
     isFetching: results.some((r) => r.isFetching),
+    isLoading: results.some((r) => r.isLoading),
     isRefetching: results.some((r) => r.isRefetching),
   };
 };

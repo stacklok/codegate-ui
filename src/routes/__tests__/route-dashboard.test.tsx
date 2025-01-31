@@ -189,13 +189,7 @@ describe("Dashboard", () => {
     render(<RouteDashboard />);
 
     await waitFor(() => {
-      expect(
-        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
-      ).toBeGreaterThan(1);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument();
     });
 
     expect(
@@ -219,14 +213,9 @@ describe("Dashboard", () => {
     render(<RouteDashboard />);
 
     await waitFor(() => {
-      expect(
-        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
-      ).toBeGreaterThan(1);
+      expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument();
     });
 
-    await waitFor(() => {
-      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
-    });
     expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
 
     expect(
@@ -269,14 +258,9 @@ describe("Dashboard", () => {
     render(<RouteDashboard />);
 
     await waitFor(() => {
-      expect(
-        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
-      ).toBeGreaterThan(1);
+      expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument();
     });
 
-    await waitFor(() => {
-      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
-    });
     expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");
     expect(
       screen.getAllByRole("gridcell", {
@@ -318,13 +302,7 @@ describe("Dashboard", () => {
     render(<RouteDashboard />);
 
     await waitFor(() => {
-      expect(
-        within(screen.getByTestId("alerts-table")).getAllByRole("row").length,
-      ).toBeGreaterThan(1);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText(/loading alerts/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument();
     });
 
     expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent("2");

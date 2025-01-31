@@ -8,10 +8,6 @@ import {
   TableHeader,
   Button,
   ResizableTableContainer,
-  Link,
-  LinkButton,
-  IllustrationDragAndDrop,
-  IllustrationPackage,
 } from "@stacklok/ui-kit";
 import { AlertConversation, QuestionType } from "@/api/generated";
 import {
@@ -19,14 +15,16 @@ import {
   parsingPromptText,
   getIssueDetectedType,
 } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
+
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
 
 import { useQueryGetWorkspaceAlertTable } from "../hooks/use-query-get-workspace-alerts-table";
 import { useAlertsFilterSearchParams } from "../hooks/use-alerts-filter-search-params";
-import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
-import { Key01, LinkExternal02, PackageX } from "@untitled-ui/icons-react";
+import { Key01, PackageX } from "@untitled-ui/icons-react";
+import { TableAlertsEmptyState } from "./table-alerts-empty-state";
+import { ComponentProps } from "react";
+import { hrefs } from "@/lib/hrefs";
 
 const getTitle = (alert: AlertConversation) => {
   const prompt = alert.conversation;
@@ -77,92 +75,79 @@ function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
   }
 }
 
-function EmptyState({
-  hasMultipleWorkspaces,
-}: {
-  hasMultipleWorkspaces: boolean;
-}) {
-  if (hasMultipleWorkspaces) {
-    return (
-      <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
-        <IllustrationPackage className="size-36" />
-        <p className="font-bold text-4xl text-gray-900">No alerts found</p>
-        <p className="text-secondary text-xl">
-          Alerts will show up here when you use this workspace in your IDE
-        </p>
-        <LinkButton
-          href="https://docs.codegate.ai/features/workspaces"
-          target="_blank"
-          className="mt-4"
-        >
-          Learn about Workspaces
-          <LinkExternal02 />
-        </LinkButton>
-      </div>
-    );
-  }
+type ColumnId = "time" | "type" | "event" | "issue_detected" | "token_usage";
 
-  return (
-    <div className="w-full flex flex-col items-center py-9 gap-2 px-4">
-      <IllustrationDragAndDrop className="size-36" />
-      <p className="font-bold text-4xl text-gray-900">
-        Connect CodeGate to your IDE
-      </p>
-      <p className="text-secondary text-xl">
-        Learn how to get set up using{" "}
-        <Link
-          href="https://docs.codegate.ai/quickstart-continue"
-          target="_blank"
-          className="no-underline"
-        >
-          Continue
-        </Link>
-        ,{" "}
-        <Link
-          target="_blank"
-          href="https://docs.codegate.ai/quickstart"
-          className="no-underline"
-        >
-          Copilot
-        </Link>
-        , or{" "}
-        <Link
-          target="_blank"
-          href="https://docs.codegate.ai/how-to/use-with-aider"
-          className="no-underline"
-        >
-          Aider
-        </Link>
-        .
-      </p>
-      <LinkButton
-        href="https://docs.codegate.ai/"
-        target="_blank"
-        className="mt-4"
-      >
-        CodeGate Documentation
-        <LinkExternal02 />
-      </LinkButton>
-    </div>
-  );
+type Column = { id: ColumnId } & Omit<ComponentProps<typeof Column>, "id">;
+
+const COLUMNS: Column[] = [
+  {
+    id: "time",
+    isRowHeader: true,
+    children: "Time",
+    width: 150,
+  },
+  {
+    id: "type",
+    children: "Type",
+    width: 150,
+  },
+  {
+    id: "event",
+    children: "Event",
+  },
+  {
+    id: "issue_detected",
+    children: "Issue detected",
+    width: 325,
+  },
+  {
+    id: "token_usage",
+    children: "Token usage",
+    width: 200,
+  },
+];
+
+function CellRenderer({
+  column,
+  row,
+}: {
+  column: Column;
+  row: AlertConversation;
+}) {
+  switch (column.id) {
+    case "time":
+      return (
+        <span className="whitespace-nowrap">
+          {formatDistanceToNow(new Date(row.timestamp), {
+            addSuffix: true,
+          })}
+        </span>
+      );
+    case "type":
+      return <TypeCellContent alert={row} />;
+    case "event":
+      return getTitle(row);
+    case "issue_detected":
+      return (
+        <div className="truncate flex gap-2  items-center">
+          <IssueDetectedCellContent alert={row} />
+        </div>
+      );
+    case "token_usage":
+      return <TableAlertTokenUsage usage={row.conversation.token_usage_agg} />;
+
+    default:
+      return column.id satisfies never;
+  }
 }
 
 export function TableAlerts() {
-  const navigate = useNavigate();
   const { state, prevPage, nextPage } = useAlertsFilterSearchParams();
 
-  const { data: filteredAlerts = [], isLoading: isLoadingAlerts } =
-    useQueryGetWorkspaceAlertTable();
-
-  const {
-    data: { workspaces } = { workspaces: [] },
-    isLoading: isLoadingWorkspaces,
-  } = useListWorkspaces();
-
-  const isLoading = isLoadingAlerts || isLoadingWorkspaces;
+  const { data = [], isLoading } = useQueryGetWorkspaceAlertTable();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
-    filteredAlerts,
+    data,
     state.page,
     15,
   );
@@ -171,71 +156,48 @@ export function TableAlerts() {
     <>
       <ResizableTableContainer>
         <Table data-testid="alerts-table" aria-label="Alerts table">
-          <TableHeader>
-            <Row>
-              <Column isRowHeader width={150}>
-                Time
-              </Column>
-              <Column width={150}>Type</Column>
-              <Column>Event</Column>
-              <Column width={325}>Issue Detected</Column>
-              <Column width={200}>Token usage</Column>
-            </Row>
+          <TableHeader columns={COLUMNS}>
+            {(column) => <Column {...column} id={column.id} />}
           </TableHeader>
           <TableBody
-            renderEmptyState={() =>
-              isLoading ? (
-                <div>Loading alerts</div>
-              ) : (
-                <EmptyState hasMultipleWorkspaces={workspaces.length > 1} />
-              )
-            }
+            renderEmptyState={() => (
+              <TableAlertsEmptyState isLoading={isLoading} />
+            )}
+            items={dataView}
           >
-            {dataView.map((alert) => {
-              return (
-                <Row
-                  key={alert.alert_id}
-                  className="h-20"
-                  onAction={() =>
-                    navigate(`/prompt/${alert.conversation.chat_id}`)
-                  }
-                >
-                  <Cell className="truncate">
-                    {formatDistanceToNow(new Date(alert.timestamp), {
-                      addSuffix: true,
-                    })}
+            {(row) => (
+              <Row
+                columns={COLUMNS}
+                id={row.alert_id}
+                href={hrefs.prompt(row.conversation.chat_id)}
+              >
+                {(column) => (
+                  <Cell
+                    className="h-6 group-last/row:border-b-0"
+                    alignment={column.alignment}
+                    id={column.id}
+                  >
+                    <CellRenderer column={column} row={row} />
                   </Cell>
-                  <Cell className="truncate">
-                    <TypeCellContent alert={alert} />
-                  </Cell>
-                  <Cell className="truncate">{getTitle(alert)}</Cell>
-                  <Cell>
-                    <div className="truncate flex gap-2  items-center">
-                      <IssueDetectedCellContent alert={alert} />
-                    </div>
-                  </Cell>
-                  <Cell>
-                    <TableAlertTokenUsage
-                      usage={alert.conversation.token_usage_agg}
-                    />
-                  </Cell>
-                </Row>
-              );
-            })}
+                )}
+              </Row>
+            )}
           </TableBody>
         </Table>
       </ResizableTableContainer>
 
-      <div className="flex justify-center w-full p-4">
-        <div className="grid grid-cols-2 gap-2">
-          <Button isDisabled={!hasPreviousPage} onPress={prevPage}>
-            Previous
-          </Button>
-          <Button isDisabled={!hasNextPage} onPress={nextPage}>
-            Next
-          </Button>
+      {hasNextPage || hasPreviousPage ? (
+        <div className="flex justify-center w-full p-4">
+          <div className="grid grid-cols-2 gap-2">
+            <Button isDisabled={!hasPreviousPage} onPress={prevPage}>
+              Previous
+            </Button>
+            <Button isDisabled={!hasNextPage} onPress={nextPage}>
+              Next
+            </Button>
+          </div>
         </div>
-      </div>
+      ) : null}
     </>
   );
 }
