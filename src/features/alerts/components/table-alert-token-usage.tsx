@@ -2,6 +2,7 @@ import { TokenUsageAggregate } from "@/api/generated";
 import { TextLinkButton, Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
 import { Download01, Upload01 } from "@untitled-ui/icons-react";
 import { TokenUsageByProviders } from "./token-usage-by-providers";
+import { formatNumberCompact } from "@/lib/format-number";
 
 function Icons({
   input_tokens = 0,
@@ -14,11 +15,11 @@ function Icons({
     <div className="flex tabular-nums gap-4 items-center">
       <div className="flex items-center gap-1">
         <Download01 className="size-4" />
-        {input_tokens}
+        {formatNumberCompact(input_tokens ?? 0)}
       </div>
       <div className="flex items-center gap-1">
         <Upload01 className="size-4" />
-        <span className="block">{output_tokens}</span>
+        <span className="block">{formatNumberCompact(output_tokens ?? 0)}</span>
       </div>
     </div>
   );
