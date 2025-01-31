@@ -96,7 +96,7 @@ export function TabsAlerts({ children }: { children: React.ReactNode }) {
           <Tab title="All" count={data?.all ?? 0} id={AlertsFilterView.ALL} />
           <Tab
             title="Malicious"
-            count={data?.all ?? 0}
+            count={data?.malicious ?? 0}
             id={AlertsFilterView.MALICIOUS}
           />
           <Tab
