@@ -5,6 +5,7 @@ import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
 import { makeMockAlert } from "../../mocks/alert.mock";
 import { TOKEN_USAGE_AGG } from "../../mocks/token-usage.mock";
+import { formatNumberCompact } from "@/lib/format-number";
 
 vi.mock("@untitled-ui/icons-react", async () => {
   const original = await vi.importActual<
@@ -18,14 +19,12 @@ vi.mock("@untitled-ui/icons-react", async () => {
 });
 
 const INPUT_TOKENS =
-  TOKEN_USAGE_AGG.tokens_by_model[
-    "claude-3-5-sonnet-latest"
-  ].token_usage.input_tokens.toString();
+  TOKEN_USAGE_AGG.tokens_by_model["claude-3-5-sonnet-latest"].token_usage
+    .input_tokens;
 
 const OUTPUT_TOKENS =
-  TOKEN_USAGE_AGG.tokens_by_model[
-    "claude-3-5-sonnet-latest"
-  ].token_usage.output_tokens.toString();
+  TOKEN_USAGE_AGG.tokens_by_model["claude-3-5-sonnet-latest"].token_usage
+    .output_tokens;
 
 test("renders token usage cell correctly", async () => {
   server.use(
@@ -47,7 +46,7 @@ test("renders token usage cell correctly", async () => {
 
   expect(
     getByRole("gridcell", {
-      name: `${INPUT_TOKENS} ${OUTPUT_TOKENS}`,
+      name: `${formatNumberCompact(INPUT_TOKENS)} ${formatNumberCompact(OUTPUT_TOKENS)}`,
     }),
   ).toBeVisible();
 });

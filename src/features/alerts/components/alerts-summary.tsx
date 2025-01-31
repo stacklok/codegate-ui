@@ -1,3 +1,4 @@
+import { formatNumberCompact } from "@/lib/format-number";
 import { Card, CardBody, Heading, Skeleton } from "@stacklok/ui-kit";
 import { ComponentProps } from "react";
 
@@ -13,7 +14,7 @@ function AlertsSummaryStatistic({
   return (
     <div data-testid={id} className="text-5xl flex items-center gap-1">
       <Icon className="size-11" />
-      {count}
+      {formatNumberCompact(count)}
     </div>
   );
 }

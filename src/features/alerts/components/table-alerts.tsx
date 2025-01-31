@@ -15,7 +15,6 @@ import {
   parsingPromptText,
   getIssueDetectedType,
 } from "@/lib/utils";
-
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
 
