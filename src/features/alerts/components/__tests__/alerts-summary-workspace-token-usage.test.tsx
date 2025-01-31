@@ -5,6 +5,7 @@ import { render, waitFor } from "@/lib/test-utils";
 
 import { AlertsSummaryWorkspaceTokenUsage } from "../alerts-summary-workspace-token-usage";
 import { TOKEN_USAGE_AGG } from "../../mocks/token-usage.mock";
+import { formatNumberCompact } from "@/lib/format-number";
 
 test("shows correct count when there is token usage", async () => {
   server.use(
@@ -17,10 +18,10 @@ test("shows correct count when there is token usage", async () => {
 
   await waitFor(() => {
     expect(getByTestId("usage-input-tokens")).toHaveTextContent(
-      TOKEN_USAGE_AGG.token_usage.input_tokens.toString(),
+      formatNumberCompact(TOKEN_USAGE_AGG.token_usage.input_tokens),
     );
     expect(getByTestId("usage-output-tokens")).toHaveTextContent(
-      TOKEN_USAGE_AGG.token_usage.output_tokens.toString(),
+      formatNumberCompact(TOKEN_USAGE_AGG.token_usage.output_tokens),
     );
   });
 });

@@ -1,5 +1,6 @@
 import { TokenUsage, TokenUsageAggregate } from "@/api/generated";
 import { formatCurrency } from "@/lib/currency";
+import { formatNumberCompact } from "@/lib/format-number";
 
 import { ArrowDown, ArrowUp } from "@untitled-ui/icons-react";
 
@@ -47,7 +48,7 @@ function UsageRow({
     <li className="min-w-40 flex items-center border-b border-b-gray-900 last:border-b-0 py-1 my-1 list-none">
       <UsageIcon iconType={type} className="size-4 text-gray-50" />
 
-      <div className="text-gray-50">{tokens}</div>
+      <div className="text-gray-50">{formatNumberCompact(tokens)}</div>
 
       <div className="ml-auto text-gray-25">
         {formatCurrency(cost, { currency: "USD" })}
