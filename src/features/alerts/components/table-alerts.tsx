@@ -83,7 +83,7 @@ const COLUMNS: Column[] = [
     id: "time",
     isRowHeader: true,
     children: "Time",
-    width: 150,
+    width: 200,
   },
   {
     id: "type",
@@ -143,7 +143,7 @@ function CellRenderer({
 export function TableAlerts() {
   const { state, prevPage, nextPage } = useAlertsFilterSearchParams();
 
-  const { data = [], isLoading } = useQueryGetWorkspaceAlertTable();
+  const { data = [] } = useQueryGetWorkspaceAlertTable();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     data,
@@ -159,9 +159,7 @@ export function TableAlerts() {
             {(column) => <Column {...column} id={column.id} />}
           </TableHeader>
           <TableBody
-            renderEmptyState={() => (
-              <TableAlertsEmptyState isLoading={isLoading} />
-            )}
+            renderEmptyState={() => <TableAlertsEmptyState />}
             items={dataView}
           >
             {(row) => (

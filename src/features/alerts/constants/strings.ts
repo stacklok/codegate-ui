@@ -4,6 +4,7 @@ export const emptyStateStrings = {
     getStarted: "Get started with CodeGate",
     noAlertsFound: "No alerts found",
     noAlertsFoundWorkspace: "This workspace hasn't triggered any alerts",
+    anErrorOccurred: "An error occurred",
     noLeakedSecretsDetected: "No leaked secrets detected",
     noMaliciousPackagesDetected: "No malicious packages detected",
     noSearchResultsFor: (x: string | undefined): string =>
@@ -11,6 +12,8 @@ export const emptyStateStrings = {
   },
   body: {
     loading: "Checking for the latest alerts.",
+    errorDesc:
+      "Please try refreshing the page. If this issue persists, please let us know on Discord, or open a a new Github Issue",
     getStartedDesc: "Learn how to get started with CodeGate in your IDE.",
     tryChangingSearch: "Try changing your search query or clearing the search.",
     alertsWillShowUpWhenWorkspace:
