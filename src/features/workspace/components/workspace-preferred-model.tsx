@@ -23,7 +23,8 @@ export function WorkspacePreferredModel({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { preferredModel, setPreferredModel } = usePreferredModelWorkspace();
+  const { preferredModel, setPreferredModel } =
+    usePreferredModelWorkspace(workspaceName);
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useModelsData();
   const { model, provider_id } = preferredModel;
