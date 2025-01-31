@@ -11,7 +11,7 @@ function HomeLink() {
   return (
     <Link to="/">
       <h1 className="text-2xl text-primary font-title w-max flex font-semibold">
-        CodeGate Dashboard
+        CodeGate
       </h1>
     </Link>
   );

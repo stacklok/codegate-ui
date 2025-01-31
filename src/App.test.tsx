@@ -11,9 +11,7 @@ describe("App", () => {
     expect(screen.getByText("Certificates")).toBeVisible();
     expect(screen.getByText("Help")).toBeVisible();
     expect(screen.getByRole("banner", { name: "App header" })).toBeVisible();
-    expect(
-      screen.getByRole("heading", { name: /codeGate dashboard/i }),
-    ).toBeVisible();
+    expect(screen.getByRole("heading", { name: /codeGate/i })).toBeVisible();
 
     await userEvent.click(screen.getByText("Certificates"));
 
@@ -79,9 +77,7 @@ describe("App", () => {
     await userEvent.click(screen.getByText("Help"));
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("link", { name: /codeGate dashboard/i }),
-      ).toBeVisible(),
+      expect(screen.getByRole("link", { name: /codeGate/i })).toBeVisible(),
     );
   });
 
@@ -89,9 +85,7 @@ describe("App", () => {
     render(<App />);
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("link", { name: "CodeGate Dashboard" }),
-      ).toBeVisible(),
+      expect(screen.getByRole("link", { name: "CodeGate" })).toBeVisible(),
     );
 
     const workspaceSelectionButton = screen.getByRole("button", {
