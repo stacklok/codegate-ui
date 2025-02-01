@@ -20,7 +20,7 @@
     "generate-icons": "npx @svgr/cli --typescript --no-dimensions --replace-attr-values '#2E323A=currentColor' --jsx-runtime automatic --out-dir ./src/components/icons/ -- icons"
   },
   "dependencies": {
-    "@hey-api/client-fetch": "^0.7.1",
+    "@hey-api/client-fetch": "^0.7.3",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-dialog": "^1.1.4",
     "@radix-ui/react-separator": "^1.1.0",
