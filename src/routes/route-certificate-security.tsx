@@ -76,7 +76,7 @@ export function RouteCertificateSecurity() {
                 <SecurityShieldIcon />
               </div>
               <h2 className="text-xl font-semibold mb-4">
-                Robust Certificate Security
+                Robust certificate security
               </h2>
               <p className="text-secondary mb-4">
                 Security is a top priority for us. We have designed CodeGate's
