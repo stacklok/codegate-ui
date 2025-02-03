@@ -127,7 +127,7 @@ const TEST_CASES: TestCase[] = [
         {
           role: "link",
           name: "CodeGate docs",
-          href: hrefs.external.docs,
+          href: hrefs.external.docs.home,
         },
       ],
     },
@@ -208,8 +208,8 @@ const TEST_CASES: TestCase[] = [
       actions: [
         {
           role: "link",
-          name: "Manage workspaces",
-          href: hrefs.workspaces.all,
+          name: "Learn about Workspaces",
+          href: hrefs.external.docs.workspaces,
         },
       ],
     },
