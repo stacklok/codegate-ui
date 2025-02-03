@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.11.0](https://github.com/stacklok/codegate-ui/compare/v0.10.0...v0.11.0) (2025-02-03)
+
+
+### Features
+
+* **alerts:** tabs for filtering table ([#234](https://github.com/stacklok/codegate-ui/issues/234)) ([2765917](https://github.com/stacklok/codegate-ui/commit/27659171019e0428279830049bbc38eace0123cc))
+* format token usage with "compact" notation ([#238](https://github.com/stacklok/codegate-ui/issues/238)) ([9911a7a](https://github.com/stacklok/codegate-ui/commit/9911a7a580d84c493276c547b252dde1bea23180))
+* implement empty state for tables ([#232](https://github.com/stacklok/codegate-ui/issues/232)) ([e39dbc3](https://github.com/stacklok/codegate-ui/commit/e39dbc3a715ac330d2aa15d4dc2dc5a7bbc77c00))
+* remove word "Dashboard" from header ([#236](https://github.com/stacklok/codegate-ui/issues/236)) ([89a6dc4](https://github.com/stacklok/codegate-ui/commit/89a6dc4feaa47d7293400de9247ab15f4c0d3a55))
+* richer empty states ([#239](https://github.com/stacklok/codegate-ui/issues/239)) ([c8990c2](https://github.com/stacklok/codegate-ui/commit/c8990c2687ca8f4da3c481f328373ec95aa18859))
+
 ## [0.10.0](https://github.com/stacklok/codegate-ui/compare/v0.9.0...v0.10.0) (2025-01-30)
 
 
