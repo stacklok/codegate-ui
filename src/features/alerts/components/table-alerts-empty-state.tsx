@@ -42,7 +42,7 @@ function EmptyStateGetStarted() {
         <LinkButton
           aria-label="CodeGate docs"
           key="codegate-docs"
-          href={hrefs.external.docs}
+          href={hrefs.external.docs.home}
           target="_blank"
         >
           CodeGate docs
@@ -81,8 +81,14 @@ function EmptyStateNoAlertsInWorkspace() {
       body={emptyStateStrings.body.alertsWillShowUpWhenWorkspace}
       illustration={IllustrationDone}
       actions={[
-        <LinkButton key="manage-workspaces" href={hrefs.workspaces.all}>
-          Manage workspaces
+        <LinkButton
+          key="learn-about-workspaces"
+          href={hrefs.external.docs.workspaces}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn about Workspaces
+          <LinkExternal02 />
         </LinkButton>,
       ]}
     />
@@ -121,7 +127,7 @@ function EmptyStateError() {
         <LinkButton
           key="discord"
           variant="secondary"
-          href="https://discord.gg/stacklok"
+          href={hrefs.external.discord}
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -131,7 +137,7 @@ function EmptyStateError() {
         <LinkButton
           key="github-issues"
           variant="secondary"
-          href="https://github.com/stacklok/codegate/issues/new"
+          href={hrefs.external.github.newIssue}
           rel="noopener noreferrer"
           target="_blank"
         >
