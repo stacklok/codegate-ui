@@ -12,7 +12,7 @@ import { MuxMatcherType } from "@/api/generated";
 import { FormEvent } from "react";
 import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
 import { Select, SelectButton } from "@stacklok/ui-kit";
-import { useModelsData } from "@/hooks/useModelsData";
+import { useModelsData } from "@/hooks/use-models-data";
 
 export function WorkspacePreferredModel({
   className,

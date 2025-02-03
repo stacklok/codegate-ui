@@ -30,7 +30,6 @@ const usePreferredModel = (options: {
     ...v1GetWorkspaceMuxesOptions(options),
   });
 };
-
 export const usePreferredModelWorkspace = (workspaceName: string) => {
   const options: V1GetWorkspaceMuxesData &
     Omit<V1GetWorkspaceMuxesData, "body"> = useMemo(

@@ -54,7 +54,7 @@ export function RouteWorkspace() {
         workspaceName={name}
       />
       <WorkspacePreferredModel
-        className="mb-4 hidden"
+        className="mb-4"
         isArchived={isArchived}
         workspaceName={name}
       />
