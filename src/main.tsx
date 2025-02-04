@@ -27,6 +27,7 @@ createRoot(document.getElementById("root")!).render(
           <SidebarProvider>
             <QueryClientProvider>
               <ErrorBoundary fallback={<Error />}>
+                <ReactQueryDevtools />
                 <ConfirmProvider>
                   <Toaster />
                   <App />
