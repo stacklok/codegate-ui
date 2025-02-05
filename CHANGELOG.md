@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.12.0](https://github.com/stacklok/codegate-ui/compare/v0.11.1...v0.12.0) (2025-02-05)
+
+
+### Features
+
+* add providers page and enable muxing ([#253](https://github.com/stacklok/codegate-ui/issues/253)) ([22c47ae](https://github.com/stacklok/codegate-ui/commit/22c47aed9aa3f527b17a4b14badff31a80100039))
+* react-query-utils ([#257](https://github.com/stacklok/codegate-ui/issues/257)) ([7d4a854](https://github.com/stacklok/codegate-ui/commit/7d4a854510db81e3b05e19db2d0a4f63363cd782))
+
 ## [0.11.1](https://github.com/stacklok/codegate-ui/compare/v0.11.0...v0.11.1) (2025-02-05)
 
 
