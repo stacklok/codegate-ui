@@ -1,6 +1,10 @@
 import { OpenApiTsReactQueryKey } from "@/types/openapi-ts";
 import { OptionsLegacyParser } from "@hey-api/client-fetch";
-import { Query, QueryClient } from "@tanstack/react-query";
+import {
+  Query,
+  QueryClient,
+  QueryObserverOptions,
+} from "@tanstack/react-query";
 
 // NOTE: This is copy/pasted from @/api/generated/@tanstack/react-query.gen
 type QueryKey<TOptions extends OptionsLegacyParser = OptionsLegacyParser> = [
@@ -33,6 +37,7 @@ export function invalidateQueries(
 ) {
   return queryClient.invalidateQueries({
     refetchType: "all",
+    stale: true,
     predicate: (
       query: Query<unknown, Error, unknown, OpenApiTsReactQueryKey>,
     ) => {
@@ -41,4 +46,28 @@ export function invalidateQueries(
       );
     },
   });
+}
+
+export function getQueryCacheConfig(
+  lifetime: "dynamic" | "short" | "indefinite",
+) {
+  switch (lifetime) {
+    case "dynamic":
+      return {
+        staleTime: 0,
+      } as const satisfies Pick<QueryObserverOptions, "staleTime">;
+
+    case "short":
+      return {
+        staleTime: 5 * 1_000,
+      } as const satisfies Pick<QueryObserverOptions, "staleTime">;
+
+    case "indefinite":
+      return {
+        staleTime: Infinity,
+      } as const satisfies Pick<QueryObserverOptions, "staleTime">;
+
+    default:
+      return lifetime satisfies never;
+  }
 }

@@ -1,5 +1,6 @@
 import { V1ListActiveWorkspacesResponse } from "@/api/generated";
 import { v1ListActiveWorkspacesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { getQueryCacheConfig } from "@/lib/react-query-utils";
 import {
   QueryCacheNotifyEvent,
   QueryClient,
@@ -36,7 +37,16 @@ export function QueryClientProvider({ children }: { children: ReactNode }) {
     null,
   );
 
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            ...getQueryCacheConfig("short"),
+          },
+        },
+      }),
+  );
 
   useEffect(() => {
     const queryCache = queryClient.getQueryCache();
