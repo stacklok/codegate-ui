@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.2](https://github.com/stacklok/codegate-ui/compare/v0.12.1...v0.12.2) (2025-02-05)
+
+
+### Bug Fixes
+
+* implement default caching options for react-query ([#265](https://github.com/stacklok/codegate-ui/issues/265)) ([694964f](https://github.com/stacklok/codegate-ui/commit/694964f7f0adfb3f3181da2680c98e95016e534f))
+
 ## [0.12.1](https://github.com/stacklok/codegate-ui/compare/v0.12.0...v0.12.1) (2025-02-05)
 
 
