@@ -10,7 +10,7 @@ export function useProvider(providerId: string) {
     auth_type: null,
     provider_type: ProviderType.OPENAI,
     endpoint: "",
-    api_key: ""
+    api_key: "",
   });
 
   const { data, isPending, isError } = useQuery({
@@ -23,6 +23,5 @@ export function useProvider(providerId: string) {
     }
   }, [data]);
 
-  console.log({ provider });
   return { isPending, isError, provider, setProvider };
 }
