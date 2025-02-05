@@ -17,7 +17,7 @@ const DEFAULT_PROVIDER_STATE = {
 
 export function RouteProviderCreate() {
   const [provider, setProvider] = useState<AddProviderEndpointRequest>(
-    DEFAULT_PROVIDER_STATE
+    DEFAULT_PROVIDER_STATE,
   );
   const { mutateAsync } = useMutationCreateProvider();
 
@@ -29,13 +29,13 @@ export function RouteProviderCreate() {
   };
 
   return (
-    <ProviderDialog title="Create Provider">
-      <Form onSubmit={handleSubmit} validationBehavior="aria">
+    <Form onSubmit={handleSubmit} validationBehavior="aria">
+      <ProviderDialog title="Create Provider">
         <DialogContent className="p-8">
           <ProviderForm provider={provider} setProvider={setProvider} />
         </DialogContent>
         <ProviderDialogFooter />
-      </Form>
-    </ProviderDialog>
+      </ProviderDialog>
+    </Form>
   );
 }
