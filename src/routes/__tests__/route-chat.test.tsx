@@ -19,8 +19,9 @@ vi.mock("@/hooks/useCurrentPromptStore", () => ({
   })),
 }));
 
-vi.mock("@/hooks/usePromptsData", () => ({
-  usePromptsData: vi.fn(() => ({
+// TODO: Replace this with MSW
+vi.mock("@/hooks/use-query-get-workspace-messages", () => ({
+  useQueryGetWorkspaceMessages: vi.fn(() => ({
     data: [
       {
         question_answers: [
