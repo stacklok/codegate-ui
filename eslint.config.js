@@ -5,6 +5,15 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import tailwindPlugin from "eslint-plugin-tailwindcss";
 
+const restrictedSyntax = {
+  reactQuery: {
+    useQuery: (v) =>
+      `CallExpression[callee.name='useQuery'] > ObjectExpression:first-child > Property[key.name='${v}']`,
+    useQueries: (v) =>
+      `CallExpression[callee.name='useQueries'] > ObjectExpression:first-child > Property[key.name='queries'] > ArrayExpression > ObjectExpression > Property[key.name='${v}']`,
+  },
+};
+
 export default tseslint.config(
   { ignores: ["dist"] },
   {
@@ -54,6 +63,47 @@ export default tseslint.config(
             "subhead-bold",
             "subhead-regular",
           ],
+        },
+      ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: [
+            restrictedSyntax.reactQuery.useQuery("staleTime"),
+            restrictedSyntax.reactQuery.useQuery("gcTime"),
+            restrictedSyntax.reactQuery.useQueries("staleTime"),
+            restrictedSyntax.reactQuery.useQueries("gcTime"),
+          ].join(", "),
+          message:
+            "`staleTime` & `gcTime` should be managed via the `getQueryCacheConfig` util instead.",
+        },
+        {
+          selector: [
+            restrictedSyntax.reactQuery.useQuery("queryKey"),
+            restrictedSyntax.reactQuery.useQuery("queryFn"),
+            restrictedSyntax.reactQuery.useQueries("queryKey"),
+            restrictedSyntax.reactQuery.useQueries("queryFn"),
+          ].join(", "),
+          message:
+            "'queryKey' & 'queryFn' should be managed by openapi-ts react-query integration instead. This allows standardized management of query keys & cache invalidation.",
+        },
+        {
+          selector: [
+            restrictedSyntax.reactQuery.useQuery("refetchOnMount"),
+            restrictedSyntax.reactQuery.useQuery("refetchOnReconnect"),
+            restrictedSyntax.reactQuery.useQuery("refetchOnWindowFocus"),
+            restrictedSyntax.reactQuery.useQueries("refetchOnMount"),
+            restrictedSyntax.reactQuery.useQueries("refetchOnReconnect"),
+            restrictedSyntax.reactQuery.useQueries("refetchOnWindowFocus"),
+          ].join(", "),
+          message:
+            "`refetchOnMount`, `refetchOnReconnect` & `refetchOnWindowFocus` should be managed centrally in the react-query provider",
+        },
+        {
+          selector:
+            "CallExpression > MemberExpression[property.name='invalidateQueries']",
+          message:
+            "Do not directly call `invalidateQueries`. Instead, use the `invalidateQueries` helper function.",
         },
       ],
       "no-restricted-imports": [

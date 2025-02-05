@@ -4,6 +4,7 @@ import {
 } from "@/api/generated";
 import { v1GetWorkspaceAlertsOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useActiveWorkspaceName } from "@/features/workspace/hooks/use-active-workspace-name";
+import { getQueryCacheConfig } from "@/lib/react-query-utils";
 import { useQuery } from "@tanstack/react-query";
 
 export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
@@ -33,9 +34,7 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     ...rest
   } = useQuery({
     ...v1GetWorkspaceAlertsOptions(options),
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
+    ...getQueryCacheConfig("5s"),
     select,
   });
 

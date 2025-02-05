@@ -1,8 +1,3 @@
-export enum HealthStatus {
-  HEALTHY = "Healthy",
-  UNHEALTHY = "Unhealthy",
-}
-
 export type VersionResponse = {
   current_version: string;
   latest_version: string;

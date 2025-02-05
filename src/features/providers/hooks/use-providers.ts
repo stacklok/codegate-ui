@@ -4,8 +4,5 @@ import { v1ListProviderEndpointsOptions } from "@/api/generated/@tanstack/react-
 export function useProviders() {
   return useQuery({
     ...v1ListProviderEndpointsOptions(),
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
   });
 }

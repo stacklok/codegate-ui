@@ -1,11 +1,4 @@
-import {
-  DefinedUseQueryResult,
-  QueryObserverLoadingErrorResult,
-  QueryObserverLoadingResult,
-  QueryObserverPendingResult,
-  QueryObserverRefetchErrorResult,
-  useQueries,
-} from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import {
   v1ListArchivedWorkspacesOptions,
   v1ListWorkspacesOptions,
@@ -14,20 +7,14 @@ import {
   V1ListArchivedWorkspacesResponse,
   V1ListWorkspacesResponse,
 } from "@/api/generated";
+import { QueryResult } from "@/types/react-query";
 
-type QueryResult<T> =
-  | DefinedUseQueryResult<T, Error>
-  | QueryObserverLoadingErrorResult<T, Error>
-  | QueryObserverLoadingResult<T, Error>
-  | QueryObserverPendingResult<T, Error>
-  | QueryObserverRefetchErrorResult<T, Error>;
-
-type UseQueryDataReturn = [
+type UseQueryReturn = [
   QueryResult<V1ListWorkspacesResponse>,
   QueryResult<V1ListArchivedWorkspacesResponse>,
 ];
 
-const combine = (results: UseQueryDataReturn) => {
+const combine = (results: UseQueryReturn) => {
   const [workspaces, archivedWorkspaces] = results;
 
   const active = workspaces.data?.workspaces

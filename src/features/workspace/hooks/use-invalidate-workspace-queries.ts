@@ -1,7 +1,8 @@
 import {
   v1ListArchivedWorkspacesQueryKey,
-  v1ListWorkspacesOptions,
+  v1ListWorkspacesQueryKey,
 } from "@/api/generated/@tanstack/react-query.gen";
+import { invalidateQueries } from "@/lib/react-query-utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -9,14 +10,10 @@ export function useInvalidateWorkspaceQueries() {
   const queryClient = useQueryClient();
 
   const invalidate = useCallback(async () => {
-    await queryClient.invalidateQueries({
-      queryKey: v1ListWorkspacesOptions(),
-      refetchType: "all",
-    });
-    await queryClient.invalidateQueries({
-      queryKey: v1ListArchivedWorkspacesQueryKey(),
-      refetchType: "all",
-    });
+    invalidateQueries(queryClient, [
+      v1ListWorkspacesQueryKey,
+      v1ListArchivedWorkspacesQueryKey,
+    ]);
   }, [queryClient]);
 
   return invalidate;

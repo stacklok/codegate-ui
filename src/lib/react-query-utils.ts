@@ -15,9 +15,12 @@ type QueryKey<TOptions extends OptionsLegacyParser = OptionsLegacyParser> = [
 ];
 
 // A generic type that describes the possible permutations of openapi-ts
-// react-query queryKey functions. The use of `any` is required to make it
-// generic enough for use with any openapi-ts queryKey fn. The return type
-// constraint is sufficiently strict that it is still safe to use.
+// react-query queryKey functions.
+//
+// NOTE: The use of `any` is required to make it generic enough for use with any
+// openapi-ts queryKey fn. The return type constraint is sufficiently strict
+// that it is still safe to use.
+//
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type QueryKeyFn = (options: any) => QueryKey[0][];
 
@@ -34,10 +37,12 @@ const getQueryKeyFnId = <T extends OptionsLegacyParser>(
 export function invalidateQueries(
   queryClient: QueryClient,
   queryKeyFns: QueryKeyFn[],
+  options: { stale: boolean } = { stale: true },
 ) {
+  // eslint-disable-next-line no-restricted-syntax
   return queryClient.invalidateQueries({
     refetchType: "all",
-    stale: true,
+    stale: options.stale,
     predicate: (
       query: Query<unknown, Error, unknown, OpenApiTsReactQueryKey>,
     ) => {
@@ -49,15 +54,15 @@ export function invalidateQueries(
 }
 
 export function getQueryCacheConfig(
-  lifetime: "dynamic" | "short" | "indefinite",
+  lifetime: "no-cache" | "5s" | "indefinite",
 ) {
   switch (lifetime) {
-    case "dynamic":
+    case "no-cache":
       return {
         staleTime: 0,
       } as const satisfies Pick<QueryObserverOptions, "staleTime">;
 
-    case "short":
+    case "5s":
       return {
         staleTime: 5 * 1_000,
       } as const satisfies Pick<QueryObserverOptions, "staleTime">;

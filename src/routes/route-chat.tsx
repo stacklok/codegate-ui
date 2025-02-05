@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { usePromptsData } from "@/hooks/usePromptsData";
+import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
 import { parsingPromptText, sanitizeQuestionPrompt } from "@/lib/utils";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import {
@@ -13,7 +13,7 @@ import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 
 export function RouteChat() {
   const { id } = useParams();
-  const { data: prompts } = usePromptsData();
+  const { data: prompts } = useQueryGetWorkspaceMessages();
   const chat = prompts?.find((prompt) => prompt.chat_id === id);
 
   const title =

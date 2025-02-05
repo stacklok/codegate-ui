@@ -11,9 +11,6 @@ export function useListWorkspaces<T = V1ListWorkspacesResponse>({
     ...v1ListWorkspacesOptions(),
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
     retry: false,
     select,
   });

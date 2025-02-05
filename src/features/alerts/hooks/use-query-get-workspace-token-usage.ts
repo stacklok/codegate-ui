@@ -23,9 +23,6 @@ export function useQueryGetWorkspaceTokenUsage<
 
   return useQuery({
     ...v1GetWorkspaceTokenUsageOptions(options),
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
     select,
   });
 }

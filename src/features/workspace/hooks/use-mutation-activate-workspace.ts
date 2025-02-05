@@ -7,6 +7,7 @@ export function useMutationActivateWorkspace() {
 
   return useToastMutation({
     ...v1ActivateWorkspaceMutation(),
+    // eslint-disable-next-line no-restricted-syntax
     onSuccess: () => queryClient.invalidateQueries({ refetchType: "all" }), // Global setting, refetch **everything**
     successMsg: (variables) => `Activated "${variables.body.name}" workspace`,
   });

@@ -42,7 +42,10 @@ export function QueryClientProvider({ children }: { children: ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            ...getQueryCacheConfig("short"),
+            ...getQueryCacheConfig("no-cache"),
+            refetchOnMount: true,
+            refetchOnReconnect: true,
+            refetchOnWindowFocus: true,
           },
         },
       }),
@@ -65,6 +68,7 @@ export function QueryClientProvider({ children }: { children: ReactNode }) {
 
         setActiveWorkspaceName(newWorkspaceName);
 
+        // eslint-disable-next-line no-restricted-syntax
         void queryClient.invalidateQueries({
           refetchType: "all",
           // Avoid a continuous loop

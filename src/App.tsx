@@ -1,12 +1,12 @@
 import { Header } from "./features/header/components/header";
 import { PromptList } from "./components/PromptList";
-import { usePromptsData } from "./hooks/usePromptsData";
+import { useQueryGetWorkspaceMessages } from "./hooks/use-query-get-workspace-messages";
 import { Sidebar } from "./components/Sidebar";
 import { useSse } from "./hooks/useSse";
 import Page from "./Page";
 
 function App() {
-  const { data: prompts, isLoading } = usePromptsData();
+  const { data: prompts, isLoading } = useQueryGetWorkspaceMessages();
   useSse();
 
   return (

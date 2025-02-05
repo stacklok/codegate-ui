@@ -51,6 +51,7 @@ import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation
 import Fuse from "fuse.js";
 import systemPrompts from "../constants/built-in-system-prompts.json";
 import { MessageTextSquare02, SearchMd } from "@untitled-ui/icons-react";
+import { invalidateQueries } from "@/lib/react-query-utils";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -290,12 +291,10 @@ export function WorkspaceCustomInstructions({
       mutateAsync(
         { ...options, body: { prompt: value } },
         {
-          onSuccess: () => {
-            queryClient.invalidateQueries({
-              queryKey: v1GetWorkspaceCustomInstructionsQueryKey(options),
-              refetchType: "all",
-            });
-          },
+          onSuccess: () =>
+            invalidateQueries(queryClient, [
+              v1GetWorkspaceCustomInstructionsQueryKey,
+            ]),
         },
       );
     },

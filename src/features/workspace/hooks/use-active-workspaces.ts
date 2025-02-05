@@ -11,9 +11,6 @@ export function useActiveWorkspaces<T = ListActiveWorkspacesResponse>({
     ...v1ListActiveWorkspacesOptions(),
     refetchInterval: 5_000,
     refetchIntervalInBackground: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
     retry: false,
     select,
   });

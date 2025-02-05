@@ -37,7 +37,8 @@ export function WorkspacesSelection() {
 
   const handleWorkspaceClick = (name: string) => {
     activateWorkspace({ body: { name } }).then(() => {
-      queryClient.invalidateQueries({ refetchType: "all" });
+      // eslint-disable-next-line no-restricted-syntax
+      queryClient.invalidateQueries({ refetchType: "all" }); // Global setting, refetch **everything**
       setIsOpen(false);
     });
   };
