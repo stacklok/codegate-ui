@@ -34,7 +34,7 @@ export function useMutationUpdateProvider() {
 
   return useToastMutation({
     mutationFn,
-    successMsg: "Successfully update provider",
+    successMsg: "Successfully updated provider",
     onSuccess: async () => {
       await invalidate();
       navigate("/providers");

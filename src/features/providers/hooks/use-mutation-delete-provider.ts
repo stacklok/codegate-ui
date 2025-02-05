@@ -8,6 +8,6 @@ export const useMutationDeleteProvider = () => {
   return useToastMutation({
     ...v1DeleteProviderEndpointMutation(),
     onSuccess: () => invalidate(),
-    successMsg: () => "Successfully delete provider",
+    successMsg: () => "Successfully deleted provider",
   });
 };
