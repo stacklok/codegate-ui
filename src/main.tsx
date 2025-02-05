@@ -12,6 +12,7 @@ import { QueryClientProvider } from "./components/react-query-provider.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { UiKitClientSideRoutingProvider } from "./lib/ui-kit-client-side-routing.tsx";
 import { ConfirmProvider } from "./context/confirm-context.tsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Initialize the API client
 client.setConfig({
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
                   <App />
                 </ConfirmProvider>
               </ErrorBoundary>
+              <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
           </SidebarProvider>
         </DarkModeProvider>
