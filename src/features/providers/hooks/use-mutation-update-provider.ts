@@ -13,9 +13,11 @@ export function useMutationUpdateProvider() {
   const invalidate = useInvalidateProvidersQueries();
 
   const mutationFn = ({ api_key, ...rest }: AddProviderEndpointRequest) => {
+    const provider_id = rest.id;
+    if (!provider_id) throw new Error("Provider is missing");
     return Promise.all([
       v1ConfigureAuthMaterial({
-        path: { provider_id: rest.id as string },
+        path: { provider_id },
         body: {
           api_key: api_key,
           auth_type: rest.auth_type as ProviderAuthType,
@@ -24,7 +26,7 @@ export function useMutationUpdateProvider() {
       }),
 
       v1UpdateProviderEndpoint({
-        path: { provider_id: rest.id as string },
+        path: { provider_id },
         body: rest,
       }),
     ]);
