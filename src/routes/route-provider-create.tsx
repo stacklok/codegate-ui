@@ -29,13 +29,13 @@ export function RouteProviderCreate() {
   };
 
   return (
-    <Form onSubmit={handleSubmit} validationBehavior="aria">
-      <ProviderDialog title="Create Provider">
+    <ProviderDialog title="Create Provider">
+      <Form onSubmit={handleSubmit} validationBehavior="aria">
         <DialogContent className="p-8">
           <ProviderForm provider={provider} setProvider={setProvider} />
         </DialogContent>
         <ProviderDialogFooter />
-      </ProviderDialog>
-    </Form>
+      </Form>
+    </ProviderDialog>
   );
 }
