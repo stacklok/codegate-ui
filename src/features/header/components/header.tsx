@@ -3,9 +3,9 @@ import { SidebarTrigger } from "../../../components/ui/sidebar";
 import { DropdownMenu } from "../../../components/HoverPopover";
 import { Separator, ButtonDarkMode } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
-import { CERTIFICATE_MENU_ITEMS } from "../constants/certificate-menu-items";
 import { HELP_MENU_ITEMS } from "../constants/help-menu-items";
 import { HeaderStatusMenu } from "./header-status-menu";
+import { SETTINGS_MENU_ITEMS } from "../constants/settings-menu-items";
 
 function HomeLink() {
   return (
@@ -39,8 +39,8 @@ export function Header({ hasError }: { hasError?: boolean }) {
       </div>
       <div className="flex items-center gap-1 mr-2">
         <HeaderStatusMenu />
-        <DropdownMenu title="Certificates" items={CERTIFICATE_MENU_ITEMS} />
         <DropdownMenu title="Help" items={HELP_MENU_ITEMS} />
+        <DropdownMenu title="Settings" items={SETTINGS_MENU_ITEMS} />
 
         <ButtonDarkMode />
       </div>

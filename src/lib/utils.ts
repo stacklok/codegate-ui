@@ -73,7 +73,7 @@ export function groupPromptsByRelativeDate(prompts: Conversation[]) {
   const promptsSorted = prompts.sort(
     (a, b) =>
       new Date(b.conversation_timestamp).getTime() -
-      new Date(a.conversation_timestamp).getTime(),
+      new Date(a.conversation_timestamp).getTime()
   );
 
   const grouped = promptsSorted.reduce(
@@ -90,7 +90,7 @@ export function groupPromptsByRelativeDate(prompts: Conversation[]) {
       (groups[group] ?? []).push(prompt);
       return groups;
     },
-    {} as Record<string, Conversation[]>,
+    {} as Record<string, Conversation[]>
   );
 
   return grouped;
@@ -125,10 +125,15 @@ export function sanitizeQuestionPrompt({
 }
 
 export function getIssueDetectedType(
-  alert: AlertConversation,
+  alert: AlertConversation
 ): "malicious_package" | "leaked_secret" | null {
   if (isAlertMalicious(alert)) return "malicious_package";
   if (isAlertSecret(alert)) return "leaked_secret";
 
   return null;
+}
+
+export function capitalize(text: string) {
+  const [first, ...rest] = text;
+  return first ? first.toUpperCase() + rest.join("") : text;
 }

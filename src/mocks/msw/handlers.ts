@@ -3,6 +3,7 @@ import mockedPrompts from "@/mocks/msw/fixtures/GET_MESSAGES.json";
 import mockedAlerts from "@/mocks/msw/fixtures/GET_ALERTS.json";
 import mockedWorkspaces from "@/mocks/msw/fixtures/GET_WORKSPACES.json";
 import mockedProviders from "@/mocks/msw/fixtures/GET_PROVIDERS.json";
+import mockedProvidersModels from "@/mocks/msw/fixtures/GET_PROVIDERS_MODELS.json";
 import { ProviderType } from "@/api/generated";
 
 export const handlers = [
@@ -112,11 +113,17 @@ export const handlers = [
     "*/api/v1/workspaces/:workspace_name/muxes",
     () => new HttpResponse(null, { status: 204 }),
   ),
-  http.get("*/api/v1/provider-endpoints", () =>
-    HttpResponse.json(mockedProviders),
+  http.get("*/api/v1/provider-endpoints/:provider_name/models", () =>
+    HttpResponse.json(mockedProvidersModels),
+  ),
+  http.get("*/api/v1/provider-endpoints/models", () =>
+    HttpResponse.json(mockedProvidersModels),
   ),
   http.get("*/api/v1/provider-endpoints/:provider_id", () =>
     HttpResponse.json(mockedProviders[0]),
+  ),
+  http.get("*/api/v1/provider-endpoints", () =>
+    HttpResponse.json(mockedProviders),
   ),
   http.post(
     "*/api/v1/provider-endpoints",
@@ -129,23 +136,5 @@ export const handlers = [
   http.delete(
     "*/api/v1/provider-endpoints",
     () => new HttpResponse(null, { status: 204 }),
-  ),
-  http.get("*/api/v1/provider-endpoints/:provider_name/models", () =>
-    HttpResponse.json([
-      { name: "claude-3.5", provider: "anthropic" },
-      { name: "claude-3.6", provider: "anthropic" },
-      { name: "claude-3.7", provider: "anthropic" },
-      { name: "chatgpt-4o", provider: "openai" },
-      { name: "chatgpt-4p", provider: "openai" },
-    ]),
-  ),
-  http.get("*/api/v1/provider-endpoints/models", () =>
-    HttpResponse.json([
-      { name: "claude-3.5", provider: "anthropic" },
-      { name: "claude-3.6", provider: "anthropic" },
-      { name: "claude-3.7", provider: "anthropic" },
-      { name: "chatgpt-4o", provider: "openai" },
-      { name: "chatgpt-4p", provider: "openai" },
-    ]),
   ),
 ];

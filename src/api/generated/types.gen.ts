@@ -11,6 +11,19 @@ export type ActiveWorkspace = {
 };
 
 /**
+ * Represents a request to add a provider endpoint.
+ */
+export type AddProviderEndpointRequest = {
+  id?: string | null;
+  name: string;
+  description?: string;
+  provider_type: ProviderType;
+  endpoint?: string;
+  auth_type?: ProviderAuthType | null;
+  api_key?: string | null;
+};
+
+/**
  * Represents an alert with it's respective conversation.
  */
 export type AlertConversation = {
@@ -100,7 +113,6 @@ export type ModelByProvider = {
  * Represents the different types of matchers we support.
  */
 export enum MuxMatcherType {
-  FILE_REGEX = "file_regex",
   CATCH_ALL = "catch_all",
 }
 
@@ -133,7 +145,7 @@ export type ProviderEndpoint = {
   name: string;
   description?: string;
   provider_type: ProviderType;
-  endpoint: string;
+  endpoint?: string;
   auth_type?: ProviderAuthType | null;
 };
 
@@ -219,7 +231,7 @@ export type V1ListProviderEndpointsResponse = Array<ProviderEndpoint>;
 export type V1ListProviderEndpointsError = HTTPValidationError;
 
 export type V1AddProviderEndpointData = {
-  body: ProviderEndpoint;
+  body: AddProviderEndpointRequest;
 };
 
 export type V1AddProviderEndpointResponse = ProviderEndpoint;

@@ -12,7 +12,7 @@ import { MuxMatcherType } from "@/api/generated";
 import { FormEvent } from "react";
 import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
 import { Select, SelectButton } from "@stacklok/ui-kit";
-import { useModelsData } from "@/hooks/useModelsData";
+import { useModelsData } from "@/hooks/use-models-data";
 
 export function WorkspacePreferredModel({
   className,
@@ -23,7 +23,8 @@ export function WorkspacePreferredModel({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { preferredModel, setPreferredModel } = usePreferredModelWorkspace();
+  const { preferredModel, setPreferredModel } =
+    usePreferredModelWorkspace(workspaceName);
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useModelsData();
   const { model, provider_id } = preferredModel;
