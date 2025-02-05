@@ -7,12 +7,19 @@ vi.mock("react-router-dom", () => ({
   useLocation: vi.fn(() => ({ pathname: "/" })),
 }));
 
-const mockSendNotification = vi.fn();
-vi.mock("../useBrowserNotification", () => ({
-  useBrowserNotification: vi.fn(() => {
-    return { sendNotification: mockSendNotification };
-  }),
-}));
+const mockInvalidate = vi.fn();
+
+vi.mock("@tanstack/react-query", async () => {
+  const original = await vi.importActual<
+    typeof import("@tanstack/react-query")
+  >("@tanstack/react-query");
+  return {
+    ...original,
+    useQueryClient: () => ({
+      invalidateQueries: mockInvalidate,
+    }),
+  };
+});
 
 class MockEventSource {
   static instances: MockEventSource[] = [];
@@ -63,7 +70,7 @@ describe("useSse", () => {
     global.EventSource = originalEventSource;
   });
 
-  it("should send notification if new alert is detected", () => {
+  it("should invalidate queries if new alert is detected", () => {
     renderHook(() => useSse(), { wrapper: TestQueryClientProvider });
 
     expect(MockEventSource.instances.length).toBe(1);
@@ -76,29 +83,6 @@ describe("useSse", () => {
       MockEventSource.triggerMessage("new alert detected");
     });
 
-    expect(mockSendNotification).toHaveBeenCalledWith("CodeGate Dashboard", {
-      body: "New Alert detected!",
-    });
-
-    act(() => {
-      vi.advanceTimersByTime(2000);
-    });
-
-    expect(global.location.reload).toHaveBeenCalled();
-  });
-
-  it("should send notification if new alert is detected", () => {
-    renderHook(() => useSse(), { wrapper: TestQueryClientProvider });
-
-    act(() => {
-      MockEventSource.triggerMessage("other message");
-    });
-
-    expect(mockSendNotification).not.toHaveBeenCalledWith(
-      "CodeGate Dashboard",
-      {
-        body: "New Alert detected!",
-      },
-    );
+    expect(mockInvalidate).toHaveBeenCalled();
   });
 });
