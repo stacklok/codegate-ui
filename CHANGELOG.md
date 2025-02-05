@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/stacklok/codegate-ui/compare/v0.11.0...v0.11.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* don't call window reload every time we receive an alert ([#251](https://github.com/stacklok/codegate-ui/issues/251)) ([a2da3ae](https://github.com/stacklok/codegate-ui/commit/a2da3aeac595ee4328e833858a81b34a2a0472cc))
+
 ## [0.11.0](https://github.com/stacklok/codegate-ui/compare/v0.10.0...v0.11.0) (2025-02-03)
 
 
