@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/stacklok/codegate-ui/compare/v0.12.0...v0.12.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* create form provider submit ([#263](https://github.com/stacklok/codegate-ui/issues/263)) ([3e4632e](https://github.com/stacklok/codegate-ui/commit/3e4632e8b169abb3605d86d27ccf79004ba13a41))
+
 ## [0.12.0](https://github.com/stacklok/codegate-ui/compare/v0.11.1...v0.12.0) (2025-02-05)
 
 
