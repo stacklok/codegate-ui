@@ -113,7 +113,11 @@ export function ProviderForm({ provider, setProvider }: Props) {
           >
             <Label>Api key</Label>
             <Input
-              placeholder="Update the provider API key"
+              placeholder={
+                provider.api_key === undefined
+                  ? "Update the provider API key"
+                  : "Specify the provider API key"
+              }
               value={provider.api_key ?? ""}
             />
           </TextField>
