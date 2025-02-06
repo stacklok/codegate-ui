@@ -111,7 +111,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
             isRequired
             onChange={(api_key) => setProvider({ ...provider, api_key })}
           >
-            <Label>Api key</Label>
+            <Label>API key</Label>
             <Input
               placeholder={
                 provider.api_key === undefined
