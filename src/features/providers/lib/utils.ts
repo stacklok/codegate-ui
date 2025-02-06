@@ -46,5 +46,5 @@ export function getProviderAuthByType(provider_type: ProviderType) {
     .with(ProviderType.OPENAI, () => ProviderAuthType.API_KEY)
     .with(ProviderType.ANTHROPIC, () => ProviderAuthType.API_KEY)
     .with(ProviderType.OPENROUTER, () => ProviderAuthType.API_KEY)
-    .otherwise(() => "");
+    .otherwise(() => ProviderAuthType.NONE);
 }

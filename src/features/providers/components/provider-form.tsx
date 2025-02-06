@@ -26,6 +26,14 @@ export function ProviderForm({ provider, setProvider }: Props) {
   const providerEndpoint =
     provider.endpoint || getProviderEndpointByAuthType(provider.provider_type);
 
+  const handleProviderType = (provider: AddProviderEndpointRequest) => {
+    setProvider({
+      ...provider,
+      auth_type: getProviderAuthByType(provider.provider_type),
+      endpoint: getProviderEndpointByAuthType(provider.provider_type),
+    });
+  };
+
   return (
     <div className="w-full">
       <div className="">
@@ -52,7 +60,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
           items={getProviderType()}
           onSelectionChange={(provider_type) => {
             if (isProviderType(provider_type)) {
-              setProvider({
+              handleProviderType({
                 ...provider,
                 provider_type,
               });
