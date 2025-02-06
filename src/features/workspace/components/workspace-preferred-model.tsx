@@ -1,9 +1,11 @@
 import {
+  Alert,
   Button,
   Card,
   CardBody,
   CardFooter,
   Form,
+  LinkButton,
   Text,
 } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
@@ -13,6 +15,19 @@ import { FormEvent } from "react";
 import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
 import { Select, SelectButton } from "@stacklok/ui-kit";
 import { useModelsData } from "@/hooks/use-models-data";
+
+function MissingProviderBanner() {
+  return (
+    <Alert
+      variant="warning"
+      title="Configuring a provider first, so you can select your desired model."
+    >
+      <LinkButton variant="secondary" className="mt-4" href="/providers">
+        Add Provider
+      </LinkButton>
+    </Alert>
+  );
+}
 
 export function WorkspacePreferredModel({
   className,
@@ -28,6 +43,7 @@ export function WorkspacePreferredModel({
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useModelsData();
   const { model, provider_id } = preferredModel;
+  const isModelsEmpty = providerModels.length === 0;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -54,12 +70,14 @@ export function WorkspacePreferredModel({
               Select the model you would like to use in this workspace.
             </Text>
           </div>
+          {isModelsEmpty && <MissingProviderBanner />}
           <div>
             <div className="flex flex-col gap-2">
               <Select
                 aria-labelledby="preferred-model-id"
                 name="model"
                 isRequired
+                isDisabled={isModelsEmpty}
                 className="w-full"
                 selectedKey={preferredModel?.model}
                 placeholder="Select the model"
@@ -86,7 +104,7 @@ export function WorkspacePreferredModel({
           </div>
         </CardBody>
         <CardFooter className="justify-end">
-          <Button isDisabled={isArchived || workspaceName === ""} type="submit">
+          <Button isDisabled={isArchived || isModelsEmpty} type="submit">
             Save
           </Button>
         </CardFooter>

@@ -3,6 +3,11 @@ import { v1GetWorkspaceMuxesOptions } from "@/api/generated/@tanstack/react-quer
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
+const DEFAULT_STATE = {
+  provider_id: "",
+  model: "",
+};
+
 export type ModelRule = Omit<MuxRule, "matcher_type" | "matcher"> & {};
 
 const usePreferredModel = (options: {
@@ -14,11 +19,10 @@ const usePreferredModel = (options: {
     ...v1GetWorkspaceMuxesOptions(options),
   });
 };
+
 export const usePreferredModelWorkspace = (workspaceName: string) => {
-  const [preferredModel, setPreferredModel] = useState<ModelRule>({
-    provider_id: "",
-    model: "",
-  });
+  const [preferredModel, setPreferredModel] =
+    useState<ModelRule>(DEFAULT_STATE);
   const options: V1GetWorkspaceMuxesData &
     Omit<V1GetWorkspaceMuxesData, "body"> = useMemo(
     () => ({
@@ -30,9 +34,8 @@ export const usePreferredModelWorkspace = (workspaceName: string) => {
 
   useEffect(() => {
     const providerModel = data?.[0];
-    if (providerModel) {
-      setPreferredModel(providerModel);
-    }
+
+    setPreferredModel(providerModel ?? DEFAULT_STATE);
   }, [data, setPreferredModel]);
 
   return { preferredModel, setPreferredModel };
