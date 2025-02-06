@@ -5,6 +5,7 @@ import {
   CardBody,
   CardFooter,
   Form,
+  Link,
   LinkButton,
   Text,
 } from "@stacklok/ui-kit";
@@ -66,8 +67,12 @@ export function WorkspacePreferredModel({
         <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">
             <Text className="text-primary">Preferred Model</Text>
-            <Text className="flex items-center text-secondary mb-0 text-balance">
-              Select the model you would like to use in this workspace.
+            <Text className="flex items-center gap-1 text-secondary mb-0 text-balance">
+              Select the model you would like to use in this workspace. This
+              section applies only if you are using the{" "}
+              <Link variant="primary" href="/providers">
+                MUX endpoint.
+              </Link>
             </Text>
           </div>
           {isModelsEmpty && <MissingProviderBanner />}
