@@ -1,25 +1,9 @@
 import { MuxRule, V1GetWorkspaceMuxesData } from "@/api/generated";
 import { v1GetWorkspaceMuxesOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
-import { create } from "zustand";
+import { useEffect, useMemo, useState } from "react";
 
 export type ModelRule = Omit<MuxRule, "matcher_type" | "matcher"> & {};
-
-type State = {
-  setPreferredModel: (model: ModelRule) => void;
-  preferredModel: ModelRule;
-};
-
-const useModelValue = create<State>((set) => ({
-  preferredModel: {
-    provider_id: "",
-    model: "",
-  },
-  setPreferredModel: ({ model, provider_id }: ModelRule) => {
-    set({ preferredModel: { provider_id, model } });
-  },
-}));
 
 const usePreferredModel = (options: {
   path: {
@@ -31,6 +15,10 @@ const usePreferredModel = (options: {
   });
 };
 export const usePreferredModelWorkspace = (workspaceName: string) => {
+  const [preferredModel, setPreferredModel] = useState<ModelRule>({
+    provider_id: "",
+    model: "",
+  });
   const options: V1GetWorkspaceMuxesData &
     Omit<V1GetWorkspaceMuxesData, "body"> = useMemo(
     () => ({
@@ -39,7 +27,6 @@ export const usePreferredModelWorkspace = (workspaceName: string) => {
     [workspaceName],
   );
   const { data } = usePreferredModel(options);
-  const { preferredModel, setPreferredModel } = useModelValue();
 
   useEffect(() => {
     const providerModel = data?.[0];
