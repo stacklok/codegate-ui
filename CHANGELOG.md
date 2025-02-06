@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/stacklok/codegate-ui/compare/v0.12.2...v0.13.0) (2025-02-06)
+
+
+### Features
+
+* enforce sensible defaults for react-query ([#268](https://github.com/stacklok/codegate-ui/issues/268)) ([5445eb6](https://github.com/stacklok/codegate-ui/commit/5445eb6aefbd6270d7258dd3bbf3d03c1beea83a))
+
 ## [0.12.2](https://github.com/stacklok/codegate-ui/compare/v0.12.1...v0.12.2) (2025-02-05)
 
 
