@@ -30,7 +30,11 @@ export function RouteProviderCreate() {
 
   return (
     <ProviderDialog title="Create Provider">
-      <Form onSubmit={handleSubmit} validationBehavior="aria">
+      <Form
+        onSubmit={handleSubmit}
+        validationBehavior="aria"
+        className="overflow-auto"
+      >
         <DialogContent className="p-8">
           <ProviderForm provider={provider} setProvider={setProvider} />
         </DialogContent>

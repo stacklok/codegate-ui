@@ -24,7 +24,11 @@ export function RouteProviderUpdate() {
 
   return (
     <ProviderDialog title="Manage Provider">
-      <Form onSubmit={handleSubmit} validationBehavior="aria">
+      <Form
+        onSubmit={handleSubmit}
+        validationBehavior="aria"
+        className="overflow-auto"
+      >
         <DialogContent className="p-8">
           <ProviderForm provider={provider} setProvider={setProvider} />
         </DialogContent>
