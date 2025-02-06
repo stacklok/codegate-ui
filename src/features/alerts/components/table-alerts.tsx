@@ -8,40 +8,32 @@ import {
   TableHeader,
   Button,
   ResizableTableContainer,
+  Tooltip,
+  TooltipTrigger,
 } from "@stacklok/ui-kit";
-import { AlertConversation, QuestionType } from "@/api/generated";
-import {
-  sanitizeQuestionPrompt,
-  parsingPromptText,
-  getIssueDetectedType,
-} from "@/lib/utils";
+import { Alert, Conversation, QuestionType } from "@/api/generated";
+
 import { useClientSidePagination } from "@/hooks/useClientSidePagination";
 import { TableAlertTokenUsage } from "./table-alert-token-usage";
 
-import { useQueryGetWorkspaceAlertTable } from "../hooks/use-query-get-workspace-alerts-table";
 import { useAlertsFilterSearchParams } from "../hooks/use-alerts-filter-search-params";
 import { Key01, PackageX } from "@untitled-ui/icons-react";
 import { TableAlertsEmptyState } from "./table-alerts-empty-state";
 import { ComponentProps } from "react";
 import { hrefs } from "@/lib/hrefs";
+import { isAlertMalicious } from "../lib/is-alert-malicious";
+import { isAlertSecret } from "../lib/is-alert-secret";
+import { twMerge } from "tailwind-merge";
+import { useQueryGetWorkspaceMessagesTable } from "../hooks/use-query-get-workspace-alerts-table";
 
-const getTitle = (alert: AlertConversation) => {
-  const prompt = alert.conversation;
-  const title = parsingPromptText(
-    sanitizeQuestionPrompt({
-      question: prompt.question_answers?.[0]?.question.message ?? "",
-      answer: prompt.question_answers?.[0]?.answer?.message ?? "",
-    }),
-    prompt.conversation_timestamp,
-  );
-
-  return title;
+const getPromptText = (conversation: Conversation) => {
+  return (conversation.question_answers[0]?.question?.message ?? "N/A")
+    .trim()
+    .slice(0, 200); // arbitrary slice to prevent long prompts
 };
 
-function TypeCellContent({ alert }: { alert: AlertConversation }) {
-  const conversationType = alert.conversation.type;
-
-  switch (conversationType) {
+function getTypeText(type: QuestionType) {
+  switch (type) {
     case QuestionType.CHAT:
       return "Chat";
     case QuestionType.FIM:
@@ -51,30 +43,74 @@ function TypeCellContent({ alert }: { alert: AlertConversation }) {
   }
 }
 
-function IssueDetectedCellContent({ alert }: { alert: AlertConversation }) {
-  const issueDetected = getIssueDetectedType(alert);
-
-  switch (issueDetected) {
-    case "leaked_secret":
-      return (
-        <>
-          <Key01 className="size-4 text-blue-700" />
-          Blocked secret exposure
-        </>
-      );
-    case "malicious_package":
-      return (
-        <>
-          <PackageX className="size-4 text-blue-700" />
-          Blocked malicious package
-        </>
-      );
-    default:
-      return "";
-  }
+function countAlerts(alerts: Alert[]): {
+  secrets: number;
+  malicious: number;
+} {
+  return {
+    secrets: alerts.filter(isAlertSecret).length,
+    malicious: alerts.filter(isAlertMalicious).length,
+  };
 }
 
-type ColumnId = "time" | "type" | "event" | "issue_detected" | "token_usage";
+function AlertsSummaryCount({
+  count,
+  icon: Icon,
+  strings,
+}: {
+  count: number;
+  icon: (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element;
+  strings: {
+    singular: string;
+    plural: string;
+  };
+}) {
+  const tooltipText = `${count} ${count === 1 ? strings.singular : strings.plural} detected`;
+
+  return (
+    <TooltipTrigger delay={0}>
+      <Button
+        variant="tertiary"
+        isIcon
+        className={twMerge(
+          "flex gap-1 items-center",
+          count > 0 ? "text-secondary" : "text-disabled",
+        )}
+      >
+        <Icon className="size-4" />
+        {count}
+      </Button>
+      <Tooltip>{tooltipText}</Tooltip>
+    </TooltipTrigger>
+  );
+}
+
+function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
+  const { malicious, secrets } = countAlerts(alerts);
+
+  return (
+    <div className="flex gap-2 items-center">
+      <AlertsSummaryCount
+        strings={{
+          singular: "malicious package",
+          plural: "malicious packages",
+        }}
+        count={malicious}
+        icon={PackageX}
+      />
+      <AlertsSummaryCount
+        strings={{
+          singular: "secret",
+          plural: "secrets",
+        }}
+        count={secrets}
+        icon={Key01}
+      />
+    </div>
+  );
+}
+
+type ColumnId = "time" | "type" | "prompt" | "alerts" | "token_usage";
 
 type Column = { id: ColumnId } & Omit<ComponentProps<typeof Column>, "id">;
 
@@ -83,21 +119,23 @@ const COLUMNS: Column[] = [
     id: "time",
     isRowHeader: true,
     children: "Time",
-    width: 200,
+    minWidth: 170,
+    maxWidth: 180,
   },
   {
     id: "type",
     children: "Type",
-    width: 150,
+    minWidth: 170,
+    maxWidth: 190,
   },
   {
-    id: "event",
-    children: "Event",
+    id: "prompt",
+    children: "Prompt",
   },
   {
-    id: "issue_detected",
-    children: "Issue detected",
-    width: 325,
+    id: "alerts",
+    children: "Alerts",
+    width: 110,
   },
   {
     id: "token_usage",
@@ -106,34 +144,24 @@ const COLUMNS: Column[] = [
   },
 ];
 
-function CellRenderer({
-  column,
-  row,
-}: {
-  column: Column;
-  row: AlertConversation;
-}) {
+function CellRenderer({ column, row }: { column: Column; row: Conversation }) {
   switch (column.id) {
     case "time":
       return (
         <span className="whitespace-nowrap">
-          {formatDistanceToNow(new Date(row.timestamp), {
+          {formatDistanceToNow(new Date(row.conversation_timestamp), {
             addSuffix: true,
           })}
         </span>
       );
     case "type":
-      return <TypeCellContent alert={row} />;
-    case "event":
-      return getTitle(row);
-    case "issue_detected":
-      return (
-        <div className="truncate flex gap-2  items-center">
-          <IssueDetectedCellContent alert={row} />
-        </div>
-      );
+      return getTypeText(row.type);
+    case "prompt":
+      return getPromptText(row);
+    case "alerts":
+      return <AlertsSummaryCellContent alerts={row.alerts ?? []} />;
     case "token_usage":
-      return <TableAlertTokenUsage usage={row.conversation.token_usage_agg} />;
+      return <TableAlertTokenUsage usage={row.token_usage_agg} />;
 
     default:
       return column.id satisfies never;
@@ -143,7 +171,7 @@ function CellRenderer({
 export function TableAlerts() {
   const { state, prevPage, nextPage } = useAlertsFilterSearchParams();
 
-  const { data = [] } = useQueryGetWorkspaceAlertTable();
+  const { data = [] } = useQueryGetWorkspaceMessagesTable();
 
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     data,
@@ -165,12 +193,12 @@ export function TableAlerts() {
             {(row) => (
               <Row
                 columns={COLUMNS}
-                id={row.alert_id}
-                href={hrefs.prompt(row.conversation.chat_id)}
+                id={row.chat_id}
+                href={hrefs.prompt(row.chat_id)}
               >
                 {(column) => (
                   <Cell
-                    className="h-6 group-last/row:border-b-0"
+                    className="h-5 py-1 group-last/row:border-b-0 truncate"
                     alignment={column.alignment}
                     id={column.id}
                   >

@@ -24,6 +24,24 @@ export type AddProviderEndpointRequest = {
 };
 
 /**
+ * Represents an alert.
+ */
+export type Alert = {
+  id: string;
+  prompt_id: string;
+  code_snippet: CodeSnippet | null;
+  trigger_string:
+    | string
+    | {
+        [key: string]: unknown;
+      }
+    | null;
+  trigger_type: string;
+  trigger_category: string | null;
+  timestamp: string;
+};
+
+/**
  * Represents an alert with it's respective conversation.
  */
 export type AlertConversation = {
@@ -75,6 +93,7 @@ export type Conversation = {
   chat_id: string;
   conversation_timestamp: string;
   token_usage_agg: TokenUsageAggregate | null;
+  alerts?: Array<Alert>;
 };
 
 export type CreateOrRenameWorkspaceRequest = {

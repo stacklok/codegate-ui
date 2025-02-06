@@ -1,9 +1,7 @@
-import { useQueryGetWorkspaceAlerts } from "../hooks/use-query-get-workspace-alerts";
-import { isAlertMalicious } from "../lib/is-alert-malicious";
+import { isConversationWithMaliciousAlerts } from "../lib/is-alert-malicious";
 import { multiFilter } from "@/lib/multi-filter";
-import { isAlertCritical } from "../lib/is-alert-critical";
-import { isAlertSecret } from "../lib/is-alert-secret";
-import { V1GetWorkspaceAlertsResponse } from "@/api/generated";
+import { isConversationWithSecretAlerts } from "../lib/is-alert-secret";
+import { V1GetWorkspaceMessagesResponse } from "@/api/generated";
 import {
   Tab as BaseTab,
   Tabs,
@@ -19,6 +17,7 @@ import {
 } from "../hooks/use-alerts-filter-search-params";
 import { SearchFieldAlerts } from "./search-field-alerts";
 import { tv } from "tailwind-variants";
+import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
 
 type AlertsCount = {
   all: number;
@@ -26,17 +25,15 @@ type AlertsCount = {
   secrets: number;
 };
 
-function select(data: V1GetWorkspaceAlertsResponse | undefined): AlertsCount {
-  const all: number = multiFilter(data, [isAlertCritical]).length;
+function select(data: V1GetWorkspaceMessagesResponse): AlertsCount {
+  const all: number = data?.length ?? 0;
 
   const malicious: number = multiFilter(data, [
-    isAlertCritical,
-    isAlertMalicious,
+    isConversationWithMaliciousAlerts,
   ]).length;
 
   const secrets: number = multiFilter(data, [
-    isAlertCritical,
-    isAlertSecret,
+    isConversationWithSecretAlerts,
   ]).length;
 
   return {
@@ -81,7 +78,7 @@ function Tab({
 export function TabsAlerts({ children }: { children: React.ReactNode }) {
   const { state, setView } = useAlertsFilterSearchParams();
 
-  const { data } = useQueryGetWorkspaceAlerts({
+  const { data } = useQueryGetWorkspaceMessages({
     select,
   });
 

@@ -1,43 +1,39 @@
-import { V1GetWorkspaceAlertsResponse } from "@/api/generated";
-import { useQueryGetWorkspaceAlerts } from "./use-query-get-workspace-alerts";
+import { Conversation } from "@/api/generated";
 import { useCallback } from "react";
 import {
   AlertsFilterView,
   useAlertsFilterSearchParams,
 } from "./use-alerts-filter-search-params";
 import { multiFilter } from "@/lib/multi-filter";
-import { isAlertCritical } from "../lib/is-alert-critical";
-import { isAlertMalicious } from "../lib/is-alert-malicious";
-import { isAlertSecret } from "../lib/is-alert-secret";
-import { doesAlertIncludeSearch } from "../lib/does-alert-include-search";
-import { isAlertConversation } from "../lib/is-alert-conversation";
+import { isConversationWithMaliciousAlerts } from "../lib/is-alert-malicious";
+import { isConversationWithSecretAlerts } from "../lib/is-alert-secret";
+import { doesConversationIncludeSearch } from "../lib/does-alert-include-search";
+import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
 
 const FILTER: Record<
   AlertsFilterView,
-  (alert: V1GetWorkspaceAlertsResponse[number]) => boolean
+  (alert: Conversation | null) => boolean
 > = {
   all: () => true,
-  malicious: isAlertMalicious,
-  secrets: isAlertSecret,
+  malicious: isConversationWithMaliciousAlerts,
+  secrets: isConversationWithSecretAlerts,
 };
 
-export function useQueryGetWorkspaceAlertTable() {
+export function useQueryGetWorkspaceMessagesTable() {
   const { state } = useAlertsFilterSearchParams();
 
   // NOTE: This needs to be a stable function reference to enable memo-isation
   // of the select operation on each React re-render.
   const select = useCallback(
-    (data: V1GetWorkspaceAlertsResponse) => {
-      return multiFilter(data, [
-        isAlertCritical,
-        isAlertConversation,
-        FILTER[state.view],
-      ]).filter((alert) => doesAlertIncludeSearch(alert, state.search ?? null));
+    (data: Conversation[]) => {
+      return multiFilter(data, [FILTER[state.view]]).filter((conversation) =>
+        doesConversationIncludeSearch(conversation, state.search ?? null),
+      );
     },
     [state.search, state.view],
   );
 
-  return useQueryGetWorkspaceAlerts({
+  return useQueryGetWorkspaceMessages({
     select,
   });
 }
