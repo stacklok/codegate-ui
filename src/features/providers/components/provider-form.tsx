@@ -8,6 +8,8 @@ import {
 } from "@stacklok/ui-kit";
 import {
   getAuthTypeOptions,
+  getProviderAuthByType,
+  getProviderEndpointByAuthType,
   getProviderType,
   isProviderAuthType,
   isProviderType,
@@ -19,6 +21,11 @@ interface Props {
 }
 
 export function ProviderForm({ provider, setProvider }: Props) {
+  const providerAuthType =
+    provider.auth_type || getProviderAuthByType(provider.provider_type);
+  const providerEndpoint =
+    provider.endpoint || getProviderEndpointByAuthType(provider.provider_type);
+
   return (
     <div className="w-full">
       <div className="">
@@ -78,7 +85,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
           onChange={(endpoint) => setProvider({ ...provider, endpoint })}
         >
           <Label>Endpoint</Label>
-          <Input placeholder="Provider endpoint" value={provider.endpoint} />
+          <Input placeholder="Provider endpoint" value={providerEndpoint} />
         </TextField>
       </div>
       <div className="py-3">
@@ -86,7 +93,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
         <Select
           aria-labelledby="provider auth type"
           name="auth_type"
-          selectedKey={provider.auth_type}
+          selectedKey={providerAuthType}
           isRequired
           className="w-full"
           placeholder="Select the authentication type"
@@ -101,7 +108,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
         </Select>
       </div>
 
-      {provider.auth_type === ProviderAuthType.API_KEY && (
+      {providerAuthType === ProviderAuthType.API_KEY && (
         <div className="pt-4">
           <TextField
             aria-label="Provider API key"
