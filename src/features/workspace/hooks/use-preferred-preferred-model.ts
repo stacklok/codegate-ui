@@ -30,7 +30,7 @@ export const usePreferredModelWorkspace = (workspaceName: string) => {
     }),
     [workspaceName],
   );
-  const { data } = usePreferredModel(options);
+  const { data, isPending } = usePreferredModel(options);
 
   useEffect(() => {
     const providerModel = data?.[0];
@@ -38,5 +38,5 @@ export const usePreferredModelWorkspace = (workspaceName: string) => {
     setPreferredModel(providerModel ?? DEFAULT_STATE);
   }, [data, setPreferredModel]);
 
-  return { preferredModel, setPreferredModel };
+  return { preferredModel, setPreferredModel, isPending };
 };

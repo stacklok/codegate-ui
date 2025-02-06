@@ -39,12 +39,12 @@ export function WorkspacePreferredModel({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { preferredModel, setPreferredModel } =
+  const { preferredModel, setPreferredModel, isPending } =
     usePreferredModelWorkspace(workspaceName);
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useModelsData();
   const { model, provider_id } = preferredModel;
-  const isModelsEmpty = providerModels.length === 0;
+  const isModelsEmpty = !isPending && providerModels.length === 0;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
