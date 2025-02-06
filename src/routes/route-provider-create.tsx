@@ -9,7 +9,7 @@ import { useState } from "react";
 const DEFAULT_PROVIDER_STATE = {
   name: "",
   description: "",
-  auth_type: null,
+  auth_type: undefined,
   provider_type: ProviderType.OPENAI,
   endpoint: "",
   api_key: "",
@@ -29,7 +29,7 @@ export function RouteProviderCreate() {
   };
 
   return (
-    <ProviderDialog title="Create Provider">
+    <ProviderDialog title="Add Provider">
       <Form
         onSubmit={handleSubmit}
         validationBehavior="aria"
