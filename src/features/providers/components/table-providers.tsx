@@ -36,7 +36,7 @@ const COLUMNS: Column[] = [
     width: "40%",
   },
   { id: "type", children: "Provider", width: "10%", className: "capitalize" },
-  { id: "endpoint", children: "Endpoint", width: "20%" },
+  { id: "endpoint", children: "Endpoint", width: "20%", minWidth: 250 },
   { id: "auth", children: "Authentication", width: "20%" },
   { id: "configuration", alignment: "end", width: "10%", children: "" },
 ];

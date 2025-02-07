@@ -33,7 +33,7 @@ export function getProviderEndpointByAuthType(provider_type: ProviderType) {
   return match(provider_type)
     .with(ProviderType.OPENAI, () => "https://api.openai.com")
     .with(ProviderType.ANTHROPIC, () => "https://api.anthropic.com")
-    .with(ProviderType.OPENROUTER, () => "https://openrouter.ai")
+    .with(ProviderType.OPENROUTER, () => "https://openrouter.ai/api")
     .with(ProviderType.OLLAMA, () => "http://host.docker.internal:11434")
     .with(ProviderType.LM_STUDIO, () => "http://host.docker.internal:1234")
     .with(ProviderType.LLAMACPP, () => "http://host.docker.internal:8080")

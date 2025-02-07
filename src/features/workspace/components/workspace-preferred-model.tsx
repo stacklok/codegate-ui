@@ -21,7 +21,7 @@ function MissingProviderBanner() {
   return (
     <Alert
       variant="warning"
-      title="Configuring a provider first, so you can select your desired model."
+      title="You must configure at least one provider before selecting your desired model."
     >
       <LinkButton variant="secondary" className="mt-4" href="/providers">
         Add Provider
