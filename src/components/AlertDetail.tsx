@@ -28,7 +28,7 @@ export function AlertDetail({ alert }: { alert: AlertConversation }) {
         <label className="font-medium">Package:</label>
         &nbsp;
         <a
-          href={`https://www.insight.stacklok.com/report/${maliciousPkg.type}/${maliciousPkg.name}`}
+          href={`https://www.insight.stacklok.com/report/${maliciousPkg.type}/${maliciousPkg.name}?utm_source=codegate-ui`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand-500 hover:underline"
