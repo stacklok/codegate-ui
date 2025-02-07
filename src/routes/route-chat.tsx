@@ -8,11 +8,14 @@ import {
   ChatBubbleMessage,
 } from "@/components/ui/chat/chat-bubble";
 import { Markdown } from "@/components/Markdown";
-import { Breadcrumb, Breadcrumbs } from "@stacklok/ui-kit";
+import { Breadcrumb, Breadcrumbs, Card, CardBody } from "@stacklok/ui-kit";
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
+import { useQueryGetWorkspaceAlertTable } from "@/features/alerts/hooks/use-query-get-workspace-alerts-table";
+import { AlertDetail } from "@/components/AlertDetail";
 
 export function RouteChat() {
   const { id } = useParams();
+  const { data = [] } = useQueryGetWorkspaceAlertTable();
   const { data: prompts } = useQueryGetWorkspaceMessages();
   const chat = prompts?.find((prompt) => prompt.chat_id === id);
 
@@ -28,6 +31,13 @@ export function RouteChat() {
           chat.conversation_timestamp,
         );
 
+  // we have an issue on BE, we received duplicated alerts
+  const alertDetail = data.filter((alert) =>
+    alert.conversation.question_answers.some(
+      (item) => item.question.message_id === id,
+    ),
+  )[0];
+
   return (
     <>
       <Breadcrumbs>
@@ -36,6 +46,14 @@ export function RouteChat() {
       </Breadcrumbs>
 
       <div className="w-[calc(100vw-18rem)]">
+        {alertDetail && (
+          <Card className="w-full mb-2">
+            <CardBody className="w-full h-fit overflow-auto max-h-[500px]">
+              <AlertDetail alert={alertDetail} />
+            </CardBody>
+          </Card>
+        )}
+
         <ChatMessageList>
           {(chat?.question_answers ?? []).map(({ question, answer }, index) => (
             <div key={index} className="flex flex-col size-full gap-6">
