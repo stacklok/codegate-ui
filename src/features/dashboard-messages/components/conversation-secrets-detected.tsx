@@ -17,8 +17,8 @@ function ConversationSecretsListItem({
 }) {
   return (
     <li className="grid grid-cols-[1fr_2fr] px-2 py-0.5 rounded ">
-      <span className="block font-bold">{title}</span>
-      <span className="block truncate">{value}</span>
+      <code className="block font-bold">{title}</code>
+      <code className="block truncate">{value}</code>
     </li>
   );
 }
@@ -31,16 +31,19 @@ export function ConversationSecretsDetected({
 }: {
   alerts: (Omit<Alert, "trigger_string"> & { trigger_string: string })[];
 }) {
+  console.debug("👉  alerts:", alerts);
   return (
     <ConversationSecretsList>
-      {alerts.map((v) => {
-        console.debug("👉  v:", v);
-        const { key, redactedValue } = parseUnstructuredSecretsData(v) || {};
+      {alerts.map((a) => {
+        const { key, redactedValue } = parseUnstructuredSecretsData(a) || {};
+
+        if (!key) return null;
+
         return (
           <ConversationSecretsListItem
             title={key}
-            value={redactedValue}
-            key={v.id}
+            value={redactedValue ?? "N/A"}
+            key={a.id}
           />
         );
       })}

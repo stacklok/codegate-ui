@@ -168,6 +168,15 @@ export function TableAlertsEmptyState() {
 
   const isLoading = isMessagesLoading || isWorkspacesLoading;
 
+  console.log("foo", {
+    isLoading,
+    hasWorkspaceMessages: messages.length > 0,
+    hasMultipleWorkspaces:
+      workspaces.filter((w) => w.name !== "default").length > 0,
+    search: state.search || null,
+    view: state.view,
+  });
+
   return match<MatchInput, ReactNode>({
     isLoading,
     hasWorkspaceMessages: messages.length > 0,
@@ -207,7 +216,7 @@ export function TableAlertsEmptyState() {
     .with(
       {
         hasWorkspaceMessages: false,
-        hasMultipleWorkspaces: true,
+        hasMultipleWorkspaces: P.any,
         search: P._,
         view: P.any,
       },
@@ -216,7 +225,7 @@ export function TableAlertsEmptyState() {
     .with(
       {
         hasWorkspaceMessages: true,
-        hasMultipleWorkspaces: true,
+        hasMultipleWorkspaces: P.any,
         search: P._,
         view: AlertsFilterView.MALICIOUS,
       },

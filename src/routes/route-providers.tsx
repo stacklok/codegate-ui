@@ -2,7 +2,6 @@ import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import {
   Breadcrumbs,
   Breadcrumb,
-  Heading,
   Card,
   LinkButton,
   CardBody,
@@ -12,6 +11,7 @@ import { PlusSquare } from "@untitled-ui/icons-react";
 import { TableProviders } from "@/features/providers/components/table-providers";
 import { Outlet } from "react-router-dom";
 import { PageContainer } from "@/components/page-container";
+import { PageHeading } from "@/components/heading";
 
 export function RouteProvider({ className }: { className?: string }) {
   return (
@@ -20,12 +20,11 @@ export function RouteProvider({ className }: { className?: string }) {
         <BreadcrumbHome />
         <Breadcrumb>Providers</Breadcrumb>
       </Breadcrumbs>
-      <Heading level={4} className="mb-4 flex items-center justify-between">
-        Providers
+      <PageHeading level={4} title="Providers">
         <LinkButton className="w-fit" href="/providers/new">
           <PlusSquare /> Add Provider
         </LinkButton>
-      </Heading>
+      </PageHeading>
       <Card className={twMerge(className, "shrink-0")}>
         <CardBody className="p-0">
           <TableProviders />

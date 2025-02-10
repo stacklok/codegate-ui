@@ -1,4 +1,4 @@
-import { WorkspaceHeading } from "@/features/workspace/components/workspace-heading";
+import { PageHeading } from "@/components/heading";
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import {
   Breadcrumb,
@@ -27,7 +27,7 @@ export function RouteWorkspaces() {
         <Breadcrumb>Manage Workspaces</Breadcrumb>
       </Breadcrumbs>
 
-      <WorkspaceHeading title="Manage Workspaces">
+      <PageHeading level={1} title="Manage Workspaces">
         <TooltipTrigger delay={0}>
           <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
             <PlusSquare /> Create
@@ -37,7 +37,7 @@ export function RouteWorkspaces() {
             <Kbd>C</Kbd>
           </Tooltip>
         </TooltipTrigger>
-      </WorkspaceHeading>
+      </PageHeading>
 
       <TableWorkspaces />
     </PageContainer>

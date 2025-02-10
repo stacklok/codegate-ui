@@ -1,7 +1,7 @@
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import { ArchiveWorkspace } from "@/features/workspace/components/archive-workspace";
 
-import { WorkspaceHeading } from "@/features/workspace/components/workspace-heading";
+import { PageHeading } from "@/components/heading";
 import { WorkspaceName } from "@/features/workspace/components/workspace-name";
 import { Alert, Breadcrumb, Breadcrumbs } from "@stacklok/ui-kit";
 import { useParams } from "react-router-dom";
@@ -45,7 +45,7 @@ export function RouteWorkspace() {
         <Breadcrumb>Workspace Settings</Breadcrumb>
       </Breadcrumbs>
 
-      <WorkspaceHeading title="Workspace settings" />
+      <PageHeading level={1} title="Workspace settings" />
 
       {isArchived ? <WorkspaceArchivedBanner name={name} /> : null}
 

@@ -12,16 +12,18 @@ import { Breadcrumb, Breadcrumbs, Heading } from "@stacklok/ui-kit";
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import { ConversationSummary } from "@/features/dashboard-messages/components/conversation-summary";
 import { PageContainer } from "@/components/page-container";
-// import { isAlertSecret } from "@/lib/is-alert-secret";
-// import { ConversationSecretsDetected } from "@/features/dashboard-messages/components/conversation-secrets-detected";
+import { PageHeading } from "@/components/heading";
+import { isAlertSecret } from "@/lib/is-alert-secret";
+import { ConversationSecretsDetected } from "@/features/dashboard-messages/components/conversation-secrets-detected";
 
 export function RouteChat() {
   const { id } = useParams();
   const { data: conversation } = useQueryGetWorkspaceMessages({
     select: (data) => data.find((m) => m.chat_id === id),
   });
+  console.debug("👉  conversation:", conversation);
 
-  // const secrets = conversation?.alerts?.filter(isAlertSecret);
+  const secrets = conversation?.alerts?.filter(isAlertSecret);
 
   const title =
     conversation === undefined ||
@@ -41,7 +43,7 @@ export function RouteChat() {
         <BreadcrumbHome />
         <Breadcrumb className="w-96 block truncate">{title}</Breadcrumb>
       </Breadcrumbs>
-      <Heading level={2}>Conversation</Heading>
+      <PageHeading level={1} title="Conversation" />
       <section className="py-4 border-b-gray-200 border-b ">
         <Heading
           level={2}
@@ -60,10 +62,10 @@ export function RouteChat() {
        * unstructured data with a lot of false positives. This is not actually
        * referenced in the frontend yet.
        */}
-      {/* {secrets && secrets.length > 0 ? (
+      {secrets && secrets.length > 0 ? (
         <section className="py-4 border-b-gray-200 border-b ">
           <Heading
-            level={2}
+            level={3}
             className="text-secondary text-xl font-semibold mb-4"
           >
             Secrets protected ({secrets.length})
@@ -76,7 +78,7 @@ export function RouteChat() {
 
           <ConversationSecretsDetected alerts={secrets} />
         </section>
-      ) : null} */}
+      ) : null}
 
       {/* {alertDetail && (
           <Card className="w-full mb-2">
