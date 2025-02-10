@@ -1,31 +1,16 @@
 import { Header } from "./features/header/components/header";
-import { PromptList } from "./components/PromptList";
-import { useQueryGetWorkspaceMessages } from "./hooks/use-query-get-workspace-messages";
-import { Sidebar } from "./components/Sidebar";
 import { useSse } from "./hooks/useSse";
 import Page from "./Page";
 
-function App() {
-  const { data: prompts, isLoading } = useQueryGetWorkspaceMessages();
+export default function App() {
   useSse();
 
   return (
-    <div className="flex w-screen h-screen">
-      <Sidebar loading={isLoading}>
-        <PromptList prompts={prompts ?? []} />
-      </Sidebar>
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header />
-
-        <div
-          className="flex-1 overflow-y-auto p-6 flex flex-col gap-3"
-          style={{ scrollbarGutter: "stable" }}
-        >
-          <Page />
-        </div>
-      </div>
-    </div>
+    <>
+      <Header />
+      <main className="p-6">
+        <Page />
+      </main>
+    </>
   );
 }
-
-export default App;

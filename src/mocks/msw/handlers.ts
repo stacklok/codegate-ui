@@ -1,22 +1,25 @@
 import { http, HttpResponse } from "msw";
-import mockedPrompts from "@/mocks/msw/fixtures/GET_MESSAGES.json";
 import mockedAlerts from "@/mocks/msw/fixtures/GET_ALERTS.json";
 import mockedWorkspaces from "@/mocks/msw/fixtures/GET_WORKSPACES.json";
 import mockedProviders from "@/mocks/msw/fixtures/GET_PROVIDERS.json";
 import mockedProvidersModels from "@/mocks/msw/fixtures/GET_PROVIDERS_MODELS.json";
 import { ProviderType } from "@/api/generated";
+import { mockConversation } from "./mockers/conversation.mock";
+import { mswEndpoint } from "@/test/msw-endpoint";
 
 export const handlers = [
-  http.get("*/health", () =>
+  http.get(mswEndpoint("/health"), () =>
     HttpResponse.json({
       current_version: "foo",
       latest_version: "bar",
       is_latest: false,
       error: null,
-    }),
+    })
   ),
-  http.get("*/api/v1/version", () => HttpResponse.json({ status: "healthy" })),
-  http.get("*/api/v1/workspaces/active", () =>
+  http.get(mswEndpoint("/api/v1/version"), () =>
+    HttpResponse.json({ status: "healthy" })
+  ),
+  http.get(mswEndpoint("/api/v1/workspaces/active"), () =>
     HttpResponse.json({
       workspaces: [
         {
@@ -25,18 +28,20 @@ export const handlers = [
           last_updated: new Date(Date.now()).toISOString(),
         },
       ],
-    }),
+    })
   ),
-  http.get("*/api/v1/workspaces/:name/messages", () => {
-    return HttpResponse.json(mockedPrompts);
+  http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/messages"), () => {
+    return HttpResponse.json(
+      Array.from({ length: 10 }).map(() => mockConversation())
+    );
   }),
-  http.get("*/api/v1/workspaces/:name/alerts", () => {
+  http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
     return HttpResponse.json(mockedAlerts);
   }),
-  http.get("*/api/v1/workspaces", () => {
+  http.get(mswEndpoint("/api/v1/workspaces"), () => {
     return HttpResponse.json(mockedWorkspaces);
   }),
-  http.get("*/api/v1/workspaces/archive", () => {
+  http.get(mswEndpoint("/api/v1/workspaces/archive"), () => {
     return HttpResponse.json({
       workspaces: [
         {
@@ -46,55 +51,61 @@ export const handlers = [
       ],
     });
   }),
-  http.post("*/api/v1/workspaces", () => {
+  http.post(mswEndpoint("/api/v1/workspaces"), () => {
     return HttpResponse.json(mockedWorkspaces);
   }),
   http.post(
-    "*/api/v1/workspaces/active",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/workspaces/active"),
+    () => new HttpResponse(null, { status: 204 })
   ),
   http.post(
-    "*/api/v1/workspaces/archive/:workspace_name/recover",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/workspaces/archive/:workspace_name/recover"),
+    () => new HttpResponse(null, { status: 204 })
   ),
   http.delete(
-    "*/api/v1/workspaces/:name",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/workspaces/:workspace_name"),
+    () => new HttpResponse(null, { status: 204 })
   ),
   http.delete(
-    "*/api/v1/workspaces/archive/:name",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/workspaces/archive/:workspace_name"),
+    () => new HttpResponse(null, { status: 204 })
   ),
-  http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
-    return HttpResponse.json({ prompt: "foo" });
-  }),
-  http.get("*/api/v1/workspaces/:name/token-usage", () => {
-    return HttpResponse.json({
-      tokens_by_model: {
-        "claude-3-5-sonnet-latest": {
-          provider_type: ProviderType.ANTHROPIC,
-          model: "claude-3-5-sonnet-latest",
-          token_usage: {
-            input_tokens: 1183,
-            output_tokens: 433,
-            input_cost: 0.003549,
-            output_cost: 0.006495,
+  http.get(
+    mswEndpoint("/api/v1/workspaces/:workspace_name/custom-instructions"),
+    () => {
+      return HttpResponse.json({ prompt: "foo" });
+    }
+  ),
+  http.get(
+    mswEndpoint("/api/v1/workspaces/:workspace_name/token-usage"),
+    () => {
+      return HttpResponse.json({
+        tokens_by_model: {
+          "claude-3-5-sonnet-latest": {
+            provider_type: ProviderType.ANTHROPIC,
+            model: "claude-3-5-sonnet-latest",
+            token_usage: {
+              input_tokens: 1183,
+              output_tokens: 433,
+              input_cost: 0.003549,
+              output_cost: 0.006495,
+            },
           },
         },
-      },
-      token_usage: {
-        input_tokens: 1183,
-        output_tokens: 433,
-        input_cost: 0.003549,
-        output_cost: 0.006495,
-      },
-    });
-  }),
-  http.put(
-    "*/api/v1/workspaces/:name/custom-instructions",
-    () => new HttpResponse(null, { status: 204 }),
+        token_usage: {
+          input_tokens: 1183,
+          output_tokens: 433,
+          input_cost: 0.003549,
+          output_cost: 0.006495,
+        },
+      });
+    }
   ),
-  http.get("*/api/v1/workspaces/:workspace_name/muxes", () =>
+  http.put(
+    mswEndpoint("/api/v1/workspaces/:workspace_name/custom-instructions"),
+    () => new HttpResponse(null, { status: 204 })
+  ),
+  http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/muxes"), () =>
     HttpResponse.json([
       {
         provider_id: "openai",
@@ -107,34 +118,34 @@ export const handlers = [
         model: "davinci",
         matcher_type: "catch_all",
       },
-    ]),
+    ])
   ),
   http.put(
-    "*/api/v1/workspaces/:workspace_name/muxes",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/workspaces/:workspace_name/muxes"),
+    () => new HttpResponse(null, { status: 204 })
   ),
-  http.get("*/api/v1/provider-endpoints/:provider_name/models", () =>
-    HttpResponse.json(mockedProvidersModels),
+  http.get(mswEndpoint("/api/v1/provider-endpoints/:provider_id/models"), () =>
+    HttpResponse.json(mockedProvidersModels)
   ),
-  http.get("*/api/v1/provider-endpoints/models", () =>
-    HttpResponse.json(mockedProvidersModels),
+  http.get(mswEndpoint("/api/v1/provider-endpoints/models"), () =>
+    HttpResponse.json(mockedProvidersModels)
   ),
-  http.get("*/api/v1/provider-endpoints/:provider_id", () =>
-    HttpResponse.json(mockedProviders[0]),
+  http.get(mswEndpoint("/api/v1/provider-endpoints/:provider_id"), () =>
+    HttpResponse.json(mockedProviders[0])
   ),
-  http.get("*/api/v1/provider-endpoints", () =>
-    HttpResponse.json(mockedProviders),
+  http.get(mswEndpoint("/api/v1/provider-endpoints"), () =>
+    HttpResponse.json(mockedProviders)
   ),
   http.post(
-    "*/api/v1/provider-endpoints",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/provider-endpoints"),
+    () => new HttpResponse(null, { status: 204 })
   ),
   http.put(
-    "*/api/v1/provider-endpoints",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/provider-endpoints"),
+    () => new HttpResponse(null, { status: 204 })
   ),
   http.delete(
-    "*/api/v1/provider-endpoints",
-    () => new HttpResponse(null, { status: 204 }),
+    mswEndpoint("/api/v1/provider-endpoints"),
+    () => new HttpResponse(null, { status: 204 })
   ),
 ];

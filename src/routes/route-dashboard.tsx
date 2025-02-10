@@ -1,8 +1,8 @@
-import { TableAlerts } from "@/features/alerts/components/table-alerts";
-import { AlertsSummaryMaliciousPkg } from "@/features/alerts/components/alerts-summary-malicious-pkg";
-import { AlertsSummaryWorkspaceTokenUsage } from "@/features/alerts/components/alerts-summary-workspace-token-usage";
-import { AlertsSummaryMaliciousSecrets } from "@/features/alerts/components/alerts-summary-secrets";
-import { TabsAlerts } from "@/features/alerts/components/tabs-alerts";
+import { TableMessages } from "@/features/dashboard-messages/components/table-messages";
+import { AlertsSummaryMaliciousPkg } from "@/features/dashboard-alerts/components/alerts-summary-malicious-pkg";
+import { AlertsSummaryWorkspaceTokenUsage } from "@/features/dashboard-alerts/components/alerts-summary-workspace-token-usage";
+import { AlertsSummaryMaliciousSecrets } from "@/features/dashboard-alerts/components/alerts-summary-secrets";
+import { TabsMessages } from "@/features/dashboard-messages/components/tabs-messages";
 
 export function RouteDashboard() {
   return (
@@ -13,9 +13,9 @@ export function RouteDashboard() {
         <AlertsSummaryWorkspaceTokenUsage />
       </div>
 
-      <TabsAlerts>
-        <TableAlerts />
-      </TabsAlerts>
+      <TabsMessages>
+        <TableMessages />
+      </TabsMessages>
     </div>
   );
 }

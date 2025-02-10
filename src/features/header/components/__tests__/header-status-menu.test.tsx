@@ -5,13 +5,16 @@ import { expect } from "vitest";
 import { render, waitFor } from "@/lib/test-utils";
 import { HeaderStatusMenu } from "../header-status-menu";
 import userEvent from "@testing-library/user-event";
+import { mswEndpoint } from "@/test/msw-endpoint";
 
 const renderComponent = () => render(<HeaderStatusMenu />);
 
 describe("CardCodegateStatus", () => {
   test("renders 'healthy' state", async () => {
     server.use(
-      http.get("*/health", () => HttpResponse.json({ status: "healthy" })),
+      http.get(mswEndpoint("/health"), () =>
+        HttpResponse.json({ status: "healthy" })
+      )
     );
 
     const { getByRole } = renderComponent();
@@ -22,7 +25,11 @@ describe("CardCodegateStatus", () => {
   });
 
   test("renders 'unhealthy' state", async () => {
-    server.use(http.get("*/health", () => HttpResponse.json({ status: null })));
+    server.use(
+      http.get(mswEndpoint("/health"), () =>
+        HttpResponse.json({ status: null })
+      )
+    );
 
     const { getByRole } = renderComponent();
 
@@ -32,7 +39,7 @@ describe("CardCodegateStatus", () => {
   });
 
   test("renders 'error' state when health check request fails", async () => {
-    server.use(http.get("*/health", () => HttpResponse.error()));
+    server.use(http.get(mswEndpoint("/health"), () => HttpResponse.error()));
 
     const { getByRole } = renderComponent();
 
@@ -43,8 +50,10 @@ describe("CardCodegateStatus", () => {
 
   test("renders 'error' state when version check request fails", async () => {
     server.use(
-      http.get("*/health", () => HttpResponse.json({ status: "healthy" })),
-      http.get("*/api/v1/version", () => HttpResponse.error()),
+      http.get(mswEndpoint("/health"), () =>
+        HttpResponse.json({ status: "healthy" })
+      ),
+      http.get(mswEndpoint("/api/v1/version"), () => HttpResponse.error())
     );
 
     const { getByRole } = renderComponent();
@@ -56,15 +65,17 @@ describe("CardCodegateStatus", () => {
 
   test("renders 'up to date' state", async () => {
     server.use(
-      http.get("*/health", () => HttpResponse.json({ status: "healthy" })),
-      http.get("*/api/v1/version", () =>
+      http.get(mswEndpoint("/health"), () =>
+        HttpResponse.json({ status: "healthy" })
+      ),
+      http.get(mswEndpoint("/api/v1/version"), () =>
         HttpResponse.json({
           current_version: "foo",
           latest_version: "foo",
           is_latest: true,
           error: null,
-        }),
-      ),
+        })
+      )
     );
 
     const { getByRole, getByText } = renderComponent();
@@ -83,15 +94,17 @@ describe("CardCodegateStatus", () => {
 
   test("renders 'update available' state", async () => {
     server.use(
-      http.get("*/health", () => HttpResponse.json({ status: "healthy" })),
-      http.get("*/api/v1/version", () =>
+      http.get(mswEndpoint("/health"), () =>
+        HttpResponse.json({ status: "healthy" })
+      ),
+      http.get(mswEndpoint("/api/v1/version"), () =>
         HttpResponse.json({
           current_version: "foo",
           latest_version: "bar",
           is_latest: false,
           error: null,
-        }),
-      ),
+        })
+      )
     );
 
     const { getByRole } = renderComponent();
@@ -108,22 +121,24 @@ describe("CardCodegateStatus", () => {
       expect(role).toBeVisible();
       expect(role).toHaveAttribute(
         "href",
-        "https://docs.codegate.ai/how-to/install#upgrade-codegate",
+        "https://docs.codegate.ai/how-to/install#upgrade-codegate"
       );
     });
   });
 
   test("renders 'version check error' state", async () => {
     server.use(
-      http.get("*/health", () => HttpResponse.json({ status: "healthy" })),
-      http.get("*/api/v1/version", () =>
+      http.get(mswEndpoint("/health"), () =>
+        HttpResponse.json({ status: "healthy" })
+      ),
+      http.get(mswEndpoint("/api/v1/version"), () =>
         HttpResponse.json({
           current_version: "foo",
           latest_version: "bar",
           is_latest: false,
           error: "foo",
-        }),
-      ),
+        })
+      )
     );
 
     const { getByRole, getByText } = renderComponent();

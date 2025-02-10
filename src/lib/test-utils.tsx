@@ -1,4 +1,3 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { ConfirmProvider } from "@/context/confirm-context";
 import { DarkModeProvider, Toaster } from "@stacklok/ui-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -42,7 +41,7 @@ export const TestQueryClientProvider = ({
 
 const renderWithProviders = (
   children: React.ReactNode,
-  options?: Omit<RenderOptions, "queries"> & RoutConfig,
+  options?: Omit<RenderOptions, "queries"> & RoutConfig
 ) =>
   render(
     <TestQueryClientProvider>
@@ -52,16 +51,13 @@ const renderWithProviders = (
           <MemoryRouter {...options?.routeConfig}>
             <UiKitClientSideRoutingProvider>
               <Routes>
-                <Route
-                  path={options?.pathConfig ?? "*"}
-                  element={<SidebarProvider>{children}</SidebarProvider>}
-                />
+                <Route path={options?.pathConfig ?? "*"} element={children} />
               </Routes>
             </UiKitClientSideRoutingProvider>
           </MemoryRouter>
         </ConfirmProvider>
       </DarkModeProvider>
-    </TestQueryClientProvider>,
+    </TestQueryClientProvider>
   );
 
 export * from "@testing-library/react";

@@ -1,6 +1,6 @@
-import { AlertConversation } from "@/api/generated";
-import { isAlertMalicious } from "@/features/alerts/lib/is-alert-malicious";
-import { isAlertSecret } from "@/features/alerts/lib/is-alert-secret";
+import { Alert } from "@/api/generated";
+import { isAlertMalicious } from "@/features/dashboard-messages/lib/is-alert-malicious";
+import { isAlertSecret } from "@/features/dashboard-messages/lib/is-alert-secret";
 import { Markdown } from "./Markdown";
 
 type MaliciousPkgType = {
@@ -10,7 +10,7 @@ type MaliciousPkgType = {
   description: string;
 };
 
-export function AlertDetail({ alert }: { alert: AlertConversation }) {
+export function AlertDetail({ alert }: { alert: Alert }) {
   if (alert.trigger_string === null) return "N/A";
   if (isAlertSecret(alert) && typeof alert.trigger_string === "string") {
     return (

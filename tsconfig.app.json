@@ -23,6 +23,13 @@
     },
     "types": ["vitest/globals", "@testing-library/jest-dom/vitest"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": [
+    "src/**/*",
+    "knip.ts",
+    "openapi-ts.config.ts",
+    "tailwind.config.ts",
+    "vitest.config.ts",
+    "vitest.setup.ts"
+  ],
   "exclude": ["node_modules"]
 }

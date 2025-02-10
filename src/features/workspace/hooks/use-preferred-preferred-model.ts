@@ -3,12 +3,12 @@ import { v1GetWorkspaceMuxesOptions } from "@/api/generated/@tanstack/react-quer
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
+type ModelRule = Omit<MuxRule, "matcher_type" | "matcher"> & {};
+
 const DEFAULT_STATE = {
   provider_id: "",
   model: "",
-};
-
-export type ModelRule = Omit<MuxRule, "matcher_type" | "matcher"> & {};
+} as const satisfies ModelRule;
 
 const usePreferredModel = (options: {
   path: {
@@ -28,7 +28,7 @@ export const usePreferredModelWorkspace = (workspaceName: string) => {
     () => ({
       path: { workspace_name: workspaceName },
     }),
-    [workspaceName],
+    [workspaceName]
   );
   const { data, isPending } = usePreferredModel(options);
 

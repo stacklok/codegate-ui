@@ -6,7 +6,7 @@ export function Error() {
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
       <div className="shrink-0 w-full">
-        <Header hasError />
+        <Header />
       </div>
       <div className="h-24 flex flex-col flex-1 justify-center">
         <Card className="p-8 flex flex-col items-center">

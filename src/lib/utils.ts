@@ -1,6 +1,4 @@
-import { AlertConversation, Conversation } from "@/api/generated/types.gen";
-import { isAlertConversationSecret } from "@/features/alerts/lib/is-alert-secret";
-import { isAlertConversationMalicious } from "@/features/alerts/lib/is-alert-malicious";
+import { Conversation } from "@/api/generated/types.gen";
 import { format, isToday, isYesterday } from "date-fns";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -73,7 +71,7 @@ export function groupPromptsByRelativeDate(prompts: Conversation[]) {
   const promptsSorted = prompts.sort(
     (a, b) =>
       new Date(b.conversation_timestamp).getTime() -
-      new Date(a.conversation_timestamp).getTime(),
+      new Date(a.conversation_timestamp).getTime()
   );
 
   const grouped = promptsSorted.reduce(
@@ -90,7 +88,7 @@ export function groupPromptsByRelativeDate(prompts: Conversation[]) {
       (groups[group] ?? []).push(prompt);
       return groups;
     },
-    {} as Record<string, Conversation[]>,
+    {} as Record<string, Conversation[]>
   );
 
   return grouped;
@@ -122,15 +120,6 @@ export function sanitizeQuestionPrompt({
     console.error("Error processing the question:", error);
     return question;
   }
-}
-
-export function getIssueDetectedType(
-  alert: AlertConversation,
-): "malicious_package" | "leaked_secret" | null {
-  if (isAlertConversationMalicious(alert)) return "malicious_package";
-  if (isAlertConversationSecret(alert)) return "leaked_secret";
-
-  return null;
 }
 
 export function capitalize(text: string) {

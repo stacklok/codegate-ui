@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { SidebarTrigger } from "../../../components/ui/sidebar";
+
 import { DropdownMenu } from "../../../components/HoverPopover";
 import { Separator, ButtonDarkMode } from "@stacklok/ui-kit";
 import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
@@ -17,20 +17,13 @@ function HomeLink() {
   );
 }
 
-export function Header({ hasError }: { hasError?: boolean }) {
+export function Header() {
   return (
     <header
       aria-label="App header"
-      className="shrink-0 h-16 px-3 items-center flex w-full bg-gray-25 border-b-gray-200 border-b"
+      className="sticky top-0 z-10 shrink-0 h-16 px-3 items-center flex w-full bg-gray-25 border-b-gray-200 border-b"
     >
       <div className="flex items-center gap-2 flex-1">
-        {!hasError && (
-          <>
-            <SidebarTrigger />
-            <Separator orientation="vertical" className="h-8" />
-          </>
-        )}
-
         <nav className="flex ml-2">
           <HomeLink />
         </nav>
