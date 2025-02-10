@@ -1,17 +1,23 @@
 import type {
+  ControlProps,
   EnumCellProps,
   OwnPropsOfEnum,
   RankedTester,
 } from "@jsonforms/core";
 import { isEnumControl, rankWith } from "@jsonforms/core";
 import { withJsonFormsEnumProps } from "@jsonforms/react";
-import { Label, Select, SelectButton } from "@stacklok/ui-kit";
+import { Select, SelectButton } from "@stacklok/ui-kit";
+import { getRACPropsFromJSONForms, LabelWithDescription } from "../utils";
 
-const EnumFieldControl = (props: EnumCellProps & OwnPropsOfEnum) => {
+// eslint-disable-next-line react-refresh/only-export-components
+const EnumFieldControl = (
+  props: EnumCellProps & OwnPropsOfEnum & ControlProps,
+) => {
   const items = (props.options ?? []).map(({ label, value }) => ({
     textValue: label,
     id: value,
   }));
+  const mappedProps = getRACPropsFromJSONForms(props);
 
   console.log({ items });
 
@@ -23,7 +29,7 @@ const EnumFieldControl = (props: EnumCellProps & OwnPropsOfEnum) => {
       className="w-full"
       items={items}
     >
-      <Label />
+      <LabelWithDescription {...props} isRequired={mappedProps.isRequired} />
 
       <SelectButton />
     </Select>

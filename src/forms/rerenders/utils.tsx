@@ -1,5 +1,5 @@
 import type { ControlProps } from "@jsonforms/core";
-import { Description, FieldError } from "@stacklok/ui-kit";
+import { Description, FieldError, Label } from "@stacklok/ui-kit";
 
 export function getRACPropsFromJSONForms(props: ControlProps) {
   const { id, errors, required, enabled, handleChange, path, data } = props;
@@ -38,5 +38,25 @@ export function JsonFormsDescription(props: ControlProps) {
     return null;
   }
 
-  return <Description className="mt-1">{description}</Description>;
+  return (
+    <Description className="mt-2 text-secondary mb-4 text-base">
+      {description}
+    </Description>
+  );
+}
+
+export function LabelWithDescription({
+  label,
+  isRequired = false,
+  ...props
+}: ControlProps & { isRequired?: boolean }) {
+  return (
+    <Label className="text-primary text-base mb-2 ">
+      <div className="flex items-center">
+        {label}{" "}
+        {isRequired === true ? <span className="text-red-600">*</span> : null}
+      </div>
+      <JsonFormsDescription label={label} {...props} />
+    </Label>
+  );
 }
