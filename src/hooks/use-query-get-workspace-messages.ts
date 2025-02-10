@@ -51,7 +51,7 @@ export const useQueryGetWorkspaceMessages = <
         conversation.alerts && conversation.alerts?.length > 0
           ? {
               ...conversation,
-              alerts: dedupeByKeys(conversation.alerts, ["id", "code_snippet"]),
+              alerts: dedupeByKeys(conversation.alerts, ["id"]),
             }
           : conversation,
       );

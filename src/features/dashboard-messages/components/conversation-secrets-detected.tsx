@@ -16,7 +16,7 @@ function ConversationSecretsListItem({
   value: ReactNode;
 }) {
   return (
-    <li className="grid grid-cols-[1fr_2fr] px-2 py-0.5 rounded ">
+    <li className="grid grid-cols-[1fr_4fr] px-2 py-0.5 rounded ">
       <code className="block font-bold">{title}</code>
       <code className="block truncate">{value}</code>
     </li>
@@ -31,7 +31,6 @@ export function ConversationSecretsDetected({
 }: {
   alerts: (Omit<Alert, "trigger_string"> & { trigger_string: string })[];
 }) {
-  console.debug("👉  alerts:", alerts);
   return (
     <ConversationSecretsList>
       {alerts.map((a) => {

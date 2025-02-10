@@ -52,10 +52,7 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
       });
 
       // Ugly de-duplication hack
-      return dedupeByKeys(data.filter(isAlertCritical), [
-        "alert_id",
-        "code_snippet",
-      ]);
+      return dedupeByKeys(data.filter(isAlertCritical), ["alert_id"]);
     },
     [options],
   );

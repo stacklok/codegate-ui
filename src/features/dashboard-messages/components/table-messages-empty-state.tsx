@@ -168,15 +168,6 @@ export function TableAlertsEmptyState() {
 
   const isLoading = isMessagesLoading || isWorkspacesLoading;
 
-  console.log("foo", {
-    isLoading,
-    hasWorkspaceMessages: messages.length > 0,
-    hasMultipleWorkspaces:
-      workspaces.filter((w) => w.name !== "default").length > 0,
-    search: state.search || null,
-    view: state.view,
-  });
-
   return match<MatchInput, ReactNode>({
     isLoading,
     hasWorkspaceMessages: messages.length > 0,

@@ -21,7 +21,6 @@ export function RouteChat() {
   const { data: conversation } = useQueryGetWorkspaceMessages({
     select: (data) => data.find((m) => m.chat_id === id),
   });
-  console.debug("👉  conversation:", conversation);
 
   const secrets = conversation?.alerts?.filter(isAlertSecret);
 
