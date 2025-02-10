@@ -1,27 +1,29 @@
 import type {
+  ControlProps,
   EnumCellProps,
   OwnPropsOfEnum,
   RankedTester,
 } from "@jsonforms/core";
 import { isEnumControl, rankWith } from "@jsonforms/core";
-import { withJsonFormsEnumProps } from "@jsonforms/react";
 import {
-  Input,
-  Label,
-  Select,
-  SelectButton,
-  TextField,
-} from "@stacklok/ui-kit";
+  withJsonFormsControlProps,
+  withJsonFormsEnumProps,
+} from "@jsonforms/react";
+import { Label, Select, SelectButton } from "@stacklok/ui-kit";
 
-import { JsonFormsDescription } from "../utils";
+import { getRACPropsFromJSONForms } from "../utils";
 
-const EnumFieldControl = (props: EnumCellProps & OwnPropsOfEnum) => {
+// eslint-disable-next-line react-refresh/only-export-components
+const EnumFieldControl = (
+  props: EnumCellProps & OwnPropsOfEnum & ControlProps,
+) => {
   const items = (props.options ?? []).map(({ label, value }) => ({
     textValue: label,
     id: value,
   }));
+  const mappedProps = getRACPropsFromJSONForms(props);
 
-  console.log({ items });
+  console.log(mappedProps);
 
   return (
     <Select
@@ -31,25 +33,17 @@ const EnumFieldControl = (props: EnumCellProps & OwnPropsOfEnum) => {
       className="w-full"
       items={items}
     >
-      <Label />
-
-      <SelectButton />
-    </Select>
-  );
-
-  return (
-    <TextField {...mappedProps}>
-      <Label className="text-primary text-base mb-2 ">
+      <Label className="text-primary text-base mb-2">
         <div className="flex items-center">
-          {label}{" "}
+          {props.label}{" "}
           {mappedProps.isRequired === true ? (
             <span className="text-red-600">*</span>
           ) : null}
         </div>
       </Label>
-      <Input />
-      <JsonFormsDescription {...props} />
-    </TextField>
+      hello
+      <SelectButton />
+    </Select>
   );
 };
 
@@ -59,7 +53,9 @@ const tester: RankedTester = (...args) => {
   return x;
 };
 
-const renderer = withJsonFormsEnumProps(EnumFieldControl, false);
+const renderer = withJsonFormsControlProps(
+  withJsonFormsEnumProps(EnumFieldControl, false),
+);
 
 const config = { tester, renderer };
 
