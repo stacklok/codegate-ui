@@ -5,15 +5,7 @@ import type {
 } from "@jsonforms/core";
 import { isEnumControl, rankWith } from "@jsonforms/core";
 import { withJsonFormsEnumProps } from "@jsonforms/react";
-import {
-  Input,
-  Label,
-  Select,
-  SelectButton,
-  TextField,
-} from "@stacklok/ui-kit";
-
-import { JsonFormsDescription } from "../utils";
+import { Label, Select, SelectButton } from "@stacklok/ui-kit";
 
 const EnumFieldControl = (props: EnumCellProps & OwnPropsOfEnum) => {
   const items = (props.options ?? []).map(({ label, value }) => ({
@@ -36,21 +28,6 @@ const EnumFieldControl = (props: EnumCellProps & OwnPropsOfEnum) => {
       <SelectButton />
     </Select>
   );
-
-  return (
-    <TextField {...mappedProps}>
-      <Label className="text-primary text-base mb-2 ">
-        <div className="flex items-center">
-          {label}{" "}
-          {mappedProps.isRequired === true ? (
-            <span className="text-red-600">*</span>
-          ) : null}
-        </div>
-      </Label>
-      <Input />
-      <JsonFormsDescription {...props} />
-    </TextField>
-  );
 };
 
 const tester: RankedTester = (...args) => {
@@ -59,6 +36,8 @@ const tester: RankedTester = (...args) => {
   return x;
 };
 
+// @ts-expect-error the types are not properly handled here for some reason
+// for pragmatic reasons I ignored this
 const renderer = withJsonFormsEnumProps(EnumFieldControl, false);
 
 const config = { tester, renderer };
