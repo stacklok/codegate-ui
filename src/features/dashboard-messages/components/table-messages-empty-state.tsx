@@ -13,7 +13,7 @@ import { emptyStateStrings } from "../constants/strings";
 import { EmptyState } from "@/components/empty-state";
 import { hrefs } from "@/lib/hrefs";
 import { LinkExternal02 } from "@untitled-ui/icons-react";
-import { useListAllWorkspaces } from "@/features/workspace/hooks/use-query-list-all-workspaces";
+import { useListAllWorkspaces } from "@/hooks/use-query-list-all-workspaces";
 import {
   AlertsFilterView,
   useMessagesFilterSearchParams,
@@ -184,7 +184,7 @@ export function TableAlertsEmptyState() {
         search: P._,
         view: P._,
       },
-      () => <EmptyStateLoading />
+      () => <EmptyStateLoading />,
     )
     .with(
       {
@@ -193,7 +193,7 @@ export function TableAlertsEmptyState() {
         search: P._,
         view: P._,
       },
-      () => <EmptyStateGetStarted />
+      () => <EmptyStateGetStarted />,
     )
     .with(
       {
@@ -202,7 +202,7 @@ export function TableAlertsEmptyState() {
         search: P.string.select(),
         view: P._,
       },
-      (search) => <EmptyStateSearch search={search} setSearch={setSearch} />
+      (search) => <EmptyStateSearch search={search} setSearch={setSearch} />,
     )
     .with(
       {
@@ -211,7 +211,7 @@ export function TableAlertsEmptyState() {
         search: P._,
         view: P.any,
       },
-      () => <EmptyStateNoMessagesInWorkspace />
+      () => <EmptyStateNoMessagesInWorkspace />,
     )
     .with(
       {
@@ -220,7 +220,7 @@ export function TableAlertsEmptyState() {
         search: P._,
         view: AlertsFilterView.MALICIOUS,
       },
-      () => <EmptyStateMalicious />
+      () => <EmptyStateMalicious />,
     )
     .with(
       {
@@ -228,7 +228,7 @@ export function TableAlertsEmptyState() {
         hasMultipleWorkspaces: P.any,
         view: AlertsFilterView.SECRETS,
       },
-      () => <EmptyStateSecrets />
+      () => <EmptyStateSecrets />,
     )
     .otherwise(() => <EmptyStateError />);
 }

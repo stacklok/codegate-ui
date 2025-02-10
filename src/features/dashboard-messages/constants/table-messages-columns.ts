@@ -13,8 +13,7 @@ export const TABLE_MESSAGES_COLUMNS: TableMessagesColumn[] = [
     id: "time",
     isRowHeader: true,
     children: "Time",
-    minWidth: 170,
-    maxWidth: 180,
+    width: 160,
   },
   {
     id: "type",
@@ -29,6 +28,7 @@ export const TABLE_MESSAGES_COLUMNS: TableMessagesColumn[] = [
   {
     id: "alerts",
     children: "Alerts",
+    alignment: "center",
     width: 110,
   },
   {

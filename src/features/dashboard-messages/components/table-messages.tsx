@@ -20,8 +20,8 @@ import { useMessagesFilterSearchParams } from "../hooks/use-messages-filter-sear
 import { Key01, PackageX } from "@untitled-ui/icons-react";
 import { TableAlertsEmptyState } from "./table-messages-empty-state";
 import { hrefs } from "@/lib/hrefs";
-import { isAlertMalicious } from "../lib/is-alert-malicious";
-import { isAlertSecret } from "../lib/is-alert-secret";
+import { isAlertMalicious } from "../../../lib/is-alert-malicious";
+import { isAlertSecret } from "../../../lib/is-alert-secret";
 import { twMerge } from "tailwind-merge";
 import { useQueryGetWorkspaceMessagesTable } from "../hooks/use-query-get-workspace-messages-table";
 import {
@@ -78,7 +78,7 @@ function AlertsSummaryCount({
         isIcon
         className={twMerge(
           "flex gap-1 items-center",
-          count > 0 ? "text-secondary" : "text-disabled"
+          count > 0 ? "text-secondary" : "text-disabled",
         )}
       >
         <Icon className="size-4" />
@@ -124,7 +124,7 @@ function CellRenderer({
   switch (column.id) {
     case "time":
       return (
-        <span className="whitespace-nowrap">
+        <span className="whitespace-nowrap text-secondary">
           {formatDistanceToNow(new Date(row.conversation_timestamp), {
             addSuffix: true,
           })}
@@ -151,7 +151,7 @@ export function TableMessages() {
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     data,
     state.page,
-    15
+    15,
   );
 
   return (

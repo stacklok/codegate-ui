@@ -10,12 +10,12 @@ import {
   V1ListArchivedWorkspacesResponse,
   V1ListWorkspacesResponse,
 } from "@/api/generated";
-import { useActiveWorkspaceName } from "./use-active-workspace-name";
+import { useQueryActiveWorkspaceName } from "../../../hooks/use-query-active-workspace-name";
 
 export function useMutationArchiveWorkspace() {
   const queryClient = useQueryClient();
   const invalidate = useInvalidateWorkspaceQueries();
-  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
 
   return useToastMutation({
     ...v1DeleteWorkspaceMutation(),

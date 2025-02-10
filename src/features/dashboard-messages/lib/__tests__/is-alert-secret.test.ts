@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { isAlertSecret } from "../is-alert-secret";
+import { isAlertSecret } from "../../../../lib/is-alert-secret";
 import { mockAlert } from "../../../../mocks/msw/mockers/alert.mock";
 
 test("matches secret alert", () => {

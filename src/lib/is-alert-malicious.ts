@@ -19,7 +19,7 @@ export function isConversationWithMaliciousAlerts(
   return conversation?.alerts?.some(isAlertMalicious) ?? false;
 }
 
-export function isAlertMalicious(alert: Alert) {
+export function isAlertMalicious(alert: Alert | AlertConversation | null) {
   return (
     alert?.trigger_category === "critical" &&
     alert.trigger_string !== null &&

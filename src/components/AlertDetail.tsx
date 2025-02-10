@@ -1,6 +1,6 @@
 import { Alert } from "@/api/generated";
-import { isAlertMalicious } from "@/features/dashboard-messages/lib/is-alert-malicious";
-import { isAlertSecret } from "@/features/dashboard-messages/lib/is-alert-secret";
+import { isAlertMalicious } from "@/lib/is-alert-malicious";
+import { isAlertSecret } from "@/lib/is-alert-secret";
 import { Markdown } from "./Markdown";
 
 type MaliciousPkgType = {

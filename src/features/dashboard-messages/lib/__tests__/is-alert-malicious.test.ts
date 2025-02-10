@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { isAlertMalicious } from "../is-alert-malicious";
+import { isAlertMalicious } from "../../../../lib/is-alert-malicious";
 import { mockAlert } from "../../../../mocks/msw/mockers/alert.mock";
 
 test("matches malicious alert", () => {

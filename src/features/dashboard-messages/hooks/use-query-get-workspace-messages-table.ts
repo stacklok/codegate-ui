@@ -5,8 +5,8 @@ import {
   useMessagesFilterSearchParams,
 } from "./use-messages-filter-search-params";
 import { multiFilter } from "@/lib/multi-filter";
-import { isConversationWithMaliciousAlerts } from "../lib/is-alert-malicious";
-import { isConversationWithSecretAlerts } from "../lib/is-alert-secret";
+import { isConversationWithMaliciousAlerts } from "../../../lib/is-alert-malicious";
+import { isConversationWithSecretAlerts } from "../../../lib/is-alert-secret";
 import { filterMessagesBySubstring } from "../lib/filter-messages-by-substring";
 import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
 
@@ -28,13 +28,13 @@ export function useQueryGetWorkspaceMessagesTable() {
     (data: Conversation[]) => {
       return multiFilter(data, [FILTER[state.view]])
         .filter((conversation) =>
-          filterMessagesBySubstring(conversation, state.search ?? null)
+          filterMessagesBySubstring(conversation, state.search ?? null),
         )
         .sort((a, b) =>
-          b.conversation_timestamp > a.conversation_timestamp ? 1 : -1
+          b.conversation_timestamp > a.conversation_timestamp ? 1 : -1,
         );
     },
-    [state.search, state.view]
+    [state.search, state.view],
   );
 
   return useQueryGetWorkspaceMessages({

@@ -3,7 +3,7 @@ import {
   V1GetWorkspaceAlertsResponse,
 } from "@/api/generated";
 import { v1GetWorkspaceAlertsOptions } from "@/api/generated/@tanstack/react-query.gen";
-import { useActiveWorkspaceName } from "@/features/workspace/hooks/use-active-workspace-name";
+import { useQueryActiveWorkspaceName } from "@/hooks/use-query-active-workspace-name";
 import { getQueryCacheConfig } from "@/lib/react-query-utils";
 import { useQuery } from "@tanstack/react-query";
 
@@ -18,7 +18,7 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     isFetching: isWorkspaceFetching,
     isLoading: isWorkspaceLoading,
     isRefetching: isWorkspaceRefetching,
-  } = useActiveWorkspaceName();
+  } = useQueryActiveWorkspaceName();
 
   const options: V1GetWorkspaceAlertsData = {
     path: {

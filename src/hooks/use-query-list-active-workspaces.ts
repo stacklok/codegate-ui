@@ -2,7 +2,7 @@ import { ListActiveWorkspacesResponse } from "@/api/generated";
 import { v1ListActiveWorkspacesOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useQuery } from "@tanstack/react-query";
 
-export function useActiveWorkspaces<T = ListActiveWorkspacesResponse>({
+export function useQueryListActiveWorkspaces<T = ListActiveWorkspacesResponse>({
   select,
 }: {
   select?: (data?: ListActiveWorkspacesResponse) => T;

@@ -1,4 +1,4 @@
-import { useListWorkspaces } from "@/features/workspace/hooks/use-list-workspaces";
+import { useQueryListWorkspaces } from "@/hooks/use-query-list-workspaces";
 import {
   Button,
   DialogTrigger,
@@ -12,21 +12,21 @@ import {
 } from "@stacklok/ui-kit";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useMutationActivateWorkspace } from "../hooks/use-mutation-activate-workspace";
+import { useMutationActivateWorkspace } from "../../../hooks/use-mutation-activate-workspace";
 import clsx from "clsx";
-import { useActiveWorkspaceName } from "../hooks/use-active-workspace-name";
+import { useQueryActiveWorkspaceName } from "../../../hooks/use-query-active-workspace-name";
 import { hrefs } from "@/lib/hrefs";
 import { twMerge } from "tailwind-merge";
 import ChevronDown from "@untitled-ui/icons-react/build/cjs/ChevronDown";
 import { SearchMd, Settings01 } from "@untitled-ui/icons-react";
 
-export function WorkspacesSelection() {
+export function HeaderActiveWorkspaceSelector() {
   const queryClient = useQueryClient();
 
-  const { data: workspacesResponse } = useListWorkspaces();
+  const { data: workspacesResponse } = useQueryListWorkspaces();
   const { mutateAsync: activateWorkspace } = useMutationActivateWorkspace();
 
-  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchWorkspace, setSearchWorkspace] = useState("");

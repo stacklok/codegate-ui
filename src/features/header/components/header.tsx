@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { DropdownMenu } from "../../../components/HoverPopover";
 import { Separator, ButtonDarkMode } from "@stacklok/ui-kit";
-import { WorkspacesSelection } from "@/features/workspace/components/workspaces-selection";
+import { HeaderActiveWorkspaceSelector } from "@/features/header/components/header-active-workspace-selector";
 import { HELP_MENU_ITEMS } from "../constants/help-menu-items";
 import { HeaderStatusMenu } from "./header-status-menu";
 import { SETTINGS_MENU_ITEMS } from "../constants/settings-menu-items";
@@ -28,7 +28,7 @@ export function Header() {
           <HomeLink />
         </nav>
         <Separator orientation="vertical" className="h-8 ml-4" />
-        <WorkspacesSelection />
+        <HeaderActiveWorkspaceSelector />
       </div>
       <div className="flex items-center gap-1 mr-2">
         <HeaderStatusMenu />

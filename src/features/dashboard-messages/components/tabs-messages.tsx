@@ -1,6 +1,6 @@
-import { isConversationWithMaliciousAlerts } from "../lib/is-alert-malicious";
+import { isConversationWithMaliciousAlerts } from "../../../lib/is-alert-malicious";
 import { multiFilter } from "@/lib/multi-filter";
-import { isConversationWithSecretAlerts } from "../lib/is-alert-secret";
+import { isConversationWithSecretAlerts } from "../../../lib/is-alert-secret";
 import { V1GetWorkspaceMessagesResponse } from "@/api/generated";
 import {
   Tab as BaseTab,

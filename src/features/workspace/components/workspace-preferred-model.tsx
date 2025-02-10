@@ -15,7 +15,7 @@ import { MuxMatcherType } from "@/api/generated";
 import { FormEvent } from "react";
 import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
 import { Select, SelectButton } from "@stacklok/ui-kit";
-import { useModelsData } from "@/hooks/use-models-data";
+import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
 
 function MissingProviderBanner() {
   return (
@@ -42,7 +42,7 @@ export function WorkspacePreferredModel({
   const { preferredModel, setPreferredModel, isPending } =
     usePreferredModelWorkspace(workspaceName);
   const { mutateAsync } = useMutationPreferredModelWorkspace();
-  const { data: providerModels = [] } = useModelsData();
+  const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
   const { model, provider_id } = preferredModel;
   const isModelsEmpty = !isPending && providerModels.length === 0;
 

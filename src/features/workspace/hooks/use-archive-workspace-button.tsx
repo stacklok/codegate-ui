@@ -1,14 +1,14 @@
 import { Button } from "@stacklok/ui-kit";
 import { ComponentProps } from "react";
 import { useMutationArchiveWorkspace } from "@/features/workspace/hooks/use-mutation-archive-workspace";
-import { useActiveWorkspaceName } from "./use-active-workspace-name";
+import { useQueryActiveWorkspaceName } from "../../../hooks/use-query-active-workspace-name";
 
 export function useArchiveWorkspaceButton({
   workspaceName,
 }: {
   workspaceName: string;
 }): ComponentProps<typeof Button> {
-  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
   const { mutateAsync, isPending } = useMutationArchiveWorkspace();
 
   return {

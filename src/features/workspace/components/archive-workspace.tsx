@@ -13,7 +13,7 @@ import { useArchiveWorkspaceButton } from "../hooks/use-archive-workspace-button
 import { useConfirmHardDeleteWorkspace } from "../hooks/use-confirm-hard-delete-workspace";
 import { useNavigate } from "react-router-dom";
 import { hrefs } from "@/lib/hrefs";
-import { useActiveWorkspaceName } from "../hooks/use-active-workspace-name";
+import { useQueryActiveWorkspaceName } from "../../../hooks/use-query-active-workspace-name";
 
 function getContextualText({
   activeWorkspaceName,
@@ -34,7 +34,7 @@ function getContextualText({
 // NOTE: You can't show a tooltip on a disabled button
 // React Aria's recommended approach is https://spectrum.adobe.com/page/contextual-help/
 function ContextualHelp({ workspaceName }: { workspaceName: string }) {
-  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
   if (!activeWorkspaceName) return null;
 
   const text = getContextualText({ activeWorkspaceName, workspaceName });

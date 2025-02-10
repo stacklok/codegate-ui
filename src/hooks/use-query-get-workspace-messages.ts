@@ -4,7 +4,7 @@ import {
   V1GetWorkspaceMessagesData,
 } from "@/api/generated";
 import { v1GetWorkspaceMessagesOptions } from "@/api/generated/@tanstack/react-query.gen";
-import { useActiveWorkspaceName } from "@/features/workspace/hooks/use-active-workspace-name";
+import { useQueryActiveWorkspaceName } from "@/hooks/use-query-active-workspace-name";
 import { getQueryCacheConfig } from "@/lib/react-query-utils";
 
 export const useQueryGetWorkspaceMessages = <
@@ -14,7 +14,7 @@ export const useQueryGetWorkspaceMessages = <
 }: {
   select?: (data: V1GetWorkspaceMessagesResponse) => T;
 } = {}) => {
-  const { data: activeWorkspaceName } = useActiveWorkspaceName();
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
 
   const options: V1GetWorkspaceMessagesData = {
     path: {
