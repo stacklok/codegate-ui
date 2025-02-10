@@ -1,4 +1,8 @@
-import { AddProviderEndpointRequest, ProviderType } from "@/api/generated";
+import {
+  AddProviderEndpointRequest,
+  ProviderAuthType,
+  ProviderType,
+} from "@/api/generated";
 import { ProviderDialog } from "@/features/providers/components/provider-dialog";
 import { ProviderDialogFooter } from "@/features/providers/components/provider-dialog-footer";
 import { ProviderForm } from "@/features/providers/components/provider-form";
@@ -9,7 +13,7 @@ import { useState } from "react";
 const DEFAULT_PROVIDER_STATE = {
   name: "",
   description: "",
-  auth_type: null,
+  auth_type: ProviderAuthType.API_KEY,
   provider_type: ProviderType.OPENAI,
   endpoint: "",
   api_key: "",
@@ -29,8 +33,12 @@ export function RouteProviderCreate() {
   };
 
   return (
-    <ProviderDialog title="Create Provider">
-      <Form onSubmit={handleSubmit} validationBehavior="aria">
+    <ProviderDialog title="Add Provider">
+      <Form
+        onSubmit={handleSubmit}
+        validationBehavior="aria"
+        className="overflow-auto"
+      >
         <DialogContent className="p-8">
           <ProviderForm provider={provider} setProvider={setProvider} />
         </DialogContent>

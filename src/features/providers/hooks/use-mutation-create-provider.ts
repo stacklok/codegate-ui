@@ -8,6 +8,7 @@ export function useMutationCreateProvider() {
   const invalidate = useInvalidateProvidersQueries();
   return useToastMutation({
     ...v1AddProviderEndpointMutation(),
+    successMsg: "Successfully added provider",
     onSuccess: async () => {
       await invalidate();
       navigate("/providers");

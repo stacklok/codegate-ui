@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.14.0](https://github.com/stacklok/codegate-ui/compare/v0.13.1...v0.14.0) (2025-02-07)
+
+
+### Features
+
+* show alert detail in the conversation page ([#277](https://github.com/stacklok/codegate-ui/issues/277)) ([8154d3e](https://github.com/stacklok/codegate-ui/commit/8154d3e9c8082f6aac0fc2914621dd99f8f71936))
+
+## [0.13.1](https://github.com/stacklok/codegate-ui/compare/v0.13.0...v0.13.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* provider endpoint and mux section ([#275](https://github.com/stacklok/codegate-ui/issues/275)) ([cadbd5f](https://github.com/stacklok/codegate-ui/commit/cadbd5f71125a9a0dac9824c6f1bdf8aabca4071))
+
+
+### Reverts
+
+* openapi-ts upgrade ([#273](https://github.com/stacklok/codegate-ui/issues/273)) ([2a5234c](https://github.com/stacklok/codegate-ui/commit/2a5234c1246577070fd978397db87b637c42cd9f))
+
 ## [0.13.0](https://github.com/stacklok/codegate-ui/compare/v0.12.2...v0.13.0) (2025-02-06)
 
 

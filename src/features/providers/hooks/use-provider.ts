@@ -7,7 +7,7 @@ export function useProvider(providerId: string) {
   const [provider, setProvider] = useState<AddProviderEndpointRequest>({
     name: "",
     description: "",
-    auth_type: null,
+    auth_type: undefined,
     provider_type: ProviderType.OPENAI,
     endpoint: "",
     api_key: "",

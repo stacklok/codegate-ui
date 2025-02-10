@@ -19,7 +19,7 @@ export type AddProviderEndpointRequest = {
   description?: string;
   provider_type: ProviderType;
   endpoint?: string;
-  auth_type?: ProviderAuthType | null;
+  auth_type?: ProviderAuthType;
   api_key?: string | null;
 };
 
@@ -68,11 +68,19 @@ export type ChatMessage = {
   message_id: string;
 };
 
+/**
+ * Represents a code snippet with its programming language.
+ *
+ * Args:
+ * language: The programming language identifier (e.g., 'python', 'javascript')
+ * code: The actual code content
+ */
 export type CodeSnippet = {
   code: string;
   language: string | null;
   filepath: string | null;
   libraries?: Array<string>;
+  file_extension?: string | null;
 };
 
 /**
@@ -165,7 +173,7 @@ export type ProviderEndpoint = {
   description?: string;
   provider_type: ProviderType;
   endpoint?: string;
-  auth_type?: ProviderAuthType | null;
+  auth_type?: ProviderAuthType;
 };
 
 /**
@@ -178,6 +186,7 @@ export enum ProviderType {
   OLLAMA = "ollama",
   LM_STUDIO = "lm_studio",
   LLAMACPP = "llamacpp",
+  OPENROUTER = "openrouter",
 }
 
 /**

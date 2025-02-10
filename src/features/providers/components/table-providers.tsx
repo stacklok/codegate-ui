@@ -8,14 +8,15 @@ import {
   LinkButton,
   TableHeader,
   ResizableTableContainer,
+  Button,
 } from "@stacklok/ui-kit";
-import { Globe02, Tool01 } from "@untitled-ui/icons-react";
+import { Globe02, Tool01, Trash01 } from "@untitled-ui/icons-react";
 import { PROVIDER_AUTH_TYPE_MAP } from "../lib/utils";
-import { TableActions } from "./table-actions";
 import { useProviders } from "../hooks/use-providers";
 import { match } from "ts-pattern";
 import { ComponentProps } from "react";
 import { ProviderEndpoint } from "@/api/generated";
+import { useConfirmDeleteProvider } from "../hooks/use-confirm-delete-provider";
 
 const COLUMN_MAP = {
   provider: "provider",
@@ -35,7 +36,7 @@ const COLUMNS: Column[] = [
     width: "40%",
   },
   { id: "type", children: "Provider", width: "10%", className: "capitalize" },
-  { id: "endpoint", children: "Endpoint", width: "20%" },
+  { id: "endpoint", children: "Endpoint", width: "20%", minWidth: 250 },
   { id: "auth", children: "Authentication", width: "20%" },
   { id: "configuration", alignment: "end", width: "10%", children: "" },
 ];
@@ -43,9 +44,11 @@ const COLUMNS: Column[] = [
 function CellRenderer({
   column,
   row,
+  deleteProvider,
 }: {
   column: Column;
   row: ProviderEndpoint;
+  deleteProvider: () => void;
 }) {
   return match(column.id)
     .with(COLUMN_MAP.provider, () => (
@@ -79,12 +82,17 @@ function CellRenderer({
         </LinkButton>
       </div>
     ))
-    .with(COLUMN_MAP.configuration, () => <TableActions provider={row} />)
+    .with(COLUMN_MAP.configuration, () => (
+      <Button isIcon variant="tertiary" onPress={deleteProvider}>
+        <Trash01 />
+      </Button>
+    ))
     .exhaustive();
 }
 
 export function TableProviders() {
   const { data: providers = [] } = useProviders();
+  const deleteProvider = useConfirmDeleteProvider();
 
   return (
     <ResizableTableContainer>
@@ -102,7 +110,15 @@ export function TableProviders() {
                   id={column.id}
                   alignment={column.alignment}
                 >
-                  <CellRenderer column={column} row={row} />
+                  <CellRenderer
+                    column={column}
+                    row={row}
+                    deleteProvider={() => {
+                      deleteProvider({
+                        path: { provider_id: row.id as string },
+                      });
+                    }}
+                  />
                 </Cell>
               )}
             </Row>
