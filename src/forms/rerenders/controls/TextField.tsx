@@ -12,7 +12,7 @@ const TextFieldControl = (props: ControlProps) => {
 
   return (
     <TextField {...mappedProps}>
-      <Label className="text-primary text-base mb-2">
+      <Label className="text-primary text-base mb-2 ">
         <div className="flex items-center">
           {label}{" "}
           {mappedProps.isRequired === true ? (

@@ -1,29 +1,27 @@
 import type {
-  ControlProps,
   EnumCellProps,
   OwnPropsOfEnum,
   RankedTester,
 } from "@jsonforms/core";
 import { isEnumControl, rankWith } from "@jsonforms/core";
+import { withJsonFormsEnumProps } from "@jsonforms/react";
 import {
-  withJsonFormsControlProps,
-  withJsonFormsEnumProps,
-} from "@jsonforms/react";
-import { Label, Select, SelectButton } from "@stacklok/ui-kit";
+  Input,
+  Label,
+  Select,
+  SelectButton,
+  TextField,
+} from "@stacklok/ui-kit";
 
-import { getRACPropsFromJSONForms } from "../utils";
+import { JsonFormsDescription } from "../utils";
 
-// eslint-disable-next-line react-refresh/only-export-components
-const EnumFieldControl = (
-  props: EnumCellProps & OwnPropsOfEnum & ControlProps,
-) => {
+const EnumFieldControl = (props: EnumCellProps & OwnPropsOfEnum) => {
   const items = (props.options ?? []).map(({ label, value }) => ({
     textValue: label,
     id: value,
   }));
-  const mappedProps = getRACPropsFromJSONForms(props);
 
-  console.log(mappedProps);
+  console.log({ items });
 
   return (
     <Select
@@ -33,17 +31,25 @@ const EnumFieldControl = (
       className="w-full"
       items={items}
     >
-      <Label className="text-primary text-base mb-2">
+      <Label />
+
+      <SelectButton />
+    </Select>
+  );
+
+  return (
+    <TextField {...mappedProps}>
+      <Label className="text-primary text-base mb-2 ">
         <div className="flex items-center">
-          {props.label}{" "}
+          {label}{" "}
           {mappedProps.isRequired === true ? (
             <span className="text-red-600">*</span>
           ) : null}
         </div>
       </Label>
-      hello
-      <SelectButton />
-    </Select>
+      <Input />
+      <JsonFormsDescription {...props} />
+    </TextField>
   );
 };
 
@@ -53,9 +59,7 @@ const tester: RankedTester = (...args) => {
   return x;
 };
 
-const renderer = withJsonFormsControlProps(
-  withJsonFormsEnumProps(EnumFieldControl, false),
-);
+const renderer = withJsonFormsEnumProps(EnumFieldControl, false);
 
 const config = { tester, renderer };
 
