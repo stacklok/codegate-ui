@@ -3,7 +3,7 @@ import { screen, waitFor } from "@testing-library/react";
 import { WorkspacePreferredModel } from "../workspace-preferred-model";
 import userEvent from "@testing-library/user-event";
 
-test("render model overrides", () => {
+test("render model overrides", async () => {
   render(
     <WorkspacePreferredModel
       isArchived={false}
@@ -16,9 +16,11 @@ test("render model overrides", () => {
       /select the model you would like to use in this workspace./i,
     ),
   ).toBeVisible();
-  expect(
-    screen.getByRole("button", { name: /select the model/i }),
-  ).toBeVisible();
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: /select an option/i }),
+    ).toBeVisible();
+  });
   expect(screen.getByRole("button", { name: /save/i })).toBeVisible();
 });
 
@@ -30,8 +32,13 @@ test("submit preferred model", async () => {
     />,
   );
 
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: /select an option/i }),
+    ).toBeVisible();
+  });
   await userEvent.click(
-    screen.getByRole("button", { name: /select the model/i }),
+    screen.getByRole("button", { name: /select an option/i }),
   );
 
   await userEvent.click(

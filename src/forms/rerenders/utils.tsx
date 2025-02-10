@@ -51,8 +51,8 @@ export function LabelWithDescription({
   ...props
 }: ControlProps & { isRequired?: boolean }) {
   return (
-    <Label className="text-primary text-base mb-2 ">
-      <div className="flex items-center">
+    <Label className="text-primary text-base mb-4">
+      <div className="flex items-center mb-2">
         {label}{" "}
         {isRequired === true ? <span className="text-red-600">*</span> : null}
       </div>

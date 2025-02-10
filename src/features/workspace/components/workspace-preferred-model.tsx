@@ -1,20 +1,12 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  Form,
-  Text,
-} from "@stacklok/ui-kit";
-import { twMerge } from "tailwind-merge";
 import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
-import { MuxMatcherType } from "@/api/generated";
-import { FormEvent } from "react";
-import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
-import { Select, SelectButton } from "@stacklok/ui-kit";
+import { ModelByProvider, MuxMatcherType } from "@/api/generated";
+import { useWorkspaceMuxes } from "../hooks/use-preferred-preferred-model";
 import { useModelsData } from "@/hooks/use-models-data";
-import { Type } from "@sinclair/typebox";
 import { FormCard } from "@/forms/FormCard";
+
+const serializeModelPreference = (model: ModelByProvider) => {
+  return `${model.provider_name}/${model.name}`;
+};
 
 export function WorkspacePreferredModel({
   className,
@@ -25,30 +17,46 @@ export function WorkspacePreferredModel({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { preferredModel, setPreferredModel } =
-    usePreferredModelWorkspace(workspaceName);
+  const { data } = useWorkspaceMuxes({
+    path: { workspace_name: workspaceName },
+  });
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [], isPending } = useModelsData();
-  const { model, provider_id } = preferredModel;
+  const modelOptions = (isPending ? [] : providerModels).map(
+    serializeModelPreference,
+  );
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = ({ model: selectedModelId }: { model: string }) => {
+    if (selectedModelId === "") {
+      return mutateAsync({
+        path: { workspace_name: workspaceName },
+        body: [],
+      });
+    }
+
+    const selectedModel = providerModels.find((model) => {
+      return serializeModelPreference(model) === selectedModelId;
+    });
+
+    if (!selectedModel) {
+      // this should not be a possibility, but there is no compile-time type guarantee
+      throw new Error("Model not found");
+    }
+
+    const { provider_id, name } = selectedModel;
+
     mutateAsync({
       path: { workspace_name: workspaceName },
       body: [
         {
           matcher: "",
           provider_id,
-          model,
+          model: name,
           matcher_type: MuxMatcherType.CATCH_ALL,
         },
       ],
     });
   };
-
-  const modelOptions = (isPending ? [] : providerModels).map(
-    (model) => `${model.provider_name}/${model.name}`,
-  );
 
   console.log("modelOptions", modelOptions);
 
@@ -57,7 +65,9 @@ export function WorkspacePreferredModel({
     type: "object",
     properties: {
       model: {
-        title: "Model",
+        title: "Preferred Model",
+        description:
+          "Select the model you would like to use in this workspace.",
         type: "string",
         ...(modelOptions.length > 0
           ? {
@@ -69,7 +79,19 @@ export function WorkspacePreferredModel({
     required: ["model"],
   };
 
+  const initialData = {
+    model: "",
+  };
+  console.log({ initialData });
+
   return (
-    <FormCard className={className} schema={schema} isPending={isPending} />
+    <FormCard
+      data={initialData}
+      isDisabled={isArchived}
+      className={className}
+      schema={schema}
+      isPending={isPending}
+      onSubmit={handleSubmit}
+    />
   );
 }

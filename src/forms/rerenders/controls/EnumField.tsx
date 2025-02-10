@@ -13,21 +13,29 @@ import { getRACPropsFromJSONForms, LabelWithDescription } from "../utils";
 const EnumFieldControl = (
   props: EnumCellProps & OwnPropsOfEnum & ControlProps,
 ) => {
-  const items = (props.options ?? []).map(({ label, value }) => ({
+  const items = [
+    {
+      label: "Select an option",
+      value: "",
+    },
+    ...(props.options ?? []),
+  ].map(({ label, value }) => ({
     textValue: label,
     id: value,
   }));
   const mappedProps = getRACPropsFromJSONForms(props);
 
-  console.log({ items });
-
   return (
     <Select
       aria-labelledby="preferred-model-id"
       name="model"
-      isRequired
       className="w-full"
       items={items}
+      {...mappedProps}
+      onSelectionChange={(newValue) => {
+        props.handleChange(props.path, newValue);
+      }}
+      selectedKey={mappedProps.value ?? ""}
     >
       <LabelWithDescription {...props} isRequired={mappedProps.isRequired} />
 
