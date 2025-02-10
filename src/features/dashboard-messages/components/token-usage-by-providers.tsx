@@ -1,8 +1,7 @@
 import { TokenUsage, TokenUsageAggregate } from "@/api/generated";
 import { formatCurrency } from "@/lib/currency";
 import { formatNumberCompact } from "@/lib/format-number";
-
-import { ArrowDown, ArrowUp } from "@untitled-ui/icons-react";
+import { TokenUsageIcon } from "./token-usage-icon";
 
 function validateUsage(usage: TokenUsage | null): usage is {
   input_tokens: number;
@@ -18,23 +17,6 @@ function validateUsage(usage: TokenUsage | null): usage is {
   );
 }
 
-function UsageIcon({
-  iconType: iconType,
-  ...props
-}: {
-  iconType: "input" | "output";
-  className?: string;
-}) {
-  switch (iconType) {
-    case "input":
-      return <ArrowUp {...props} />;
-    case "output":
-      return <ArrowDown {...props} />;
-    default:
-      iconType satisfies never;
-  }
-}
-
 function UsageRow({
   cost,
   tokens,
@@ -46,7 +28,7 @@ function UsageRow({
 }) {
   return (
     <li className="min-w-40 flex items-center border-b border-b-gray-900 last:border-b-0 py-1 my-1 list-none">
-      <UsageIcon iconType={type} className="size-4 text-gray-50" />
+      <TokenUsageIcon iconType={type} className="size-4 text-gray-50" />
 
       <div className="text-gray-50">{formatNumberCompact(tokens)}</div>
 

@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from "date-fns";
 import {
   Cell,
   Column,
@@ -28,6 +27,7 @@ import {
   TABLE_MESSAGES_COLUMNS,
   TableMessagesColumn,
 } from "../constants/table-messages-columns";
+import { formatTime } from "@/lib/format-time";
 
 const getPromptText = (conversation: Conversation) => {
   return (conversation.question_answers[0]?.question?.message ?? "N/A")
@@ -125,9 +125,7 @@ function CellRenderer({
     case "time":
       return (
         <span className="whitespace-nowrap text-secondary">
-          {formatDistanceToNow(new Date(row.conversation_timestamp), {
-            addSuffix: true,
-          })}
+          {formatTime(new Date(row.conversation_timestamp))}
         </span>
       );
     case "type":

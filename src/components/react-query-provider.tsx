@@ -43,7 +43,7 @@ export function QueryClientProvider({ children }: { children: ReactNode }) {
         defaultOptions: {
           queries: {
             ...getQueryCacheConfig("no-cache"),
-            refetchOnMount: true,
+            refetchOnMount: false, // additional instances of a query shouldn't trigger background refetch
             refetchOnReconnect: true,
             refetchOnWindowFocus: true,
           },

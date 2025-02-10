@@ -13,6 +13,7 @@ import { useKbdShortcuts } from "@/hooks/use-kbd-shortcuts";
 import { useNavigate } from "react-router-dom";
 import { hrefs } from "@/lib/hrefs";
 import { PlusSquare } from "@untitled-ui/icons-react";
+import { PageContainer } from "@/components/page-container";
 
 export function RouteWorkspaces() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export function RouteWorkspaces() {
   useKbdShortcuts([["c", () => navigate(hrefs.workspaces.create)]]);
 
   return (
-    <>
+    <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
         <Breadcrumb>Manage Workspaces</Breadcrumb>
@@ -39,6 +40,6 @@ export function RouteWorkspaces() {
       </WorkspaceHeading>
 
       <TableWorkspaces />
-    </>
+    </PageContainer>
   );
 }

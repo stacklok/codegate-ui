@@ -1,5 +1,7 @@
 import {
   Badge,
+  Card,
+  CardBody,
   Cell,
   Column,
   Row,
@@ -52,32 +54,39 @@ export function TableWorkspaces() {
   const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
 
   return (
-    <Table aria-label="List of workspaces">
-      <Row>
-        <TableHeader>
-          <Column id="name" isRowHeader>
-            Name
-          </Column>
-          <Column id="configuration"></Column>
-        </TableHeader>
-      </Row>
-      <TableBody>
-        {workspaces.map((workspace) => (
-          <Row key={workspace.id} href={hrefs.workspaces.edit(workspace.name)}>
-            <CellName
-              name={workspace.name}
-              isActive={workspace.is_active}
-              isArchived={workspace.isArchived}
-            />
-            <Cell alignment="end">
-              <TableActionsWorkspaces
-                activeWorkspaceName={activeWorkspaceName}
-                workspace={workspace}
-              />
-            </Cell>
+    <Card>
+      <CardBody className="p-0">
+        <Table aria-label="List of workspaces">
+          <Row>
+            <TableHeader>
+              <Column id="name" isRowHeader>
+                Name
+              </Column>
+              <Column id="configuration"></Column>
+            </TableHeader>
           </Row>
-        ))}
-      </TableBody>
-    </Table>
+          <TableBody>
+            {workspaces.map((workspace) => (
+              <Row
+                key={workspace.id}
+                href={hrefs.workspaces.edit(workspace.name)}
+              >
+                <CellName
+                  name={workspace.name}
+                  isActive={workspace.is_active}
+                  isArchived={workspace.isArchived}
+                />
+                <Cell alignment="end">
+                  <TableActionsWorkspaces
+                    activeWorkspaceName={activeWorkspaceName}
+                    workspace={workspace}
+                  />
+                </Cell>
+              </Row>
+            ))}
+          </TableBody>
+        </Table>
+      </CardBody>
+    </Card>
   );
 }

@@ -21,7 +21,7 @@ export function Header() {
   return (
     <header
       aria-label="App header"
-      className="sticky top-0 z-10 shrink-0 h-16 px-3 items-center flex w-full bg-gray-25 border-b-gray-200 border-b"
+      className="sticky top-0 z-10 shrink-0 h-16 px-6 items-center flex w-screen bg-gray-25 border-b-gray-200 border-b"
     >
       <div className="flex items-center gap-2 flex-1">
         <nav className="flex ml-2">

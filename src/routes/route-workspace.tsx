@@ -9,6 +9,7 @@ import { useArchivedWorkspaces } from "@/features/workspace/hooks/use-archived-w
 import { useRestoreWorkspaceButton } from "@/features/workspace/hooks/use-restore-workspace-button";
 import { WorkspaceCustomInstructions } from "@/features/workspace/components/workspace-custom-instructions";
 import { WorkspacePreferredModel } from "@/features/workspace/components/workspace-preferred-model";
+import { PageContainer } from "@/components/page-container";
 
 function WorkspaceArchivedBanner({ name }: { name: string }) {
   const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name });
@@ -37,7 +38,7 @@ export function RouteWorkspace() {
   });
 
   return (
-    <>
+    <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
         <Breadcrumb href="/workspaces">Manage Workspaces</Breadcrumb>
@@ -64,6 +65,6 @@ export function RouteWorkspace() {
         className="mb-4"
       />
       <ArchiveWorkspace isArchived={isArchived} workspaceName={name} />
-    </>
+    </PageContainer>
   );
 }

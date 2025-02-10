@@ -33,12 +33,19 @@ const COLUMNS: Column[] = [
     id: "provider",
     isRowHeader: true,
     children: "Name & Description",
-    width: "40%",
+    minWidth: 450,
+    maxWidth: 520,
   },
-  { id: "type", children: "Provider", width: "10%", className: "capitalize" },
-  { id: "endpoint", children: "Endpoint", width: "20%", minWidth: 250 },
-  { id: "auth", children: "Authentication", width: "20%" },
-  { id: "configuration", alignment: "end", width: "10%", children: "" },
+  {
+    id: "type",
+    children: "Provider",
+    minWidth: 110,
+    maxWidth: 130,
+    className: "capitalize",
+  },
+  { id: "endpoint", children: "Endpoint", minWidth: 250 },
+  { id: "auth", children: "Authentication", minWidth: 140 },
+  { id: "configuration", alignment: "end", minWidth: 40, children: "" },
 ];
 
 function CellRenderer({

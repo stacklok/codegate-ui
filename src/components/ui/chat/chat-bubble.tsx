@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 
 // ChatBubble
 const chatBubbleVariant = tv({
-  base: "flex gap-2 max-w-[60%] items-end relative group",
+  base: "flex gap-2 max-w-[60%] items-end relative group text-sm",
   variants: {
     variant: {
       received: "self-start",

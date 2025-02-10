@@ -8,7 +8,7 @@ export default function App() {
   return (
     <>
       <Header />
-      <main className="p-6">
+      <main className="w-screen">
         <Page />
       </main>
     </>

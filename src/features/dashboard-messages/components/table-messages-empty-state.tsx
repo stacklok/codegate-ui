@@ -151,7 +151,7 @@ function EmptyStateError() {
 
 type MatchInput = {
   isLoading: boolean;
-  hasWorkspaceAlerts: boolean;
+  hasWorkspaceMessages: boolean;
   hasMultipleWorkspaces: boolean;
   search: string | null;
   view: AlertsFilterView | null;
@@ -170,7 +170,7 @@ export function TableAlertsEmptyState() {
 
   return match<MatchInput, ReactNode>({
     isLoading,
-    hasWorkspaceAlerts: messages.length > 0,
+    hasWorkspaceMessages: messages.length > 0,
     hasMultipleWorkspaces:
       workspaces.filter((w) => w.name !== "default").length > 0,
     search: state.search || null,
@@ -179,7 +179,7 @@ export function TableAlertsEmptyState() {
     .with(
       {
         isLoading: true,
-        hasWorkspaceAlerts: P._,
+        hasWorkspaceMessages: P._,
         hasMultipleWorkspaces: P._,
         search: P._,
         view: P._,
@@ -188,7 +188,7 @@ export function TableAlertsEmptyState() {
     )
     .with(
       {
-        hasWorkspaceAlerts: false,
+        hasWorkspaceMessages: false,
         hasMultipleWorkspaces: false,
         search: P._,
         view: P._,
@@ -197,7 +197,7 @@ export function TableAlertsEmptyState() {
     )
     .with(
       {
-        hasWorkspaceAlerts: true,
+        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
         search: P.string.select(),
         view: P._,
@@ -206,7 +206,7 @@ export function TableAlertsEmptyState() {
     )
     .with(
       {
-        hasWorkspaceAlerts: false,
+        hasWorkspaceMessages: false,
         hasMultipleWorkspaces: true,
         search: P._,
         view: P.any,
@@ -215,7 +215,7 @@ export function TableAlertsEmptyState() {
     )
     .with(
       {
-        hasWorkspaceAlerts: true,
+        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: true,
         search: P._,
         view: AlertsFilterView.MALICIOUS,
@@ -224,7 +224,7 @@ export function TableAlertsEmptyState() {
     )
     .with(
       {
-        hasWorkspaceAlerts: true,
+        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
         view: AlertsFilterView.SECRETS,
       },
