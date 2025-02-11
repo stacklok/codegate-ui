@@ -1,9 +1,66 @@
 import js from "@eslint/js";
 import globals from "globals";
+import importPlugin from "eslint-plugin-import";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import tailwindPlugin from "eslint-plugin-tailwindcss";
+import path from "path";
+import fs from "fs";
+
+const FEATURES_DIR = "./src/features";
+
+/**
+ * Traverse the features directory and return an array of restricted paths for
+ * use in the `import/no-restricted-paths` rule.
+ *
+ * @example
+ * ```js
+ *  [
+ *   {
+ *     except: [ './dependencies' ],
+ *     from: './src/features',
+ *     target: './src/features/dependencies'
+ *   },
+ *   {
+ *     except: [ './versions' ],
+ *     from: './src/features',
+ *     target: './src/features/versions'
+ *   },
+ *   {
+ *     except: [ './vulnerabilities' ],
+ *     from: './src/features',
+ *     target: './src/features/vulnerabilities'
+ *   }
+ * ]
+ * ```
+ */
+const getRestrictedPathsForFeatureDir = () => {
+  const featureDirPath = path.resolve(FEATURES_DIR);
+  /**
+   * @type {Array<{except: `./${string}`[], from: './src/features', target: string}>}
+   */
+  const restrictedPaths = [];
+
+  try {
+    const featureDirs = fs.readdirSync(featureDirPath);
+
+    featureDirs.forEach((featureDir) => {
+      const subPath = path.join(featureDirPath, featureDir);
+      if (fs.lstatSync(subPath).isDirectory()) {
+        restrictedPaths.push({
+          except: [`./${featureDir}`],
+          from: FEATURES_DIR,
+          target: path.join(FEATURES_DIR, featureDir),
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error reading features directory:", error);
+  }
+
+  return restrictedPaths;
+};
 
 const restrictedSyntax = {
   reactQuery: {
@@ -24,15 +81,29 @@ export default tseslint.config(
     ],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      import: importPlugin,
     },
-
     settings: {
+      "import/resolver": {
+        typescript: true,
+        node: true,
+      },
+
       tailwindcss: {
         callees: ["tv", "twMerge"],
         config: "./tailwind.config.ts",
@@ -128,6 +199,40 @@ export default tseslint.config(
               importNames: ["useMutation"],
               message: "Use the custom `useToastMutation` instead",
               name: "@tanstack/react-query",
+            },
+          ],
+        },
+      ],
+      "import/no-restricted-paths": [
+        "error",
+        {
+          zones: [
+            // disables cross-feature imports:
+            // eg. src/features/dashboard-alerts should not import from src/features/dashboard-messages, etc.
+            ...getRestrictedPathsForFeatureDir(),
+
+            // enforce unidirectional codebase:
+            // e.g. src/routes can import from src/features but not the other way around
+            {
+              from: "./src/routes",
+              target: "./src/features",
+            },
+
+            // enforce unidirectional codebase:
+            // e.g src/features and src/routes can import from these shared modules but not the other way around
+            {
+              from: ["./src/features", "./src/routes"],
+              target: [
+                "./src/components",
+                "./src/constants",
+                "./src/hooks",
+                "./src/i18n",
+                "./src/lib",
+                "./src/mocks",
+                "./src/trusty-api",
+                "./src/types",
+                "./src/utils",
+              ],
             },
           ],
         },

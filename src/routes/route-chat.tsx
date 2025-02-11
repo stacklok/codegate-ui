@@ -1,83 +1,88 @@
 import { useParams } from "react-router-dom";
-import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
 import { parsingPromptText, sanitizeQuestionPrompt } from "@/lib/utils";
-import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
-import {
-  ChatBubble,
-  ChatBubbleAvatar,
-  ChatBubbleMessage,
-} from "@/components/ui/chat/chat-bubble";
-import { Markdown } from "@/components/Markdown";
-import { Breadcrumb, Breadcrumbs, Card, CardBody } from "@stacklok/ui-kit";
+import { Breadcrumb, Breadcrumbs, Loader } from "@stacklok/ui-kit";
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
-import { useQueryGetWorkspaceAlertTable } from "@/features/alerts/hooks/use-query-get-workspace-alerts-table";
-import { AlertDetail } from "@/components/AlertDetail";
+import { PageContainer } from "@/components/page-container";
+import { PageHeading } from "@/components/heading";
+import {
+  ConversationView,
+  useConversationSearchParams,
+} from "@/features/dashboard-messages/hooks/use-conversation-search-params";
+import { TabsConversation } from "@/features/dashboard-messages/components/tabs-conversation";
+import { SectionConversationTranscript } from "@/features/dashboard-messages/components/section-conversation-transcript";
+import { SectionConversationSecrets } from "@/features/dashboard-messages/components/section-conversation-secrets";
+import { ErrorFallbackContent } from "@/components/Error";
+import { useConversationById } from "@/features/dashboard-messages/hooks/use-conversation-by-id";
+import { getConversationTitle } from "@/features/dashboard-messages/lib/get-conversation-title";
+import { formatTime } from "@/lib/format-time";
+import { Conversation } from "@/api/generated";
+
+function ConversationContent({
+  view,
+  conversation,
+}: {
+  view: ConversationView;
+  conversation: Conversation;
+}) {
+  switch (view) {
+    case ConversationView.OVERVIEW:
+      return <SectionConversationTranscript conversation={conversation} />;
+    case ConversationView.SECRETS:
+      return <SectionConversationSecrets conversation={conversation} />;
+  }
+}
+
+function TitleContent({ conversation }: { conversation: Conversation }) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <span>{getConversationTitle(conversation)}</span>
+      <span className="block text-xl font-semibold text-secondary">
+        {formatTime(new Date(conversation.conversation_timestamp))}
+      </span>
+    </div>
+  );
+}
 
 export function RouteChat() {
-  const { id } = useParams();
-  const { data = [] } = useQueryGetWorkspaceAlertTable();
-  const { data: prompts } = useQueryGetWorkspaceMessages();
-  const chat = prompts?.find((prompt) => prompt.chat_id === id);
+  const { id } = useParams<"id">();
+  const { state } = useConversationSearchParams();
+
+  const { data: conversation, isLoading } = useConversationById(id ?? "");
 
   const title =
-    chat === undefined ||
-    chat.question_answers?.[0]?.question?.message === undefined
+    conversation === undefined ||
+    conversation.question_answers?.[0]?.question?.message === undefined
       ? `Prompt ${id}`
       : parsingPromptText(
           sanitizeQuestionPrompt({
-            question: chat.question_answers?.[0].question.message,
-            answer: chat.question_answers?.[0]?.answer?.message ?? "",
+            question: conversation.question_answers?.[0].question.message,
+            answer: conversation.question_answers?.[0]?.answer?.message ?? "",
           }),
-          chat.conversation_timestamp,
+          conversation.conversation_timestamp,
         );
 
-  // we have an issue on BE, we received duplicated alerts
-  const alertDetail = data.filter((alert) =>
-    alert.conversation.question_answers.some(
-      (item) => item.question.message_id === id,
-    ),
-  )[0];
+  if (isLoading)
+    return (
+      <div className="py-60">
+        <Loader className="size-10 mx-auto" />
+      </div>
+    );
+  if (!id || !conversation) return <ErrorFallbackContent />;
 
   return (
-    <>
+    <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
         <Breadcrumb className="w-96 block truncate">{title}</Breadcrumb>
       </Breadcrumbs>
+      <PageHeading
+        level={1}
+        title={<TitleContent conversation={conversation} />}
+      />
 
-      <div className="w-[calc(100vw-18rem)]">
-        {alertDetail && (
-          <Card className="w-full mb-2">
-            <CardBody className="w-full h-fit overflow-auto max-h-[500px]">
-              <AlertDetail alert={alertDetail} />
-            </CardBody>
-          </Card>
-        )}
-
-        <ChatMessageList>
-          {(chat?.question_answers ?? []).map(({ question, answer }, index) => (
-            <div key={index} className="flex flex-col size-full gap-6">
-              <ChatBubble variant="sent">
-                <ChatBubbleAvatar data-testid="avatar-user" fallback="User" />
-                <ChatBubbleMessage variant="sent">
-                  <Markdown>
-                    {sanitizeQuestionPrompt({
-                      question: question?.message ?? "",
-                      answer: answer?.message ?? "",
-                    })}
-                  </Markdown>
-                </ChatBubbleMessage>
-              </ChatBubble>
-              <ChatBubble variant="received">
-                <ChatBubbleAvatar data-testid="avatar-ai" fallback="AI" />
-                <ChatBubbleMessage variant="received">
-                  <Markdown>{answer?.message ?? ""}</Markdown>
-                </ChatBubbleMessage>
-              </ChatBubble>
-            </div>
-          ))}
-        </ChatMessageList>
-      </div>
-    </>
+      <TabsConversation id={id}>
+        <ConversationContent conversation={conversation} view={state.view} />
+      </TabsConversation>
+    </PageContainer>
   );
 }

@@ -48,7 +48,7 @@ test("renders title", () => {
   const { getByRole } = renderComponent();
 
   expect(
-    getByRole("heading", { name: "Workspace settings for foo", level: 4 }),
+    getByRole("heading", { name: "Workspace settings for foo", level: 1 }),
   ).toBeVisible();
 });
 
@@ -93,6 +93,10 @@ test("rename workspace", async () => {
 
   const saveBtn = within(getByTestId("workspace-name")).getByRole("button", {
     name: /save/i,
+  });
+
+  await waitFor(() => {
+    expect(saveBtn).toBeEnabled();
   });
   await userEvent.click(saveBtn);
   await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));

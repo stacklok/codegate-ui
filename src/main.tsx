@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "@stacklok/ui-kit/style";
 import App from "./App.tsx";
-import { SidebarProvider } from "./components/ui/sidebar.tsx";
+
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Error } from "./components/Error.tsx";
 import { DarkModeProvider, Toaster } from "@stacklok/ui-kit";
@@ -24,18 +24,16 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <UiKitClientSideRoutingProvider>
         <DarkModeProvider>
-          <SidebarProvider>
-            <QueryClientProvider>
-              <ErrorBoundary fallback={<Error />}>
-                <ReactQueryDevtools />
-                <ConfirmProvider>
-                  <Toaster />
-                  <App />
-                </ConfirmProvider>
-              </ErrorBoundary>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-          </SidebarProvider>
+          <QueryClientProvider>
+            <ErrorBoundary fallback={<Error />}>
+              <ReactQueryDevtools />
+              <ConfirmProvider>
+                <Toaster />
+                <App />
+              </ConfirmProvider>
+            </ErrorBoundary>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
         </DarkModeProvider>
       </UiKitClientSideRoutingProvider>
     </BrowserRouter>

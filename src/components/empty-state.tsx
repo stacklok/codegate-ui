@@ -12,7 +12,7 @@ const actionsStyle = tv({
   },
 });
 
-export function Actions({ actions }: { actions: [ReactNode, ReactNode?] }) {
+function Actions({ actions }: { actions: [ReactNode, ReactNode?] }) {
   return (
     <div className={actionsStyle({ actions: actions.length })}>{actions}</div>
   );

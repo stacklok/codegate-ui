@@ -7,7 +7,6 @@ import userEvent from "@testing-library/user-event";
 describe("App", () => {
   it("should render header", async () => {
     render(<App />);
-    expect(screen.getByText(/toggle sidebar/i)).toBeVisible();
     expect(screen.getByText("Settings")).toBeVisible();
     expect(screen.getByText("Help")).toBeVisible();
     expect(screen.getByRole("banner", { name: "App header" })).toBeVisible();

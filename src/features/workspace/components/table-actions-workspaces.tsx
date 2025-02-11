@@ -10,7 +10,7 @@ import {
 import { useMutationArchiveWorkspace } from "@/features/workspace/hooks/use-mutation-archive-workspace";
 import { useMutationRestoreWorkspace } from "../hooks/use-mutation-restore-workspace";
 import { useMutationHardDeleteWorkspace } from "../hooks/use-mutation-hard-delete-workspace";
-import { useMutationActivateWorkspace } from "../hooks/use-mutation-activate-workspace";
+import { useMutationActivateWorkspace } from "../../../hooks/use-mutation-activate-workspace";
 import { useConfirmHardDeleteWorkspace } from "../hooks/use-confirm-hard-delete-workspace";
 import { hrefs } from "@/lib/hrefs";
 import {

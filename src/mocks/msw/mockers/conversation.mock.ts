@@ -37,7 +37,7 @@ export function mockConversation({
       length:
         typeof alertsConfig?.numAlerts === "number"
           ? alertsConfig?.numAlerts
-          : faker.number.int({ min: 0, max: 5 }),
+          : faker.number.int({ min: 2, max: 5 }),
     }).map(() =>
       mockAlert({
         type:
