@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -12,7 +11,7 @@ import { useMutationCreateWorkspace } from "../hooks/use-mutation-create-workspa
 import { useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { useFormState } from "@/hooks/useFormState";
-import { FlipBackward } from "@untitled-ui/icons-react";
+import { FormButtons } from "@/components/FormButtons";
 
 export function WorkspaceName({
   className,
@@ -26,9 +25,10 @@ export function WorkspaceName({
   const navigate = useNavigate();
   const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
-  const { formState, updateFormState, isDirty, resetForm } = useFormState({
+  const formState2 = useFormState({
     workspaceName,
   });
+  const { formState, updateFormState } = formState2;
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -64,19 +64,11 @@ export function WorkspaceName({
           </TextField>
         </CardBody>
         <CardFooter className="justify-end">
-          {errorMsg && <div className="p-1 text-red-700">{errorMsg}</div>}
-          {isDirty && (
-            <Button variant="tertiary" onPress={resetForm}>
-              <FlipBackward />
-              Revert changes
-            </Button>
-          )}
-          <Button
-            isDisabled={isArchived || isPending || !isDirty}
-            type="submit"
-          >
-            Save
-          </Button>
+          <FormButtons
+            formErrorMessage={errorMsg}
+            formState={formState2}
+            canSubmit={!isArchived && !isPending}
+          />
         </CardFooter>
       </Card>
     </Form>
