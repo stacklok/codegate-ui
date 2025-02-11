@@ -46,7 +46,6 @@ const EnumFieldControl = (
 
 const tester: RankedTester = (...args) => {
   const x = rankWith(2, isEnumControl)(...args);
-  console.log({ args, x });
   return x;
 };
 
