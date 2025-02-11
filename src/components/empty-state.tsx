@@ -30,12 +30,12 @@ export function EmptyState({
   actions: [ReactNode, ReactNode?] | null;
 }) {
   return (
-    <div className="max-w-[40rem] mx-auto py-20 flex items-center flex-col text-center text-balance">
-      <Illustration className="size-28" />
+    <div className="max-w-[40rem] mx-auto py-40 flex items-center flex-col text-center text-balance">
+      <Illustration className="size-28 mb-4" />
       <Heading level={4} className="font-bold text-gray-900 mb-2">
         {title}
       </Heading>
-      <p>{body}</p>
+      <p className="mb-8">{body}</p>
       {actions ? <Actions actions={actions} /> : null}
     </div>
   );
