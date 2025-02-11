@@ -45,8 +45,19 @@ function TokenUsageRow({
   );
 }
 
-function AlertsSummaryCount({ count }: { count: number }) {
-  const text = `${count} detected`;
+function AlertsSummaryCount({
+  count,
+  type,
+}: {
+  count: number;
+  type: {
+    singular: "malicious package" | "secret";
+    plural: "malicious packages" | "secrets";
+  };
+}) {
+  const typeText = count === 1 ? type.singular : type.plural;
+
+  const text = `${count} ${typeText} detected`;
 
   return (
     <span className={twMerge(count > 0 ? "text-secondary" : "text-disabled")}>
@@ -132,12 +143,28 @@ export function ConversationSummary({
         <ConversationSummaryListItem
           icon={PackageX}
           title="Malicious packages"
-          value={<AlertsSummaryCount count={malicious} />}
+          value={
+            <AlertsSummaryCount
+              type={{
+                singular: "malicious package",
+                plural: "malicious packages",
+              }}
+              count={malicious}
+            />
+          }
         />
         <ConversationSummaryListItem
           icon={Key01}
           title="Secrets"
-          value={<AlertsSummaryCount count={secrets} />}
+          value={
+            <AlertsSummaryCount
+              type={{
+                singular: "secret",
+                plural: "secrets",
+              }}
+              count={secrets}
+            />
+          }
         />
       </ConversationSummaryList>
     </div>

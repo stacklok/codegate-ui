@@ -120,9 +120,11 @@ it("renders conversation summary correctly", async () => {
 
   expect(getByText(conversation.chat_id)).toBeVisible();
 
-  expect(getByText(`${maliciousCount} detected`)).toBeVisible();
+  expect(
+    getByText(`${maliciousCount} malicious packages detected`),
+  ).toBeVisible();
 
-  expect(getByText(`${secretsCount} detected`)).toBeVisible();
+  expect(getByText(`${secretsCount} secrets detected`)).toBeVisible();
 });
 
 it("renders chat correctly", async () => {

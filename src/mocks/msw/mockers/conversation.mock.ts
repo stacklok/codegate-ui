@@ -37,14 +37,14 @@ export function mockConversation({
       length:
         typeof alertsConfig?.numAlerts === "number"
           ? alertsConfig?.numAlerts
-          : faker.number.int({ min: 0, max: 5 }),
+          : faker.number.int({ min: 2, max: 5 }),
     }).map(() =>
       mockAlert({
         type:
           alertsConfig?.type == null || alertsConfig.type === "any"
             ? faker.helpers.arrayElement(["secret", "malicious"])
             : alertsConfig.type,
-      })
+      }),
     ),
     token_usage_agg: withTokenUsage ? TOKEN_USAGE_AGG : null,
     type,
