@@ -105,6 +105,20 @@ export default tseslint.config(
           message:
             "Do not directly call `invalidateQueries`. Instead, use the `invalidateQueries` helper function.",
         },
+        {
+          selector: [
+            "CallExpression[callee.object.name='http'][callee.property.name='all'] > Literal:first-child",
+            "CallExpression[callee.object.name='http'][callee.property.name='head'] > Literal:first-child",
+            "CallExpression[callee.object.name='http'][callee.property.name='get'] > Literal:first-child",
+            "CallExpression[callee.object.name='http'][callee.property.name='post'] > Literal:first-child",
+            "CallExpression[callee.object.name='http'][callee.property.name='put'] > Literal:first-child",
+            "CallExpression[callee.object.name='http'][callee.property.name='delete'] > Literal:first-child",
+            "CallExpression[callee.object.name='http'][callee.property.name='patch'] > Literal:first-child",
+            "CallExpression[callee.object.name='http'][callee.property.name='options'] > Literal:first-child",
+          ].join(", "),
+          message:
+            "Do not pass a string as the first argument to methods on Mock Service Worker's `http`. Use the `mswEndpoint` helper function instead, which provides type-safe routes based on the OpenAPI spec and the API base URL.",
+        },
       ],
       "no-restricted-imports": [
         "error",
