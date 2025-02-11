@@ -14,10 +14,10 @@ export const handlers = [
       latest_version: "bar",
       is_latest: false,
       error: null,
-    })
+    }),
   ),
   http.get(mswEndpoint("/api/v1/version"), () =>
-    HttpResponse.json({ status: "healthy" })
+    HttpResponse.json({ status: "healthy" }),
   ),
   http.get(mswEndpoint("/api/v1/workspaces/active"), () =>
     HttpResponse.json({
@@ -28,11 +28,11 @@ export const handlers = [
           last_updated: new Date(Date.now()).toISOString(),
         },
       ],
-    })
+    }),
   ),
   http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/messages"), () => {
     return HttpResponse.json(
-      Array.from({ length: 10 }).map(() => mockConversation())
+      Array.from({ length: 10 }).map(() => mockConversation()),
     );
   }),
   http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
@@ -56,25 +56,25 @@ export const handlers = [
   }),
   http.post(
     mswEndpoint("/api/v1/workspaces/active"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.post(
     mswEndpoint("/api/v1/workspaces/archive/:workspace_name/recover"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.delete(
     mswEndpoint("/api/v1/workspaces/:workspace_name"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.delete(
     mswEndpoint("/api/v1/workspaces/archive/:workspace_name"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.get(
     mswEndpoint("/api/v1/workspaces/:workspace_name/custom-instructions"),
     () => {
       return HttpResponse.json({ prompt: "foo" });
-    }
+    },
   ),
   http.get(
     mswEndpoint("/api/v1/workspaces/:workspace_name/token-usage"),
@@ -99,11 +99,11 @@ export const handlers = [
           output_cost: 0.006495,
         },
       });
-    }
+    },
   ),
   http.put(
     mswEndpoint("/api/v1/workspaces/:workspace_name/custom-instructions"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/muxes"), () =>
     HttpResponse.json([
@@ -118,34 +118,34 @@ export const handlers = [
         model: "davinci",
         matcher_type: "catch_all",
       },
-    ])
+    ]),
   ),
   http.put(
     mswEndpoint("/api/v1/workspaces/:workspace_name/muxes"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.get(mswEndpoint("/api/v1/provider-endpoints/:provider_id/models"), () =>
-    HttpResponse.json(mockedProvidersModels)
+    HttpResponse.json(mockedProvidersModels),
   ),
   http.get(mswEndpoint("/api/v1/provider-endpoints/models"), () =>
-    HttpResponse.json(mockedProvidersModels)
+    HttpResponse.json(mockedProvidersModels),
   ),
   http.get(mswEndpoint("/api/v1/provider-endpoints/:provider_id"), () =>
-    HttpResponse.json(mockedProviders[0])
+    HttpResponse.json(mockedProviders[0]),
   ),
   http.get(mswEndpoint("/api/v1/provider-endpoints"), () =>
-    HttpResponse.json(mockedProviders)
+    HttpResponse.json(mockedProviders),
   ),
   http.post(
     mswEndpoint("/api/v1/provider-endpoints"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.put(
     mswEndpoint("/api/v1/provider-endpoints"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
   http.delete(
     mswEndpoint("/api/v1/provider-endpoints"),
-    () => new HttpResponse(null, { status: 204 })
+    () => new HttpResponse(null, { status: 204 }),
   ),
 ];

@@ -45,7 +45,7 @@ export function RouteWorkspace() {
         <Breadcrumb>Workspace Settings</Breadcrumb>
       </Breadcrumbs>
 
-      <PageHeading level={1} title="Workspace settings" />
+      <PageHeading level={1} title={`Workspace settings for ${name}`} />
 
       {isArchived ? <WorkspaceArchivedBanner name={name} /> : null}
 

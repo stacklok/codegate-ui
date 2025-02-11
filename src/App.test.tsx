@@ -16,17 +16,17 @@ describe("App", () => {
     expect(
       screen.getByRole("menuitem", {
         name: /providers/i,
-      })
+      }),
     ).toBeVisible();
     expect(
       screen.getByRole("menuitem", {
         name: /certificate security/i,
-      })
+      }),
     ).toBeVisible();
     expect(
       screen.getByRole("menuitem", {
         name: /download/i,
-      })
+      }),
     ).toBeVisible();
 
     await userEvent.click(screen.getByText("Settings"));
@@ -35,19 +35,19 @@ describe("App", () => {
     expect(
       screen.getByRole("menuitem", {
         name: /use with continue/i,
-      })
+      }),
     ).toBeVisible();
 
     expect(
       screen.getByRole("menuitem", {
         name: /use with copilot/i,
-      })
+      }),
     ).toBeVisible();
 
     expect(
       screen.getByRole("menuitem", {
         name: /documentation/i,
-      })
+      }),
     ).toBeVisible();
 
     const discordMenuItem = screen.getByRole("menuitem", {
@@ -56,7 +56,7 @@ describe("App", () => {
     expect(discordMenuItem).toBeVisible();
     expect(discordMenuItem).toHaveAttribute(
       "href",
-      "https://discord.gg/stacklok"
+      "https://discord.gg/stacklok",
     );
 
     const githubMenuItem = screen.getByRole("menuitem", {
@@ -65,7 +65,7 @@ describe("App", () => {
     expect(githubMenuItem).toBeVisible();
     expect(githubMenuItem).toHaveAttribute(
       "href",
-      "https://github.com/stacklok/codegate"
+      "https://github.com/stacklok/codegate",
     );
 
     const youtubeMenuItem = screen.getByRole("menuitem", {
@@ -74,13 +74,13 @@ describe("App", () => {
     expect(youtubeMenuItem).toBeVisible();
     expect(youtubeMenuItem).toHaveAttribute(
       "href",
-      "https://www.youtube.com/@Stacklok"
+      "https://www.youtube.com/@Stacklok",
     );
 
     await userEvent.click(screen.getByText("Help"));
 
     await waitFor(() =>
-      expect(screen.getByRole("link", { name: /codeGate/i })).toBeVisible()
+      expect(screen.getByRole("link", { name: /codeGate/i })).toBeVisible(),
     );
   });
 
@@ -88,11 +88,11 @@ describe("App", () => {
     render(<App />);
 
     await waitFor(() =>
-      expect(screen.getByRole("link", { name: "CodeGate" })).toBeVisible()
+      expect(screen.getByRole("link", { name: "CodeGate" })).toBeVisible(),
     );
 
     const workspaceSelectionButton = screen.getByRole("button", {
-      name: "Workspace default",
+      name: "Active workspace default",
     });
     await waitFor(() => expect(workspaceSelectionButton).toBeVisible());
 
@@ -102,8 +102,8 @@ describe("App", () => {
       expect(
         screen.getByRole("option", {
           name: /anotherworkspae/i,
-        })
-      ).toBeVisible()
+        }),
+      ).toBeVisible(),
     );
   });
 });

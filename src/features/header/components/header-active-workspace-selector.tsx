@@ -46,7 +46,8 @@ export function HeaderActiveWorkspaceSelector() {
   return (
     <DialogTrigger isOpen={isOpen} onOpenChange={(test) => setIsOpen(test)}>
       <Button variant="tertiary" className="flex cursor-pointer">
-        Workspace {activeWorkspaceName ?? "default"}
+        Active workspace{" "}
+        <span className="font-bold">{activeWorkspaceName ?? "default"}</span>
         <ChevronDown />
       </Button>
 
