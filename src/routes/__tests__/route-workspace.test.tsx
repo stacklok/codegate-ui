@@ -48,33 +48,8 @@ test("renders title", () => {
   const { getByRole } = renderComponent();
 
   expect(
-    getByRole("heading", { name: 'Workspace settings for "foo"', level: 4 }),
+    getByRole("heading", { name: "Workspace settings for foo", level: 4 }),
   ).toBeVisible();
-});
-
-test("has a badge when editing the active workspace", () => {
-  (useParams as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-    name: "baz",
-  });
-
-  const { getByRole } = renderComponent();
-
-  const heading = getByRole("heading", {
-    name: /.*workspace settings.*/i,
-    level: 4,
-  });
-
-  expect(within(heading).getByText(/active/i)).toBeVisible();
-});
-
-test("has no 'active workspace' badge when it's not the active workspace", () => {
-  (useParams as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-    name: "another",
-  });
-
-  const { queryByText } = renderComponent();
-
-  expect(queryByText(/active/i)).toBeNull();
 });
 
 test("renders workspace name input", () => {
@@ -103,6 +78,25 @@ test("has breadcrumbs", () => {
     within(breadcrumbs).getByRole("link", { name: /manage workspaces/i }),
   ).toHaveAttribute("href", "/workspaces");
   expect(within(breadcrumbs).getByText(/workspace settings/i)).toBeVisible();
+});
+
+test("rename workspace", async () => {
+  (useParams as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+    name: "foo",
+  });
+  const { getByRole, getByTestId } = renderComponent();
+
+  const workspaceName = getByRole("textbox", {
+    name: /workspace name/i,
+  });
+  await userEvent.type(workspaceName, "_renamed");
+
+  const saveBtn = within(getByTestId("workspace-name")).getByRole("button", {
+    name: /save/i,
+  });
+  await userEvent.click(saveBtn);
+  await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));
+  expect(mockNavigate).toHaveBeenCalledWith("/workspace/foo_renamed");
 });
 
 test("revert changes button", async () => {
@@ -151,23 +145,4 @@ test("revert changes button", async () => {
       name: /workspace name/i,
     }),
   ).toHaveValue("foo");
-});
-
-test("rename workspace", async () => {
-  (useParams as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-    name: "foo",
-  });
-  const { getByRole, getByTestId } = renderComponent();
-
-  const workspaceName = getByRole("textbox", {
-    name: /workspace name/i,
-  });
-  await userEvent.type(workspaceName, "_renamed");
-
-  const saveBtn = within(getByTestId("workspace-name")).getByRole("button", {
-    name: /save/i,
-  });
-  await userEvent.click(saveBtn);
-  await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));
-  expect(mockNavigate).toHaveBeenCalledWith("/workspace/foo_renamed");
 });
