@@ -6,7 +6,6 @@ import { v1GetWorkspaceAlertsOptions } from "@/api/generated/@tanstack/react-que
 import { useQueryActiveWorkspaceName } from "@/hooks/use-query-active-workspace-name";
 import { getQueryCacheConfig } from "@/lib/react-query-utils";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 
 export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
   select,
@@ -21,14 +20,11 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     isRefetching: isWorkspaceRefetching,
   } = useQueryActiveWorkspaceName();
 
-  const options: V1GetWorkspaceAlertsData = useMemo(
-    () => ({
-      path: {
-        workspace_name: activeWorkspaceName ?? "default",
-      },
-    }),
-    [activeWorkspaceName],
-  );
+  const options: V1GetWorkspaceAlertsData = {
+    path: {
+      workspace_name: activeWorkspaceName ?? "default",
+    },
+  };
 
   const {
     isPending: isAlertsPending,

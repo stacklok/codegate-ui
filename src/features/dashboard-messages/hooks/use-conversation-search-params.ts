@@ -31,7 +31,6 @@ export const useConversationSearchParams = () => {
         if (view) prev.set("view", view);
         if (!view) prev.delete("view");
 
-        prev.delete("page");
         return prev;
       });
     },

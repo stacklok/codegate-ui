@@ -2,6 +2,6 @@ import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-me
 
 export function useConversationById(id: string) {
   return useQueryGetWorkspaceMessages({
-    select: (d) => d.find((c) => c.chat_id === id) ?? undefined,
+    select: (d) => d.find((c) => c.chat_id === id),
   });
 }
