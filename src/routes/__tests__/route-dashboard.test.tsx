@@ -15,15 +15,15 @@ it("should mount alert summaries", async () => {
   render(<RouteDashboard />);
 
   expect(
-    screen.getByRole("heading", { name: /workspace token usage/i })
+    screen.getByRole("heading", { name: /workspace token usage/i }),
   ).toBeVisible();
 
   expect(
-    screen.getByRole("heading", { name: /secrets redacted/i })
+    screen.getByRole("heading", { name: /secrets redacted/i }),
   ).toBeVisible();
 
   expect(
-    screen.getByRole("heading", { name: /malicious packages/i })
+    screen.getByRole("heading", { name: /malicious packages/i }),
   ).toBeVisible();
 });
 
@@ -33,7 +33,7 @@ it("should render messages table", async () => {
   expect(
     screen.getByRole("grid", {
       name: /alerts table/i,
-    })
+    }),
   ).toBeVisible();
 });
 
@@ -44,15 +44,15 @@ it("shows only conversations with secrets when you click on the secrets tab", as
         ...Array.from({ length: 10 }).map(() =>
           mockConversation({
             alertsConfig: { numAlerts: 10, type: "malicious" },
-          })
+          }),
         ),
         ...Array.from({ length: 10 }).map(() =>
           mockConversation({
             alertsConfig: { numAlerts: 10, type: "secret" },
-          })
+          }),
         ),
       ]);
-    })
+    }),
   );
   render(<RouteDashboard />);
 
@@ -66,7 +66,7 @@ it("shows only conversations with secrets when you click on the secrets tab", as
   await userEvent.click(
     screen.getByRole("tab", {
       name: /secrets/i,
-    })
+    }),
   );
 
   const tbody = screen.getAllByRole("rowgroup")[1] as HTMLElement;
@@ -88,15 +88,15 @@ it("shows only conversations with malicious when you click on the malicious tab"
         ...Array.from({ length: 10 }).map(() =>
           mockConversation({
             alertsConfig: { numAlerts: 10, type: "malicious" },
-          })
+          }),
         ),
         ...Array.from({ length: 10 }).map(() =>
           mockConversation({
             alertsConfig: { numAlerts: 10, type: "secret" },
-          })
+          }),
         ),
       ]);
-    })
+    }),
   );
   render(<RouteDashboard />);
 
@@ -110,7 +110,7 @@ it("shows only conversations with malicious when you click on the malicious tab"
   await userEvent.click(
     screen.getByRole("tab", {
       name: /malicious/i,
-    })
+    }),
   );
 
   const tbody = screen.getAllByRole("rowgroup")[1] as HTMLElement;
@@ -131,7 +131,7 @@ it("should render searchbox", async () => {
   expect(
     screen.getByRole("searchbox", {
       name: /search messages/i,
-    })
+    }),
   ).toBeVisible();
 });
 
@@ -154,7 +154,7 @@ it("can filter using searchbox", async () => {
         ...Array.from({ length: 15 }).map(() => mockConversation()), // at least 1 page worth of data
         CONVERSATION_TO_FILTER_BY,
       ]);
-    })
+    }),
   );
   render(<RouteDashboard />);
 
@@ -166,11 +166,11 @@ it("can filter using searchbox", async () => {
 
   await userEvent.type(
     screen.getByRole("searchbox", { name: /search messages/i }),
-    STRING_TO_FILTER_BY
+    STRING_TO_FILTER_BY,
   );
 
   expect(
-    within(screen.getByRole("grid")).queryByText(STRING_TO_FILTER_BY)
+    within(screen.getByRole("grid")).queryByText(STRING_TO_FILTER_BY),
   ).toBeVisible();
 });
 
@@ -182,7 +182,6 @@ it("should sort messages by date desc", async () => {
   });
 
   const tbody = screen.getAllByRole("rowgroup")[1] as HTMLElement;
-
   const newest = (
     within(tbody).getAllByRole("row")[1] as HTMLElement
   ).getAttribute("data-timestamp") as string;
