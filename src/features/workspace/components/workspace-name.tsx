@@ -65,9 +65,10 @@ export function WorkspaceName({
         </CardBody>
         <CardFooter className="justify-end">
           <FormButtons
+            isPending={isPending}
             formErrorMessage={errorMsg}
             formState={formState}
-            canSubmit={!isArchived && !isPending}
+            canSubmit={!isArchived}
           />
         </CardFooter>
       </Card>

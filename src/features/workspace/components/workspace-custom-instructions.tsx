@@ -344,6 +344,7 @@ export function WorkspaceCustomInstructions({
         </CardBody>
         <CardFooter className="justify-end gap-2">
           <FormButtons
+            isPending={isMutationPending}
             formState={formState}
             canSubmit={
               !isArchived && !isCustomInstructionsPending && !isMutationPending

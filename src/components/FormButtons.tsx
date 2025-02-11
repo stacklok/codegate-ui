@@ -7,11 +7,13 @@ type Props<T> = {
   formErrorMessage?: string;
   formState: FormState<T>;
   children?: React.ReactNode;
+  isPending: boolean;
 };
 export function FormButtons<T>({
   formErrorMessage,
   formState,
   canSubmit,
+  isPending,
   children,
 }: Props<T>) {
   return (
@@ -26,7 +28,11 @@ export function FormButtons<T>({
         </Button>
       )}
       {children}
-      <Button isDisabled={!canSubmit || !formState.isDirty} type="submit">
+      <Button
+        isPending={isPending}
+        isDisabled={!canSubmit || !formState.isDirty || isPending}
+        type="submit"
+      >
         Save
       </Button>
     </div>
