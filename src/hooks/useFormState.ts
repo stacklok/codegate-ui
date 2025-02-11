@@ -2,29 +2,29 @@ import { isEqual } from "lodash";
 import { useState } from "react";
 
 export type FormState<T> = {
-  formState: T;
-  updateFormState: (newState: Partial<T>) => void;
+  values: T;
+  updateFormValues: (newState: Partial<T>) => void;
   resetForm: () => void;
   isDirty: boolean;
 };
 
-export function useFormState<T extends Record<string, unknown>>(
-  initialState: T,
-): FormState<T> {
+export function useFormState<Values extends Record<string, unknown>>(
+  initialValues: Values,
+): FormState<Values> {
   // this could be replaced with some form library later
-  const [formState, setFormState] = useState<T>(initialState);
-  const updateFormState = (newState: Partial<T>) => {
-    setFormState((prevState: T) => ({
+  const [values, setValues] = useState<Values>(initialValues);
+  const updateFormValues = (newState: Partial<Values>) => {
+    setValues((prevState: Values) => ({
       ...prevState,
       ...newState,
     }));
   };
 
   const resetForm = () => {
-    setFormState(initialState);
+    setValues(initialValues);
   };
 
-  const isDirty = !isEqual(formState, initialState);
+  const isDirty = !isEqual(values, initialValues);
 
-  return { formState, updateFormState, resetForm, isDirty };
+  return { values, updateFormValues, resetForm, isDirty };
 }

@@ -25,18 +25,18 @@ export function WorkspaceName({
   const navigate = useNavigate();
   const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
-  const formState2 = useFormState({
+  const formState = useFormState({
     workspaceName,
   });
-  const { formState, updateFormState } = formState2;
+  const { values, updateFormValues } = formState;
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     mutateAsync(
-      { body: { name: workspaceName, rename_to: formState.workspaceName } },
+      { body: { name: workspaceName, rename_to: values.workspaceName } },
       {
-        onSuccess: () => navigate(`/workspace/${formState.workspaceName}`),
+        onSuccess: () => navigate(`/workspace/${values.workspaceName}`),
       },
     );
   };
@@ -52,12 +52,12 @@ export function WorkspaceName({
           <TextField
             key={workspaceName}
             aria-label="Workspace name"
-            value={formState.workspaceName}
+            value={values.workspaceName}
             name="Workspace name"
             validationBehavior="aria"
             isRequired
             isDisabled={isArchived}
-            onChange={(workspaceName) => updateFormState({ workspaceName })}
+            onChange={(workspaceName) => updateFormValues({ workspaceName })}
           >
             <Label>Workspace name</Label>
             <Input />
@@ -66,7 +66,7 @@ export function WorkspaceName({
         <CardFooter className="justify-end">
           <FormButtons
             formErrorMessage={errorMsg}
-            formState={formState2}
+            formState={formState}
             canSubmit={!isArchived && !isPending}
           />
         </CardFooter>
