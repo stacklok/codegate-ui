@@ -1,14 +1,18 @@
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Form,
+  Input,
+  Label,
+  TextField,
+} from "@stacklok/ui-kit";
 import { useMutationCreateWorkspace } from "../hooks/use-mutation-create-workspace";
 import { useNavigate } from "react-router-dom";
-import { Static, Type } from "@sinclair/typebox";
-import { FormCard } from "@/forms/FormCard";
-
-const schema = Type.Object({
-  workspaceName: Type.String({
-    title: "Workspace name",
-    minLength: 1,
-  }),
-});
+import { twMerge } from "tailwind-merge";
+import { useFormState } from "@/hooks/useFormState";
+import { FlipBackward } from "@untitled-ui/icons-react";
 
 export function WorkspaceName({
   className,
@@ -22,28 +26,59 @@ export function WorkspaceName({
   const navigate = useNavigate();
   const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
+  const { formState, updateFormState, isDirty, resetForm } = useFormState({
+    workspaceName,
+  });
 
-  const initialData = { workspaceName };
+  const handleSubmit = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
 
-  const handleSubmit = (data: Static<typeof schema>) => {
     mutateAsync(
-      { body: { name: workspaceName, rename_to: data.workspaceName } },
+      { body: { name: workspaceName, rename_to: formState.workspaceName } },
       {
-        onSuccess: () => navigate(`/workspace/${data.workspaceName}`),
+        onSuccess: () => navigate(`/workspace/${formState.workspaceName}`),
       },
     );
   };
 
   return (
-    <FormCard
-      data-testid="workspace-name"
-      className={className}
-      formError={errorMsg}
-      schema={schema}
-      isDisabled={isArchived}
-      isPending={isPending}
-      initialData={initialData}
+    <Form
       onSubmit={handleSubmit}
-    />
+      validationBehavior="aria"
+      data-testid="workspace-name"
+    >
+      <Card className={twMerge(className, "shrink-0")}>
+        <CardBody className="flex flex-col gap-6">
+          <TextField
+            key={workspaceName}
+            aria-label="Workspace name"
+            value={formState.workspaceName}
+            name="Workspace name"
+            validationBehavior="aria"
+            isRequired
+            isDisabled={isArchived}
+            onChange={(workspaceName) => updateFormState({ workspaceName })}
+          >
+            <Label>Workspace name</Label>
+            <Input />
+          </TextField>
+        </CardBody>
+        <CardFooter className="justify-end">
+          {errorMsg && <div className="p-1 text-red-700">{errorMsg}</div>}
+          {isDirty && (
+            <Button variant="tertiary" onPress={resetForm}>
+              <FlipBackward />
+              Revert changes
+            </Button>
+          )}
+          <Button
+            isDisabled={isArchived || isPending || !isDirty}
+            type="submit"
+          >
+            Save
+          </Button>
+        </CardFooter>
+      </Card>
+    </Form>
   );
 }
