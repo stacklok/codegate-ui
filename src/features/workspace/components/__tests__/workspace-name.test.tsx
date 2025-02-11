@@ -4,6 +4,7 @@ import { render, waitFor } from "@/lib/test-utils";
 import userEvent from "@testing-library/user-event";
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
+import { mswEndpoint } from "@/test/msw-endpoint";
 
 test("can rename workspace", async () => {
   const { getByRole, getByText } = render(
@@ -34,7 +35,7 @@ test("can't rename archived workspace", async () => {
 
 test("can't rename active workspace", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/active", () =>
+    http.get(mswEndpoint("/api/v1/workspaces/active"), () =>
       HttpResponse.json({
         workspaces: [
           {

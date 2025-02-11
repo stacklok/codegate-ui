@@ -3,9 +3,11 @@ import { TableAlerts } from "../table-alerts";
 import { render, waitFor } from "@/lib/test-utils";
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
-import { makeMockAlert } from "../../mocks/alert.mock";
-import { TOKEN_USAGE_AGG } from "../../mocks/token-usage.mock";
 import { formatNumberCompact } from "@/lib/format-number";
+import { mswEndpoint } from "@/test/msw-endpoint";
+import { mockAlert } from "@/mocks/msw/mockers/alert.mock";
+import { TOKEN_USAGE_AGG } from "@/mocks/msw/mockers/token-usage.mock";
+import { mockConversation } from "@/mocks/msw/mockers/conversation.mock";
 
 vi.mock("@untitled-ui/icons-react", async () => {
   const original = await vi.importActual<
@@ -28,9 +30,14 @@ const OUTPUT_TOKENS =
 
 test("renders token usage cell correctly", async () => {
   server.use(
-    http.get("*/workspaces/:name/alerts", () => {
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
       return HttpResponse.json([
-        makeMockAlert({ token_usage: true, type: "malicious" }),
+        {
+          ...mockAlert({ type: "malicious" }),
+          conversation: mockConversation({
+            withTokenUsage: true,
+          }),
+        },
       ]);
     }),
   );
@@ -53,9 +60,14 @@ test("renders token usage cell correctly", async () => {
 
 test("renders N/A when token usage is missing", async () => {
   server.use(
-    http.get("*/workspaces/:name/alerts", () => {
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
       return HttpResponse.json([
-        makeMockAlert({ token_usage: false, type: "malicious" }),
+        {
+          ...mockAlert({ type: "malicious" }),
+          conversation: mockConversation({
+            withTokenUsage: false,
+          }),
+        },
       ]);
     }),
   );

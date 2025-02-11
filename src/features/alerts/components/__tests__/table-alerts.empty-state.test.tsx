@@ -4,10 +4,12 @@ import { server } from "@/mocks/msw/node";
 import { emptyStateStrings } from "../../constants/strings";
 import { useSearchParams } from "react-router-dom";
 import { delay, http, HttpHandler, HttpResponse } from "msw";
-import { makeMockAlert } from "../../mocks/alert.mock";
+
 import { AlertsFilterView } from "../../hooks/use-alerts-filter-search-params";
 import { TableAlerts } from "../table-alerts";
 import { hrefs } from "@/lib/hrefs";
+import { mswEndpoint } from "@/test/msw-endpoint";
+import { mockAlert } from "@/mocks/msw/mockers/alert.mock";
 
 enum IllustrationTestId {
   ALERT = "illustration-alert",
@@ -78,7 +80,7 @@ const TEST_CASES: TestCase[] = [
   {
     testDescription: "Loading state",
     handlers: [
-      http.get("*/api/v1/workspaces", () => {
+      http.get(mswEndpoint("/api/v1/workspaces"), () => {
         delay("infinite");
       }),
     ],
@@ -96,7 +98,7 @@ const TEST_CASES: TestCase[] = [
   {
     testDescription: "Only 1 workspace, no alerts",
     handlers: [
-      http.get("*/api/v1/workspaces", () => {
+      http.get(mswEndpoint("/api/v1/workspaces"), () => {
         return HttpResponse.json({
           workspaces: [
             {
@@ -106,12 +108,12 @@ const TEST_CASES: TestCase[] = [
           ],
         });
       }),
-      http.get("*/api/v1/workspaces/archive", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/archive"), () => {
         return HttpResponse.json({
           workspaces: [],
         });
       }),
-      http.get("*/api/v1/workspaces/:name/alerts", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
         return HttpResponse.json([]);
       }),
     ],
@@ -135,7 +137,7 @@ const TEST_CASES: TestCase[] = [
   {
     testDescription: "No search results",
     handlers: [
-      http.get("*/api/v1/workspaces", () => {
+      http.get(mswEndpoint("/api/v1/workspaces"), () => {
         return HttpResponse.json({
           workspaces: [
             {
@@ -145,16 +147,14 @@ const TEST_CASES: TestCase[] = [
           ],
         });
       }),
-      http.get("*/api/v1/workspaces/archive", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/archive"), () => {
         return HttpResponse.json({
           workspaces: [],
         });
       }),
-      http.get("*/api/v1/workspaces/:name/alerts", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
         return HttpResponse.json(
-          Array.from({ length: 10 }, () =>
-            makeMockAlert({ type: "malicious" }),
-          ),
+          Array.from({ length: 10 }, () => mockAlert({ type: "malicious" })),
         );
       }),
     ],
@@ -174,7 +174,7 @@ const TEST_CASES: TestCase[] = [
   {
     testDescription: "No alerts, multiple workspaces",
     handlers: [
-      http.get("*/api/v1/workspaces", () => {
+      http.get(mswEndpoint("/api/v1/workspaces"), () => {
         return HttpResponse.json({
           workspaces: [
             {
@@ -188,12 +188,12 @@ const TEST_CASES: TestCase[] = [
           ],
         });
       }),
-      http.get("*/api/v1/workspaces/archive", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/archive"), () => {
         return HttpResponse.json({
           workspaces: [],
         });
       }),
-      http.get("*/api/v1/workspaces/:name/alerts", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
         return HttpResponse.json([]);
       }),
     ],
@@ -217,7 +217,7 @@ const TEST_CASES: TestCase[] = [
   {
     testDescription: 'Has alerts, view is "malicious"',
     handlers: [
-      http.get("*/api/v1/workspaces", () => {
+      http.get(mswEndpoint("/api/v1/workspaces"), () => {
         return HttpResponse.json({
           workspaces: [
             {
@@ -231,16 +231,14 @@ const TEST_CASES: TestCase[] = [
           ],
         });
       }),
-      http.get("*/api/v1/workspaces/archive", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/archive"), () => {
         return HttpResponse.json({
           workspaces: [],
         });
       }),
-      http.get("*/api/v1/workspaces/:name/alerts", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
         return HttpResponse.json(
-          Array.from({ length: 10 }).map(() =>
-            makeMockAlert({ type: "secret" }),
-          ),
+          Array.from({ length: 10 }).map(() => mockAlert({ type: "secret" })),
         );
       }),
     ],
@@ -258,7 +256,7 @@ const TEST_CASES: TestCase[] = [
   {
     testDescription: 'Has alerts, view is "secret"',
     handlers: [
-      http.get("*/api/v1/workspaces", () => {
+      http.get(mswEndpoint("/api/v1/workspaces"), () => {
         return HttpResponse.json({
           workspaces: [
             {
@@ -272,15 +270,15 @@ const TEST_CASES: TestCase[] = [
           ],
         });
       }),
-      http.get("*/api/v1/workspaces/archive", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/archive"), () => {
         return HttpResponse.json({
           workspaces: [],
         });
       }),
-      http.get("*/api/v1/workspaces/:name/alerts", () => {
+      http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
         return HttpResponse.json(
           Array.from({ length: 10 }).map(() =>
-            makeMockAlert({ type: "malicious" }),
+            mockAlert({ type: "malicious" }),
           ),
         );
       }),

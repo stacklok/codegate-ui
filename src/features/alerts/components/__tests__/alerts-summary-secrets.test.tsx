@@ -4,12 +4,13 @@ import { http, HttpResponse } from "msw";
 import { render, waitFor } from "@/lib/test-utils";
 
 import { AlertsSummaryMaliciousSecrets } from "../alerts-summary-secrets";
-import { makeMockAlert } from "../../mocks/alert.mock";
+import { mswEndpoint } from "@/test/msw-endpoint";
+import { mockAlert } from "@/mocks/msw/mockers/alert.mock";
 
 test("shows correct count when there is a secret alert", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/:name/alerts", () => {
-      return HttpResponse.json([makeMockAlert({ type: "secret" })]);
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
+      return HttpResponse.json([mockAlert({ type: "secret" })]);
     }),
   );
 
@@ -22,8 +23,8 @@ test("shows correct count when there is a secret alert", async () => {
 
 test("shows correct count when there is no malicious alert", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/:name/alerts", () => {
-      return HttpResponse.json([makeMockAlert({ type: "malicious" })]);
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
+      return HttpResponse.json([mockAlert({ type: "malicious" })]);
     }),
   );
 

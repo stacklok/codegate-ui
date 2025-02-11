@@ -8,6 +8,7 @@ import { HttpResponse, http } from "msw";
 import mockedAlerts from "@/mocks/msw/fixtures/GET_ALERTS.json";
 import userEvent from "@testing-library/user-event";
 import { RouteDashboard } from "../route-dashboard";
+import { mswEndpoint } from "@/test/msw-endpoint";
 
 const fakeConversionation1 = {
   conversation: {
@@ -79,7 +80,7 @@ const fakeConversionation2 = {
 
 function mockAlertsWithMaliciousPkg() {
   server.use(
-    http.get("*/workspaces/:name/alerts", () => {
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
       return HttpResponse.json([fakeConversionation1, fakeConversionation2]);
     }),
   );
@@ -87,7 +88,7 @@ function mockAlertsWithMaliciousPkg() {
 
 function mockManyAlerts() {
   server.use(
-    http.get("*/workspaces/:name/alerts", () => {
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
       return HttpResponse.json(
         [
           ...mockedAlerts,

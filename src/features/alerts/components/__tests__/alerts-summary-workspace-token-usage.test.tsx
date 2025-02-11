@@ -4,14 +4,19 @@ import { http, HttpResponse } from "msw";
 import { render, waitFor } from "@/lib/test-utils";
 
 import { AlertsSummaryWorkspaceTokenUsage } from "../alerts-summary-workspace-token-usage";
-import { TOKEN_USAGE_AGG } from "../../mocks/token-usage.mock";
+
 import { formatNumberCompact } from "@/lib/format-number";
+import { mswEndpoint } from "@/test/msw-endpoint";
+import { TOKEN_USAGE_AGG } from "@/mocks/msw/mockers/token-usage.mock";
 
 test("shows correct count when there is token usage", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/:name/token-usage", () => {
-      return HttpResponse.json(TOKEN_USAGE_AGG);
-    }),
+    http.get(
+      mswEndpoint("/api/v1/workspaces/:workspace_name/token-usage"),
+      () => {
+        return HttpResponse.json(TOKEN_USAGE_AGG);
+      },
+    ),
   );
 
   const { getByTestId } = render(<AlertsSummaryWorkspaceTokenUsage />);
@@ -28,9 +33,12 @@ test("shows correct count when there is token usage", async () => {
 
 test("shows correct count when there is no token usage", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/:name/token-usage", () => {
-      return HttpResponse.json({});
-    }),
+    http.get(
+      mswEndpoint("/api/v1/workspaces/:workspace_name/token-usage"),
+      () => {
+        return HttpResponse.json({});
+      },
+    ),
   );
 
   const { getByTestId } = render(<AlertsSummaryWorkspaceTokenUsage />);
