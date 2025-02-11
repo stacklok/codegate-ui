@@ -1,10 +1,5 @@
-import { Conversation } from "@/api/generated/types.gen";
-import { format, isToday, isYesterday } from "date-fns";
+import { format } from "date-fns";
 
-const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-const SEVEN_DAYS_MS = 7 * ONE_DAY_MS;
-const TEEN_DAYS_MS = 14 * ONE_DAY_MS;
-const THTY_DAYS_MS = 30 * ONE_DAY_MS;
 const FILEPATH_REGEX = /(?:---FILEPATH|Path:|\/\/\s*filepath:)\s*([^\s]+)/g;
 const COMPARE_CODE_REGEX = /Compare this snippet[^:]*:/g;
 
@@ -48,52 +43,6 @@ export function parsingPromptText(message: string, timestamp: string) {
   }
 }
 
-function getGroup(differenceInMs: number, promptDate: Date): string {
-  if (isToday(promptDate)) {
-    return "Today";
-  }
-  if (isYesterday(promptDate)) {
-    return "Yesterday";
-  }
-  if (differenceInMs <= SEVEN_DAYS_MS) {
-    return "Previous 7 days";
-  }
-  if (differenceInMs <= TEEN_DAYS_MS) {
-    return "Previous 14 days";
-  }
-  if (differenceInMs <= THTY_DAYS_MS) {
-    return "Previous 30 days";
-  }
-  return "Beyond 30 days";
-}
-
-export function groupPromptsByRelativeDate(prompts: Conversation[]) {
-  const promptsSorted = prompts.sort(
-    (a, b) =>
-      new Date(b.conversation_timestamp).getTime() -
-      new Date(a.conversation_timestamp).getTime()
-  );
-
-  const grouped = promptsSorted.reduce(
-    (groups, prompt) => {
-      const promptDate = new Date(prompt.conversation_timestamp);
-      const now = new Date();
-      const differenceInMs = now.getTime() - promptDate.getTime();
-      const group = getGroup(differenceInMs, promptDate);
-
-      if (!groups[group]) {
-        groups[group] = [];
-      }
-
-      (groups[group] ?? []).push(prompt);
-      return groups;
-    },
-    {} as Record<string, Conversation[]>
-  );
-
-  return grouped;
-}
-
 export function sanitizeQuestionPrompt({
   question,
   answer,
@@ -120,9 +69,4 @@ export function sanitizeQuestionPrompt({
     console.error("Error processing the question:", error);
     return question;
   }
-}
-
-export function capitalize(text: string) {
-  const [first, ...rest] = text;
-  return first ? first.toUpperCase() + rest.join("") : text;
 }

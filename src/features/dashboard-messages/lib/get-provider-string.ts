@@ -3,7 +3,7 @@ export function getProviderString(provider: string | null): string {
     case "copilot":
       return "Github Copilot";
     case null:
-      return "N/A";
+      return "Unknown provider";
     default:
       return provider;
   }

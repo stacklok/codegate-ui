@@ -26,7 +26,7 @@ function CellName({
 }) {
   if (isArchived)
     return (
-      <Cell className="text-disabled">
+      <Cell className="text-disabled group-last/row:border-b-0">
         <span>{name}</span>
         &nbsp;&nbsp;
         <Badge size="sm" className="text-tertiary">
@@ -37,7 +37,7 @@ function CellName({
 
   if (isActive)
     return (
-      <Cell>
+      <Cell className="group-last/row:border-b-0">
         <span>{name}</span>
         &nbsp;&nbsp;
         <Badge size="sm" variant="inverted">
@@ -76,7 +76,7 @@ export function TableWorkspaces() {
                   isActive={workspace.is_active}
                   isArchived={workspace.isArchived}
                 />
-                <Cell alignment="end">
+                <Cell alignment="end" className="group-last/row:border-b-0">
                   <TableActionsWorkspaces
                     activeWorkspaceName={activeWorkspaceName}
                     workspace={workspace}

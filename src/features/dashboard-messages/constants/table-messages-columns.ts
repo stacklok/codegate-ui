@@ -19,7 +19,7 @@ export const TABLE_MESSAGES_COLUMNS: TableMessagesColumn[] = [
     id: "type",
     children: "Type",
     minWidth: 170,
-    maxWidth: 190,
+    maxWidth: 200,
   },
   {
     id: "prompt",
@@ -28,8 +28,9 @@ export const TABLE_MESSAGES_COLUMNS: TableMessagesColumn[] = [
   {
     id: "alerts",
     children: "Alerts",
-    alignment: "center",
-    width: 110,
+    alignment: "start",
+    minWidth: 110,
+    maxWidth: 160,
   },
   {
     id: "token_usage",

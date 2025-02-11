@@ -27,6 +27,9 @@ export const TestQueryClientProvider = ({
         new QueryClient({
           defaultOptions: {
             queries: {
+              refetchOnMount: true,
+              refetchOnReconnect: true,
+              refetchOnWindowFocus: true,
               gcTime: 0,
               staleTime: 0,
             },
@@ -41,7 +44,7 @@ export const TestQueryClientProvider = ({
 
 const renderWithProviders = (
   children: React.ReactNode,
-  options?: Omit<RenderOptions, "queries"> & RoutConfig
+  options?: Omit<RenderOptions, "queries"> & RoutConfig,
 ) =>
   render(
     <TestQueryClientProvider>
@@ -57,7 +60,7 @@ const renderWithProviders = (
           </MemoryRouter>
         </ConfirmProvider>
       </DarkModeProvider>
-    </TestQueryClientProvider>
+    </TestQueryClientProvider>,
   );
 
 export * from "@testing-library/react";

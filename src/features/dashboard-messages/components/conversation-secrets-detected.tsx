@@ -1,26 +1,21 @@
 import { Alert } from "@/api/generated";
-import { parseUnstructuredSecretsData } from "../lib/parse-unstructured-secrets-data";
 import { ReactNode } from "react";
+import Markdown from "react-markdown";
 
 function ConversationSecretsList({ children }: { children: ReactNode }) {
+  return <ul>{children}</ul>;
+}
+
+function ConversationSecretsListItem({ children }: { children: ReactNode }) {
   return (
-    <ul className="block grow [&>*:nth-child(odd)]:bg-gray-50">{children}</ul>
+    <li className="pb-3 mb-3 rounded border-b border-gray-200 last:border-b-0">
+      {children}
+    </li>
   );
 }
 
-function ConversationSecretsListItem({
-  title,
-  value,
-}: {
-  title: ReactNode;
-  value: ReactNode;
-}) {
-  return (
-    <li className="grid grid-cols-[1fr_4fr] px-2 py-0.5 rounded ">
-      <code className="block font-bold">{title}</code>
-      <code className="block truncate">{value}</code>
-    </li>
-  );
+function formatTriggerString(string: string): string {
+  return string.replace(/REDACTED<[^>]*?>/g, "**REDACTED**");
 }
 
 // NOTE: The secrets detection backend code appears to be returning fairly
@@ -30,16 +25,12 @@ export function ConversationSecretsDetected({ alerts }: { alerts: Alert[] }) {
   return (
     <ConversationSecretsList>
       {alerts.map((a) => {
-        const { key, redactedValue } = parseUnstructuredSecretsData(a) || {};
-
-        if (!key) return null;
+        if (typeof a.trigger_string !== "string") return null;
 
         return (
-          <ConversationSecretsListItem
-            title={key}
-            value={redactedValue ?? "N/A"}
-            key={a.id}
-          />
+          <ConversationSecretsListItem key={a.id}>
+            <Markdown>{formatTriggerString(a.trigger_string)}</Markdown>
+          </ConversationSecretsListItem>
         );
       })}
     </ConversationSecretsList>

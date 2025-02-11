@@ -40,7 +40,7 @@ function getTypeText(type: QuestionType) {
     case QuestionType.CHAT:
       return "Chat";
     case QuestionType.FIM:
-      return "Code Suggestion";
+      return "Fill in the middle (FIM)";
     default:
       return "Unknown";
   }

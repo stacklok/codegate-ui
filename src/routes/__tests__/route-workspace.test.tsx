@@ -42,7 +42,7 @@ test("renders title", () => {
   const { getByRole } = renderComponent();
 
   expect(
-    getByRole("heading", { name: "Workspace settings", level: 4 }),
+    getByRole("heading", { name: "Workspace settings", level: 1 }),
   ).toBeVisible();
 });
 

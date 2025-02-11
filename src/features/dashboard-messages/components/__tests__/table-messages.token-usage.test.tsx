@@ -31,7 +31,7 @@ test("renders token usage cell correctly", async () => {
   server.use(
     http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/messages"), () => {
       return HttpResponse.json([mockConversation({ withTokenUsage: true })]);
-    })
+    }),
   );
 
   const { getByRole, getByTestId, queryByText } = render(<TableMessages />);
@@ -46,7 +46,7 @@ test("renders token usage cell correctly", async () => {
   expect(
     getByRole("gridcell", {
       name: `${formatNumberCompact(INPUT_TOKENS)} ${formatNumberCompact(OUTPUT_TOKENS)}`,
-    })
+    }),
   ).toBeVisible();
 });
 
@@ -54,7 +54,7 @@ test("renders N/A when token usage is missing", async () => {
   server.use(
     http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/messages"), () => {
       return HttpResponse.json([mockConversation({ withTokenUsage: false })]);
-    })
+    }),
   );
 
   const { getByText, queryByText } = render(<TableMessages />);
