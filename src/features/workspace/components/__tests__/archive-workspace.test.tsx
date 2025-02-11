@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { waitFor } from "@testing-library/react";
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
+import { mswEndpoint } from "@/test/msw-endpoint";
 
 test("has correct buttons when not archived", async () => {
   const { getByRole, queryByRole } = render(
@@ -66,7 +67,7 @@ test("can permanently delete archived workspace", async () => {
 
 test("can't archive active workspace", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/active", () =>
+    http.get(mswEndpoint("/api/v1/workspaces/active"), () =>
       HttpResponse.json({
         workspaces: [
           {

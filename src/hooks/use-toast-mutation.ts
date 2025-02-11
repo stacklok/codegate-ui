@@ -42,6 +42,7 @@ export function useToastMutation<
         success:
           typeof successMsg === "function" ? successMsg(variables) : successMsg,
         loading: loadingMsg ?? "Loading...",
+        duration: 5000,
         error: (e: TError) => {
           if (errorMsg) return errorMsg;
 

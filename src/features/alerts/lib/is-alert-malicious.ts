@@ -1,7 +1,7 @@
-import { AlertConversation } from "@/api/generated";
+import { Alert, AlertConversation } from "@/api/generated";
 
 export function isAlertMalicious(
-  alert: AlertConversation | null,
+  alert: Alert | AlertConversation | null,
 ): alert is AlertConversation {
   return (
     alert?.trigger_category === "critical" &&

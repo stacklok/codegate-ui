@@ -1,18 +1,18 @@
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
-import { makeMockAlert } from "../../mocks/alert.mock";
+
 import { render, waitFor } from "@/lib/test-utils";
 import { TabsAlerts } from "../tabs-alerts";
+import { mswEndpoint } from "@/test/msw-endpoint";
+import { mockAlert } from "@/mocks/msw/mockers/alert.mock";
 
 test("shows correct count of all packages", async () => {
   server.use(
-    http.get("*/workspaces/:name/alerts", () => {
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
       return HttpResponse.json([
+        ...Array.from({ length: 13 }).map(() => mockAlert({ type: "secret" })),
         ...Array.from({ length: 13 }).map(() =>
-          makeMockAlert({ type: "secret" }),
-        ),
-        ...Array.from({ length: 13 }).map(() =>
-          makeMockAlert({ type: "malicious" }),
+          mockAlert({ type: "malicious" }),
         ),
       ]);
     }),
@@ -31,11 +31,9 @@ test("shows correct count of all packages", async () => {
 
 test("shows correct count of malicious packages", async () => {
   server.use(
-    http.get("*/workspaces/:name/alerts", () => {
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
       return HttpResponse.json(
-        Array.from({ length: 13 }).map(() =>
-          makeMockAlert({ type: "malicious" }),
-        ),
+        Array.from({ length: 13 }).map(() => mockAlert({ type: "malicious" })),
       );
     }),
   );
@@ -53,9 +51,9 @@ test("shows correct count of malicious packages", async () => {
 
 test("shows correct count of secret packages", async () => {
   server.use(
-    http.get("*/workspaces/:name/alerts", () => {
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/alerts"), () => {
       return HttpResponse.json(
-        Array.from({ length: 13 }).map(() => makeMockAlert({ type: "secret" })),
+        Array.from({ length: 13 }).map(() => mockAlert({ type: "secret" })),
       );
     }),
   );

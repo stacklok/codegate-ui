@@ -5,6 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { server } from "@/mocks/msw/node";
 import { http, HttpResponse } from "msw";
 import { WorkspaceCustomInstructions } from "../workspace-custom-instructions";
+import { mswEndpoint } from "@/test/msw-endpoint";
 
 vi.mock("@monaco-editor/react", () => {
   const FakeEditor = vi.fn((props) => {
@@ -26,9 +27,12 @@ const renderComponent = () =>
 
 test("can update custom instructions", async () => {
   server.use(
-    http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
-      return HttpResponse.json({ prompt: "initial prompt from server" });
-    }),
+    http.get(
+      mswEndpoint("/api/v1/workspaces/:workspace_name/custom-instructions"),
+      () => {
+        return HttpResponse.json({ prompt: "initial prompt from server" });
+      },
+    ),
   );
 
   const { getByRole, getByText } = renderComponent();
@@ -45,9 +49,12 @@ test("can update custom instructions", async () => {
   expect(input).toHaveTextContent("new prompt from test");
 
   server.use(
-    http.get("*/api/v1/workspaces/:name/custom-instructions", () => {
-      return HttpResponse.json({ prompt: "new prompt from test" });
-    }),
+    http.get(
+      mswEndpoint("/api/v1/workspaces/:workspace_name/custom-instructions"),
+      () => {
+        return HttpResponse.json({ prompt: "new prompt from test" });
+      },
+    ),
   );
 
   await userEvent.click(getByRole("button", { name: /Save/i }));

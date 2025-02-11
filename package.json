@@ -1,7 +1,7 @@
 {
   "name": "vite-project",
   "private": true,
-  "version": "0.12.2",
+  "version": "0.14.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@eslint/js": "^9.15.0",
     "@faker-js/faker": "^9.4.0",
-    "@hey-api/openapi-ts": "^0.64.1",
+    "@hey-api/openapi-ts": "^0.61.2",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
