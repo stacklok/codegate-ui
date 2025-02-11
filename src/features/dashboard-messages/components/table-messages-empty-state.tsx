@@ -26,7 +26,7 @@ function EmptyStateLoading() {
     <EmptyState
       title={emptyStateStrings.title.loading}
       body={emptyStateStrings.body.loading}
-      illustration={Loader}
+        <Loader {...props} className={twMerge(props.className, "!size-16")} />
       actions={null}
     />
   );
