@@ -188,10 +188,18 @@ export function TableMessages() {
       {hasNextPage || hasPreviousPage ? (
         <div className="flex justify-center w-full p-4">
           <div className="grid grid-cols-2 gap-2">
-            <Button isDisabled={!hasPreviousPage} onPress={prevPage}>
+            <Button
+              variant="secondary"
+              isDisabled={!hasPreviousPage}
+              onPress={prevPage}
+            >
               Previous
             </Button>
-            <Button isDisabled={!hasNextPage} onPress={nextPage}>
+            <Button
+              variant="secondary"
+              isDisabled={!hasNextPage}
+              onPress={nextPage}
+            >
               Next
             </Button>
           </div>

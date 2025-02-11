@@ -7,6 +7,13 @@ import { countConversationAlerts } from "../lib/count-conversation-alerts";
 import { twMerge } from "tailwind-merge";
 import { TokenUsageIcon } from "./token-usage-icon";
 import { formatNumberCompact } from "@/lib/format-number";
+import {
+  Clock,
+  Hash01,
+  Key01,
+  PackageX,
+  Server05,
+} from "@untitled-ui/icons-react";
 
 function TokenUsage({
   tokens,
@@ -51,13 +58,18 @@ function AlertsSummaryCount({ count }: { count: number }) {
 function ConversationSummaryListItem({
   title,
   value,
+  icon: Icon,
 }: {
   title: ReactNode;
   value: ReactNode;
+  icon: (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element;
 }) {
   return (
     <li className="grid grid-cols-[1fr_2fr] px-2 py-1 rounded ">
-      <span className="block">{title}</span>
+      <span className="flex gap-2 items-center font-semibold">
+        <Icon className="size-4" />
+        {title}
+      </span>
       <span className="block">{value}</span>
     </li>
   );
@@ -82,19 +94,28 @@ export function ConversationSummary({
     <div className="flex gap-4">
       <ConversationSummaryList>
         <ConversationSummaryListItem
+          icon={Server05}
           title="Provider"
           value={getProviderString(conversation.provider)}
         />
         <ConversationSummaryListItem
-          title="Time"
-          value={formatTime(new Date(conversation.conversation_timestamp))}
+          icon={Clock}
+          title="Timestamp"
+          value={formatTime(new Date(conversation.conversation_timestamp), {
+            format: "absolute",
+          })}
         />
-        <ConversationSummaryListItem title="ID" value={conversation.chat_id} />
+        <ConversationSummaryListItem
+          icon={Hash01}
+          title="ID"
+          value={conversation.chat_id}
+        />
       </ConversationSummaryList>
       <div className="border-l border-l-gray-200" />
       <ConversationSummaryList>
         {conversation.token_usage_agg ? (
           <ConversationSummaryListItem
+            icon={Key01}
             title="Token usage"
             value={
               <TokenUsageRow
@@ -109,10 +130,12 @@ export function ConversationSummary({
           />
         ) : null}
         <ConversationSummaryListItem
+          icon={PackageX}
           title="Malicious packages"
           value={<AlertsSummaryCount count={malicious} />}
         />
         <ConversationSummaryListItem
+          icon={Key01}
           title="Secrets"
           value={<AlertsSummaryCount count={secrets} />}
         />

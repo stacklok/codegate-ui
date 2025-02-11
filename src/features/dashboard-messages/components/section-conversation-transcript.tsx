@@ -21,10 +21,7 @@ export function SectionConversationTranscript({
         className="py-4 border-b-gray-200 border-b"
         aria-label="Conversation summary"
       >
-        <Heading
-          level={2}
-          className="text-secondary text-xl font-semibold mb-4"
-        >
+        <Heading level={2} className="text-primary text-xl font-semibold mb-4">
           Conversation summary
         </Heading>
 
@@ -34,10 +31,7 @@ export function SectionConversationTranscript({
         className="py-4 border-b-gray-200 border-b"
         aria-label="Conversation transcript"
       >
-        <Heading
-          level={3}
-          className="text-secondary text-xl font-semibold mb-4"
-        >
+        <Heading level={3} className="text-primary text-xl font-semibold mb-4">
           Conversation transcript
         </Heading>
 
