@@ -6,11 +6,13 @@ type Props<T> = {
   canSubmit: boolean;
   formErrorMessage?: string;
   formState: FormState<T>;
+  children?: React.ReactNode;
 };
 export function FormButtons<T>({
   formErrorMessage,
   formState,
   canSubmit,
+  children,
 }: Props<T>) {
   return (
     <div className="flex gap-2 items-center">
@@ -23,6 +25,7 @@ export function FormButtons<T>({
           Revert changes
         </Button>
       )}
+      {children}
       <Button isDisabled={!canSubmit || !formState.isDirty} type="submit">
         Save
       </Button>
