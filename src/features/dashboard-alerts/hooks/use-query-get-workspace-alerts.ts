@@ -1,15 +1,12 @@
 import {
-  v1GetWorkspaceAlerts,
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceAlertsResponse,
 } from "@/api/generated";
-import { v1GetWorkspaceAlertsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { v1GetWorkspaceAlertsOptions } from "@/api/generated/@tanstack/react-query.gen";
 import { useQueryActiveWorkspaceName } from "@/hooks/use-query-active-workspace-name";
-import { dedupeByKeys } from "@/lib/dedupe-by-keys";
-import { isAlertCritical } from "@/lib/is-alert-critical";
 import { getQueryCacheConfig } from "@/lib/react-query-utils";
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
   select,
@@ -33,30 +30,6 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     [activeWorkspaceName],
   );
 
-  // Intentionally hand-composing the queryFn, as we have to iterate over every
-  // alert and remove any duplicates, which is an expensive operation. We should
-  // at least cache the result of this.
-  const queryFn = useCallback(
-    async ({
-      queryKey,
-      signal,
-    }: {
-      queryKey: ReturnType<typeof v1GetWorkspaceAlertsQueryKey>;
-      signal: AbortSignal;
-    }) => {
-      const { data } = await v1GetWorkspaceAlerts({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-
-      // Ugly de-duplication hack
-      return dedupeByKeys(data.filter(isAlertCritical), ["alert_id"]);
-    },
-    [options],
-  );
-
   const {
     isPending: isAlertsPending,
     isFetching: isAlertsFetching,
@@ -64,10 +37,7 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     isRefetching: isAlertsRefetching,
     ...rest
   } = useQuery({
-    // eslint-disable-next-line no-restricted-syntax
-    queryFn,
-    // eslint-disable-next-line no-restricted-syntax
-    queryKey: v1GetWorkspaceAlertsQueryKey(options),
+    ...v1GetWorkspaceAlertsOptions(options),
     ...getQueryCacheConfig("5s"),
     select,
   });
