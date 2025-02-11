@@ -26,11 +26,7 @@ function ConversationSecretsListItem({
 // NOTE: The secrets detection backend code appears to be returning fairly
 // unstructured data with a lot of false positives. This is not actually
 // referenced in the frontend yet.
-export function ConversationSecretsDetected({
-  alerts,
-}: {
-  alerts: (Omit<Alert, "trigger_string"> & { trigger_string: string })[];
-}) {
+export function ConversationSecretsDetected({ alerts }: { alerts: Alert[] }) {
   return (
     <ConversationSecretsList>
       {alerts.map((a) => {

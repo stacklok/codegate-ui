@@ -1,4 +1,5 @@
 import { AlertCircle } from "@untitled-ui/icons-react";
+// eslint-disable-next-line import/no-restricted-paths
 import { Header } from "../features/header/components/header";
 import { Card } from "@stacklok/ui-kit";
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/stacklok/codegate-ui/compare/v0.14.0...v0.14.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* set 5s of duration for all the toast notifications ([#281](https://github.com/stacklok/codegate-ui/issues/281)) ([2542b5f](https://github.com/stacklok/codegate-ui/commit/2542b5fe2c6e67ea8ac055baa47100591e468570))
+
 ## [0.14.0](https://github.com/stacklok/codegate-ui/compare/v0.13.1...v0.14.0) (2025-02-07)
 
 
