@@ -9,6 +9,9 @@ import { mockConversation } from "@/mocks/msw/mockers/conversation.mock";
 import { getConversationTitle } from "@/features/dashboard-messages/lib/get-conversation-title";
 import { formatTime } from "@/lib/format-time";
 import userEvent from "@testing-library/user-event";
+import { getProviderString } from "@/features/dashboard-messages/lib/get-provider-string";
+import { isAlertMalicious } from "@/lib/is-alert-malicious";
+import { isAlertSecret } from "@/lib/is-alert-secret";
 
 vi.mock("@stacklok/ui-kit", async (importOriginal) => {
   return {
@@ -78,6 +81,48 @@ it("renders title", async () => {
       formatTime(new Date(conversation.conversation_timestamp)),
     );
   });
+});
+
+it("renders conversation summary correctly", async () => {
+  const conversation = mockConversation({ alertsConfig: { numAlerts: 10 } });
+
+  const maliciousCount = conversation.alerts.filter(isAlertMalicious).length;
+  const secretsCount = conversation.alerts.filter(isAlertSecret).length;
+
+  server.use(
+    http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/messages"), () =>
+      HttpResponse.json([conversation]),
+    ),
+  );
+
+  render(<RouteChat />, {
+    routeConfig: {
+      initialEntries: [`/prompt/${conversation.chat_id}`],
+    },
+    pathConfig: "/prompt/:id",
+  });
+
+  await waitFor(() => {
+    expect(screen.getByLabelText("Conversation summary")).toBeVisible();
+  });
+
+  const { getByText } = within(screen.getByLabelText("Conversation summary"));
+
+  expect(getByText(getProviderString(conversation.provider))).toBeVisible();
+
+  expect(
+    getByText(
+      formatTime(new Date(conversation.conversation_timestamp), {
+        format: "absolute",
+      }),
+    ),
+  ).toBeVisible();
+
+  expect(getByText(conversation.chat_id)).toBeVisible();
+
+  expect(getByText(`${maliciousCount} detected`)).toBeVisible();
+
+  expect(getByText(`${secretsCount} detected`)).toBeVisible();
 });
 
 it("renders chat correctly", async () => {

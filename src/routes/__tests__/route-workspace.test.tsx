@@ -94,6 +94,10 @@ test("rename workspace", async () => {
   const saveBtn = within(getByTestId("workspace-name")).getByRole("button", {
     name: /save/i,
   });
+
+  await waitFor(() => {
+    expect(saveBtn).toBeEnabled();
+  });
   await userEvent.click(saveBtn);
   await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));
   expect(mockNavigate).toHaveBeenCalledWith("/workspace/foo_renamed");
