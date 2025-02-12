@@ -55,9 +55,18 @@ test("can't rename active workspace", async () => {
   expect(getByRole("button", { name: /save/i })).toBeDisabled();
 });
 
-test("can't rename default workspace", async () => {
+test("can't rename archived workspace", async () => {
   const { getByRole } = render(
     <WorkspaceName workspaceName="foo" isArchived={true} />,
+  );
+
+  expect(getByRole("textbox", { name: /workspace name/i })).toBeDisabled();
+  expect(getByRole("button", { name: /save/i })).toBeDisabled();
+});
+
+test("can't rename default workspace", async () => {
+  const { getByRole } = render(
+    <WorkspaceName workspaceName="default" isArchived={false} />,
   );
 
   expect(getByRole("textbox", { name: /workspace name/i })).toBeDisabled();

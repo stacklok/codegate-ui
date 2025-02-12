@@ -29,6 +29,8 @@ export function WorkspaceName({
     workspaceName,
   });
   const { values, updateFormValues } = formState;
+  const isDefault = workspaceName === "default";
+  const isUneditable = isArchived || isPending || isDefault;
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -50,13 +52,14 @@ export function WorkspaceName({
       <Card className={twMerge(className, "shrink-0")}>
         <CardBody className="flex flex-col gap-6">
           <TextField
+            isReadOnly={isUneditable}
             key={workspaceName}
             aria-label="Workspace name"
             value={values.workspaceName}
             name="Workspace name"
             validationBehavior="aria"
             isRequired
-            isDisabled={isArchived}
+            isDisabled={isUneditable}
             onChange={(workspaceName) => updateFormValues({ workspaceName })}
           >
             <Label>Workspace name</Label>
