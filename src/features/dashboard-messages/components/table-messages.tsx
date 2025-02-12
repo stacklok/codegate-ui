@@ -19,7 +19,7 @@ import { useMessagesFilterSearchParams } from "../hooks/use-messages-filter-sear
 import { Key01, PackageX } from "@untitled-ui/icons-react";
 import {
   EmptyStateError,
-  TableAlertsEmptyState,
+  TableMessagesEmptyState,
 } from "./table-messages-empty-state";
 import { hrefs } from "@/lib/hrefs";
 import { isAlertMalicious } from "../../../lib/is-alert-malicious";
@@ -166,7 +166,7 @@ export function TableMessages() {
             renderEmptyState={() => {
               if (isError) return <EmptyStateError />;
 
-              return <TableAlertsEmptyState />;
+              return <TableMessagesEmptyState />;
             }}
             items={dataView}
           >

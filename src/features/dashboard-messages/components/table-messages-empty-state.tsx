@@ -160,7 +160,7 @@ type MatchInput = {
   view: AlertsFilterView | null;
 };
 
-export function TableAlertsEmptyState() {
+export function TableMessagesEmptyState() {
   const { state, setSearch } = useMessagesFilterSearchParams();
 
   const { data: messages = [], isLoading: isMessagesLoading } =
@@ -181,41 +181,41 @@ export function TableAlertsEmptyState() {
   })
     .with(
       {
-        hasMultipleWorkspaces: false,
         hasWorkspaceMessages: false,
-        isLoading: false,
+        hasMultipleWorkspaces: false,
         search: P.any,
         view: P.any,
+        isLoading: false,
       },
       () => <EmptyStateGetStarted />,
     )
     .with(
       {
-        hasMultipleWorkspaces: P.any,
         hasWorkspaceMessages: true,
-        isLoading: false,
+        hasMultipleWorkspaces: P.any,
         search: P.string.select(),
         view: P.any,
+        isLoading: false,
       },
       (search) => <EmptyStateSearch search={search} setSearch={setSearch} />,
     )
     .with(
       {
-        hasMultipleWorkspaces: true,
         hasWorkspaceMessages: false,
-        isLoading: false,
+        hasMultipleWorkspaces: P.any,
         search: P.any,
-        view: AlertsFilterView.ALL,
+        view: P.any,
+        isLoading: false,
       },
       () => <EmptyStateNoMessagesInWorkspace />,
     )
     .with(
       {
-        hasMultipleWorkspaces: P.any,
         hasWorkspaceMessages: true,
-        isLoading: false,
+        hasMultipleWorkspaces: P.any,
         search: P.any,
         view: AlertsFilterView.MALICIOUS,
+        isLoading: false,
       },
       () => <EmptyStateMalicious />,
     )
@@ -224,6 +224,7 @@ export function TableAlertsEmptyState() {
         hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
         view: AlertsFilterView.SECRETS,
+        isLoading: false,
       },
       () => <EmptyStateSecrets />,
     )

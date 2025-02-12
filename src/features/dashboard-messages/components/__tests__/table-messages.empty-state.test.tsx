@@ -6,9 +6,9 @@ import { useSearchParams } from "react-router-dom";
 import { delay, http, HttpHandler, HttpResponse } from "msw";
 import { mockAlert } from "../../../../mocks/msw/mockers/alert.mock";
 import { AlertsFilterView } from "../../hooks/use-messages-filter-search-params";
-import { TableMessages } from "../table-messages";
 import { hrefs } from "@/lib/hrefs";
 import { mswEndpoint } from "@/test/msw-endpoint";
+import { TableMessagesEmptyState } from "../table-messages-empty-state";
 
 enum IllustrationTestId {
   ALERT = "illustration-alert",
@@ -48,7 +48,7 @@ type TestCase = {
 vi.mock("react-router-dom", async () => {
   const original =
     await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom"
+      "react-router-dom",
     );
   return {
     ...original,
@@ -59,7 +59,7 @@ vi.mock("react-router-dom", async () => {
 vi.mock("@stacklok/ui-kit", async () => {
   const original =
     await vi.importActual<typeof import("@stacklok/ui-kit")>(
-      "@stacklok/ui-kit"
+      "@stacklok/ui-kit",
     );
   return {
     ...original,
@@ -116,7 +116,7 @@ const TEST_CASES: TestCase[] = [
         mswEndpoint("/api/v1/workspaces/:workspace_name/messages"),
         () => {
           return HttpResponse.json([]);
-        }
+        },
       ),
     ],
     searchParams: {
@@ -158,9 +158,9 @@ const TEST_CASES: TestCase[] = [
         mswEndpoint("/api/v1/workspaces/:workspace_name/messages"),
         () => {
           return HttpResponse.json(
-            Array.from({ length: 10 }, () => mockAlert({ type: "malicious" }))
+            Array.from({ length: 10 }, () => mockAlert({ type: "malicious" })),
           );
-        }
+        },
       ),
     ],
     searchParams: { search: "foo-bar", view: AlertsFilterView.ALL },
@@ -202,7 +202,7 @@ const TEST_CASES: TestCase[] = [
         mswEndpoint("/api/v1/workspaces/:workspace_name/messages"),
         () => {
           return HttpResponse.json([]);
-        }
+        },
       ),
     ],
     searchParams: {
@@ -248,9 +248,9 @@ const TEST_CASES: TestCase[] = [
         mswEndpoint("/api/v1/workspaces/:workspace_name/messages"),
         () => {
           return HttpResponse.json(
-            Array.from({ length: 10 }).map(() => mockAlert({ type: "secret" }))
+            Array.from({ length: 10 }).map(() => mockAlert({ type: "secret" })),
           );
-        }
+        },
       ),
     ],
     searchParams: {
@@ -291,10 +291,10 @@ const TEST_CASES: TestCase[] = [
         () => {
           return HttpResponse.json(
             Array.from({ length: 10 }).map(() =>
-              mockAlert({ type: "malicious" })
-            )
+              mockAlert({ type: "malicious" }),
+            ),
           );
-        }
+        },
       ),
     ],
     searchParams: {
@@ -321,11 +321,13 @@ test.each(TEST_CASES)("$testDescription", async (testCase) => {
     () => {},
   ]);
 
-  const { getByText, getByRole, getByTestId } = render(<TableMessages />);
+  const { getByText, getByRole, getByTestId } = render(
+    <TableMessagesEmptyState />,
+  );
 
   await waitFor(() => {
     expect(
-      getByRole("heading", { level: 4, name: testCase.expected.title })
+      getByRole("heading", { level: 4, name: testCase.expected.title }),
     ).toBeVisible();
     expect(getByText(testCase.expected.body)).toBeVisible();
     expect(getByTestId(testCase.expected.illustrationTestId)).toBeVisible();
