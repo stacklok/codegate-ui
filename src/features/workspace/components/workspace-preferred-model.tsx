@@ -16,6 +16,9 @@ import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-mod
 import { Select, SelectButton } from "@stacklok/ui-kit";
 import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
 import { FormButtons } from "@/components/FormButtons";
+import { invalidateQueries } from "@/lib/react-query-utils";
+import { v1GetWorkspaceMuxesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { useQueryClient } from "@tanstack/react-query";
 
 function MissingProviderBanner() {
   return (
@@ -39,25 +42,30 @@ export function WorkspacePreferredModel({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
+  const queryClient = useQueryClient();
   const { formState, isPending } = usePreferredModelWorkspace(workspaceName);
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
-  const { model, provider_id } = formState.values.preferredModel;
   const isModelsEmpty = !isPending && providerModels.length === 0;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    mutateAsync({
-      path: { workspace_name: workspaceName },
-      body: [
-        {
-          matcher: "",
-          provider_id,
-          model,
-          matcher_type: MuxMatcherType.CATCH_ALL,
-        },
-      ],
-    });
+    mutateAsync(
+      {
+        path: { workspace_name: workspaceName },
+        body: [
+          {
+            matcher: "",
+            matcher_type: MuxMatcherType.CATCH_ALL,
+            ...formState.values.preferredModel,
+          },
+        ],
+      },
+      {
+        onSuccess: () =>
+          invalidateQueries(queryClient, [v1GetWorkspaceMuxesQueryKey]),
+      },
+    );
   };
 
   return (
