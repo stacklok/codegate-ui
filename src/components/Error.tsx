@@ -1,38 +1,45 @@
-import { AlertCircle } from "@untitled-ui/icons-react";
+import { LinkExternal02 } from "@untitled-ui/icons-react";
 // eslint-disable-next-line import/no-restricted-paths
 import { Header } from "../features/header/components/header";
-import { Card } from "@stacklok/ui-kit";
+import { PageContainer } from "./page-container";
+import { EmptyState } from "./empty-state";
+import { IllustrationAlert, LinkButton } from "@stacklok/ui-kit";
+import { emptyStateStrings } from "@/constants/empty-state-strings";
+import { hrefs } from "@/lib/hrefs";
 
 export function ErrorFallbackContent() {
   return (
-    <div className="h-24 flex flex-col flex-1 justify-center">
-      <Card className="p-8 flex flex-col items-center">
-        <AlertCircle className="text-red-600 mb-2 size-16" />
-        <div className="text-xl font-semibold text-secondary text-center">
-          An error occurred
-        </div>
-        <div className="text-base mb-4 text-secondary text-center text-balance">
-          If this issue persists, please reach out to us on{" "}
-          <a
-            className="underline text-secondary"
-            href="https://discord.gg/stacklok"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Discord
-          </a>{" "}
-          or open a new{" "}
-          <a
-            className="underline text-secondary"
-            href="https://github.com/stacklok/codegate/issues/new"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Github issue
-          </a>
-        </div>
-      </Card>
-    </div>
+    <PageContainer>
+      <div className="py-20 flex flex-col items-center">
+        <EmptyState
+          title={emptyStateStrings.title.anErrorOccurred}
+          body={emptyStateStrings.body.errorDesc}
+          illustration={IllustrationAlert}
+          actions={[
+            <LinkButton
+              key="discord"
+              variant="secondary"
+              href={hrefs.external.discord}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Discord
+              <LinkExternal02 />
+            </LinkButton>,
+            <LinkButton
+              key="github-issues"
+              variant="secondary"
+              href={hrefs.external.github.newIssue}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Github issues
+              <LinkExternal02 />
+            </LinkButton>,
+          ]}
+        />
+      </div>
+    </PageContainer>
   );
 }
 

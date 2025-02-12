@@ -9,7 +9,7 @@ import {
 } from "@stacklok/ui-kit";
 import { ReactNode } from "react";
 
-import { emptyStateStrings } from "../constants/strings";
+import { emptyStateStrings } from "../../../constants/empty-state-strings";
 import { EmptyState } from "@/components/empty-state";
 import { hrefs } from "@/lib/hrefs";
 import { LinkExternal02 } from "@untitled-ui/icons-react";

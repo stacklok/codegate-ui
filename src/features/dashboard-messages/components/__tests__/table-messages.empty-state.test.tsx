@@ -1,7 +1,7 @@
 import { test } from "vitest";
 import { render, waitFor } from "@/lib/test-utils";
 import { server } from "@/mocks/msw/node";
-import { emptyStateStrings } from "../../constants/strings";
+import { emptyStateStrings } from "../../../../constants/empty-state-strings";
 import { useSearchParams } from "react-router-dom";
 import { delay, http, HttpHandler, HttpResponse } from "msw";
 import { mockAlert } from "../../../../mocks/msw/mockers/alert.mock";
