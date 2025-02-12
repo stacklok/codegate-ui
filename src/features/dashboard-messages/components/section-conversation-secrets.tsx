@@ -2,7 +2,7 @@ import { IllustrationDone } from "@stacklok/ui-kit";
 import { isAlertSecret } from "@/lib/is-alert-secret";
 import { ConversationSecretsDetected } from "./conversation-secrets-detected";
 import { EmptyState } from "@/components/empty-state";
-import { emptyStateStrings } from "../constants/strings";
+import { emptyStateStrings } from "../../../constants/empty-state-strings";
 import { Conversation } from "@/api/generated";
 
 export function SectionConversationSecrets({

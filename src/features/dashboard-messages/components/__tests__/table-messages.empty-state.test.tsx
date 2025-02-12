@@ -1,14 +1,14 @@
 import { test } from "vitest";
 import { render, waitFor } from "@/lib/test-utils";
 import { server } from "@/mocks/msw/node";
-import { emptyStateStrings } from "../../constants/strings";
+import { emptyStateStrings } from "../../../../constants/empty-state-strings";
 import { useSearchParams } from "react-router-dom";
 import { delay, http, HttpHandler, HttpResponse } from "msw";
 import { mockAlert } from "../../../../mocks/msw/mockers/alert.mock";
 import { AlertsFilterView } from "../../hooks/use-messages-filter-search-params";
-import { TableMessages } from "../table-messages";
 import { hrefs } from "@/lib/hrefs";
 import { mswEndpoint } from "@/test/msw-endpoint";
+import { TableMessagesEmptyState } from "../table-messages-empty-state";
 
 enum IllustrationTestId {
   ALERT = "illustration-alert",
@@ -321,7 +321,9 @@ test.each(TEST_CASES)("$testDescription", async (testCase) => {
     () => {},
   ]);
 
-  const { getByText, getByRole, getByTestId } = render(<TableMessages />);
+  const { getByText, getByRole, getByTestId } = render(
+    <TableMessagesEmptyState />,
+  );
 
   await waitFor(() => {
     expect(

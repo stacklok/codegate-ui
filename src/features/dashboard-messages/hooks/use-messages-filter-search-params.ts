@@ -41,8 +41,12 @@ export const useMessagesFilterSearchParams = () => {
   const setSearch = useCallback(
     (query: string | null) => {
       setSearchParams((prev) => {
-        if (query !== null) prev.set("search", query);
-        if (query == null || query === "") prev.delete("search");
+        if (query !== null && query !== "") {
+          prev.set("search", query);
+          prev.delete("page");
+        } else {
+          prev.delete("search");
+        }
         return prev;
       });
     },

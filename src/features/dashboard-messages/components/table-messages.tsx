@@ -17,7 +17,10 @@ import { TableAlertTokenUsage } from "./table-alert-token-usage";
 
 import { useMessagesFilterSearchParams } from "../hooks/use-messages-filter-search-params";
 import { Key01, PackageX } from "@untitled-ui/icons-react";
-import { TableAlertsEmptyState } from "./table-messages-empty-state";
+import {
+  EmptyStateError,
+  TableMessagesEmptyState,
+} from "./table-messages-empty-state";
 import { hrefs } from "@/lib/hrefs";
 import { isAlertMalicious } from "../../../lib/is-alert-malicious";
 import { isAlertSecret } from "../../../lib/is-alert-secret";
@@ -145,7 +148,7 @@ function CellRenderer({
 export function TableMessages() {
   const { state, prevPage, nextPage } = useMessagesFilterSearchParams();
 
-  const { data = [] } = useQueryGetWorkspaceMessagesTable();
+  const { data = [], isError } = useQueryGetWorkspaceMessagesTable();
   const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
     data,
     state.page,
@@ -160,7 +163,11 @@ export function TableMessages() {
             {(column) => <Column {...column} id={column.id} />}
           </TableHeader>
           <TableBody
-            renderEmptyState={() => <TableAlertsEmptyState />}
+            renderEmptyState={() => {
+              if (isError) return <EmptyStateError />;
+
+              return <TableMessagesEmptyState />;
+            }}
             items={dataView}
           >
             {(row) => (
