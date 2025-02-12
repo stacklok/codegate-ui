@@ -65,10 +65,11 @@ test("can't rename archived workspace", async () => {
 });
 
 test("can't rename default workspace", async () => {
-  const { getByRole } = render(
+  const { getByRole, getByText } = render(
     <WorkspaceName workspaceName="default" isArchived={false} />,
   );
 
   expect(getByRole("textbox", { name: /workspace name/i })).toBeDisabled();
   expect(getByRole("button", { name: /save/i })).toBeDisabled();
+  expect(getByText(/cannot rename the default workspace/i)).toBeVisible();
 });

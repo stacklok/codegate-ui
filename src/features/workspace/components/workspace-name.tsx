@@ -70,6 +70,7 @@ export function WorkspaceName({
           <FormButtons
             isPending={isPending}
             formErrorMessage={errorMsg}
+            formSideNote="Cannot rename the default workspace"
             formState={formState}
             canSubmit={!isArchived}
           />

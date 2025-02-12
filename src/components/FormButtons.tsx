@@ -5,6 +5,7 @@ import { FlipBackward } from "@untitled-ui/icons-react";
 type Props<T> = {
   canSubmit: boolean;
   formErrorMessage?: string;
+  formSideNote?: string;
   formState: FormState<T>;
   children?: React.ReactNode;
   isPending: boolean;
@@ -15,9 +16,11 @@ export function FormButtons<T>({
   canSubmit,
   isPending,
   children,
+  formSideNote,
 }: Props<T>) {
   return (
     <div className="flex gap-2 items-center">
+      {formSideNote && <div className="p-1 text-secondary">{formSideNote}</div>}
       {formErrorMessage && (
         <div className="p-1 text-red-700">{formErrorMessage}</div>
       )}
