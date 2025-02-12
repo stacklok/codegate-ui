@@ -69,7 +69,11 @@ export function WorkspacePreferredModel({
   };
 
   return (
-    <Form onSubmit={handleSubmit} validationBehavior="aria">
+    <Form
+      onSubmit={handleSubmit}
+      validationBehavior="aria"
+      data-testid="preferred-model"
+    >
       <Card className={twMerge(className, "shrink-0")}>
         <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">

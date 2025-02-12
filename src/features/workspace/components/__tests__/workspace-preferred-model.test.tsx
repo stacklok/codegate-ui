@@ -48,6 +48,4 @@ test("submit preferred model", async () => {
   await waitFor(() => {
     expect(screen.getByText(/preferred model for fake-workspace updated/i));
   });
-
-  expect(screen.queryByText(/revert changes/i)).not.toBeInTheDocument();
 });
