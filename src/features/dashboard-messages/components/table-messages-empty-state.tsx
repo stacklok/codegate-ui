@@ -20,13 +20,16 @@ import {
 } from "../hooks/use-messages-filter-search-params";
 import { match, P } from "ts-pattern";
 import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
+import { twMerge } from "tailwind-merge";
 
 function EmptyStateLoading() {
   return (
     <EmptyState
       title={emptyStateStrings.title.loading}
       body={emptyStateStrings.body.loading}
-      illustration={Loader}
+      illustration={(props) => (
+        <Loader {...props} className={twMerge(props.className, "!size-16")} />
+      )}
       actions={null}
     />
   );
@@ -117,7 +120,7 @@ function EmptyStateSecrets() {
   );
 }
 
-function EmptyStateError() {
+export function EmptyStateError() {
   return (
     <EmptyState
       title={emptyStateStrings.title.anErrorOccurred}
@@ -157,7 +160,7 @@ type MatchInput = {
   view: AlertsFilterView | null;
 };
 
-export function TableAlertsEmptyState() {
+export function TableMessagesEmptyState() {
   const { state, setSearch } = useMessagesFilterSearchParams();
 
   const { data: messages = [], isLoading: isMessagesLoading } =
@@ -178,20 +181,11 @@ export function TableAlertsEmptyState() {
   })
     .with(
       {
-        isLoading: true,
-        hasWorkspaceMessages: P._,
-        hasMultipleWorkspaces: P._,
-        search: P._,
-        view: P._,
-      },
-      () => <EmptyStateLoading />,
-    )
-    .with(
-      {
         hasWorkspaceMessages: false,
         hasMultipleWorkspaces: false,
-        search: P._,
-        view: P._,
+        search: P.any,
+        view: P.any,
+        isLoading: false,
       },
       () => <EmptyStateGetStarted />,
     )
@@ -200,7 +194,8 @@ export function TableAlertsEmptyState() {
         hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
         search: P.string.select(),
-        view: P._,
+        view: P.any,
+        isLoading: false,
       },
       (search) => <EmptyStateSearch search={search} setSearch={setSearch} />,
     )
@@ -208,8 +203,9 @@ export function TableAlertsEmptyState() {
       {
         hasWorkspaceMessages: false,
         hasMultipleWorkspaces: P.any,
-        search: P._,
+        search: P.any,
         view: P.any,
+        isLoading: false,
       },
       () => <EmptyStateNoMessagesInWorkspace />,
     )
@@ -217,8 +213,9 @@ export function TableAlertsEmptyState() {
       {
         hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        search: P._,
+        search: P.any,
         view: AlertsFilterView.MALICIOUS,
+        isLoading: false,
       },
       () => <EmptyStateMalicious />,
     )
@@ -227,8 +224,9 @@ export function TableAlertsEmptyState() {
         hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
         view: AlertsFilterView.SECRETS,
+        isLoading: false,
       },
       () => <EmptyStateSecrets />,
     )
-    .otherwise(() => <EmptyStateError />);
+    .otherwise(() => <EmptyStateLoading />);
 }

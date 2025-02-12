@@ -19,9 +19,16 @@ import { hrefs } from "@/lib/hrefs";
 import { twMerge } from "tailwind-merge";
 import ChevronDown from "@untitled-ui/icons-react/build/cjs/ChevronDown";
 import { SearchMd, Settings01 } from "@untitled-ui/icons-react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const ROUTES_REQUIRING_REDIRECT = [/^\/$/, /^\/prompt\/(.*)$/];
 
 export function HeaderActiveWorkspaceSelector() {
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { pathname } = location;
 
   const { data: workspacesResponse } = useQueryListWorkspaces();
   const { mutateAsync: activateWorkspace } = useMutationActivateWorkspace();
@@ -32,13 +39,16 @@ export function HeaderActiveWorkspaceSelector() {
   const [searchWorkspace, setSearchWorkspace] = useState("");
   const workspaces = workspacesResponse?.workspaces ?? [];
   const filteredWorkspaces = workspaces.filter((workspace) =>
-    workspace.name.toLowerCase().includes(searchWorkspace.toLowerCase()),
+    workspace.name.toLowerCase().includes(searchWorkspace.toLowerCase())
   );
 
   const handleWorkspaceClick = (name: string) => {
     activateWorkspace({ body: { name } }).then(() => {
       // eslint-disable-next-line no-restricted-syntax
       queryClient.invalidateQueries({ refetchType: "all" }); // Global setting, refetch **everything**
+      if (ROUTES_REQUIRING_REDIRECT.some((route) => route.test(pathname))) {
+        navigate("/");
+      }
       setIsOpen(false);
     });
   };
@@ -86,7 +96,7 @@ export function HeaderActiveWorkspaceSelector() {
                   {
                     "!bg-gray-900 hover:bg-gray-900 !text-gray-25 hover:!text-gray-25":
                       item.is_active,
-                  },
+                  }
                 )}
               >
                 <span className="block truncate">{item.name}</span>
@@ -100,12 +110,12 @@ export function HeaderActiveWorkspaceSelector() {
                     "ml-auto size-6 group-hover/selector:opacity-100 opacity-0 transition-opacity",
                     item.is_active
                       ? "hover:bg-gray-800 pressed:bg-gray-700"
-                      : "hover:bg-gray-50 hover:text-primary",
+                      : "hover:bg-gray-50 hover:text-primary"
                   )}
                 >
                   <Settings01
                     className={twMerge(
-                      item.is_active ? "text-gray-25" : "text-secondary",
+                      item.is_active ? "text-gray-25" : "text-secondary"
                     )}
                   />
                 </LinkButton>
