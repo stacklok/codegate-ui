@@ -22,7 +22,7 @@ const DEFAULT_FILTER = {
 
 export const useMessagesFilterSearchParams = () => {
   const [searchParams, setSearchParams] = useSearchParams(
-    new URLSearchParams(DEFAULT_FILTER)
+    new URLSearchParams(DEFAULT_FILTER),
   );
 
   const setView = useCallback(
@@ -35,18 +35,22 @@ export const useMessagesFilterSearchParams = () => {
         return prev;
       });
     },
-    [setSearchParams]
+    [setSearchParams],
   );
 
   const setSearch = useCallback(
     (query: string | null) => {
       setSearchParams((prev) => {
-        if (query !== null) prev.set("search", query);
-        if (query == null || query === "") prev.delete("search");
+        if (query !== null && query !== "") {
+          prev.set("search", query);
+          prev.delete("page");
+        } else {
+          prev.delete("search");
+        }
         return prev;
       });
     },
-    [setSearchParams]
+    [setSearchParams],
   );
 
   const nextPage = useCallback(() => {
