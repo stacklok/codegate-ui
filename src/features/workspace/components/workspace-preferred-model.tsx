@@ -1,36 +1,103 @@
 import {
   Alert,
+  Button,
   Card,
   CardBody,
   CardFooter,
   Form,
+  Input,
+  Label,
   Link,
   LinkButton,
   Text,
-} from '@stacklok/ui-kit'
-import { twMerge } from 'tailwind-merge'
-import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
-import { MuxMatcherType } from '@/api/generated'
-import { FormEvent } from 'react'
-import { usePreferredModelWorkspace } from '../hooks/use-preferred-preferred-model'
-import { Select, SelectButton } from '@stacklok/ui-kit'
-import { useQueryListAllModelsForAllProviders } from '@/hooks/use-query-list-all-models-for-all-providers'
-import { FormButtons } from '@/components/FormButtons'
-import { invalidateQueries } from '@/lib/react-query-utils'
-import { v1GetWorkspaceMuxesQueryKey } from '@/api/generated/@tanstack/react-query.gen'
-import { useQueryClient } from '@tanstack/react-query'
+  TextField,
+} from "@stacklok/ui-kit";
+import { twMerge } from "tailwind-merge";
+import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
+import { V1ListAllModelsForAllProvidersResponse } from "@/api/generated";
+import { FormEvent } from "react";
+import {
+  PreferredMuxRule,
+  usePreferredModelWorkspace,
+} from "../hooks/use-preferred-model-workspace";
+import { Plus, Trash01 } from "@untitled-ui/icons-react";
+import { SortableArea } from "@/components/SortableArea";
+import { WorkspaceModelsDropdown } from "./workspace-models-dropdown";
+import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
+import { FormButtons } from "@/components/FormButtons";
+import { invalidateQueries } from "@/lib/react-query-utils";
+import { v1GetWorkspaceMuxesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { useQueryClient } from "@tanstack/react-query";
 
 function MissingProviderBanner() {
   return (
+    // TODO needs to update the related ui-kit component that diverges from the design
     <Alert
       variant="warning"
+      className="bg-brand-200 text-primary font-normal dark:bg-[#272472]"
       title="You must configure at least one provider before selecting your desired model."
     >
-      <LinkButton variant="secondary" className="mt-4" href="/providers">
-        Add Provider
+      <LinkButton
+        className="mt-4 text-white dark:bg-[#7D7DED]"
+        href="/providers"
+      >
+        Configure a provider
       </LinkButton>
     </Alert>
   )
+}
+
+type SortableItemProps = {
+  index: number;
+  rule: PreferredMuxRule;
+  models: V1ListAllModelsForAllProvidersResponse;
+  setRuleItem: (rule: PreferredMuxRule) => void;
+  removeRule: (index: number) => void;
+};
+
+function SortableItem({
+  rule,
+  index,
+  setRuleItem,
+  removeRule,
+  models,
+}: SortableItemProps) {
+  return (
+    <div className="flex items-center gap-2" key={rule.id}>
+      <div className="flex w-full justify-between">
+        <TextField
+          aria-labelledby="filter-by-label-id"
+          onFocus={(event) => event.preventDefault()}
+          value={rule?.matcher ?? ""}
+          name="matcher"
+          onChange={(matcher) => {
+            setRuleItem({ ...rule, matcher });
+          }}
+        >
+          <Input placeholder="eg file type, file name" />
+        </TextField>
+      </div>
+      <div className="flex w-3/5 gap-2">
+        <WorkspaceModelsDropdown
+          rule={rule}
+          models={models}
+          onChange={({ model, provider_id }) =>
+            setRuleItem({ ...rule, provider_id, model })
+          }
+        />
+        {index !== 0 && (
+          <Button
+            aria-label="remove mux rule"
+            isIcon
+            variant="tertiary"
+            onPress={() => removeRule(index)}
+          >
+            <Trash01 />
+          </Button>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function WorkspacePreferredModel({
@@ -42,30 +109,35 @@ export function WorkspacePreferredModel({
   workspaceName: string
   isArchived: boolean | undefined
 }) {
-  const queryClient = useQueryClient()
-  const { formState, isPending } = usePreferredModelWorkspace(workspaceName)
-  const { mutateAsync } = useMutationPreferredModelWorkspace()
-  const { data: providerModels = [] } = useQueryListAllModelsForAllProviders()
-  const isModelsEmpty = !isPending && providerModels.length === 0
+  const {
+    values: { rules },
+    setRules,
+    setRuleItem,
+    removeRule,
+    addRule,
+    isPending,
+  } = usePreferredModelWorkspace(workspaceName);
+  const { mutateAsync } = useMutationPreferredModelWorkspace();
+  const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
+  const isModelsEmpty = !isPending && providerModels.length === 0;
 
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
-    mutateAsync(
-      {
-        path: { workspace_name: workspaceName },
-        body: [
-          {
-            matcher: '',
-            matcher_type: MuxMatcherType.CATCH_ALL,
-            ...formState.values.preferredModel,
-          },
-        ],
-      },
-      {
-        onSuccess: () =>
-          invalidateQueries(queryClient, [v1GetWorkspaceMuxesQueryKey]),
-      }
-    )
+    event.preventDefault();
+    mutateAsync({
+      path: { workspace_name: workspaceName },
+      body: rules,
+    });
+  };
+
+  if (isModelsEmpty) {
+    return (
+      <Card className={twMerge(className, "shrink-0")}>
+        <CardBody className="flex flex-col gap-2">
+          <Text className="text-primary">Preferred Model</Text>
+          <MissingProviderBanner />
+        </CardBody>
+      </Card>
+    );
   }
 
   return (
@@ -86,47 +158,44 @@ export function WorkspacePreferredModel({
               </Link>
             </Text>
           </div>
-          {isModelsEmpty && <MissingProviderBanner />}
-          <div>
-            <div className="flex flex-col gap-2">
-              <Select
-                aria-labelledby="preferred-model-id"
-                name="model"
-                isRequired
-                isDisabled={isModelsEmpty}
-                className="w-full"
-                selectedKey={formState.values.preferredModel?.model}
-                placeholder="Select the model"
-                onSelectionChange={(model) => {
-                  const preferredModelProvider = providerModels.find(
-                    (item) => item.name === model
-                  )
-                  if (preferredModelProvider) {
-                    formState.updateFormValues({
-                      preferredModel: {
-                        model: preferredModelProvider.name,
-                        provider_id: preferredModelProvider.provider_id,
-                      },
-                    })
-                  }
-                }}
-                items={providerModels.map((model) => ({
-                  textValue: `${model.provider_name}/${model.name}`,
-                  id: model.name,
-                  provider: model.provider_id,
-                }))}
-              >
-                <SelectButton />
-              </Select>
+
+          <div className="flex flex-col gap-2 w-full">
+            <div className="flex gap-2">
+              <div className="w-12">&nbsp;</div>
+              <div className="w-full">
+                <Label id="filter-by-label-id">Filter by</Label>
+              </div>
+              <div className="w-3/5">
+                <Label id="preferred-model-id">Preferred Model</Label>
+              </div>
             </div>
+            <SortableArea items={rules} setItems={setRules}>
+              {(rule, index) => (
+                <SortableItem
+                  key={rule.id}
+                  index={index}
+                  rule={rule}
+                  setRuleItem={setRuleItem}
+                  removeRule={removeRule}
+                  models={providerModels}
+                />
+              )}
+            </SortableArea>
           </div>
         </CardBody>
-        <CardFooter className="justify-end">
-          <FormButtons
+        {/* <CardFooter className="justify-end"> */}
+        {/* <FormButtons
             isPending={isPending}
             formState={formState}
             canSubmit={!isArchived}
-          />
+          /> */}
+        <CardFooter className="justify-between">
+          <Button className="w-fit" variant="tertiary" onPress={addRule}>
+            <Plus /> Add Filter
+          </Button>
+          <Button isDisabled={isArchived || isModelsEmpty} type="submit">
+            Save
+          </Button>
         </CardFooter>
       </Card>
     </Form>
