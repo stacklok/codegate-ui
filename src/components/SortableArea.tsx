@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
-import { DotsGrid } from "@untitled-ui/icons-react";
+import { Drag } from "./icons";
 
 type Props<T> = {
   children: (item: T, index: number) => React.ReactNode;
@@ -38,9 +38,9 @@ function ItemWrapper({
     transition,
   };
   return (
-    <div style={style} className="flex items-center gap-2 w-full">
+    <div style={style} className="flex items-center w-full">
       <div ref={setNodeRef} {...attributes} {...listeners} className="size-8">
-        <DotsGrid className="size-6 h-full" />
+        <Drag />
       </div>
       <div className="grow">{children}</div>
     </div>
