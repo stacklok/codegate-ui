@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -16,6 +15,7 @@ import { FormEvent } from "react";
 import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
 import { Select, SelectButton } from "@stacklok/ui-kit";
 import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
+import { FormButtons } from "@/components/FormButtons";
 
 function MissingProviderBanner() {
   return (
@@ -39,11 +39,10 @@ export function WorkspacePreferredModel({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { preferredModel, setPreferredModel, isPending } =
-    usePreferredModelWorkspace(workspaceName);
+  const { formState, isPending } = usePreferredModelWorkspace(workspaceName);
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
-  const { model, provider_id } = preferredModel;
+  const { model, provider_id } = formState.values.preferredModel;
   const isModelsEmpty = !isPending && providerModels.length === 0;
 
   const handleSubmit = (event: FormEvent) => {
@@ -84,16 +83,18 @@ export function WorkspacePreferredModel({
                 isRequired
                 isDisabled={isModelsEmpty}
                 className="w-full"
-                selectedKey={preferredModel?.model}
+                selectedKey={formState.values.preferredModel?.model}
                 placeholder="Select the model"
                 onSelectionChange={(model) => {
                   const preferredModelProvider = providerModels.find(
                     (item) => item.name === model,
                   );
                   if (preferredModelProvider) {
-                    setPreferredModel({
-                      model: preferredModelProvider.name,
-                      provider_id: preferredModelProvider.provider_id,
+                    formState.updateFormValues({
+                      preferredModel: {
+                        model: preferredModelProvider.name,
+                        provider_id: preferredModelProvider.provider_id,
+                      },
                     });
                   }
                 }}
@@ -109,9 +110,11 @@ export function WorkspacePreferredModel({
           </div>
         </CardBody>
         <CardFooter className="justify-end">
-          <Button isDisabled={isArchived || isModelsEmpty} type="submit">
-            Save
-          </Button>
+          <FormButtons
+            isPending={isPending}
+            formState={formState}
+            canSubmit={!isArchived}
+          />
         </CardFooter>
       </Card>
     </Form>

@@ -123,7 +123,11 @@ function useCustomInstructionsValue({
   options: V1GetWorkspaceCustomInstructionsData;
   queryClient: QueryClient;
 }) {
-  const formState = useFormState({ prompt: initialValue });
+  const initialFormValues = useMemo(
+    () => ({ prompt: initialValue }),
+    [initialValue],
+  );
+  const formState = useFormState(initialFormValues);
   const { values, updateFormValues } = formState;
 
   // Subscribe to changes in the workspace system prompt value in the query cache
