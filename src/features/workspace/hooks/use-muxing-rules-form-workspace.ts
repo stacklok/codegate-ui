@@ -5,8 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 
 export type PreferredMuxRule = MuxRule & { id: string };
 
+type MuxingRulesFormState = {
+  rules: PreferredMuxRule[];
+};
+
 const DEFAULT_STATE: PreferredMuxRule = {
-  id: "",
+  id: uuidv4(),
   provider_id: "",
   model: "",
   matcher: "",
@@ -14,23 +18,28 @@ const DEFAULT_STATE: PreferredMuxRule = {
 };
 
 export const useMuxingRulesFormState = (initialValues: MuxRule[]) => {
-  const formState = useFormState<{
-    rules: PreferredMuxRule[];
-  }>({
+  const formState = useFormState<MuxingRulesFormState>({
     rules: [{ ...DEFAULT_STATE, id: uuidv4() }],
   });
   const { values, updateFormValues, setInitialValues } = formState;
 
   useEffect(() => {
-    if (initialValues.length === 0) return;
     setInitialValues({
-      rules: initialValues.map((item) => ({ ...item, id: uuidv4() })),
+      rules:
+        initialValues.length == 0
+          ? [DEFAULT_STATE]
+          : initialValues.map((item) => ({ ...item, id: uuidv4() })),
     });
   }, [initialValues, setInitialValues]);
 
   const addRule = useCallback(() => {
+    const newRules = [
+      ...values.rules.slice(0, values.rules.length - 1),
+      { ...DEFAULT_STATE, id: uuidv4() },
+      ...values.rules.slice(values.rules.length - 1),
+    ];
     updateFormValues({
-      rules: [...values.rules, { ...DEFAULT_STATE, id: uuidv4() }],
+      rules: newRules,
     });
   }, [updateFormValues, values.rules]);
 

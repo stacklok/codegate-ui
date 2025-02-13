@@ -6,13 +6,13 @@ import {
   Input,
   Label,
   TextField,
-} from '@stacklok/ui-kit'
-import { useMutationCreateWorkspace } from '../hooks/use-mutation-create-workspace'
-import { useNavigate } from 'react-router-dom'
-import { twMerge } from 'tailwind-merge'
-import { useFormState } from '@/hooks/useFormState'
-import { FormButtons } from '@/components/FormButtons'
-import { FormEvent } from 'react'
+} from "@stacklok/ui-kit";
+import { useMutationCreateWorkspace } from "../hooks/use-mutation-create-workspace";
+import { useNavigate } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
+import { useFormState } from "@/hooks/useFormState";
+import { FormButtons } from "@/components/FormButtons";
+import { FormEvent, useEffect } from "react";
 
 export function WorkspaceName({
   className,
@@ -28,10 +28,14 @@ export function WorkspaceName({
   const errorMsg = error?.detail ? `${error?.detail}` : ''
   const formState = useFormState({
     workspaceName,
-  })
-  const { values, updateFormValues } = formState
-  const isDefault = workspaceName === 'default'
-  const isUneditable = isArchived || isPending || isDefault
+  });
+  const { values, updateFormValues, setInitialValues } = formState;
+  const isDefault = workspaceName === "default";
+  const isUneditable = isArchived || isPending || isDefault;
+
+  useEffect(() => {
+    setInitialValues({ workspaceName });
+  }, [setInitialValues, workspaceName]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
