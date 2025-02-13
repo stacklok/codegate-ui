@@ -1,5 +1,5 @@
-import { Alert } from '@/api/generated'
-import { faker } from '@faker-js/faker'
+import { Alert, AlertSeverity } from "@/api/generated";
+import { faker } from "@faker-js/faker";
 
 const ALERT_SECRET_FIELDS = {
   trigger_string: 'foo',
@@ -24,7 +24,7 @@ const getBaseAlert = ({
   id: faker.string.uuid(),
   prompt_id: faker.string.uuid(),
   code_snippet: null,
-  trigger_category: 'critical',
+  trigger_category: AlertSeverity.CRITICAL,
   timestamp: timestamp,
 })
 
