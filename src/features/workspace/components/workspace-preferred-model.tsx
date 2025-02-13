@@ -16,7 +16,12 @@ import { twMerge } from "tailwind-merge";
 import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
 import { V1ListAllModelsForAllProvidersResponse } from "@/api/generated";
 import { FormEvent } from "react";
-import { Plus, Trash01 } from "@untitled-ui/icons-react";
+import {
+  LayersThree01,
+  LinkExternal01,
+  Plus,
+  Trash01,
+} from "@untitled-ui/icons-react";
 import { SortableArea } from "@/components/SortableArea";
 import { WorkspaceModelsDropdown } from "./workspace-models-dropdown";
 import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
@@ -155,12 +160,17 @@ export function WorkspacePreferredModel({
       <Card className={twMerge(className, 'shrink-0')}>
         <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">
-            <Text className="text-primary">Preferred Model</Text>
-            <Text className="mb-0 flex items-center gap-1 text-balance text-secondary">
-              Select the model you would like to use in this workspace. This
-              section applies only if you are using the{' '}
-              <Link variant="primary" href="/providers">
-                MUX endpoint.
+            <Text className="text-primary">Model Muxing</Text>
+            <Text className="flex items-center gap-1 text-secondary mb-0 text-balance">
+              Filters will be applied in order (top to bottom), empty filters
+              will apply to all.
+              <Link
+                variant="primary"
+                className="flex items-center gap-1 no-underline"
+                href="https://docs.codegate.ai/features/muxing"
+                target="_blank"
+              >
+                Learn more <LinkExternal01 className="size-4" />
               </Link>
             </Text>
           </div>
@@ -191,9 +201,15 @@ export function WorkspacePreferredModel({
           </div>
         </CardBody>
         <CardFooter className="justify-between">
-          <Button className="w-fit" variant="tertiary" onPress={addRule}>
-            <Plus /> Add Filter
-          </Button>
+          <div className="flex gap-2">
+            <Button className="w-fit" variant="tertiary" onPress={addRule}>
+              <Plus /> Add Filter
+            </Button>
+
+            <Button className="w-fit" variant="tertiary" onPress={addRule}>
+              <LayersThree01 /> Manage providers
+            </Button>
+          </div>
           <Button isDisabled={isArchived || isModelsEmpty} type="submit">
             Save
           </Button>
