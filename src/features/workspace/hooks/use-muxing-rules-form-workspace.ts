@@ -14,13 +14,14 @@ const DEFAULT_STATE: PreferredMuxRule = {
 };
 
 export const useMuxingRulesFormState = (initialValues: MuxRule[]) => {
-  const { values, updateFormValues } = useFormState<{
+  const formState = useFormState<{
     rules: PreferredMuxRule[];
   }>({
     rules: initialValues.map((item) => ({ ...item, id: uuidv4() })) ?? [
       { ...DEFAULT_STATE, id: uuidv4() },
     ],
   });
+  const { values, updateFormValues } = formState;
 
   useEffect(() => {
     updateFormValues({
@@ -59,5 +60,5 @@ export const useMuxingRulesFormState = (initialValues: MuxRule[]) => {
     [updateFormValues, values.rules],
   );
 
-  return { addRule, setRules, setRuleItem, removeRule, values };
+  return { addRule, setRules, setRuleItem, removeRule, values, formState };
 };

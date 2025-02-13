@@ -30,6 +30,7 @@ import {
   PreferredMuxRule,
   useMuxingRulesFormState,
 } from "../hooks/use-muxing-rules-form-workspace";
+import { FormButtons } from "@/components/FormButtons";
 
 function MissingProviderBanner() {
   return (
@@ -115,14 +116,11 @@ export function WorkspacePreferredModel({
 }) {
   const { data: muxingRules, isPending } =
     useQueryMuxingRulesWorkspace(workspaceName);
-
+  const { addRule, setRules, setRuleItem, removeRule, formState } =
+    useMuxingRulesFormState(muxingRules);
   const {
-    addRule,
-    setRules,
-    setRuleItem,
-    removeRule,
     values: { rules },
-  } = useMuxingRulesFormState(muxingRules);
+  } = formState;
 
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
@@ -202,7 +200,12 @@ export function WorkspacePreferredModel({
         </CardBody>
         <CardFooter className="justify-between">
           <div className="flex gap-2">
-            <Button className="w-fit" variant="tertiary" onPress={addRule}>
+            <Button
+              className="w-fit"
+              variant="tertiary"
+              onPress={addRule}
+              isDisabled={isArchived}
+            >
               <Plus /> Add Filter
             </Button>
 
@@ -210,9 +213,11 @@ export function WorkspacePreferredModel({
               <LayersThree01 /> Manage providers
             </Button>
           </div>
-          <Button isDisabled={isArchived || isModelsEmpty} type="submit">
-            Save
-          </Button>
+          <FormButtons
+            isPending={isPending}
+            formState={formState}
+            canSubmit={!isArchived}
+          />
         </CardFooter>
       </Card>
     </Form>
