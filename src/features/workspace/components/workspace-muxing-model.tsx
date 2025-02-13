@@ -14,7 +14,10 @@ import {
 } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
 import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
-import { V1ListAllModelsForAllProvidersResponse } from "@/api/generated";
+import {
+  MuxMatcherType,
+  V1ListAllModelsForAllProvidersResponse,
+} from "@/api/generated";
 import { FormEvent } from "react";
 import {
   LayersThree01,
@@ -138,7 +141,10 @@ export function WorkspaceMuxingModel({
         path: { workspace_name: workspaceName },
         body: rules.map(({ id, ...rest }) => {
           void id;
-          return { ...rest };
+
+          return rest.matcher
+            ? { ...rest, matcher_type: MuxMatcherType.FILENAME_MATCH }
+            : { ...rest };
         }),
       },
       {
