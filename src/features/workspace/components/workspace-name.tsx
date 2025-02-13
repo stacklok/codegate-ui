@@ -39,10 +39,13 @@ export function WorkspaceName({
     mutateAsync(
       { body: { name: workspaceName, rename_to: values.workspaceName } },
       {
-        onSuccess: () => navigate(`/workspace/${values.workspaceName}`),
-      }
-    )
-  }
+        onSuccess: () => {
+          formState.setInitialValues({ workspaceName: values.workspaceName });
+          navigate(`/workspace/${values.workspaceName}`);
+        },
+      },
+    );
+  };
 
   return (
     <Form

@@ -19,15 +19,14 @@ export const useMuxingRulesFormState = (initialValues: MuxRule[]) => {
   }>({
     rules: [{ ...DEFAULT_STATE, id: uuidv4() }],
   });
-  const { values, updateFormValues } = formState;
+  const { values, updateFormValues, setInitialValues } = formState;
 
   useEffect(() => {
     if (initialValues.length === 0) return;
-
-    updateFormValues({
+    setInitialValues({
       rules: initialValues.map((item) => ({ ...item, id: uuidv4() })),
     });
-  }, [initialValues, updateFormValues]);
+  }, [initialValues, setInitialValues]);
 
   const addRule = useCallback(() => {
     updateFormValues({
