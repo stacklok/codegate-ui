@@ -137,7 +137,7 @@ export function WorkspacePreferredModel({
       }),
     });
   };
-  console.log(rules);
+
   if (isModelsEmpty) {
     return (
       <Card className={twMerge(className, "shrink-0")}>
