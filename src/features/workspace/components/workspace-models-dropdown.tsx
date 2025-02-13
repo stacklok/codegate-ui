@@ -1,8 +1,8 @@
 import {
   ModelByProvider,
+  MuxRule,
   V1ListAllModelsForAllProvidersResponse,
 } from "@/api/generated";
-import { PreferredMuxRule } from "@/features/workspace/hooks/use-preferred-model-workspace";
 import {
   DialogTrigger,
   Button,
@@ -17,7 +17,7 @@ import { ChevronDown, SearchMd } from "@untitled-ui/icons-react";
 import { useState } from "react";
 
 type Props = {
-  rule: PreferredMuxRule;
+  rule: MuxRule & { id: string };
   models: V1ListAllModelsForAllProvidersResponse;
   onChange: ({
     model,

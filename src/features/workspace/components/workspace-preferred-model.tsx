@@ -16,18 +16,15 @@ import { twMerge } from "tailwind-merge";
 import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
 import { V1ListAllModelsForAllProvidersResponse } from "@/api/generated";
 import { FormEvent } from "react";
-import {
-  PreferredMuxRule,
-  usePreferredModelWorkspace,
-} from "../hooks/use-preferred-model-workspace";
 import { Plus, Trash01 } from "@untitled-ui/icons-react";
 import { SortableArea } from "@/components/SortableArea";
 import { WorkspaceModelsDropdown } from "./workspace-models-dropdown";
 import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
-import { FormButtons } from "@/components/FormButtons";
-import { invalidateQueries } from "@/lib/react-query-utils";
-import { v1GetWorkspaceMuxesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryMuxingRulesWorkspace } from "../hooks/use-query-muxing-rules-workspace";
+import {
+  PreferredMuxRule,
+  useMuxingRulesFormState,
+} from "../hooks/use-muxing-rules-form-workspace";
 
 function MissingProviderBanner() {
   return (
@@ -109,14 +106,17 @@ export function WorkspacePreferredModel({
   workspaceName: string
   isArchived: boolean | undefined
 }) {
+  const { data: muxingRules, isPending } =
+    useQueryMuxingRulesWorkspace(workspaceName);
+
   const {
-    values: { rules },
+    addRule,
     setRules,
     setRuleItem,
     removeRule,
-    addRule,
-    isPending,
-  } = usePreferredModelWorkspace(workspaceName);
+    values: { rules },
+  } = useMuxingRulesFormState(muxingRules);
+
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
   const isModelsEmpty = !isPending && providerModels.length === 0;
@@ -125,10 +125,13 @@ export function WorkspacePreferredModel({
     event.preventDefault();
     mutateAsync({
       path: { workspace_name: workspaceName },
-      body: rules,
+      body: rules.map(({ id, ...rest }) => {
+        void id;
+        return { ...rest };
+      }),
     });
   };
-
+  console.log(rules);
   if (isModelsEmpty) {
     return (
       <Card className={twMerge(className, "shrink-0")}>
@@ -183,12 +186,6 @@ export function WorkspacePreferredModel({
             </SortableArea>
           </div>
         </CardBody>
-        {/* <CardFooter className="justify-end"> */}
-        {/* <FormButtons
-            isPending={isPending}
-            formState={formState}
-            canSubmit={!isArchived}
-          /> */}
         <CardFooter className="justify-between">
           <Button className="w-fit" variant="tertiary" onPress={addRule}>
             <Plus /> Add Filter

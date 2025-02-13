@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { WorkspacePreferredModel } from '../workspace-preferred-model'
 import userEvent from '@testing-library/user-event'
 
-test('render model overrides', async () => {
+test('renders muxing model', async () => {
   render(
     <WorkspacePreferredModel
       isArchived={false}
@@ -25,7 +25,7 @@ test('render model overrides', async () => {
   })
 })
 
-test('submit preferred model', async () => {
+test('submit muxing model', async () => {
   render(
     <WorkspacePreferredModel
       isArchived={false}
