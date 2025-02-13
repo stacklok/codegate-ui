@@ -48,6 +48,7 @@ type SortableItemProps = {
   index: number;
   rule: PreferredMuxRule;
   models: V1ListAllModelsForAllProvidersResponse;
+  showRemoveButton: boolean;
   setRuleItem: (rule: PreferredMuxRule) => void;
   removeRule: (index: number) => void;
 };
@@ -58,6 +59,7 @@ function SortableItem({
   setRuleItem,
   removeRule,
   models,
+  showRemoveButton,
 }: SortableItemProps) {
   return (
     <div className="flex items-center gap-2" key={rule.id}>
@@ -82,7 +84,7 @@ function SortableItem({
             setRuleItem({ ...rule, provider_id, model })
           }
         />
-        {index !== 0 && (
+        {showRemoveButton && (
           <Button
             aria-label="remove mux rule"
             isIcon
@@ -120,6 +122,7 @@ export function WorkspacePreferredModel({
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
   const isModelsEmpty = !isPending && providerModels.length === 0;
+  const showRemoveButton = rules.length > 1;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -181,6 +184,7 @@ export function WorkspacePreferredModel({
                   setRuleItem={setRuleItem}
                   removeRule={removeRule}
                   models={providerModels}
+                  showRemoveButton={showRemoveButton}
                 />
               )}
             </SortableArea>
