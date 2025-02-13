@@ -106,55 +106,47 @@ export function WorkspaceModelsDropdown({
         </Button>
 
         <Popover className="w-[32rem] p-3" placement="top end">
-          <div>
-            <div>
-              <SearchField
-                onChange={setSearchItem}
-                autoFocus
-                aria-label="search"
-              >
-                <Input icon={<SearchMd />} />
-              </SearchField>
-            </div>
+          <SearchField onChange={setSearchItem} autoFocus aria-label="search">
+            <Input icon={<SearchMd />} />
+          </SearchField>
 
-            <ListBox
-              aria-label="models"
-              items={filterModels({ searchItem, groupedModels })}
-              selectionMode="single"
-              selectionBehavior="replace"
-              selectedKeys={rule.model ? [rule.model] : []}
-              onSelectionChange={(v) => {
-                if (v === "all") {
-                  return;
-                }
-                const selectedValue = v.values().next().value;
-                const providerId = models.find(
-                  (item) => item.name === selectedValue,
-                )?.provider_id;
-                if (typeof selectedValue === "string" && providerId) {
-                  onChange({
-                    model: selectedValue,
-                    provider_id: providerId,
-                  });
+          <ListBox
+            aria-label="models"
+            items={filterModels({ searchItem, groupedModels })}
+            selectionMode="single"
+            selectionBehavior="replace"
+            selectedKeys={rule.model ? [rule.model] : []}
+            onSelectionChange={(v) => {
+              if (v === "all") {
+                return;
+              }
+              const selectedValue = v.values().next().value;
+              const providerId = models.find(
+                (item) => item.name === selectedValue,
+              )?.provider_id;
+              if (typeof selectedValue === "string" && providerId) {
+                onChange({
+                  model: selectedValue,
+                  provider_id: providerId,
+                });
 
-                  setIsOpen(false);
-                }
-              }}
-              className="-mx-1 my-2 max-h-80 overflow-auto"
-              renderEmptyState={() => (
-                <p className="text-center">No models found</p>
-              )}
-            >
-              {({ items, id, textValue }) => (
-                <OptionRenderer
-                  items={items}
-                  id={id}
-                  textValue={textValue}
-                  type="listbox"
-                />
-              )}
-            </ListBox>
-          </div>
+                setIsOpen(false);
+              }
+            }}
+            className="-mx-1 mt-2 max-h-72 overflow-auto"
+            renderEmptyState={() => (
+              <p className="text-center">No models found</p>
+            )}
+          >
+            {({ items, id, textValue }) => (
+              <OptionRenderer
+                items={items}
+                id={id}
+                textValue={textValue}
+                type="listbox"
+              />
+            )}
+          </ListBox>
         </Popover>
       </DialogTrigger>
     </div>
