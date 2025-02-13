@@ -334,6 +334,7 @@ export function WorkspaceCustomInstructions({
               <Editor
                 options={{
                   minimap: { enabled: false },
+                  wordWrap: "on",
                   readOnly: isArchived,
                 }}
                 value={values.prompt}
