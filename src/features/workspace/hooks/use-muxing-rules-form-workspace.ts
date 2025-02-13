@@ -17,13 +17,13 @@ export const useMuxingRulesFormState = (initialValues: MuxRule[]) => {
   const formState = useFormState<{
     rules: PreferredMuxRule[];
   }>({
-    rules: initialValues.map((item) => ({ ...item, id: uuidv4() })) ?? [
-      { ...DEFAULT_STATE, id: uuidv4() },
-    ],
+    rules: [{ ...DEFAULT_STATE, id: uuidv4() }],
   });
   const { values, updateFormValues } = formState;
 
   useEffect(() => {
+    if (initialValues.length === 0) return;
+
     updateFormValues({
       rules: initialValues.map((item) => ({ ...item, id: uuidv4() })),
     });

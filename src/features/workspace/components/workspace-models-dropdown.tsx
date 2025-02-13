@@ -18,6 +18,7 @@ import { useState } from "react";
 
 type Props = {
   rule: MuxRule & { id: string };
+  isArchived: boolean;
   models: V1ListAllModelsForAllProvidersResponse;
   onChange: ({
     model,
@@ -80,6 +81,7 @@ function filterModels({
 
 export function WorkspaceModelsDropdown({
   rule,
+  isArchived,
   models = [],
   onChange,
 }: Props) {
@@ -99,10 +101,12 @@ export function WorkspaceModelsDropdown({
       <DialogTrigger isOpen={isOpen} onOpenChange={(test) => setIsOpen(test)}>
         <Button
           variant="secondary"
+          isDisabled={isArchived}
+          data-testid="workspace-models-dropdown"
           className="flex justify-between cursor-pointer bg-gray-25 border-gray-400 shadow-none font-normal w-full"
         >
-          {currentModel}
-          <ChevronDown />
+          <span>{currentModel || "Select a model"}</span>
+          <ChevronDown className="shrink-0" />
         </Button>
 
         <Popover className="w-[32rem] p-3" placement="top end">

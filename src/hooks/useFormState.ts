@@ -23,15 +23,12 @@ export function useFormState<Values extends Record<string, unknown>>(
   // this could be replaced with some form library later
   const [values, setValues] = useState<Values>(memoizedInitialValues);
 
-  const updateFormValues = useCallback(
-    (newState: Partial<Values>) => {
-      setValues((prevState: Values) => ({
-        ...prevState,
-        ...newState,
-      }));
-    },
-    [setValues],
-  );
+  const updateFormValues = useCallback((newState: Partial<Values>) => {
+    setValues((prevState: Values) => {
+      if (isEqual(newState, prevState)) return prevState;
+      return { ...prevState, ...newState };
+    });
+  }, []);
 
   const resetForm = useCallback(() => {
     setValues(memoizedInitialValues);

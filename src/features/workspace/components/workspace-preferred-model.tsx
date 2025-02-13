@@ -54,6 +54,7 @@ type SortableItemProps = {
   index: number;
   rule: PreferredMuxRule;
   models: V1ListAllModelsForAllProvidersResponse;
+  isArchived: boolean;
   showRemoveButton: boolean;
   setRuleItem: (rule: PreferredMuxRule) => void;
   removeRule: (index: number) => void;
@@ -66,6 +67,7 @@ function SortableItem({
   removeRule,
   models,
   showRemoveButton,
+  isArchived,
 }: SortableItemProps) {
   return (
     <div className="flex items-center gap-2" key={rule.id}>
@@ -74,6 +76,7 @@ function SortableItem({
           aria-labelledby="filter-by-label-id"
           onFocus={(event) => event.preventDefault()}
           value={rule?.matcher ?? ""}
+          isDisabled={isArchived}
           name="matcher"
           onChange={(matcher) => {
             setRuleItem({ ...rule, matcher });
@@ -85,6 +88,7 @@ function SortableItem({
       <div className="flex w-3/5 gap-2">
         <WorkspaceModelsDropdown
           rule={rule}
+          isArchived={isArchived}
           models={models}
           onChange={({ model, provider_id }) =>
             setRuleItem({ ...rule, provider_id, model })
@@ -142,7 +146,7 @@ export function WorkspacePreferredModel({
     return (
       <Card className={twMerge(className, "shrink-0")}>
         <CardBody className="flex flex-col gap-2">
-          <Text className="text-primary">Preferred Model</Text>
+          <Text className="text-primary">Model Muxing</Text>
           <MissingProviderBanner />
         </CardBody>
       </Card>
@@ -193,6 +197,7 @@ export function WorkspacePreferredModel({
                   removeRule={removeRule}
                   models={providerModels}
                   showRemoveButton={showRemoveButton}
+                  isArchived={isArchived}
                 />
               )}
             </SortableArea>
