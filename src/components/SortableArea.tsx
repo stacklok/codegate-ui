@@ -43,7 +43,9 @@ function ItemWrapper({
 
   return (
     <div style={style} className="flex items-center w-full">
-      {!disabledDrag && (
+      {disabledDrag ? (
+        <div className="size-8" />
+      ) : (
         <div ref={setNodeRef} {...attributes} {...listeners} className="size-8">
           <Drag />
         </div>
