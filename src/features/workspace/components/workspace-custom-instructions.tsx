@@ -215,7 +215,7 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
                 <div className="flex gap-4 justify-between p-2">
                   <div className="h-full items-center">
                     <div className="flex h-full items-center max-w-52 text-clip">
-                      {item.contributors.map((contributor) => (
+                      {item.commiters.map((contributor) => (
                         <Link
                           className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
                           target="_blank"
