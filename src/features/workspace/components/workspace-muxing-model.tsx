@@ -11,6 +11,9 @@ import {
   LinkButton,
   Text,
   TextField,
+  Tooltip,
+  TooltipInfoButton,
+  TooltipTrigger,
 } from "@stacklok/ui-kit";
 import { twMerge } from "tailwind-merge";
 import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
@@ -59,6 +62,7 @@ type SortableItemProps = {
   models: V1ListAllModelsForAllProvidersResponse;
   isArchived: boolean;
   showRemoveButton: boolean;
+  isDefaultRule: boolean;
   setRuleItem: (rule: PreferredMuxRule) => void;
   removeRule: (index: number) => void;
 };
@@ -71,7 +75,9 @@ function SortableItem({
   models,
   showRemoveButton,
   isArchived,
+  isDefaultRule,
 }: SortableItemProps) {
+  const placeholder = isDefaultRule ? "Catch All" : "eg file type, file name";
   return (
     <div className="flex items-center gap-2" key={rule.id}>
       <div className="flex w-full justify-between">
@@ -79,13 +85,13 @@ function SortableItem({
           aria-labelledby="filter-by-label-id"
           onFocus={(event) => event.preventDefault()}
           value={rule?.matcher ?? ""}
-          isDisabled={isArchived}
+          isDisabled={isArchived || isDefaultRule}
           name="matcher"
           onChange={(matcher) => {
             setRuleItem({ ...rule, matcher });
           }}
         >
-          <Input placeholder="eg file type, file name" />
+          <Input placeholder={placeholder} />
         </TextField>
       </div>
       <div className="flex w-3/5 gap-2">
@@ -97,7 +103,7 @@ function SortableItem({
             setRuleItem({ ...rule, provider_id, model })
           }
         />
-        {showRemoveButton && (
+        {showRemoveButton && !isDefaultRule && (
           <Button
             aria-label="remove mux rule"
             isIcon
@@ -177,8 +183,8 @@ export function WorkspaceMuxingModel({
           <div className="flex flex-col justify-start">
             <Text className="text-primary">Model Muxing</Text>
             <Text className="flex items-center gap-1 text-secondary mb-0 text-balance">
-              Filters will be applied in order (top to bottom), empty filters
-              will apply to all.
+              Select the model you would like to use in this workspace. This
+              section applies only if you are using the MUX endpoint.
               <Link
                 variant="primary"
                 className="flex items-center gap-1 no-underline"
@@ -194,25 +200,43 @@ export function WorkspaceMuxingModel({
             <div className="flex gap-2">
               <div className="w-12">&nbsp;</div>
               <div className="w-full">
-                <Label id="filter-by-label-id">Filter by</Label>
+                <Label id="filter-by-label-id" className="flex items-center">
+                  Filter by
+                  <TooltipTrigger delay={0}>
+                    <TooltipInfoButton aria-label="Filter by description" />
+                    <Tooltip>
+                      Filters are applied in top-down order. The first rule that
+                      matches each prompt determines the chosen model. An empty
+                      filter applies to all prompts.
+                    </Tooltip>
+                  </TooltipTrigger>
+                </Label>
               </div>
               <div className="w-3/5">
                 <Label id="preferred-model-id">Preferred Model</Label>
               </div>
             </div>
-            <SortableArea items={rules} setItems={setRules}>
-              {(rule, index) => (
-                <SortableItem
-                  key={rule.id}
-                  index={index}
-                  rule={rule}
-                  setRuleItem={setRuleItem}
-                  removeRule={removeRule}
-                  models={providerModels}
-                  showRemoveButton={showRemoveButton}
-                  isArchived={!!isArchived}
-                />
-              )}
+            <SortableArea
+              items={rules}
+              setItems={setRules}
+              disableDragByIndex={rules.length - 1}
+            >
+              {(rule, index) => {
+                const isDefaultRule = rules.length - 1 === index;
+                return (
+                  <SortableItem
+                    key={rule.id}
+                    index={index}
+                    rule={rule}
+                    setRuleItem={setRuleItem}
+                    removeRule={removeRule}
+                    models={providerModels}
+                    showRemoveButton={showRemoveButton}
+                    isArchived={!!isArchived}
+                    isDefaultRule={isDefaultRule}
+                  />
+                );
+              }}
             </SortableArea>
           </div>
         </CardBody>
