@@ -32,8 +32,8 @@ export function Header() {
       </div>
       <div className="flex items-center gap-1 mr-2">
         <HeaderStatusMenu />
-        <DropdownMenu title="Help" items={HELP_MENU_ITEMS} />
         <DropdownMenu title="Settings" items={SETTINGS_MENU_ITEMS} />
+        <DropdownMenu title="Help" items={HELP_MENU_ITEMS} />
 
         <ButtonDarkMode />
       </div>
