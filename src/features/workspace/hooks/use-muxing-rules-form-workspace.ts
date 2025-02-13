@@ -1,6 +1,7 @@
 import { MuxMatcherType, MuxRule } from "@/api/generated";
 import { useFormState } from "@/hooks/useFormState";
-import { useCallback, useEffect } from "react";
+import { isEqual } from "lodash";
+import { useCallback, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export type PreferredMuxRule = MuxRule & { id: string };
@@ -22,14 +23,18 @@ export const useMuxingRulesFormState = (initialValues: MuxRule[]) => {
     rules: [{ ...DEFAULT_STATE, id: uuidv4() }],
   });
   const { values, updateFormValues, setInitialValues } = formState;
+  const lastValuesRef = useRef(values.rules);
 
   useEffect(() => {
-    setInitialValues({
-      rules:
-        initialValues.length == 0
-          ? [DEFAULT_STATE]
-          : initialValues.map((item) => ({ ...item, id: uuidv4() })),
-    });
+    const newValues =
+      initialValues.length === 0
+        ? [DEFAULT_STATE]
+        : initialValues.map((item) => ({ ...item, id: uuidv4() }));
+
+    if (!isEqual(lastValuesRef.current, newValues)) {
+      lastValuesRef.current = newValues;
+      setInitialValues({ rules: newValues });
+    }
   }, [initialValues, setInitialValues]);
 
   const addRule = useCallback(() => {

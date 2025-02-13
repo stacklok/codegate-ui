@@ -10,7 +10,7 @@ test('renders muxing model', async () => {
   expect(screen.getByText(/model muxing/i)).toBeVisible();
   expect(
     screen.getByText(
-      /filters will be applied in order \(top to bottom\), empty filters will apply to all\./i,
+      /select the model you would like to use in this workspace. This section applies only if you are using the MUX endpoint./i,
     ),
   ).toBeVisible();
   expect(
