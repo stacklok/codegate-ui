@@ -1,14 +1,11 @@
-import { render } from '@/lib/test-utils'
-import { screen, waitFor } from '@testing-library/react'
-import { WorkspacePreferredModel } from '../workspace-preferred-model'
-import userEvent from '@testing-library/user-event'
+import { render } from "@/lib/test-utils";
+import { screen, waitFor } from "@testing-library/react";
+import { WorkspaceMuxingModel } from "../workspace-muxing-model";
+import userEvent from "@testing-library/user-event";
 
 test('renders muxing model', async () => {
   render(
-    <WorkspacePreferredModel
-      isArchived={false}
-      workspaceName="fake-workspace"
-    />,
+    <WorkspaceMuxingModel isArchived={false} workspaceName="fake-workspace" />,
   );
   expect(screen.getByText(/model muxing/i)).toBeVisible();
   expect(
@@ -37,19 +34,14 @@ test('renders muxing model', async () => {
   );
 
   expect(screen.getByRole("button", { name: /add filter/i })).toBeVisible();
-  expect(
-    screen.getByRole("button", { name: /manage providers/i }),
-  ).toBeVisible();
+  expect(screen.getByRole("link", { name: /manage providers/i })).toBeVisible();
   expect(screen.getByRole("button", { name: /revert changes/i })).toBeVisible();
   expect(screen.getByRole("button", { name: /save/i })).toBeVisible();
 });
 
 test("disabled muxing fields and buttons for archived workspace", async () => {
   render(
-    <WorkspacePreferredModel
-      isArchived={true}
-      workspaceName="fake-workspace"
-    />,
+    <WorkspaceMuxingModel isArchived={true} workspaceName="fake-workspace" />,
   );
 
   expect(await screen.findByRole("button", { name: /save/i })).toBeDisabled();
@@ -61,11 +53,8 @@ test("disabled muxing fields and buttons for archived workspace", async () => {
 
 test("submit additional model overrides", async () => {
   render(
-    <WorkspacePreferredModel
-      isArchived={false}
-      workspaceName="fake-workspace"
-    />
-  )
+    <WorkspaceMuxingModel isArchived={false} workspaceName="fake-workspace" />,
+  );
 
   expect(screen.getAllByRole("textbox", { name: /filter by/i }).length).toEqual(
     1,
