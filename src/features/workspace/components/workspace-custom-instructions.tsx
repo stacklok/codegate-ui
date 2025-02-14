@@ -125,10 +125,10 @@ function useCustomInstructionsValue({
 }) {
   const initialFormValues = useMemo(
     () => ({ prompt: initialValue }),
-    [initialValue]
-  )
-  const formState = useFormState(initialFormValues)
-  const { values, updateFormValues } = formState
+    [initialValue],
+  );
+  const formState = useFormState(initialFormValues);
+  const { values, setInitialValues } = formState;
 
   // Subscribe to changes in the workspace system prompt value in the query cache
   useEffect(() => {
@@ -145,14 +145,14 @@ function useCustomInstructionsValue({
         const prompt: string | null = getCustomInstructionsFromEvent(event)
         if (prompt === values.prompt || prompt === null) return
 
-        updateFormValues({ prompt })
+        setInitialValues({ prompt });
       }
     })
 
     return () => {
-      return unsubscribe()
-    }
-  }, [options, queryClient, updateFormValues, values.prompt])
+      return unsubscribe();
+    };
+  }, [options, queryClient, setInitialValues, values.prompt]);
 
   return { ...formState }
 }
@@ -309,15 +309,17 @@ export function WorkspaceCustomInstructions({
       mutateAsync(
         { ...options, body: { prompt: value } },
         {
-          onSuccess: () =>
+          onSuccess: () => {
+            formState.setInitialValues({ prompt: values.prompt });
             invalidateQueries(queryClient, [
               v1GetWorkspaceCustomInstructionsQueryKey,
-            ]),
-        }
-      )
+            ]);
+          },
+        },
+      );
     },
-    [mutateAsync, options, queryClient]
-  )
+    [formState, mutateAsync, options, queryClient, values.prompt],
+  );
 
   return (
     <Form

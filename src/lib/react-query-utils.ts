@@ -72,3 +72,25 @@ export function getQueryCacheConfig(
       return lifetime satisfies never
   }
 }
+
+export function removeQueriesByIds({
+  queryClient,
+  queryKeyFns,
+}: {
+  queryClient: QueryClient;
+  queryKeyFns: QueryKeyFn[];
+}) {
+  const allQueries = queryClient.getQueriesData({});
+
+  const queriesToRemove = allQueries.filter(([key]) =>
+    key.some((item) =>
+      queryKeyFns.some(
+        (fn) => getQueryKeyFnId(fn) === (item as { _id: string })._id,
+      ),
+    ),
+  );
+
+  return queriesToRemove.forEach(([queryKey]) =>
+    queryClient.removeQueries({ queryKey }),
+  );
+}

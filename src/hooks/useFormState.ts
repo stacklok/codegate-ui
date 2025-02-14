@@ -1,57 +1,46 @@
-import { isEqual } from 'lodash'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { isEqual } from "lodash";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 export type FormState<T> = {
-  values: T
-  updateFormValues: (newState: Partial<T>) => void
-  resetForm: () => void
-  isDirty: boolean
-}
-
-function useDeepMemo<T>(value: T): T {
-  const ref = useRef<T>(value)
-  if (!isEqual(ref.current, value)) {
-    ref.current = value
-  }
-  return ref.current
-}
+  values: T;
+  updateFormValues: (newState: Partial<T>) => void;
+  setInitialValues: (newState: T) => void;
+  resetForm: () => void;
+  isDirty: boolean;
+};
 
 export function useFormState<Values extends Record<string, unknown>>(
   initialValues: Values
 ): FormState<Values> {
-  const memoizedInitialValues = useDeepMemo(initialValues)
-
+  const memoizedInitialValues = useRef(initialValues);
   // this could be replaced with some form library later
-  const [values, setValues] = useState<Values>(memoizedInitialValues)
-  const [originalValues, setOriginalValues] = useState<Values>(values)
+  const [values, setValues] = useState<Values>(memoizedInitialValues.current);
 
-  useEffect(() => {
-    // this logic supports the use case when the initialValues change
-    // due to an async request for instance
-    setOriginalValues(memoizedInitialValues)
-    setValues(memoizedInitialValues)
-  }, [memoizedInitialValues])
+  const setInitialValues = useCallback((newInitialValues: Values) => {
+    memoizedInitialValues.current = newInitialValues;
+    setValues(newInitialValues);
+  }, []);
 
   const updateFormValues = useCallback((newState: Partial<Values>) => {
-    setValues((prevState: Values) => ({
-      ...prevState,
-      ...newState,
-    }))
-  }, [])
+    setValues((prevState: Values) => {
+      if (isEqual(newState, prevState)) return prevState;
+      return { ...prevState, ...newState };
+    });
+  }, []);
 
   const resetForm = useCallback(() => {
-    setValues(originalValues)
-  }, [originalValues])
+    setValues(memoizedInitialValues.current);
+  }, [memoizedInitialValues]);
 
   const isDirty = useMemo(
-    () => !isEqual(values, originalValues),
-    [values, originalValues]
-  )
+    () => !isEqual(values, memoizedInitialValues.current),
+    [values, memoizedInitialValues],
+  );
 
   const formState = useMemo(
-    () => ({ values, updateFormValues, resetForm, isDirty }),
-    [values, updateFormValues, resetForm, isDirty]
-  )
+    () => ({ values, updateFormValues, resetForm, isDirty, setInitialValues }),
+    [values, updateFormValues, resetForm, isDirty, setInitialValues],
+  );
 
   return formState
 }

@@ -105,20 +105,8 @@ export const handlers = [
     mswEndpoint('/api/v1/workspaces/:workspace_name/custom-instructions'),
     () => new HttpResponse(null, { status: 204 })
   ),
-  http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/muxes'), () =>
-    HttpResponse.json([
-      {
-        provider_id: 'openai',
-        model: 'gpt-3.5-turbo',
-        matcher_type: 'file_regex',
-        matcher: '.*\\.txt',
-      },
-      {
-        provider_id: 'anthropic',
-        model: 'davinci',
-        matcher_type: 'catch_all',
-      },
-    ])
+  http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/muxes"), () =>
+    HttpResponse.json([]),
   ),
   http.put(
     mswEndpoint('/api/v1/workspaces/:workspace_name/muxes'),

@@ -17,8 +17,6 @@ interface Props {
 export function ProviderForm({ provider, setProvider }: Props) {
   const providerAuthType =
     provider.auth_type || getProviderAuthByType(provider.provider_type)
-  const providerEndpoint =
-    provider.endpoint || getProviderEndpointByAuthType(provider.provider_type)
 
   const handleProviderType = (provider: AddProviderEndpointRequest) => {
     setProvider({
@@ -87,7 +85,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
           onChange={(endpoint) => setProvider({ ...provider, endpoint })}
         >
           <Label>Endpoint</Label>
-          <Input placeholder="Provider endpoint" value={providerEndpoint} />
+          <Input placeholder="Provider endpoint" value={provider.endpoint} />
         </TextField>
       </div>
       <div className="py-3">

@@ -35,11 +35,11 @@ export type Alert = {
     | {
         [key: string]: unknown
       }
-    | null
-  trigger_type: string
-  trigger_category: string | null
-  timestamp: string
-}
+    | null;
+  trigger_type: string;
+  trigger_category: AlertSeverity;
+  timestamp: string;
+};
 
 /**
  * Represents an alert with it's respective conversation.
@@ -57,6 +57,11 @@ export type AlertConversation = {
   trigger_type: string
   trigger_category: string | null
   timestamp: string
+}
+
+export enum AlertSeverity {
+  INFO = "info",
+  CRITICAL = "critical",
 }
 
 /**
@@ -140,7 +145,9 @@ export type ModelByProvider = {
  * Represents the different types of matchers we support.
  */
 export enum MuxMatcherType {
-  CATCH_ALL = 'catch_all',
+  CATCH_ALL = "catch_all",
+  FILENAME_MATCH = "filename_match",
+  REQUEST_TYPE_MATCH = "request_type_match",
 }
 
 /**
