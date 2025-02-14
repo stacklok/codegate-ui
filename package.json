@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "generate-client": "npm run fetch-openapi-schema && npm run openapi-ts",
     "fetch-openapi-schema": "curl https://raw.githubusercontent.com/stacklok/codegate/refs/heads/main/api/openapi.json > src/api/openapi.json",
+    "fetch-prompt-presets": "curl https://raw.githubusercontent.com/stacklok/prompt-library/refs/heads/main/rules.json> ./src/features/workspace/constants/built-in-system-prompts.json",
     "openapi-ts": "openapi-ts",
     "knip": "knip",
     "lint": "eslint .",

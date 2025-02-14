@@ -264,7 +264,7 @@ function StatusPopover({
   data: ReturnType<typeof useQueriesCodegateStatus>['data']
 }) {
   return (
-    <Popover className="px-3 py-2 min-w-64" placement="bottom end">
+    <Popover className="min-w-64 px-3 py-2" placement="bottom end">
       <Dialog aria-label="CodeGate Status" style={{ outline: 0 }}>
         <Row
           title="CodeGate server"
