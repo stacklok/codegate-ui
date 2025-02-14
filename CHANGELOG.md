@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/stacklok/codegate-ui/compare/v0.15.0...v0.15.1) (2025-02-14)
+
+
+### Bug Fixes
+
+* cert instructions ([#317](https://github.com/stacklok/codegate-ui/issues/317)) ([2eb9579](https://github.com/stacklok/codegate-ui/commit/2eb95794f63988fa7f7f29daf2e0c41a9cd9c356))
+
 ## [0.15.0](https://github.com/stacklok/codegate-ui/compare/v0.14.1...v0.15.0) (2025-02-14)
 
 
