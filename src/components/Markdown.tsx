@@ -128,7 +128,7 @@ const markdownStyles = tv({
     'prose-h4:mb-2 prose-h4:text-lg prose-h4:font-semibold',
     'prose-h5:mb-2 prose-h5:text-lg prose-h5:font-semibold',
     'prose-h6:mb-2 prose-h6:text-lg prose-h6:font-semibold',
-    'prose-p:text-base',
+    'prose-sm',
     'prose max-w-none prose-p:leading-relaxed',
     '[--tw-prose-pre-code:theme(textColor.secondary)]',
     '[--tw-prose-pre-bg:theme(colors.gray.200)]',
