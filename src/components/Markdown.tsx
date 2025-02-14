@@ -122,13 +122,13 @@ function Code({
 const markdownStyles = tv({
   base: [
     'prose',
+    'prose-sm prose-code:text-sm',
     'prose-h1:mb-2 prose-h1:text-lg prose-h1:font-semibold',
     'prose-h2:mb-2 prose-h2:text-lg prose-h2:font-semibold',
     'prose-h3:mb-2 prose-h3:text-lg prose-h3:font-semibold',
     'prose-h4:mb-2 prose-h4:text-lg prose-h4:font-semibold',
     'prose-h5:mb-2 prose-h5:text-lg prose-h5:font-semibold',
     'prose-h6:mb-2 prose-h6:text-lg prose-h6:font-semibold',
-    'prose-sm',
     'prose max-w-none prose-p:leading-relaxed',
     '[--tw-prose-pre-code:theme(textColor.secondary)]',
     '[--tw-prose-pre-bg:theme(colors.gray.200)]',
