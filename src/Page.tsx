@@ -8,6 +8,9 @@ import { RouteDashboard } from "./routes/route-dashboard";
 import { RouteCertificateSecurity } from "./routes/route-certificate-security";
 import { RouteWorkspaceCreation } from "./routes/route-workspace-creation";
 import { RouteNotFound } from "./routes/route-not-found";
+import { RouteProvider } from "./routes/route-providers";
+import { RouteProviderCreate } from "./routes/route-provider-create";
+import { RouteProviderUpdate } from "./routes/route-provider-update";
 
 export default function Page() {
   return (
@@ -22,6 +25,15 @@ export default function Page() {
         path="/certificates/security"
         element={<RouteCertificateSecurity />}
       />
+
+      <Route path="providers">
+        <Route index element={<RouteProvider />} />
+        <Route element={<RouteProvider />}>
+          <Route path=":id" element={<RouteProviderUpdate />} />
+          <Route path="new" element={<RouteProviderCreate />} />
+        </Route>
+      </Route>
+
       <Route path="*" element={<RouteNotFound />} />
     </Routes>
   );

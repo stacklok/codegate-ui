@@ -2,7 +2,7 @@ name: Security Checks
 on:
   workflow_call:
 permissions:
-  contents: read    
+  contents: read
 jobs:
   trivy:
     name: Trivy
@@ -14,12 +14,12 @@ jobs:
       - name: Scan repo
         uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # 0.29.0
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          scanners: 'vuln,secret,config'
-          exit-code: '1'
-          ignore-unfixed: 'true'
-          severity: 'MEDIUM,HIGH,CRITICAL'
+          scan-type: "fs"
+          scan-ref: "."
+          scanners: "vuln,secret,config"
+          exit-code: "1"
+          ignore-unfixed: "true"
+          severity: "MEDIUM,HIGH,CRITICAL"
 
   npm-audit:
     name: NPM Audit
@@ -29,9 +29,9 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v2
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v2
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Run npm audit
         run: npm audit --omit=dev --audit-level=moderate

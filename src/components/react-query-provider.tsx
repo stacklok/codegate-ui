@@ -1,5 +1,6 @@
 import { V1ListActiveWorkspacesResponse } from "@/api/generated";
 import { v1ListActiveWorkspacesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { getQueryCacheConfig } from "@/lib/react-query-utils";
 import {
   QueryCacheNotifyEvent,
   QueryClient,
@@ -36,7 +37,19 @@ export function QueryClientProvider({ children }: { children: ReactNode }) {
     null,
   );
 
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            ...getQueryCacheConfig("no-cache"),
+            refetchOnMount: false, // additional instances of a query shouldn't trigger background refetch
+            refetchOnReconnect: true,
+            refetchOnWindowFocus: true,
+          },
+        },
+      }),
+  );
 
   useEffect(() => {
     const queryCache = queryClient.getQueryCache();
@@ -55,6 +68,7 @@ export function QueryClientProvider({ children }: { children: ReactNode }) {
 
         setActiveWorkspaceName(newWorkspaceName);
 
+        // eslint-disable-next-line no-restricted-syntax
         void queryClient.invalidateQueries({
           refetchType: "all",
           // Avoid a continuous loop

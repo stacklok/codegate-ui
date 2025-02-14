@@ -7,7 +7,7 @@ type FormatCurrencyOptions = {
   to_minor?: boolean;
 };
 
-export const getCurrencyFormatOptions = (currency: Currency) => {
+const getCurrencyFormatOptions = (currency: Currency) => {
   return new Intl.NumberFormat(undefined, {
     currency: currency,
     currencyDisplay: "code",
@@ -69,11 +69,4 @@ export function convertCurrencyFromMinor(
   currency: Currency,
 ): number {
   return amount / 10 ** getDigits(currency);
-}
-
-export function formatCurrencyWithTrailingZeroes(
-  number: number,
-  currency: Currency,
-) {
-  return number.toFixed(getDigits(currency));
 }

@@ -1,13 +1,16 @@
 import { useEffect } from "react";
-import { useBrowserNotification } from "./useBrowserNotification";
 import { useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  v1GetWorkspaceAlertsQueryKey,
+  v1GetWorkspaceMessagesQueryKey,
+} from "@/api/generated/@tanstack/react-query.gen";
+import { invalidateQueries } from "@/lib/react-query-utils";
 
 const BASE_URL = import.meta.env.VITE_BASE_API_URL;
 
 export function useSse() {
   const location = useLocation();
-  const { sendNotification } = useBrowserNotification();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -17,19 +20,15 @@ export function useSse() {
 
     eventSource.onmessage = function (event) {
       if (event.data.toLowerCase().includes("new alert detected")) {
-        queryClient.invalidateQueries({ refetchType: "all" });
-        sendNotification("CodeGate Dashboard", {
-          body: "New Alert detected!",
-        });
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        invalidateQueries(queryClient, [
+          v1GetWorkspaceAlertsQueryKey,
+          v1GetWorkspaceMessagesQueryKey,
+        ]);
       }
     };
 
     return () => {
       eventSource.close();
     };
-  }, [location.pathname, queryClient, sendNotification]);
+  }, [location.pathname, queryClient]);
 }

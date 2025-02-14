@@ -7,14 +7,17 @@ import userEvent from "@testing-library/user-event";
 describe("App", () => {
   it("should render header", async () => {
     render(<App />);
-    expect(screen.getByText(/toggle sidebar/i)).toBeVisible();
-    expect(screen.getByText("Certificates")).toBeVisible();
+    expect(screen.getByText("Settings")).toBeVisible();
     expect(screen.getByText("Help")).toBeVisible();
     expect(screen.getByRole("banner", { name: "App header" })).toBeVisible();
     expect(screen.getByRole("heading", { name: /codeGate/i })).toBeVisible();
 
-    await userEvent.click(screen.getByText("Certificates"));
-
+    await userEvent.click(screen.getByText("Settings"));
+    expect(
+      screen.getByRole("menuitem", {
+        name: /providers/i,
+      }),
+    ).toBeVisible();
     expect(
       screen.getByRole("menuitem", {
         name: /certificate security/i,
@@ -26,7 +29,7 @@ describe("App", () => {
       }),
     ).toBeVisible();
 
-    await userEvent.click(screen.getByText("Certificates"));
+    await userEvent.click(screen.getByText("Settings"));
     await userEvent.click(screen.getByText("Help"));
 
     expect(
@@ -89,7 +92,7 @@ describe("App", () => {
     );
 
     const workspaceSelectionButton = screen.getByRole("button", {
-      name: "Workspace default",
+      name: "Active workspace default",
     });
     await waitFor(() => expect(workspaceSelectionButton).toBeVisible());
 

@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
   FieldGroup,
+  Form,
   Input,
   Link,
   Loader,
@@ -25,6 +26,7 @@ import {
 } from "@stacklok/ui-kit";
 import {
   Dispatch,
+  FormEvent,
   SetStateAction,
   useCallback,
   useContext,
@@ -51,6 +53,9 @@ import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation
 import Fuse from "fuse.js";
 import systemPrompts from "../constants/built-in-system-prompts.json";
 import { MessageTextSquare02, SearchMd } from "@untitled-ui/icons-react";
+import { invalidateQueries } from "@/lib/react-query-utils";
+import { useFormState } from "@/hooks/useFormState";
+import { FormButtons } from "@/components/FormButtons";
 
 type DarkModeContextValue = {
   preference: "dark" | "light" | null;
@@ -118,7 +123,12 @@ function useCustomInstructionsValue({
   options: V1GetWorkspaceCustomInstructionsData;
   queryClient: QueryClient;
 }) {
-  const [value, setValue] = useState<string>(initialValue);
+  const initialFormValues = useMemo(
+    () => ({ prompt: initialValue }),
+    [initialValue],
+  );
+  const formState = useFormState(initialFormValues);
+  const { values, updateFormValues } = formState;
 
   // Subscribe to changes in the workspace system prompt value in the query cache
   useEffect(() => {
@@ -133,18 +143,18 @@ function useCustomInstructionsValue({
         )
       ) {
         const prompt: string | null = getCustomInstructionsFromEvent(event);
-        if (prompt === value || prompt === null) return;
+        if (prompt === values.prompt || prompt === null) return;
 
-        setValue(prompt);
+        updateFormValues({ prompt });
       }
     });
 
     return () => {
       return unsubscribe();
     };
-  }, [options, queryClient, value]);
+  }, [options, queryClient, updateFormValues, values.prompt]);
 
-  return { value, setValue };
+  return { ...formState };
 }
 
 type PromptPresetPickerProps = {
@@ -279,23 +289,23 @@ export function WorkspaceCustomInstructions({
   const { mutateAsync, isPending: isMutationPending } =
     useMutationSetWorkspaceCustomInstructions(options);
 
-  const { setValue, value } = useCustomInstructionsValue({
+  const formState = useCustomInstructionsValue({
     initialValue: customInstructionsResponse?.prompt ?? "",
     options,
     queryClient,
   });
+
+  const { values, updateFormValues } = formState;
 
   const handleSubmit = useCallback(
     (value: string) => {
       mutateAsync(
         { ...options, body: { prompt: value } },
         {
-          onSuccess: () => {
-            queryClient.invalidateQueries({
-              queryKey: v1GetWorkspaceCustomInstructionsQueryKey(options),
-              refetchType: "all",
-            });
-          },
+          onSuccess: () =>
+            invalidateQueries(queryClient, [
+              v1GetWorkspaceCustomInstructionsQueryKey,
+            ]),
         },
       );
     },
@@ -303,59 +313,68 @@ export function WorkspaceCustomInstructions({
   );
 
   return (
-    <Card className={twMerge(className, "shrink-0")}>
-      <CardBody>
-        <Text className="text-primary">Custom instructions</Text>
-        <Text className="text-secondary mb-4">
-          Pass custom instructions to your LLM to augment its behavior, and save
-          time & tokens.
-        </Text>
-        <div className="border border-gray-200 rounded overflow-hidden">
-          {isCustomInstructionsPending ? (
-            <EditorLoadingUI />
-          ) : (
-            <Editor
-              options={{
-                minimap: { enabled: false },
-                readOnly: isArchived,
-              }}
-              value={value}
-              onChange={(v) => setValue(v ?? "")}
-              height="20rem"
-              defaultLanguage="Markdown"
-              theme={theme}
-              className={twMerge("bg-base", isArchived ? "opacity-25" : "")}
-            />
-          )}
-        </div>
-      </CardBody>
-      <CardFooter className="justify-end gap-2">
-        <DialogTrigger>
-          <Button variant="secondary">Use a preset</Button>
-          <DialogModalOverlay isDismissable>
-            <DialogModal isDismissable>
-              <Dialog
-                width="lg"
-                className="min-h-[44rem]"
-                style={{ maxWidth: "min(calc(100vw - 64px), 1200px)" }}
-              >
-                <PromptPresetPicker
-                  onActivate={(prompt: string) => {
-                    setValue(prompt);
-                  }}
-                />
-              </Dialog>
-            </DialogModal>
-          </DialogModalOverlay>
-        </DialogTrigger>
-        <Button
-          isPending={isMutationPending}
-          isDisabled={Boolean(isArchived ?? isCustomInstructionsPending)}
-          onPress={() => handleSubmit(value)}
-        >
-          Save
-        </Button>
-      </CardFooter>
-    </Card>
+    <Form
+      onSubmit={(e: FormEvent) => {
+        e.preventDefault();
+        handleSubmit(values.prompt);
+      }}
+      validationBehavior="aria"
+    >
+      <Card className={twMerge(className, "shrink-0")}>
+        <CardBody>
+          <Text className="text-primary">Custom instructions</Text>
+          <Text className="text-secondary mb-4">
+            Pass custom instructions to your LLM to augment its behavior, and
+            save time & tokens.
+          </Text>
+          <div className="border border-gray-200 rounded overflow-hidden">
+            {isCustomInstructionsPending ? (
+              <EditorLoadingUI />
+            ) : (
+              <Editor
+                options={{
+                  minimap: { enabled: false },
+                  readOnly: isArchived,
+                }}
+                value={values.prompt}
+                onChange={(v) => updateFormValues({ prompt: v ?? "" })}
+                height="20rem"
+                defaultLanguage="Markdown"
+                theme={theme}
+                className={twMerge("bg-base", isArchived ? "opacity-25" : "")}
+              />
+            )}
+          </div>
+        </CardBody>
+        <CardFooter className="justify-end gap-2">
+          <FormButtons
+            isPending={isMutationPending}
+            formState={formState}
+            canSubmit={
+              !isArchived && !isCustomInstructionsPending && !isMutationPending
+            }
+          >
+            <DialogTrigger>
+              <Button variant="secondary">Use a preset</Button>
+              <DialogModalOverlay isDismissable>
+                <DialogModal isDismissable>
+                  <Dialog
+                    width="lg"
+                    className="min-h-[44rem]"
+                    style={{ maxWidth: "min(calc(100vw - 64px), 1200px)" }}
+                  >
+                    <PromptPresetPicker
+                      onActivate={(prompt: string) => {
+                        updateFormValues({ prompt });
+                      }}
+                    />
+                  </Dialog>
+                </DialogModal>
+              </DialogModalOverlay>
+            </DialogTrigger>
+          </FormButtons>
+        </CardFooter>
+      </Card>
+    </Form>
   );
 }

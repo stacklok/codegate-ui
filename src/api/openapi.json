@@ -8,9 +8,7 @@
   "paths": {
     "/health": {
       "get": {
-        "tags": [
-          "System"
-        ],
+        "tags": ["System"],
         "summary": "Health Check",
         "operationId": "health_check_health_get",
         "responses": {
@@ -27,10 +25,7 @@
     },
     "/api/v1/provider-endpoints": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "List Provider Endpoints",
         "description": "List all provider endpoints.",
         "operationId": "v1_list_provider_endpoints",
@@ -80,10 +75,7 @@
         }
       },
       "post": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "Add Provider Endpoint",
         "description": "Add a provider endpoint.",
         "operationId": "v1_add_provider_endpoint",
@@ -92,7 +84,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProviderEndpoint"
+                "$ref": "#/components/schemas/AddProviderEndpointRequest"
               }
             }
           }
@@ -123,10 +115,7 @@
     },
     "/api/v1/provider-endpoints/models": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "List All Models For All Providers",
         "description": "List all models for all providers.",
         "operationId": "v1_list_all_models_for_all_providers",
@@ -150,10 +139,7 @@
     },
     "/api/v1/provider-endpoints/{provider_id}/models": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "List Models By Provider",
         "description": "List models by provider.",
         "operationId": "v1_list_models_by_provider",
@@ -199,10 +185,7 @@
     },
     "/api/v1/provider-endpoints/{provider_id}": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "Get Provider Endpoint",
         "description": "Get a provider endpoint by ID.",
         "operationId": "v1_get_provider_endpoint",
@@ -242,10 +225,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "Update Provider Endpoint",
         "description": "Update a provider endpoint by ID.",
         "operationId": "v1_update_provider_endpoint",
@@ -295,10 +275,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "Delete Provider Endpoint",
         "description": "Delete a provider endpoint by id.",
         "operationId": "v1_delete_provider_endpoint",
@@ -338,10 +315,7 @@
     },
     "/api/v1/provider-endpoints/{provider_id}/auth-material": {
       "put": {
-        "tags": [
-          "CodeGate API",
-          "Providers"
-        ],
+        "tags": ["CodeGate API", "Providers"],
         "summary": "Configure Auth Material",
         "description": "Configure auth material for a provider.",
         "operationId": "v1_configure_auth_material",
@@ -386,10 +360,7 @@
     },
     "/api/v1/workspaces": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "List Workspaces",
         "description": "List all workspaces.",
         "operationId": "v1_list_workspaces",
@@ -407,10 +378,7 @@
         }
       },
       "post": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Create Workspace",
         "description": "Create a new workspace.",
         "operationId": "v1_create_workspace",
@@ -450,10 +418,7 @@
     },
     "/api/v1/workspaces/active": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "List Active Workspaces",
         "description": "List all active workspaces.\n\nIn it's current form, this function will only return one workspace. That is,\nthe globally active workspace.",
         "operationId": "v1_list_active_workspaces",
@@ -471,10 +436,7 @@
         }
       },
       "post": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Activate Workspace",
         "description": "Activate a workspace by name.",
         "operationId": "v1_activate_workspace",
@@ -523,10 +485,7 @@
     },
     "/api/v1/workspaces/{workspace_name}": {
       "delete": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Delete Workspace",
         "description": "Delete a workspace by name.",
         "operationId": "v1_delete_workspace",
@@ -565,10 +524,7 @@
     },
     "/api/v1/workspaces/archive": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "List Archived Workspaces",
         "description": "List all archived workspaces.",
         "operationId": "v1_list_archived_workspaces",
@@ -588,10 +544,7 @@
     },
     "/api/v1/workspaces/archive/{workspace_name}/recover": {
       "post": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Recover Workspace",
         "description": "Recover an archived workspace by name.",
         "operationId": "v1_recover_workspace",
@@ -625,10 +578,7 @@
     },
     "/api/v1/workspaces/archive/{workspace_name}": {
       "delete": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Hard Delete Workspace",
         "description": "Hard delete an archived workspace by name.",
         "operationId": "v1_hard_delete_workspace",
@@ -667,10 +617,7 @@
     },
     "/api/v1/workspaces/{workspace_name}/alerts": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Get Workspace Alerts",
         "description": "Get alerts for a workspace.",
         "operationId": "v1_get_workspace_alerts",
@@ -722,10 +669,7 @@
     },
     "/api/v1/workspaces/{workspace_name}/messages": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Get Workspace Messages",
         "description": "Get messages for a workspace.",
         "operationId": "v1_get_workspace_messages",
@@ -770,10 +714,7 @@
     },
     "/api/v1/workspaces/{workspace_name}/custom-instructions": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Get Workspace Custom Instructions",
         "description": "Get the custom instructions of a workspace.",
         "operationId": "v1_get_workspace_custom_instructions",
@@ -812,10 +753,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Set Workspace Custom Instructions",
         "operationId": "v1_set_workspace_custom_instructions",
         "parameters": [
@@ -856,10 +794,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces"
-        ],
+        "tags": ["CodeGate API", "Workspaces"],
         "summary": "Delete Workspace Custom Instructions",
         "operationId": "v1_delete_workspace_custom_instructions",
         "parameters": [
@@ -892,11 +827,7 @@
     },
     "/api/v1/workspaces/{workspace_name}/muxes": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces",
-          "Muxes"
-        ],
+        "tags": ["CodeGate API", "Workspaces", "Muxes"],
         "summary": "Get Workspace Muxes",
         "description": "Get the mux rules of a workspace.\n\nThe list is ordered in order of priority. That is, the first rule in the list\nhas the highest priority.",
         "operationId": "v1_get_workspace_muxes",
@@ -939,11 +870,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces",
-          "Muxes"
-        ],
+        "tags": ["CodeGate API", "Workspaces", "Muxes"],
         "summary": "Set Workspace Muxes",
         "description": "Set the mux rules of a workspace.",
         "operationId": "v1_set_workspace_muxes",
@@ -991,10 +918,7 @@
     },
     "/api/v1/alerts_notification": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Dashboard"
-        ],
+        "tags": ["CodeGate API", "Dashboard"],
         "summary": "Stream Sse",
         "description": "Send alerts event",
         "operationId": "v1_stream_sse",
@@ -1012,10 +936,7 @@
     },
     "/api/v1/version": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Dashboard"
-        ],
+        "tags": ["CodeGate API", "Dashboard"],
         "summary": "Version Check",
         "operationId": "v1_version_check",
         "responses": {
@@ -1032,11 +953,7 @@
     },
     "/api/v1/workspaces/{workspace_name}/token-usage": {
       "get": {
-        "tags": [
-          "CodeGate API",
-          "Workspaces",
-          "Token Usage"
-        ],
+        "tags": ["CodeGate API", "Workspaces", "Token Usage"],
         "summary": "Get Workspace Token Usage",
         "description": "Get the token usage of a workspace.",
         "operationId": "v1_get_workspace_token_usage",
@@ -1086,9 +1003,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "title": "ActivateWorkspaceRequest"
       },
       "ActiveWorkspace": {
@@ -1106,12 +1021,128 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "is_active",
-          "last_updated"
-        ],
+        "required": ["name", "is_active", "last_updated"],
         "title": "ActiveWorkspace"
+      },
+      "AddProviderEndpointRequest": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "default": ""
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": ""
+          },
+          "provider_type": {
+            "$ref": "#/components/schemas/ProviderType"
+          },
+          "endpoint": {
+            "type": "string",
+            "title": "Endpoint",
+            "default": ""
+          },
+          "auth_type": {
+            "$ref": "#/components/schemas/ProviderAuthType",
+            "default": "none"
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Api Key"
+          }
+        },
+        "type": "object",
+        "required": ["name", "provider_type"],
+        "title": "AddProviderEndpointRequest",
+        "description": "Represents a request to add a provider endpoint."
+      },
+      "Alert": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "prompt_id": {
+            "type": "string",
+            "title": "Prompt Id"
+          },
+          "code_snippet": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeSnippet"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trigger_string": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trigger String"
+          },
+          "trigger_type": {
+            "type": "string",
+            "title": "Trigger Type"
+          },
+          "trigger_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trigger Category"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "prompt_id",
+          "code_snippet",
+          "trigger_string",
+          "trigger_type",
+          "trigger_category",
+          "timestamp"
+        ],
+        "title": "Alert",
+        "description": "Represents an alert."
       },
       "AlertConversation": {
         "properties": {
@@ -1197,11 +1228,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "message",
-          "timestamp",
-          "message_id"
-        ],
+        "required": ["message", "timestamp", "message_id"],
         "title": "ChatMessage",
         "description": "Represents a chat message."
       },
@@ -1238,16 +1265,25 @@
               "type": "string"
             },
             "type": "array",
-            "title": "Libraries"
+            "title": "Libraries",
+            "default": []
+          },
+          "file_extension": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File Extension"
           }
         },
         "type": "object",
-        "required": [
-          "code",
-          "language",
-          "filepath"
-        ],
-        "title": "CodeSnippet"
+        "required": ["code", "language", "filepath"],
+        "title": "CodeSnippet",
+        "description": "Represents a code snippet with its programming language.\n\nArgs:\n    language: The programming language identifier (e.g., 'python', 'javascript')\n    code: The actual code content"
       },
       "ConfigureAuthMaterial": {
         "properties": {
@@ -1267,9 +1303,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "auth_type"
-        ],
+        "required": ["auth_type"],
         "title": "ConfigureAuthMaterial",
         "description": "Represents a request to configure auth material for a provider."
       },
@@ -1314,6 +1348,14 @@
                 "type": "null"
               }
             ]
+          },
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/Alert"
+            },
+            "type": "array",
+            "title": "Alerts",
+            "default": []
           }
         },
         "type": "object",
@@ -1347,9 +1389,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "title": "CreateOrRenameWorkspaceRequest"
       },
       "CustomInstructions": {
@@ -1360,9 +1400,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "prompt"
-        ],
+        "required": ["prompt"],
         "title": "CustomInstructions"
       },
       "HTTPValidationError": {
@@ -1389,9 +1427,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "workspaces"
-        ],
+        "required": ["workspaces"],
         "title": "ListActiveWorkspacesResponse"
       },
       "ListWorkspacesResponse": {
@@ -1405,9 +1441,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "workspaces"
-        ],
+        "required": ["workspaces"],
         "title": "ListWorkspacesResponse"
       },
       "ModelByProvider": {
@@ -1426,20 +1460,13 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "provider_id",
-          "provider_name"
-        ],
+        "required": ["name", "provider_id", "provider_name"],
         "title": "ModelByProvider",
         "description": "Represents a model supported by a provider.\n\nNote that these are auto-discovered by the provider."
       },
       "MuxMatcherType": {
         "type": "string",
-        "enum": [
-          "file_regex",
-          "catch_all"
-        ],
+        "enum": ["catch_all"],
         "title": "MuxMatcherType",
         "description": "Represents the different types of matchers we support."
       },
@@ -1469,21 +1496,13 @@
           }
         },
         "type": "object",
-        "required": [
-          "provider_id",
-          "model",
-          "matcher_type"
-        ],
+        "required": ["provider_id", "model", "matcher_type"],
         "title": "MuxRule",
         "description": "Represents a mux rule for a provider."
       },
       "ProviderAuthType": {
         "type": "string",
-        "enum": [
-          "none",
-          "passthrough",
-          "api_key"
-        ],
+        "enum": ["none", "passthrough", "api_key"],
         "title": "ProviderAuthType",
         "description": "Represents the different types of auth we support for providers."
       },
@@ -1515,26 +1534,16 @@
           },
           "endpoint": {
             "type": "string",
-            "title": "Endpoint"
+            "title": "Endpoint",
+            "default": ""
           },
           "auth_type": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ProviderAuthType"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/ProviderAuthType",
             "default": "none"
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "provider_type",
-          "endpoint"
-        ],
+        "required": ["name", "provider_type"],
         "title": "ProviderEndpoint",
         "description": "Represents a provider's endpoint configuration. This\nallows us to persist the configuration for each provider,\nso we can use this for muxing messages."
       },
@@ -1546,7 +1555,8 @@
           "vllm",
           "ollama",
           "lm_studio",
-          "llamacpp"
+          "llamacpp",
+          "openrouter"
         ],
         "title": "ProviderType",
         "description": "Represents the different types of providers we support."
@@ -1568,19 +1578,13 @@
           }
         },
         "type": "object",
-        "required": [
-          "question",
-          "answer"
-        ],
+        "required": ["question", "answer"],
         "title": "QuestionAnswer",
         "description": "Represents a question and answer pair."
       },
       "QuestionType": {
         "type": "string",
-        "enum": [
-          "chat",
-          "fim"
-        ],
+        "enum": ["chat", "fim"],
         "title": "QuestionType"
       },
       "TokenUsage": {
@@ -1624,10 +1628,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "tokens_by_model",
-          "token_usage"
-        ],
+        "required": ["tokens_by_model", "token_usage"],
         "title": "TokenUsageAggregate",
         "description": "Represents the tokens used. Includes the information of the tokens used by model.\n`used_tokens` are the total tokens used in the `tokens_by_model` list."
       },
@@ -1645,11 +1646,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "provider_type",
-          "model",
-          "token_usage"
-        ],
+        "required": ["provider_type", "model", "token_usage"],
         "title": "TokenUsageByModel",
         "description": "Represents the tokens used by a model."
       },
@@ -1679,11 +1676,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
+        "required": ["loc", "msg", "type"],
         "title": "ValidationError"
       },
       "Workspace": {
@@ -1698,10 +1691,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "is_active"
-        ],
+        "required": ["name", "is_active"],
         "title": "Workspace"
       }
     }

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "claude-3.5",
+    "provider_id": "id_1",
+    "provider_name": "anthropic"
+  },
+  {
+    "name": "claude-3.6",
+    "provider_id": "id_2",
+    "provider_name": "anthropic"
+  },
+  {
+    "name": "claude-3.7",
+    "provider_id": "id_3",
+    "provider_name": "anthropic"
+  },
+  {
+    "name": "chatgpt-4o",
+    "provider_id": "id_4",
+    "provider_name": "openai"
+  },
+  {
+    "name": "chatgpt-4p",
+    "provider_id": "id_5",
+    "provider_name": "openai"
+  }
+]

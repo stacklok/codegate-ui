@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -8,10 +7,12 @@ import {
   Label,
   TextField,
 } from "@stacklok/ui-kit";
-import { twMerge } from "tailwind-merge";
 import { useMutationCreateWorkspace } from "../hooks/use-mutation-create-workspace";
-import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
+import { useFormState } from "@/hooks/useFormState";
+import { FormButtons } from "@/components/FormButtons";
+import { FormEvent } from "react";
 
 export function WorkspaceName({
   className,
@@ -23,57 +24,59 @@ export function WorkspaceName({
   isArchived: boolean | undefined;
 }) {
   const navigate = useNavigate();
-  const { mutateAsync, isPending, error, reset } = useMutationCreateWorkspace();
+  const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
   const errorMsg = error?.detail ? `${error?.detail}` : "";
+  const formState = useFormState({
+    workspaceName,
+  });
+  const { values, updateFormValues } = formState;
+  const isDefault = workspaceName === "default";
+  const isUneditable = isArchived || isPending || isDefault;
 
-  const [name, setName] = useState(() => workspaceName);
-  // NOTE: When navigating from one settings page to another, this value is not
-  // updated, hence the synchronization effect
-  useEffect(() => {
-    setName(workspaceName);
-    reset();
-  }, [reset, workspaceName]);
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     mutateAsync(
-      { body: { name: workspaceName, rename_to: name } },
+      { body: { name: workspaceName, rename_to: values.workspaceName } },
       {
-        onSuccess: () => navigate(`/workspace/${name}`),
+        onSuccess: () => navigate(`/workspace/${values.workspaceName}`),
       },
     );
   };
 
   return (
-    <Form onSubmit={handleSubmit} validationBehavior="aria" key={workspaceName}>
-      <Card
-        className={twMerge(className, "shrink-0")}
-        data-testid="workspace-name"
-      >
-        <CardBody>
+    <Form
+      onSubmit={handleSubmit}
+      validationBehavior="aria"
+      data-testid="workspace-name"
+    >
+      <Card className={twMerge(className, "shrink-0")}>
+        <CardBody className="flex flex-col gap-6">
           <TextField
+            isReadOnly={isUneditable}
             key={workspaceName}
             aria-label="Workspace name"
-            value={name}
+            value={values.workspaceName}
             name="Workspace name"
             validationBehavior="aria"
             isRequired
-            isDisabled={isArchived}
-            onChange={setName}
+            isDisabled={isUneditable}
+            onChange={(workspaceName) => updateFormValues({ workspaceName })}
           >
             <Label>Workspace name</Label>
             <Input />
-            {errorMsg && <div className="p-1 text-red-700">{errorMsg}</div>}
           </TextField>
         </CardBody>
-        <CardFooter className="justify-end gap-2">
-          <Button
-            isDisabled={isArchived || name === ""}
+        <CardFooter className="justify-end">
+          <FormButtons
             isPending={isPending}
-            type="submit"
-          >
-            Save
-          </Button>
+            formErrorMessage={errorMsg}
+            formSideNote={
+              isDefault ? "Cannot rename the default workspace" : undefined
+            }
+            formState={formState}
+            canSubmit={!isArchived}
+          />
         </CardFooter>
       </Card>
     </Form>

@@ -1,5 +1,4 @@
-import { useCodeGateStatus } from "../hooks/use-codegate-status";
-import { HealthStatus } from "../types";
+import { useQueriesCodegateStatus } from "../hooks/use-queries-codegate-status";
 import {
   Button,
   DialogTrigger,
@@ -40,7 +39,7 @@ type CodeGateHealthCheckStatus =
   | "error_checking_health";
 
 function deriveOverallStatus(
-  data: ReturnType<typeof useCodeGateStatus>["data"],
+  data: ReturnType<typeof useQueriesCodegateStatus>["data"],
   isPending: boolean,
   isError: boolean,
 ): CodeGateStatus {
@@ -48,19 +47,19 @@ function deriveOverallStatus(
   if (isError) return "error_checking_status";
 
   if (
-    data?.health === HealthStatus.HEALTHY &&
+    data?.health?.status === "healthy" &&
     data.version?.error === null &&
     data.version?.is_latest === false
   )
     return "update_available";
 
-  if (data?.health === HealthStatus.HEALTHY) return "healthy";
+  if (data?.health?.status === "healthy") return "healthy";
 
   return "unhealthy";
 }
 
 function deriveVersionStatus(
-  data: ReturnType<typeof useCodeGateStatus>["data"],
+  data: ReturnType<typeof useQueriesCodegateStatus>["data"],
   isPending: boolean,
   isError: boolean,
 ): CodeGateVersionStatus {
@@ -72,14 +71,14 @@ function deriveVersionStatus(
 }
 
 function deriveHealthCheckStatus(
-  data: ReturnType<typeof useCodeGateStatus>["data"],
+  data: ReturnType<typeof useQueriesCodegateStatus>["data"],
   isPending: boolean,
   isError: boolean,
 ): CodeGateHealthCheckStatus {
   if (isPending) return "loading";
   if (isError) return "error_checking_health";
 
-  if (data?.health == HealthStatus.HEALTHY) return "healthy";
+  if (data?.health?.status === "healthy") return "healthy";
   return "unhealthy";
 }
 
@@ -102,7 +101,7 @@ function getButtonText(status: CodeGateStatus): string {
 
 function getVersionText(
   status: CodeGateVersionStatus,
-  data: ReturnType<typeof useCodeGateStatus>["data"],
+  data: ReturnType<typeof useQueriesCodegateStatus>["data"],
 ): ReactNode {
   switch (status) {
     case "error_checking_version":
@@ -262,7 +261,7 @@ function StatusPopover({
 }: {
   versionStatus: CodeGateVersionStatus;
   healthCheckStatus: CodeGateHealthCheckStatus;
-  data: ReturnType<typeof useCodeGateStatus>["data"];
+  data: ReturnType<typeof useQueriesCodegateStatus>["data"];
 }) {
   return (
     <Popover className="px-3 py-2 min-w-64" placement="bottom end">
@@ -290,7 +289,7 @@ function StatusPopover({
 }
 
 export function HeaderStatusMenu() {
-  const { data, isPending, isError } = useCodeGateStatus();
+  const { data, isPending, isError } = useQueriesCodegateStatus();
 
   const status = deriveOverallStatus(data, isPending, isError);
   const versionStatus = deriveVersionStatus(data, isPending, isError);

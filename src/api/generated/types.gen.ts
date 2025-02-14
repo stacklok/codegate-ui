@@ -11,6 +11,37 @@ export type ActiveWorkspace = {
 };
 
 /**
+ * Represents a request to add a provider endpoint.
+ */
+export type AddProviderEndpointRequest = {
+  id?: string | null;
+  name: string;
+  description?: string;
+  provider_type: ProviderType;
+  endpoint?: string;
+  auth_type?: ProviderAuthType;
+  api_key?: string | null;
+};
+
+/**
+ * Represents an alert.
+ */
+export type Alert = {
+  id: string;
+  prompt_id: string;
+  code_snippet: CodeSnippet | null;
+  trigger_string:
+    | string
+    | {
+        [key: string]: unknown;
+      }
+    | null;
+  trigger_type: string;
+  trigger_category: string | null;
+  timestamp: string;
+};
+
+/**
  * Represents an alert with it's respective conversation.
  */
 export type AlertConversation = {
@@ -37,11 +68,19 @@ export type ChatMessage = {
   message_id: string;
 };
 
+/**
+ * Represents a code snippet with its programming language.
+ *
+ * Args:
+ * language: The programming language identifier (e.g., 'python', 'javascript')
+ * code: The actual code content
+ */
 export type CodeSnippet = {
   code: string;
   language: string | null;
   filepath: string | null;
   libraries?: Array<string>;
+  file_extension?: string | null;
 };
 
 /**
@@ -62,6 +101,7 @@ export type Conversation = {
   chat_id: string;
   conversation_timestamp: string;
   token_usage_agg: TokenUsageAggregate | null;
+  alerts?: Array<Alert>;
 };
 
 export type CreateOrRenameWorkspaceRequest = {
@@ -100,7 +140,6 @@ export type ModelByProvider = {
  * Represents the different types of matchers we support.
  */
 export enum MuxMatcherType {
-  FILE_REGEX = "file_regex",
   CATCH_ALL = "catch_all",
 }
 
@@ -133,8 +172,8 @@ export type ProviderEndpoint = {
   name: string;
   description?: string;
   provider_type: ProviderType;
-  endpoint: string;
-  auth_type?: ProviderAuthType | null;
+  endpoint?: string;
+  auth_type?: ProviderAuthType;
 };
 
 /**
@@ -147,6 +186,7 @@ export enum ProviderType {
   OLLAMA = "ollama",
   LM_STUDIO = "lm_studio",
   LLAMACPP = "llamacpp",
+  OPENROUTER = "openrouter",
 }
 
 /**
@@ -219,7 +259,7 @@ export type V1ListProviderEndpointsResponse = Array<ProviderEndpoint>;
 export type V1ListProviderEndpointsError = HTTPValidationError;
 
 export type V1AddProviderEndpointData = {
-  body: ProviderEndpoint;
+  body: AddProviderEndpointRequest;
 };
 
 export type V1AddProviderEndpointResponse = ProviderEndpoint;

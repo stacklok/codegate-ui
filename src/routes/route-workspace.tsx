@@ -1,7 +1,7 @@
 import { BreadcrumbHome } from "@/components/BreadcrumbHome";
 import { ArchiveWorkspace } from "@/features/workspace/components/archive-workspace";
 
-import { WorkspaceHeading } from "@/features/workspace/components/workspace-heading";
+import { PageHeading } from "@/components/heading";
 import { WorkspaceName } from "@/features/workspace/components/workspace-name";
 import { Alert, Breadcrumb, Breadcrumbs } from "@stacklok/ui-kit";
 import { useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useArchivedWorkspaces } from "@/features/workspace/hooks/use-archived-w
 import { useRestoreWorkspaceButton } from "@/features/workspace/hooks/use-restore-workspace-button";
 import { WorkspaceCustomInstructions } from "@/features/workspace/components/workspace-custom-instructions";
 import { WorkspacePreferredModel } from "@/features/workspace/components/workspace-preferred-model";
+import { PageContainer } from "@/components/page-container";
 
 function WorkspaceArchivedBanner({ name }: { name: string }) {
   const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name });
@@ -37,14 +38,14 @@ export function RouteWorkspace() {
   });
 
   return (
-    <>
+    <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
         <Breadcrumb href="/workspaces">Manage Workspaces</Breadcrumb>
         <Breadcrumb>Workspace Settings</Breadcrumb>
       </Breadcrumbs>
 
-      <WorkspaceHeading title="Workspace settings" />
+      <PageHeading level={1} title={`Workspace settings for ${name}`} />
 
       {isArchived ? <WorkspaceArchivedBanner name={name} /> : null}
 
@@ -54,7 +55,7 @@ export function RouteWorkspace() {
         workspaceName={name}
       />
       <WorkspacePreferredModel
-        className="mb-4 hidden"
+        className="mb-4"
         isArchived={isArchived}
         workspaceName={name}
       />
@@ -64,6 +65,6 @@ export function RouteWorkspace() {
         className="mb-4"
       />
       <ArchiveWorkspace isArchived={isArchived} workspaceName={name} />
-    </>
+    </PageContainer>
   );
 }

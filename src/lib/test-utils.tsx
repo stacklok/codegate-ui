@@ -1,4 +1,3 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { ConfirmProvider } from "@/context/confirm-context";
 import { DarkModeProvider, Toaster } from "@stacklok/ui-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -28,6 +27,9 @@ export const TestQueryClientProvider = ({
         new QueryClient({
           defaultOptions: {
             queries: {
+              refetchOnMount: true,
+              refetchOnReconnect: true,
+              refetchOnWindowFocus: true,
               gcTime: 0,
               staleTime: 0,
             },
@@ -52,10 +54,7 @@ const renderWithProviders = (
           <MemoryRouter {...options?.routeConfig}>
             <UiKitClientSideRoutingProvider>
               <Routes>
-                <Route
-                  path={options?.pathConfig ?? "*"}
-                  element={<SidebarProvider>{children}</SidebarProvider>}
-                />
+                <Route path={options?.pathConfig ?? "*"} element={children} />
               </Routes>
             </UiKitClientSideRoutingProvider>
           </MemoryRouter>

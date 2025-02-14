@@ -11,9 +11,6 @@ export function useArchivedWorkspaces<T = V1ListArchivedWorkspacesResponse>({
     ...v1ListArchivedWorkspacesOptions(),
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
     retry: false,
     select,
   });

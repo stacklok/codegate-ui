@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "@stacklok/ui-kit/style";
 import App from "./App.tsx";
-import { SidebarProvider } from "./components/ui/sidebar.tsx";
+
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Error } from "./components/Error.tsx";
 import { DarkModeProvider, Toaster } from "@stacklok/ui-kit";
@@ -12,6 +12,7 @@ import { QueryClientProvider } from "./components/react-query-provider.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { UiKitClientSideRoutingProvider } from "./lib/ui-kit-client-side-routing.tsx";
 import { ConfirmProvider } from "./context/confirm-context.tsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Initialize the API client
 client.setConfig({
@@ -23,16 +24,16 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <UiKitClientSideRoutingProvider>
         <DarkModeProvider>
-          <SidebarProvider>
-            <QueryClientProvider>
-              <ErrorBoundary fallback={<Error />}>
-                <ConfirmProvider>
-                  <Toaster />
-                  <App />
-                </ConfirmProvider>
-              </ErrorBoundary>
-            </QueryClientProvider>
-          </SidebarProvider>
+          <QueryClientProvider>
+            <ErrorBoundary fallback={<Error />}>
+              <ReactQueryDevtools />
+              <ConfirmProvider>
+                <Toaster />
+                <App />
+              </ConfirmProvider>
+            </ErrorBoundary>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
         </DarkModeProvider>
       </UiKitClientSideRoutingProvider>
     </BrowserRouter>

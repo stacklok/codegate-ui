@@ -1,3 +1,4 @@
+import { HTTPValidationError } from "@/api/generated";
 import { toast } from "@stacklok/ui-kit";
 import {
   DefaultError,
@@ -31,7 +32,7 @@ export function useToastMutation<
   } = useMutation(options);
 
   const mutateAsync = useCallback(
-    async <TError extends { detail: string | undefined }>(
+    async <TError extends { detail: string | undefined | HTTPValidationError }>(
       variables: Parameters<typeof originalMutateAsync>[0],
       options: Parameters<typeof originalMutateAsync>[1] = {},
     ) => {
@@ -41,8 +42,25 @@ export function useToastMutation<
         success:
           typeof successMsg === "function" ? successMsg(variables) : successMsg,
         loading: loadingMsg ?? "Loading...",
-        error: (e: TError) =>
-          errorMsg ?? (e.detail ? e.detail : "An error occurred"),
+        duration: 5000,
+        error: (e: TError) => {
+          if (errorMsg) return errorMsg;
+
+          if (typeof e.detail == "string") {
+            return e.detail ?? "An error occurred";
+          }
+
+          if (Array.isArray(e.detail)) {
+            const err = e.detail
+              ?.map((item) => `${item.msg} - ${JSON.stringify(item.loc)}`)
+              .filter(Boolean)
+              .join(", ");
+
+            return err ?? "An error occurred";
+          }
+
+          return "An error occurred";
+        },
       });
     },
     [errorMsg, loadingMsg, originalMutateAsync, successMsg],
