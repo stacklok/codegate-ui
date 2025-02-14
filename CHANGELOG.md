@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.15.0](https://github.com/stacklok/codegate-ui/compare/v0.14.1...v0.15.0) (2025-02-14)
+
+
+### Features
+
+* add support muxing rules v2 ([#311](https://github.com/stacklok/codegate-ui/issues/311)) ([38f2ecc](https://github.com/stacklok/codegate-ui/commit/38f2ecc93f1b503c6b1eaf31daaaedc86996b5fc))
+* enable word wrap for prompt editor ([#312](https://github.com/stacklok/codegate-ui/issues/312)) ([7f2c040](https://github.com/stacklok/codegate-ui/commit/7f2c040ad7d9cceda42ac70e40d716272f82704f))
+* extend new revert logic to "custom instructions" ([#304](https://github.com/stacklok/codegate-ui/issues/304)) ([40f86a5](https://github.com/stacklok/codegate-ui/commit/40f86a5f591fe67863d3a3082a625cfd1b3080b8))
+* implement "Revert" button for workspace name ([#276](https://github.com/stacklok/codegate-ui/issues/276)) ([7e66ff0](https://github.com/stacklok/codegate-ui/commit/7e66ff0ecff35b2dddde048d6ed864e2b621cb8f))
+* make preferred model form consistent with the other forms ([#309](https://github.com/stacklok/codegate-ui/issues/309)) ([6b57fd3](https://github.com/stacklok/codegate-ui/commit/6b57fd3f589ed036c2f51bd6c9066fc767476aad))
+* new messages endpoint ([#287](https://github.com/stacklok/codegate-ui/issues/287)) ([ccbce0c](https://github.com/stacklok/codegate-ui/commit/ccbce0c627d73efb8a2bbf82eeaf8fec4e295594))
+* show README for prompts when available ([#313](https://github.com/stacklok/codegate-ui/issues/313)) ([a388e49](https://github.com/stacklok/codegate-ui/commit/a388e49efcf3fa4d7e003604ca7ecd72f76b1fb6))
+* switch help and setting menu ([#310](https://github.com/stacklok/codegate-ui/issues/310)) ([32d46a0](https://github.com/stacklok/codegate-ui/commit/32d46a0f87291e2b09a22dfec737b0bd6befbb4b)), closes [#303](https://github.com/stacklok/codegate-ui/issues/303)
+
+
+### Bug Fixes
+
+* cannot delete endpoint URL ([#318](https://github.com/stacklok/codegate-ui/issues/318)) ([18ac940](https://github.com/stacklok/codegate-ui/commit/18ac940f70fffd918ef1fd37701aca955241e47b)), closes [#284](https://github.com/stacklok/codegate-ui/issues/284)
+* error displayed when activating workspace ([#305](https://github.com/stacklok/codegate-ui/issues/305)) ([be99509](https://github.com/stacklok/codegate-ui/commit/be9950999cd76bc1b9a358b6c9e61e4129b73aa1))
+* error UI styling bug ([#307](https://github.com/stacklok/codegate-ui/issues/307)) ([00bf204](https://github.com/stacklok/codegate-ui/commit/00bf20466d42e92869503045701f7cce5fc2ab21))
+* focus ring in version dropdown ([#314](https://github.com/stacklok/codegate-ui/issues/314)) ([3a00cfa](https://github.com/stacklok/codegate-ui/commit/3a00cfa6d10b5fb85ec80ae4e8305e362f9db215))
+* markdown syntax highlighting ([#316](https://github.com/stacklok/codegate-ui/issues/316)) ([35ba1a4](https://github.com/stacklok/codegate-ui/commit/35ba1a43dee0796d6978baef4b79a11ecdf8ca07))
+* only show "cannot edit default" on default workspace [#308](https://github.com/stacklok/codegate-ui/issues/308) ([5200192](https://github.com/stacklok/codegate-ui/commit/520019221d7709b5e9ff5000474f40f1092ae69e))
+* remove pagination state when filtering messages ([#306](https://github.com/stacklok/codegate-ui/issues/306)) ([3d586fb](https://github.com/stacklok/codegate-ui/commit/3d586fbfabf445d9f4c35dd9919295a5a49b5953))
+
 ## [0.14.1](https://github.com/stacklok/codegate-ui/compare/v0.14.0...v0.14.1) (2025-02-07)
 
 ### Bug Fixes
