@@ -215,20 +215,26 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
                 <div className="flex justify-between gap-4 p-2">
                   <div className="h-full items-center">
                     <div className="flex h-full max-w-52 items-center text-clip">
-                      {item.contributors.map((contributor) => (
-                        <Link
-                          className="flex h-full items-center gap-1 rounded-md px-2 text-sm font-bold text-secondary
-                            no-underline hover:bg-gray-200"
-                          target="_blank"
-                          href={`https://github.com/${contributor}/`}
-                        >
-                          <img
-                            className="size-6 rounded-full"
-                            src={`https://github.com/${contributor}.png?size=24`}
-                          />
-                          <span className="truncate">{contributor}</span>
+                      {item.readme ? (
+                        <Link target="_blank" href={item.readme}>
+                          README.md
                         </Link>
-                      ))}
+                      ) : (
+                        item.commiters.map((contributor) => (
+                          <Link
+                            className="flex h-full items-center gap-1 rounded-md px-2 text-sm font-bold text-secondary
+                              no-underline hover:bg-gray-200"
+                            target="_blank"
+                            href={`https://github.com/${contributor}/`}
+                          >
+                            <img
+                              className="size-6 rounded-full"
+                              src={`https://github.com/${contributor}.png?size=24`}
+                            />
+                            <span className="truncate">{contributor}</span>
+                          </Link>
+                        ))
+                      )}
                     </div>
                   </div>
                   <Button

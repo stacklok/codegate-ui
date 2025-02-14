@@ -1,9 +1,11 @@
 import remarkGfm from 'remark-gfm'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { CopyToClipboard } from './CopyToClipboard'
 import hljs from 'highlight.js'
+import { JSX } from 'react'
+import type { Element } from 'hast'
+import { tv } from 'tailwind-variants'
+import { CopyToClipboard } from './CopyToClipboard'
 
 const LANGUAGES_SUBSET_DETECTION = [
   'c',
@@ -35,66 +37,117 @@ interface Props {
   isInverted?: boolean
 }
 
-const customStyle = {
-  ...oneDark,
-  'code[class*="language-"]': {
-    ...oneDark['code[class*="language-"]'],
-    background: 'none',
-  },
-  'pre[class*="language-"]': {
-    ...oneDark['pre[class*="language-"]'],
-    background: '#1a1b26',
-    padding: '1.5rem',
-    borderRadius: '0.5rem',
-    width: '100%',
-    position: 'relative',
-    boxSizing: 'border-box',
-  },
+const CodeBlock = ({
+  language,
+  children,
+}: {
+  language: string
+  children: string
+}) => {
+  if (!children) return null
+
+  return (
+    <div className="relative">
+      <SyntaxHighlighter
+        data-testid="syntax-highlighter"
+        language={language}
+        customStyle={{}}
+        codeTagProps={{
+          className: 'text-primary',
+        }}
+        PreTag={undefined}
+        useInlineStyles={false}
+        wrapLines
+      >
+        {String(children).replace(/\n$/, '')}
+      </SyntaxHighlighter>
+      {language && (
+        <CopyToClipboard
+          text={String(children).replace(/\n$/, '')}
+          className="absolute right-1 top-1"
+        />
+      )}
+    </div>
+  )
 }
+
+const CodeInline = ({
+  language,
+  children,
+}: {
+  language: string
+  children: string
+}) => {
+  if (!children) return null
+
+  return (
+    <SyntaxHighlighter
+      data-testid="syntax-highlighter-inline"
+      language={language}
+      codeTagProps={{
+        className: 'px-1 py-0.5 bg-gray-200 rounded-sm border border-gray-400',
+      }}
+      useInlineStyles={false}
+      PreTag="span"
+      wrapLines={false}
+    >
+      {String(children).replace(/\n$/, '')}
+    </SyntaxHighlighter>
+  )
+}
+
+function Code({
+  children,
+  className = '',
+  node,
+}: JSX.IntrinsicElements['code'] & { node?: Element | undefined }) {
+  if (!node?.position || !children || typeof children !== 'string') {
+    console.error('Could not parse code node', node)
+    return <>{children}</>
+  }
+
+  const detectedLanguage =
+    hljs.highlightAuto(children, LANGUAGES_SUBSET_DETECTION).language ??
+    'plaintext'
+  const match = /language-(\w+)/.exec(className || '')
+  const language: string = (match ? match[1] : detectedLanguage) ?? 'plaintext'
+
+  if (node.position.start.line === node.position.end.line) {
+    return <CodeInline language={language}>{children}</CodeInline>
+  }
+
+  return <CodeBlock language={language}>{children}</CodeBlock>
+}
+
+const markdownStyles = tv({
+  base: [
+    'prose',
+    'prose-h1:mb-2 prose-h1:text-lg prose-h1:font-semibold',
+    'prose-h2:mb-2 prose-h2:text-lg prose-h2:font-semibold',
+    'prose-h3:mb-2 prose-h3:text-lg prose-h3:font-semibold',
+    'prose-h4:mb-2 prose-h4:text-lg prose-h4:font-semibold',
+    'prose-h5:mb-2 prose-h5:text-lg prose-h5:font-semibold',
+    'prose-h6:mb-2 prose-h6:text-lg prose-h6:font-semibold',
+    'prose-p:text-base',
+    'prose max-w-none prose-p:leading-relaxed',
+    '[--tw-prose-pre-code:theme(textColor.secondary)]',
+    '[--tw-prose-pre-bg:theme(colors.gray.200)]',
+    // 'prose-pre:p-4 prose-pre:shadow-md',
+  ],
+  variants: {
+    isInverted: {
+      true: 'prose-invert',
+      false: '',
+    },
+  },
+})
 
 export function Markdown({ children, isInverted = false }: Props) {
   return (
     <ReactMarkdown
-      className={`prose max-w-none prose-h1:mb-8 prose-h1:text-3xl prose-h1:font-bold
-        prose-h2:mb-4 prose-h2:mt-8 prose-h2:text-2xl prose-h2:font-semibold
-        prose-h3:mb-3 prose-h3:mt-6 prose-h3:text-xl prose-h3:font-medium
-        prose-p:leading-relaxed prose-pre:rounded-lg prose-pre:p-4 prose-pre:shadow-md
-        ${isInverted ? 'prose-invert' : ''}`}
+      className={markdownStyles({ isInverted })}
       components={{
-        code({ className, children, ...props }) {
-          if (!children) return null
-          const detectedLanguage =
-            hljs.highlightAuto(children, LANGUAGES_SUBSET_DETECTION).language ??
-            'plaintext'
-          const match = /language-(\w+)/.exec(className || '')
-          const language = match ? match[1] : detectedLanguage
-          return (
-            <div
-              className="group relative ml-0 w-full"
-              data-testid="syntax-highlighter"
-            >
-              <SyntaxHighlighter
-                style={customStyle}
-                language={language}
-                PreTag="pre"
-                className="my-6 overflow-hidden whitespace-normal rounded-lg text-sm shadow-lg"
-                wrapLines
-                {...props}
-              >
-                {String(children).replace(/\n$/, '')}
-              </SyntaxHighlighter>
-              {language && (
-                <CopyToClipboard
-                  text={String(children).replace(/\n$/, '')}
-                  className="absolute right-1 top-1"
-                />
-              )}
-            </div>
-          )
-        },
-        pre({ children }) {
-          return children
-        },
+        code: Code,
         a({ children, ...props }) {
           return (
             <a
@@ -106,6 +159,7 @@ export function Markdown({ children, isInverted = false }: Props) {
             </a>
           )
         },
+        pre: ({ children }) => children,
         img({ src, alt }) {
           return <img src={src} alt={alt} className="h-auto max-w-full" />
         },

@@ -61,3 +61,9 @@ Then run:
 ```bash
 npm run generate-icons
 ```
+
+## Update built-in prompt presets:
+
+```bash
+npm run fetch-prompt-presets
+```
