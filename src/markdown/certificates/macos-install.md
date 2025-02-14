@@ -1,4 +1,4 @@
-### Option 1: CLI
+### CLI method
 
 After downloading the certificate, open a terminal and run:
 
@@ -8,7 +8,7 @@ security add-trusted-cert -d -r trustRoot -p ssl -p basic \
   ~/Downloads/codegate.crt
 ```
 
-### Option 2: GUI
+### GUI method
 
 1. Open the downloaded certificate file; Keychain Access will open.
 2. Depending on your macOS version, you may see the **Add Certificates** dialog. If so, select the `login` keychain and click **Add**.
