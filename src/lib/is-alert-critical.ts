@@ -1,10 +1,10 @@
 import {
   AlertConversation,
   V1GetWorkspaceAlertsResponse,
-} from "@/api/generated";
+} from '@/api/generated'
 
 export function isAlertCritical(
-  alert: V1GetWorkspaceAlertsResponse[number],
+  alert: V1GetWorkspaceAlertsResponse[number]
 ): alert is AlertConversation {
-  return alert !== null && alert.trigger_category === "critical";
+  return alert !== null && alert.trigger_category === 'critical'
 }

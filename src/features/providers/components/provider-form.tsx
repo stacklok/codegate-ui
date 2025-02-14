@@ -1,11 +1,5 @@
-import { AddProviderEndpointRequest, ProviderAuthType } from "@/api/generated";
-import {
-  Label,
-  Select,
-  SelectButton,
-  Input,
-  TextField,
-} from "@stacklok/ui-kit";
+import { AddProviderEndpointRequest, ProviderAuthType } from '@/api/generated'
+import { Label, Select, SelectButton, Input, TextField } from '@stacklok/ui-kit'
 import {
   getAuthTypeOptions,
   getProviderAuthByType,
@@ -13,26 +7,26 @@ import {
   getProviderType,
   isProviderAuthType,
   isProviderType,
-} from "../lib/utils";
+} from '../lib/utils'
 
 interface Props {
-  provider: AddProviderEndpointRequest;
-  setProvider: (provider: AddProviderEndpointRequest) => void;
+  provider: AddProviderEndpointRequest
+  setProvider: (provider: AddProviderEndpointRequest) => void
 }
 
 export function ProviderForm({ provider, setProvider }: Props) {
   const providerAuthType =
-    provider.auth_type || getProviderAuthByType(provider.provider_type);
+    provider.auth_type || getProviderAuthByType(provider.provider_type)
   const providerEndpoint =
-    provider.endpoint || getProviderEndpointByAuthType(provider.provider_type);
+    provider.endpoint || getProviderEndpointByAuthType(provider.provider_type)
 
   const handleProviderType = (provider: AddProviderEndpointRequest) => {
     setProvider({
       ...provider,
       auth_type: getProviderAuthByType(provider.provider_type),
       endpoint: getProviderEndpointByAuthType(provider.provider_type),
-    });
-  };
+    })
+  }
 
   return (
     <div className="w-full">
@@ -63,7 +57,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
               handleProviderType({
                 ...provider,
                 provider_type,
-              });
+              })
             }
           }}
         >
@@ -108,7 +102,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
           items={getAuthTypeOptions()}
           onSelectionChange={(auth_type) => {
             if (isProviderAuthType(auth_type)) {
-              setProvider({ ...provider, auth_type });
+              setProvider({ ...provider, auth_type })
             }
           }}
         >
@@ -130,14 +124,14 @@ export function ProviderForm({ provider, setProvider }: Props) {
             <Input
               placeholder={
                 provider.api_key === undefined
-                  ? "Update the provider API key"
-                  : "Specify the provider API key"
+                  ? 'Update the provider API key'
+                  : 'Specify the provider API key'
               }
-              value={provider.api_key ?? ""}
+              value={provider.api_key ?? ''}
             />
           </TextField>
         </div>
       )}
     </div>
-  );
+  )
 }

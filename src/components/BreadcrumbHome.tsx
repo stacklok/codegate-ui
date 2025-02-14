@@ -1,5 +1,5 @@
-import { Breadcrumb } from "@stacklok/ui-kit";
+import { Breadcrumb } from '@stacklok/ui-kit'
 
 export function BreadcrumbHome() {
-  return <Breadcrumb href="/">Dashboard</Breadcrumb>;
+  return <Breadcrumb href="/">Dashboard</Breadcrumb>
 }

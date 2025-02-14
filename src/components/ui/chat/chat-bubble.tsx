@@ -1,31 +1,31 @@
-import * as React from "react";
-import MessageLoading from "./message-loading";
-import { Avatar, Button } from "@stacklok/ui-kit";
-import { tv } from "tailwind-variants";
-import { twMerge } from "tailwind-merge";
+import * as React from 'react'
+import MessageLoading from './message-loading'
+import { Avatar, Button } from '@stacklok/ui-kit'
+import { tv } from 'tailwind-variants'
+import { twMerge } from 'tailwind-merge'
 
 // ChatBubble
 const chatBubbleVariant = tv({
-  base: "flex gap-2 max-w-[60%] items-end relative group text-sm",
+  base: 'group relative flex max-w-[60%] items-end gap-2 text-sm',
   variants: {
     variant: {
-      received: "self-start",
-      sent: "self-end flex-row-reverse",
+      received: 'self-start',
+      sent: 'flex-row-reverse self-end',
     },
     layout: {
-      default: "",
-      ai: "max-w-full w-full items-center",
+      default: '',
+      ai: 'w-full max-w-full items-center',
     },
   },
   defaultVariants: {
-    variant: "received",
-    layout: "default",
+    variant: 'received',
+    layout: 'default',
   },
-});
+})
 
 interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant: "received" | "sent";
-  layout?: "default" | "ai";
+  variant: 'received' | 'sent'
+  layout?: 'default' | 'ai'
 }
 
 const ChatBubble = React.forwardRef<HTMLDivElement, ChatBubbleProps>(
@@ -33,29 +33,29 @@ const ChatBubble = React.forwardRef<HTMLDivElement, ChatBubbleProps>(
     <div
       className={twMerge(
         chatBubbleVariant({ variant, layout, className }),
-        "relative group",
+        'group relative'
       )}
       ref={ref}
       {...props}
     >
       {React.Children.map(children, (child) =>
-        React.isValidElement(child) && typeof child.type !== "string"
+        React.isValidElement(child) && typeof child.type !== 'string'
           ? React.cloneElement(child, {
               variant,
               layout,
             } as React.ComponentProps<typeof child.type>)
-          : child,
+          : child
       )}
     </div>
-  ),
-);
-ChatBubble.displayName = "ChatBubble";
+  )
+)
+ChatBubble.displayName = 'ChatBubble'
 
 // ChatBubbleAvatar
 interface ChatBubbleAvatarProps extends React.ComponentProps<typeof Avatar> {
-  src?: string;
-  fallback?: string;
-  className?: string;
+  src?: string
+  fallback?: string
+  className?: string
 }
 
 const ChatBubbleAvatar: React.FC<ChatBubbleAvatarProps> = ({
@@ -67,34 +67,34 @@ const ChatBubbleAvatar: React.FC<ChatBubbleAvatarProps> = ({
   <Avatar
     src={src}
     name={fallback}
-    className={twMerge(className, "rounded-full")}
+    className={twMerge(className, 'rounded-full')}
     {...rest}
   />
-);
+)
 
 // ChatBubbleMessage
 const chatBubbleMessageVariants = tv({
-  base: "p-4 bg-gray-100 text-primary",
+  base: 'bg-gray-100 p-4 text-primary',
   variants: {
     variant: {
-      received: "rounded-r-lg rounded-tl-lg",
-      sent: "rounded-l-lg rounded-tr-lg",
+      received: 'rounded-r-lg rounded-tl-lg',
+      sent: 'rounded-l-lg rounded-tr-lg',
     },
     layout: {
-      default: "",
-      ai: "border-t w-full rounded-none bg-transparent",
+      default: '',
+      ai: 'w-full rounded-none border-t bg-transparent',
     },
   },
   defaultVariants: {
-    variant: "received",
-    layout: "default",
+    variant: 'received',
+    layout: 'default',
   },
-});
+})
 
 interface ChatBubbleMessageProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant: "received" | "sent";
-  layout?: "default" | "ai";
-  isLoading?: boolean;
+  variant: 'received' | 'sent'
+  layout?: 'default' | 'ai'
+  isLoading?: boolean
 }
 
 const ChatBubbleMessage = React.forwardRef<
@@ -103,12 +103,12 @@ const ChatBubbleMessage = React.forwardRef<
 >(
   (
     { className, variant, layout, isLoading = false, children, ...props },
-    ref,
+    ref
   ) => (
     <div
       className={twMerge(
         chatBubbleMessageVariants({ variant, layout, className }),
-        "break-words max-w-full",
+        'max-w-full break-words'
       )}
       ref={ref}
       {...props}
@@ -121,14 +121,14 @@ const ChatBubbleMessage = React.forwardRef<
         children
       )}
     </div>
-  ),
-);
-ChatBubbleMessage.displayName = "ChatBubbleMessage";
+  )
+)
+ChatBubbleMessage.displayName = 'ChatBubbleMessage'
 
 // ChatBubbleTimestamp
 interface ChatBubbleTimestampProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  timestamp: string;
+  timestamp: string
 }
 
 const ChatBubbleTimestamp: React.FC<ChatBubbleTimestampProps> = ({
@@ -136,21 +136,21 @@ const ChatBubbleTimestamp: React.FC<ChatBubbleTimestampProps> = ({
   className,
   ...props
 }) => (
-  <div className={twMerge("text-sm mt-2 text-right", className)} {...props}>
+  <div className={twMerge('mt-2 text-right text-sm', className)} {...props}>
     {timestamp}
   </div>
-);
+)
 
 // ChatBubbleAction
 type ChatBubbleActionProps = React.ComponentProps<typeof Button> & {
-  icon: React.ReactNode;
-};
+  icon: React.ReactNode
+}
 
 const ChatBubbleAction: React.FC<ChatBubbleActionProps> = ({
   icon,
   onPress,
   className,
-  variant = "tertiary",
+  variant = 'tertiary',
   isIcon = true,
   ...props
 }) => (
@@ -163,12 +163,12 @@ const ChatBubbleAction: React.FC<ChatBubbleActionProps> = ({
   >
     {icon}
   </Button>
-);
+)
 
 interface ChatBubbleActionWrapperProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "sent" | "received";
-  className?: string;
+  variant?: 'sent' | 'received'
+  className?: string
 }
 
 const ChatBubbleActionWrapper = React.forwardRef<
@@ -178,18 +178,19 @@ const ChatBubbleActionWrapper = React.forwardRef<
   <div
     ref={ref}
     className={twMerge(
-      "absolute top-1/2 -translate-y-1/2 flex opacity-0 group-hover:opacity-100 transition-opacity duration-200",
-      variant === "sent"
-        ? "-left-1 -translate-x-full flex-row-reverse"
-        : "-right-1 translate-x-full",
-      className,
+      `absolute top-1/2 flex -translate-y-1/2 opacity-0 transition-opacity duration-200
+      group-hover:opacity-100`,
+      variant === 'sent'
+        ? '-left-1 -translate-x-full flex-row-reverse'
+        : '-right-1 translate-x-full',
+      className
     )}
     {...props}
   >
     {children}
   </div>
-));
-ChatBubbleActionWrapper.displayName = "ChatBubbleActionWrapper";
+))
+ChatBubbleActionWrapper.displayName = 'ChatBubbleActionWrapper'
 
 export {
   ChatBubble,
@@ -200,4 +201,4 @@ export {
   chatBubbleMessageVariants,
   ChatBubbleAction,
   ChatBubbleActionWrapper,
-};
+}

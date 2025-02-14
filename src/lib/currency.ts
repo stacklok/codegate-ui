@@ -1,72 +1,72 @@
-type Currency = ("GBP" | "USD" | "EUR" | "AED" | "JOD") & string;
+type Currency = ('GBP' | 'USD' | 'EUR' | 'AED' | 'JOD') & string
 
 type FormatCurrencyOptions = {
-  currency: Currency;
-  from_minor?: boolean;
-  region?: string | string[] | undefined;
-  to_minor?: boolean;
-};
+  currency: Currency
+  from_minor?: boolean
+  region?: string | string[] | undefined
+  to_minor?: boolean
+}
 
 const getCurrencyFormatOptions = (currency: Currency) => {
   return new Intl.NumberFormat(undefined, {
     currency: currency,
-    currencyDisplay: "code",
-    style: "currency",
-  }).resolvedOptions();
-};
+    currencyDisplay: 'code',
+    style: 'currency',
+  }).resolvedOptions()
+}
 
 export function formatCurrency(
   number: number,
   {
-    currency = "GBP",
+    currency = 'GBP',
     from_minor,
-    region = "en-US",
+    region = 'en-US',
     to_minor,
-  }: FormatCurrencyOptions,
+  }: FormatCurrencyOptions
 ): string {
   if (from_minor) {
     return new Intl.NumberFormat(
       region,
-      getCurrencyFormatOptions(currency),
-    ).format(convertCurrencyFromMinor(number, currency));
+      getCurrencyFormatOptions(currency)
+    ).format(convertCurrencyFromMinor(number, currency))
   }
 
   if (to_minor) {
     return new Intl.NumberFormat(
       region,
-      getCurrencyFormatOptions(currency),
-    ).format(convertCurrencyToMinor(number, currency));
+      getCurrencyFormatOptions(currency)
+    ).format(convertCurrencyToMinor(number, currency))
   }
 
   return new Intl.NumberFormat(
     region,
-    getCurrencyFormatOptions(currency),
-  ).format(number);
+    getCurrencyFormatOptions(currency)
+  ).format(number)
 }
 
 const getDigits = (currency: Currency): number => {
   const digits = new Intl.NumberFormat(undefined, {
     currency,
-    style: "currency",
-  }).resolvedOptions().maximumFractionDigits;
+    style: 'currency',
+  }).resolvedOptions().maximumFractionDigits
   if (digits === undefined)
     throw Error(
-      `[currency/getDigits] Unable to get digits for currency ${currency}`,
-    );
+      `[currency/getDigits] Unable to get digits for currency ${currency}`
+    )
 
-  return digits;
-};
+  return digits
+}
 
 export function convertCurrencyToMinor(
   amount: number,
-  currency: Currency,
+  currency: Currency
 ): number {
-  return Math.round(amount * 10 ** getDigits(currency));
+  return Math.round(amount * 10 ** getDigits(currency))
 }
 
 export function convertCurrencyFromMinor(
   amount: number,
-  currency: Currency,
+  currency: Currency
 ): number {
-  return amount / 10 ** getDigits(currency);
+  return amount / 10 ** getDigits(currency)
 }

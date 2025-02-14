@@ -1,23 +1,23 @@
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from 'date-fns'
 
-type Format = "relative" | "absolute";
+type Format = 'relative' | 'absolute'
 
 export const formatTime = (
   date: Date,
   options: {
-    format: Format;
+    format: Format
   } = {
-    format: "relative",
-  },
+    format: 'relative',
+  }
 ) => {
   switch (options.format) {
-    case "absolute":
-      return date.toLocaleString();
-    case "relative":
+    case 'absolute':
+      return date.toLocaleString()
+    case 'relative':
       return formatDistanceToNow(date, {
         addSuffix: true,
-      });
+      })
     default:
-      return options.format satisfies never;
+      return options.format satisfies never
   }
-};
+}

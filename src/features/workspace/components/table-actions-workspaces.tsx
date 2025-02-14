@@ -1,25 +1,25 @@
-import { Workspace } from "@/api/generated";
+import { Workspace } from '@/api/generated'
 import {
   Button,
   Menu,
   MenuTrigger,
   OptionsSchema,
   Popover,
-} from "@stacklok/ui-kit";
+} from '@stacklok/ui-kit'
 
-import { useMutationArchiveWorkspace } from "@/features/workspace/hooks/use-mutation-archive-workspace";
-import { useMutationRestoreWorkspace } from "../hooks/use-mutation-restore-workspace";
-import { useMutationHardDeleteWorkspace } from "../hooks/use-mutation-hard-delete-workspace";
-import { useMutationActivateWorkspace } from "../../../hooks/use-mutation-activate-workspace";
-import { useConfirmHardDeleteWorkspace } from "../hooks/use-confirm-hard-delete-workspace";
-import { hrefs } from "@/lib/hrefs";
+import { useMutationArchiveWorkspace } from '@/features/workspace/hooks/use-mutation-archive-workspace'
+import { useMutationRestoreWorkspace } from '../hooks/use-mutation-restore-workspace'
+import { useMutationHardDeleteWorkspace } from '../hooks/use-mutation-hard-delete-workspace'
+import { useMutationActivateWorkspace } from '../../../hooks/use-mutation-activate-workspace'
+import { useConfirmHardDeleteWorkspace } from '../hooks/use-confirm-hard-delete-workspace'
+import { hrefs } from '@/lib/hrefs'
 import {
   Check,
   DotsHorizontal,
   FlipBackward,
   Settings04,
   XClose,
-} from "@untitled-ui/icons-react";
+} from '@untitled-ui/icons-react'
 
 const getWorkspaceActions = ({
   archiveWorkspace,
@@ -28,39 +28,39 @@ const getWorkspaceActions = ({
   activeWorkspaceName,
 }: {
   workspace: Workspace & {
-    isArchived?: boolean;
-  };
+    isArchived?: boolean
+  }
   archiveWorkspace: ReturnType<
     typeof useMutationArchiveWorkspace
-  >["mutateAsync"];
+  >['mutateAsync']
   activateWorkspace: ReturnType<
     typeof useMutationActivateWorkspace
-  >["mutateAsync"];
-  activeWorkspaceName: string | null | undefined;
-}): OptionsSchema<"menu">[] => [
+  >['mutateAsync']
+  activeWorkspaceName: string | null | undefined
+}): OptionsSchema<'menu'>[] => [
   {
-    textValue: "Activate",
+    textValue: 'Activate',
     icon: <Check />,
-    id: "activate",
+    id: 'activate',
     isDisabled: workspace.name === activeWorkspaceName,
     onAction: () => activateWorkspace({ body: { name: workspace.name } }),
   },
   {
-    textValue: "Edit",
+    textValue: 'Edit',
     icon: <Settings04 />,
-    id: "edit",
+    id: 'edit',
     href: hrefs.workspaces.edit(workspace.name),
   },
   {
-    textValue: "Archive",
+    textValue: 'Archive',
     icon: <XClose />,
-    id: "archive",
+    id: 'archive',
     isDisabled:
-      workspace.name === activeWorkspaceName || workspace.name === "default",
+      workspace.name === activeWorkspaceName || workspace.name === 'default',
     onAction: () =>
       void archiveWorkspace({ path: { workspace_name: workspace.name } }),
   },
-];
+]
 
 const getArchivedWorkspaceActions = ({
   workspace,
@@ -68,43 +68,43 @@ const getArchivedWorkspaceActions = ({
   hardDeleteWorkspace,
 }: {
   workspace: Workspace & {
-    isArchived?: boolean;
-  };
+    isArchived?: boolean
+  }
   restoreWorkspace: ReturnType<
     typeof useMutationArchiveWorkspace
-  >["mutateAsync"];
+  >['mutateAsync']
   hardDeleteWorkspace: ReturnType<
     typeof useMutationHardDeleteWorkspace
-  >["mutateAsync"];
-}): OptionsSchema<"menu">[] => [
+  >['mutateAsync']
+}): OptionsSchema<'menu'>[] => [
   {
-    textValue: "Restore",
+    textValue: 'Restore',
     icon: <FlipBackward />,
-    id: "restore",
+    id: 'restore',
     onAction: () =>
       restoreWorkspace({ path: { workspace_name: workspace.name } }),
   },
   {
-    textValue: "Permanently delete",
+    textValue: 'Permanently delete',
     isDestructive: true,
     icon: <XClose />,
-    id: "permanently-delete",
+    id: 'permanently-delete',
     onAction: () =>
       hardDeleteWorkspace({ path: { workspace_name: workspace.name } }),
   },
-];
+]
 
 export function TableActionsWorkspaces({
   workspace,
   activeWorkspaceName,
 }: {
-  activeWorkspaceName: string | null | undefined;
-  workspace: Workspace & { isArchived: boolean };
+  activeWorkspaceName: string | null | undefined
+  workspace: Workspace & { isArchived: boolean }
 }) {
-  const { mutateAsync: archiveWorkspace } = useMutationArchiveWorkspace();
-  const { mutateAsync: restoreWorkspace } = useMutationRestoreWorkspace();
-  const { mutateAsync: activateWorkspace } = useMutationActivateWorkspace();
-  const hardDeleteWorkspace = useConfirmHardDeleteWorkspace();
+  const { mutateAsync: archiveWorkspace } = useMutationArchiveWorkspace()
+  const { mutateAsync: restoreWorkspace } = useMutationRestoreWorkspace()
+  const { mutateAsync: activateWorkspace } = useMutationActivateWorkspace()
+  const hardDeleteWorkspace = useConfirmHardDeleteWorkspace()
 
   return (
     <MenuTrigger>
@@ -130,5 +130,5 @@ export function TableActionsWorkspaces({
         />
       </Popover>
     </MenuTrigger>
-  );
+  )
 }

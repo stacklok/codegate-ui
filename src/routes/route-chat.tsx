@@ -1,34 +1,34 @@
-import { useParams } from "react-router-dom";
-import { parsingPromptText, sanitizeQuestionPrompt } from "@/lib/utils";
-import { Breadcrumb, Breadcrumbs, Loader } from "@stacklok/ui-kit";
-import { BreadcrumbHome } from "@/components/BreadcrumbHome";
-import { PageContainer } from "@/components/page-container";
-import { PageHeading } from "@/components/heading";
+import { useParams } from 'react-router-dom'
+import { parsingPromptText, sanitizeQuestionPrompt } from '@/lib/utils'
+import { Breadcrumb, Breadcrumbs, Loader } from '@stacklok/ui-kit'
+import { BreadcrumbHome } from '@/components/BreadcrumbHome'
+import { PageContainer } from '@/components/page-container'
+import { PageHeading } from '@/components/heading'
 import {
   ConversationView,
   useConversationSearchParams,
-} from "@/features/dashboard-messages/hooks/use-conversation-search-params";
-import { TabsConversation } from "@/features/dashboard-messages/components/tabs-conversation";
-import { SectionConversationTranscript } from "@/features/dashboard-messages/components/section-conversation-transcript";
-import { SectionConversationSecrets } from "@/features/dashboard-messages/components/section-conversation-secrets";
-import { ErrorFallbackContent } from "@/components/Error";
-import { useConversationById } from "@/features/dashboard-messages/hooks/use-conversation-by-id";
-import { getConversationTitle } from "@/features/dashboard-messages/lib/get-conversation-title";
-import { formatTime } from "@/lib/format-time";
-import { Conversation } from "@/api/generated";
+} from '@/features/dashboard-messages/hooks/use-conversation-search-params'
+import { TabsConversation } from '@/features/dashboard-messages/components/tabs-conversation'
+import { SectionConversationTranscript } from '@/features/dashboard-messages/components/section-conversation-transcript'
+import { SectionConversationSecrets } from '@/features/dashboard-messages/components/section-conversation-secrets'
+import { ErrorFallbackContent } from '@/components/Error'
+import { useConversationById } from '@/features/dashboard-messages/hooks/use-conversation-by-id'
+import { getConversationTitle } from '@/features/dashboard-messages/lib/get-conversation-title'
+import { formatTime } from '@/lib/format-time'
+import { Conversation } from '@/api/generated'
 
 function ConversationContent({
   view,
   conversation,
 }: {
-  view: ConversationView;
-  conversation: Conversation;
+  view: ConversationView
+  conversation: Conversation
 }) {
   switch (view) {
     case ConversationView.OVERVIEW:
-      return <SectionConversationTranscript conversation={conversation} />;
+      return <SectionConversationTranscript conversation={conversation} />
     case ConversationView.SECRETS:
-      return <SectionConversationSecrets conversation={conversation} />;
+      return <SectionConversationSecrets conversation={conversation} />
   }
 }
 
@@ -40,14 +40,14 @@ function TitleContent({ conversation }: { conversation: Conversation }) {
         {formatTime(new Date(conversation.conversation_timestamp))}
       </span>
     </div>
-  );
+  )
 }
 
 export function RouteChat() {
-  const { id } = useParams<"id">();
-  const { state } = useConversationSearchParams();
+  const { id } = useParams<'id'>()
+  const { state } = useConversationSearchParams()
 
-  const { data: conversation, isLoading } = useConversationById(id ?? "");
+  const { data: conversation, isLoading } = useConversationById(id ?? '')
 
   const title =
     conversation === undefined ||
@@ -56,24 +56,24 @@ export function RouteChat() {
       : parsingPromptText(
           sanitizeQuestionPrompt({
             question: conversation.question_answers?.[0].question.message,
-            answer: conversation.question_answers?.[0]?.answer?.message ?? "",
+            answer: conversation.question_answers?.[0]?.answer?.message ?? '',
           }),
-          conversation.conversation_timestamp,
-        );
+          conversation.conversation_timestamp
+        )
 
   if (isLoading)
     return (
       <div className="py-60">
-        <Loader className="size-10 mx-auto" />
+        <Loader className="mx-auto size-10" />
       </div>
-    );
-  if (!id || !conversation) return <ErrorFallbackContent />;
+    )
+  if (!id || !conversation) return <ErrorFallbackContent />
 
   return (
     <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
-        <Breadcrumb className="w-96 block truncate">{title}</Breadcrumb>
+        <Breadcrumb className="block w-96 truncate">{title}</Breadcrumb>
       </Breadcrumbs>
       <PageHeading
         level={1}
@@ -84,5 +84,5 @@ export function RouteChat() {
         <ConversationContent conversation={conversation} view={state.view} />
       </TabsConversation>
     </PageContainer>
-  );
+  )
 }

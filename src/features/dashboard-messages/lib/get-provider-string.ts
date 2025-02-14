@@ -1,10 +1,10 @@
 export function getProviderString(provider: string | null): string {
   switch (provider) {
-    case "copilot":
-      return "Github Copilot";
+    case 'copilot':
+      return 'Github Copilot'
     case null:
-      return "Unknown provider";
+      return 'Unknown provider'
     default:
-      return provider;
+      return provider
   }
 }

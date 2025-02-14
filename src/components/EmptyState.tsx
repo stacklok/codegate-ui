@@ -1,8 +1,8 @@
 interface EmptyStateProps {
-  children?: React.ReactNode;
-  title?: string | React.ReactNode;
-  description?: string | React.ReactNode;
-  illustration?: React.ReactNode;
+  children?: React.ReactNode
+  title?: string | React.ReactNode
+  description?: string | React.ReactNode
+  illustration?: React.ReactNode
 }
 
 export function EmptyState({
@@ -30,5 +30,5 @@ export function EmptyState({
         )}
       </div>
     </>
-  );
+  )
 }

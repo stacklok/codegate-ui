@@ -4,24 +4,24 @@ import {
   MenuTrigger,
   OptionsSchema,
   Popover,
-} from "@stacklok/ui-kit";
-import { OverlayTriggerStateContext } from "react-aria-components";
-import { ReactNode, useContext } from "react";
-import { ChevronDown, ChevronUp } from "@untitled-ui/icons-react";
+} from '@stacklok/ui-kit'
+import { OverlayTriggerStateContext } from 'react-aria-components'
+import { ReactNode, useContext } from 'react'
+import { ChevronDown, ChevronUp } from '@untitled-ui/icons-react'
 
 function PopoverIcon() {
-  const { isOpen = false } = useContext(OverlayTriggerStateContext) ?? {};
+  const { isOpen = false } = useContext(OverlayTriggerStateContext) ?? {}
 
-  return isOpen ? <ChevronUp /> : <ChevronDown />;
+  return isOpen ? <ChevronUp /> : <ChevronDown />
 }
 
 export function DropdownMenu({
   items,
   title,
 }: {
-  title: ReactNode;
-  items: OptionsSchema<"menu">[];
-  className?: string;
+  title: ReactNode
+  items: OptionsSchema<'menu'>[]
+  className?: string
 }) {
   return (
     <MenuTrigger>
@@ -33,5 +33,5 @@ export function DropdownMenu({
         <Menu items={items} />
       </Popover>
     </MenuTrigger>
-  );
+  )
 }

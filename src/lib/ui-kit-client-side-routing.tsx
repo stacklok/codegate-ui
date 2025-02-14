@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import { RouterProvider } from "@stacklok/ui-kit";
+import { useNavigate } from 'react-router-dom'
+import { RouterProvider } from '@stacklok/ui-kit'
 
 export function UiKitClientSideRoutingProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  return <RouterProvider navigate={navigate}>{children}</RouterProvider>;
+  return <RouterProvider navigate={navigate}>{children}</RouterProvider>
 }
