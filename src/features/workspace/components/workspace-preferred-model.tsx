@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -16,6 +15,10 @@ import { FormEvent } from "react";
 import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
 import { Select, SelectButton } from "@stacklok/ui-kit";
 import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
+import { FormButtons } from "@/components/FormButtons";
+import { invalidateQueries } from "@/lib/react-query-utils";
+import { v1GetWorkspaceMuxesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
+import { useQueryClient } from "@tanstack/react-query";
 
 function MissingProviderBanner() {
   return (
@@ -39,30 +42,38 @@ export function WorkspacePreferredModel({
   workspaceName: string;
   isArchived: boolean | undefined;
 }) {
-  const { preferredModel, setPreferredModel, isPending } =
-    usePreferredModelWorkspace(workspaceName);
+  const queryClient = useQueryClient();
+  const { formState, isPending } = usePreferredModelWorkspace(workspaceName);
   const { mutateAsync } = useMutationPreferredModelWorkspace();
   const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
-  const { model, provider_id } = preferredModel;
   const isModelsEmpty = !isPending && providerModels.length === 0;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    mutateAsync({
-      path: { workspace_name: workspaceName },
-      body: [
-        {
-          matcher: "",
-          provider_id,
-          model,
-          matcher_type: MuxMatcherType.CATCH_ALL,
-        },
-      ],
-    });
+    mutateAsync(
+      {
+        path: { workspace_name: workspaceName },
+        body: [
+          {
+            matcher: "",
+            matcher_type: MuxMatcherType.CATCH_ALL,
+            ...formState.values.preferredModel,
+          },
+        ],
+      },
+      {
+        onSuccess: () =>
+          invalidateQueries(queryClient, [v1GetWorkspaceMuxesQueryKey]),
+      },
+    );
   };
 
   return (
-    <Form onSubmit={handleSubmit} validationBehavior="aria">
+    <Form
+      onSubmit={handleSubmit}
+      validationBehavior="aria"
+      data-testid="preferred-model"
+    >
       <Card className={twMerge(className, "shrink-0")}>
         <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">
@@ -84,16 +95,18 @@ export function WorkspacePreferredModel({
                 isRequired
                 isDisabled={isModelsEmpty}
                 className="w-full"
-                selectedKey={preferredModel?.model}
+                selectedKey={formState.values.preferredModel?.model}
                 placeholder="Select the model"
                 onSelectionChange={(model) => {
                   const preferredModelProvider = providerModels.find(
                     (item) => item.name === model,
                   );
                   if (preferredModelProvider) {
-                    setPreferredModel({
-                      model: preferredModelProvider.name,
-                      provider_id: preferredModelProvider.provider_id,
+                    formState.updateFormValues({
+                      preferredModel: {
+                        model: preferredModelProvider.name,
+                        provider_id: preferredModelProvider.provider_id,
+                      },
                     });
                   }
                 }}
@@ -109,9 +122,11 @@ export function WorkspacePreferredModel({
           </div>
         </CardBody>
         <CardFooter className="justify-end">
-          <Button isDisabled={isArchived || isModelsEmpty} type="submit">
-            Save
-          </Button>
+          <FormButtons
+            isPending={isPending}
+            formState={formState}
+            canSubmit={!isArchived}
+          />
         </CardFooter>
       </Card>
     </Form>

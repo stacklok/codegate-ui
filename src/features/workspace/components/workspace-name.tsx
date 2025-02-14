@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { useFormState } from "@/hooks/useFormState";
 import { FormButtons } from "@/components/FormButtons";
+import { FormEvent } from "react";
 
 export function WorkspaceName({
   className,
@@ -32,7 +33,7 @@ export function WorkspaceName({
   const isDefault = workspaceName === "default";
   const isUneditable = isArchived || isPending || isDefault;
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
     mutateAsync(
@@ -70,7 +71,9 @@ export function WorkspaceName({
           <FormButtons
             isPending={isPending}
             formErrorMessage={errorMsg}
-            formSideNote="Cannot rename the default workspace"
+            formSideNote={
+              isDefault ? "Cannot rename the default workspace" : undefined
+            }
             formState={formState}
             canSubmit={!isArchived}
           />
