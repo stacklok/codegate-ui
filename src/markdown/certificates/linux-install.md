@@ -1,12 +1,10 @@
-1. Install the `certutil` tool using the appropriate command for your distribution: 
-   - **Ubuntu/Debian**: `sudo apt install libnss3-tools` 
+1. Install the `certutil` tool using the appropriate command for your distribution:
+   - **Ubuntu/Debian**: `sudo apt install libnss3-tools`
    - **RHEL/Fedora**: `sudo dnf install nss-tools`
-2. Run the following command to install the certificate for your account:
+2. Add the certificate to your account's NSS shared database:
     ```shell
     certutil -d sql:$HOME/.pki/nssdb \
-    -A \
-    -t "C,," \
-    -n CodeGate-CA \
-    -i ~/Downloads/codegate.crt
+      -A -t "C,," -n CodeGate-CA \
+      -i ~/Downloads/codegate.crt
     ```
 3. Restart VS Code.

@@ -60,7 +60,9 @@ describe('Certificates', () => {
     ).toBeVisible()
     expect(screen.getByRole('heading', { name: 'GUI method' })).toBeVisible()
     expect(
-      screen.getByText('Launch the Keychain Access app', { exact: false })
+      screen.getByText('Right-click the "CodeGate CA" certificate', {
+        exact: false,
+      })
     ).toBeVisible()
   })
 
@@ -86,7 +88,7 @@ describe('Certificates', () => {
 
     expect(
       screen.getByText(
-        'Run the following command to install the certificate for your account:'
+        "Add the certificate to your account's NSS shared database:"
       )
     ).toBeVisible()
 
@@ -94,9 +96,7 @@ describe('Certificates', () => {
       screen.getByRole('button', { name: 'Remove certificate' })
     )
     expect(
-      screen.getByText(
-        'Run the following command to uninstall the certificate from your account:'
-      )
+      screen.getByText('Remove the certificate from your account:')
     ).toBeVisible()
   })
 })
