@@ -265,7 +265,7 @@ function StatusPopover({
 }) {
   return (
     <Popover className="px-3 py-2 min-w-64" placement="bottom end">
-      <Dialog aria-label="CodeGate Status" className="outline-0">
+      <Dialog aria-label="CodeGate Status" style={{ outline: 0 }}>
         <Row
           title="CodeGate server"
           value={getHealthCheckText(healthCheckStatus)}
