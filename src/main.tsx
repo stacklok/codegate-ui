@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import './code.css'
 import '@stacklok/ui-kit/style'
 import App from './App.tsx'
 

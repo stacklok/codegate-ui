@@ -21,8 +21,9 @@ export function CopyToClipboard({
     <TooltipTrigger delay={0} closeDelay={500}>
       <Button
         variant="tertiary"
+        isIcon
         className={twMerge(
-          'size-7 text-secondary',
+          'text-secondary',
           className,
           copied ? 'text-primary' : 'text-secondary'
         )}
