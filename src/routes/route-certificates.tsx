@@ -96,19 +96,19 @@ export function RouteCertificates() {
   const steps = {
     macos: {
       install: [
-        "Open the downloaded certificate file; Keychain Access will open and prompt you to to add the certificates.",
-        "In the Add Certificates dialog, select the `login` keychain, and click Add.",
-        "In the Keychain Access dialog, select the `login` keychain from the Default Keychains list on the left.",
+        "CLI method: Open a terminal and run `security add-trusted-cert -d -r trustRoot -p ssl -p basic -k ~/Library/Keychains/login.keychain ~/Downloads/codegate.crt`",
+        "GUI method: Open the downloaded certificate file; Keychain Access will open.",
+        "Depending on your macOS version, you may see the Add Certificates dialog. If so, select the `login` keychain, and click Add.",
+        "In Keychain Access, select the `login` keychain from the Default Keychains list on the left.",
         'Search for "CodeGate" (it may not appear until you search), then in the search results, double-click the "CodeGate CA" certificate.',
         'Expand the Trust section and set the "Secure Sockets Layer" and "X.509 Basic Policy" options to "Always Trust".',
-        "Alternatively, run `security add-trusted-cert -r trustRoot -k ~/Library/Keychains/login.keychain ~/Downloads/codegate.crt` from a terminal.",
       ],
       remove: [
-        "Launch the Keychain Access app.",
+        'CLI method: Open a terminal and run `security delete-certificate -c "CodeGate CA" -t ~/Library/Keychains/login.keychain`',
+        "GUI method: Launch the Keychain Access app (Note: on newer macOS versions, Keychain Access is hidden from Launcher, but can be run from Spotlight Search).",
         'Select the login keychain and search for "CodeGate".',
         'Right-click the "CodeGate CA" certificate and Delete the certificate.',
         "Confirm the deletion when prompted.",
-        'Alternatively, run `security delete-certificate -c "CodeGate CA" -t ~/Library/Keychains/login.keychain` from a terminal.',
       ],
     },
     windows: {
@@ -130,14 +130,13 @@ export function RouteCertificates() {
     },
     linux: {
       install: [
-        "Copy the certificate to `/usr/local/share/ca-certificates/codegate.crt` (Ubuntu/Debian) or `/etc/pki/ca-trust/source/anchors/codegate.pem` (RHEL/Fedora).",
-        "Run `sudo update-ca-certificates` (Ubuntu/Debian) or `sudo update-ca-trust` (RHEL/Fedora).",
-        "Restart your IDE.",
+        "Install the `certutil` tool: `sudo apt install libnss3-tools` (Ubuntu/Debian) or `sudo dnf install nss-tools` (RHEL/Fedora).",
+        'Run `certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n CodeGate-CA -i ~/Downloads/codegate.crt` to install the certificate for your account.',
+        "Restart VS Code.",
       ],
       remove: [
-        "Delete the certificate file from `/usr/local/share/ca-certificates/` (Ubuntu/Debian) or `/etc/pki/ca-trust/source/anchors/` (RHEL/Fedora).",
-        "Run `sudo update-ca-certificates --fresh` (Ubuntu/Debian) or `sudo update-ca-trust` (RHEL/Fedora).",
-        "Restart your IDE.",
+        "Run `certutil -d sql:$HOME/.pki/nssdb -D -n CodeGate-CA`",
+        "Restart VS Code.",
       ],
     },
   };
@@ -166,7 +165,7 @@ export function RouteCertificates() {
                 </h2>
                 <p className="text-secondary mb-4">
                   This certificate allows CodeGate to act as a secure proxy for
-                  integrations such as GitHub Copilot.
+                  GitHub Copilot. This certificate is unique to your system.
                 </p>
                 <Button onPress={handleDownload}>Download certificate</Button>
               </div>
@@ -191,9 +190,9 @@ export function RouteCertificates() {
               <div className="flex gap-3">
                 <CheckIcon />
                 <p className="text-secondary">
-                  <strong>Secure certificate handling:</strong> this custom CA
-                  is locally generated and managed. CodeGate developers have no
-                  access to it.
+                  <strong>Secure certificate handling:</strong> This custom CA
+                  is locally generated and managed. It is unique to your
+                  installation and CodeGate developers have no access to it.
                 </p>
               </div>
               <div className="flex gap-3">
@@ -202,7 +201,7 @@ export function RouteCertificates() {
                   <strong>No external communications:</strong> CodeGate is
                   designed with no capability to call home or communicate with
                   external servers, outside of those requested by the IDE or
-                  Agent.
+                  agent.
                 </p>
               </div>
             </div>
@@ -218,7 +217,7 @@ export function RouteCertificates() {
         <Card className="mb-8">
           <CardBody>
             <h2 className="text-xl font-semibold mb-6">
-              Certificate Management
+              Certificate management
             </h2>
             {/* OS Selection Tabs */}
             <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
