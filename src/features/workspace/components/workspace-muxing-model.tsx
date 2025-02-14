@@ -103,7 +103,7 @@ function SortableItem({
             setRuleItem({ ...rule, provider_id, model })
           }
         />
-        {showRemoveButton && !isDefaultRule && (
+        {showRemoveButton && !isDefaultRule ? (
           <Button
             aria-label="remove mux rule"
             isIcon
@@ -112,6 +112,8 @@ function SortableItem({
           >
             <Trash01 />
           </Button>
+        ) : (
+          <div className="min-w-10 max-w-10" />
         )}
       </div>
     </div>
