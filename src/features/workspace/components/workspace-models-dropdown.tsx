@@ -46,7 +46,7 @@ function groupModelsByProviderName(
       }
 
       ;(providerData?.items ?? []).push({
-        id: `${item.provider_id}_${item.name}`,
+        id: `${item.provider_id}/${item.name}`,
         textValue: item.name,
       })
 
@@ -90,7 +90,6 @@ export function WorkspaceModelsDropdown({
   const [isOpen, setIsOpen] = useState(false)
   const [searchItem, setSearchItem] = useState('')
   const groupedModels = groupModelsByProviderName(models)
-  console.log({ groupedModels, rule: rule })
   const currentProvider = models.find((p) => p.provider_id === rule.provider_id)
   const currentModel =
     currentProvider && rule.model
@@ -130,7 +129,7 @@ export function WorkspaceModelsDropdown({
               const selectedValue = v.values().next().value
               if (!selectedValue && typeof selectedValue !== 'string') return
               if (typeof selectedValue === 'string') {
-                const [provider_id, modelName] = selectedValue.split('_')
+                const [provider_id, modelName] = selectedValue.split('/')
                 if (!provider_id || !modelName) return
                 onChange({
                   model: modelName,
