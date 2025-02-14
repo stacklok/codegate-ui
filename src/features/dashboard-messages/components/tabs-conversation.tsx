@@ -1,30 +1,30 @@
-import { isAlertSecret } from "../../../lib/is-alert-secret";
+import { isAlertSecret } from '../../../lib/is-alert-secret'
 import {
   Tab as BaseTab,
   Tabs,
   TabList,
   TabPanel,
   Badge,
-} from "@stacklok/ui-kit";
-import { AlertsFilterView } from "../hooks/use-messages-filter-search-params";
+} from '@stacklok/ui-kit'
+import { AlertsFilterView } from '../hooks/use-messages-filter-search-params'
 
 import {
   ConversationView,
   useConversationSearchParams,
-} from "../hooks/use-conversation-search-params";
-import { useConversationById } from "../hooks/use-conversation-by-id";
+} from '../hooks/use-conversation-search-params'
+import { useConversationById } from '../hooks/use-conversation-by-id'
 
 function Tab({
   id,
   title,
   count,
 }: {
-  title: string;
-  id: ConversationView;
-  count?: number;
+  title: string
+  id: ConversationView
+  count?: number
 }) {
   return (
-    <BaseTab className="flex gap-1 items-center" id={id}>
+    <BaseTab className="flex items-center gap-1" id={id}>
       <span className="block">{title}</span>
       {count ? (
         <Badge
@@ -36,21 +36,21 @@ function Tab({
         </Badge>
       ) : null}
     </BaseTab>
-  );
+  )
 }
 
 export function TabsConversation({
   children,
   id,
 }: {
-  id: string;
-  children: React.ReactNode;
+  id: string
+  children: React.ReactNode
 }) {
-  const { state, setView } = useConversationSearchParams();
+  const { state, setView } = useConversationSearchParams()
 
-  const { data } = useConversationById(id);
+  const { data } = useConversationById(id)
 
-  const secretsCount = data?.alerts?.filter(isAlertSecret).length ?? 0;
+  const secretsCount = data?.alerts?.filter(isAlertSecret).length ?? 0
 
   return (
     <Tabs
@@ -69,5 +69,5 @@ export function TabsConversation({
 
       <TabPanel id={state.view}>{children}</TabPanel>
     </Tabs>
-  );
+  )
 }

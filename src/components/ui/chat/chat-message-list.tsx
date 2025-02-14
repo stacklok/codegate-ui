@@ -1,23 +1,23 @@
-import * as React from "react";
-import { twMerge } from "tailwind-merge";
+import * as React from 'react'
+import { twMerge } from 'tailwind-merge'
 
-type ChatMessageListProps = React.HTMLAttributes<HTMLDivElement>;
+type ChatMessageListProps = React.HTMLAttributes<HTMLDivElement>
 
 const ChatMessageList = React.forwardRef<HTMLDivElement, ChatMessageListProps>(
   ({ className, children, ...props }, ref) => (
     <div
       className={twMerge(
-        "flex flex-col size-full p-4 gap-6 overflow-y-auto",
-        className,
+        'flex size-full flex-col gap-6 overflow-y-auto p-4',
+        className
       )}
       ref={ref}
       {...props}
     >
       {children}
     </div>
-  ),
-);
+  )
+)
 
-ChatMessageList.displayName = "ChatMessageList";
+ChatMessageList.displayName = 'ChatMessageList'
 
-export { ChatMessageList };
+export { ChatMessageList }

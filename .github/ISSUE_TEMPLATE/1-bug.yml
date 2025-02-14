@@ -1,9 +1,9 @@
-name: "Bug"
-description: "Report a bug to help us improve the proxy system."
-type: "Bug 🐞"
-title: "-- Provide a general summary of the issue --"
-labels: ["bug", "needs-triage"]
-assignees: "-"
+name: 'Bug'
+description: 'Report a bug to help us improve the proxy system.'
+type: 'Bug 🐞'
+title: '-- Provide a general summary of the issue --'
+labels: ['bug', 'needs-triage']
+assignees: '-'
 body:
   - type: markdown
     attributes:
@@ -12,24 +12,24 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: "Describe the issue"
-      description: "A clear and concise description of what the bug is. If applicable, add screenshots to illustrate the problem."
+      label: 'Describe the issue'
+      description: 'A clear and concise description of what the bug is. If applicable, add screenshots to illustrate the problem.'
     validations:
       required: true
 
   - type: textarea
     id: reproduce-steps
     attributes:
-      label: "Steps to Reproduce"
-      description: "Describe the steps to reproduce the behavior."
+      label: 'Steps to Reproduce'
+      description: 'Describe the steps to reproduce the behavior.'
     validations:
       required: true
 
   - type: dropdown
     id: operating-system
     attributes:
-      label: "Operating System"
-      description: "Select the operating system where the issue occurred."
+      label: 'Operating System'
+      description: 'Select the operating system where the issue occurred.'
       options:
         - Microsoft Windows (Intel)
         - Microsoft Windows (Arm)
@@ -44,26 +44,26 @@ body:
   - type: input
     id: ide-version
     attributes:
-      label: "IDE and Version"
-      description: "Enter the IDE name and version."
-      placeholder: "e.g. VS Code 1.78.0"
+      label: 'IDE and Version'
+      description: 'Enter the IDE name and version.'
+      placeholder: 'e.g. VS Code 1.78.0'
     validations:
       required: true
 
   - type: input
     id: extension-version
     attributes:
-      label: "Extension and Version"
-      description: "Enter the extension name and version."
-      placeholder: "e.g. Proxy Extension 0.5.1"
+      label: 'Extension and Version'
+      description: 'Enter the extension name and version.'
+      placeholder: 'e.g. Proxy Extension 0.5.1'
     validations:
       required: true
 
   - type: dropdown
     id: provider
     attributes:
-      label: "Provider"
-      description: "Select the provider used."
+      label: 'Provider'
+      description: 'Select the provider used.'
       options:
         - Anthropic
         - OpenAI
@@ -77,32 +77,32 @@ body:
   - type: input
     id: model
     attributes:
-      label: "Model"
-      description: "Enter the model name used (e.g. GPT-4, Claude 3)."
-      placeholder: "e.g. GPT-4"
+      label: 'Model'
+      description: 'Enter the model name used (e.g. GPT-4, Claude 3).'
+      placeholder: 'e.g. GPT-4'
     validations:
       required: true
 
   - type: input
     id: codegate-version
     attributes:
-      label: "Codegate version"
-      description: "Enter the version of CodeGate (e.g. `v0.1.8`, `4845e00c039e`)."
-      placeholder: "e.g. v0.1.8"
+      label: 'Codegate version'
+      description: 'Enter the version of CodeGate (e.g. `v0.1.8`, `4845e00c039e`).'
+      placeholder: 'e.g. v0.1.8'
     validations:
       required: true
 
   - type: textarea
     id: logs
     attributes:
-      label: "Logs"
-      description: "If applicable, paste logs or error messages."
-      placeholder: "Paste log content here."
+      label: 'Logs'
+      description: 'If applicable, paste logs or error messages.'
+      placeholder: 'Paste log content here.'
 
   - type: textarea
     id: additional-context
     attributes:
-      label: "Additional Context"
-      description: "Add any other context or details about the problem here (e.g. link to Discussion, etc.)."
+      label: 'Additional Context'
+      description: 'Add any other context or details about the problem here (e.g. link to Discussion, etc.).'
     validations:
       required: false

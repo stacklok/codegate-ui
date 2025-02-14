@@ -1,11 +1,11 @@
-import { useConfirm } from "@/hooks/use-confirm";
-import { useCallback } from "react";
-import { useMutationDeleteProvider } from "./use-mutation-delete-provider";
+import { useConfirm } from '@/hooks/use-confirm'
+import { useCallback } from 'react'
+import { useMutationDeleteProvider } from './use-mutation-delete-provider'
 
 export function useConfirmDeleteProvider() {
-  const { mutateAsync: deleteProvider } = useMutationDeleteProvider();
+  const { mutateAsync: deleteProvider } = useMutationDeleteProvider()
 
-  const { confirm } = useConfirm();
+  const { confirm } = useConfirm()
 
   return useCallback(
     async (...params: Parameters<typeof deleteProvider>) => {
@@ -17,17 +17,17 @@ export function useConfirmDeleteProvider() {
         </>,
         {
           buttons: {
-            yes: "Delete",
-            no: "Cancel",
+            yes: 'Delete',
+            no: 'Cancel',
           },
-          title: "Permanently delete provider",
+          title: 'Permanently delete provider',
           isDestructive: true,
         }
-      );
+      )
       if (answer) {
-        return deleteProvider(...params);
+        return deleteProvider(...params)
       }
     },
     [confirm, deleteProvider]
-  );
+  )
 }

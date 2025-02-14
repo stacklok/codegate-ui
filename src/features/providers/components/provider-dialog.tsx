@@ -5,24 +5,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogCloseButton,
-} from "@stacklok/ui-kit";
-import { useNavigate } from "react-router-dom";
+} from '@stacklok/ui-kit'
+import { useNavigate } from 'react-router-dom'
 
 export function ProviderDialog({
   title,
   children,
 }: {
-  title: string;
-  children: React.ReactNode;
+  title: string
+  children: React.ReactNode
 }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <DialogModalOverlay
       isDismissable={false}
       isOpen
       onOpenChange={() => {
-        navigate("/providers");
+        navigate('/providers')
       }}
     >
       <DialogModal>
@@ -35,5 +35,5 @@ export function ProviderDialog({
         </Dialog>
       </DialogModal>
     </DialogModalOverlay>
-  );
+  )
 }

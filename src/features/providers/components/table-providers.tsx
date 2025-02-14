@@ -9,53 +9,53 @@ import {
   TableHeader,
   ResizableTableContainer,
   Button,
-} from "@stacklok/ui-kit";
-import { Globe02, Tool01, Trash01 } from "@untitled-ui/icons-react";
-import { PROVIDER_AUTH_TYPE_MAP } from "../lib/utils";
-import { useProviders } from "../hooks/use-providers";
-import { match } from "ts-pattern";
-import { ComponentProps } from "react";
-import { ProviderEndpoint } from "@/api/generated";
-import { useConfirmDeleteProvider } from "../hooks/use-confirm-delete-provider";
+} from '@stacklok/ui-kit'
+import { Globe02, Tool01, Trash01 } from '@untitled-ui/icons-react'
+import { PROVIDER_AUTH_TYPE_MAP } from '../lib/utils'
+import { useProviders } from '../hooks/use-providers'
+import { match } from 'ts-pattern'
+import { ComponentProps } from 'react'
+import { ProviderEndpoint } from '@/api/generated'
+import { useConfirmDeleteProvider } from '../hooks/use-confirm-delete-provider'
 
 const COLUMN_MAP = {
-  provider: "provider",
-  type: "type",
-  endpoint: "endpoint",
-  auth: "auth",
-  configuration: "configuration",
-} as const;
+  provider: 'provider',
+  type: 'type',
+  endpoint: 'endpoint',
+  auth: 'auth',
+  configuration: 'configuration',
+} as const
 
-type ColumnId = keyof typeof COLUMN_MAP;
-type Column = { id: ColumnId } & Omit<ComponentProps<typeof Column>, "id">;
+type ColumnId = keyof typeof COLUMN_MAP
+type Column = { id: ColumnId } & Omit<ComponentProps<typeof Column>, 'id'>
 const COLUMNS: Column[] = [
   {
-    id: "provider",
+    id: 'provider',
     isRowHeader: true,
-    children: "Name & Description",
+    children: 'Name & Description',
     minWidth: 450,
     maxWidth: 520,
   },
   {
-    id: "type",
-    children: "Provider",
+    id: 'type',
+    children: 'Provider',
     minWidth: 110,
     maxWidth: 130,
-    className: "capitalize",
+    className: 'capitalize',
   },
-  { id: "endpoint", children: "Endpoint", minWidth: 250 },
-  { id: "auth", children: "Authentication", minWidth: 140 },
-  { id: "configuration", alignment: "end", minWidth: 40, children: "" },
-];
+  { id: 'endpoint', children: 'Endpoint', minWidth: 250 },
+  { id: 'auth', children: 'Authentication', minWidth: 140 },
+  { id: 'configuration', alignment: 'end', minWidth: 40, children: '' },
+]
 
 function CellRenderer({
   column,
   row,
   deleteProvider,
 }: {
-  column: Column;
-  row: ProviderEndpoint;
-  deleteProvider: () => void;
+  column: Column
+  row: ProviderEndpoint
+  deleteProvider: () => void
 }) {
   return match(column.id)
     .with(COLUMN_MAP.provider, () => (
@@ -78,11 +78,11 @@ function CellRenderer({
             {PROVIDER_AUTH_TYPE_MAP[row.auth_type]}
           </Badge>
         ) : (
-          "N/A"
+          'N/A'
         )}
         <LinkButton
           variant="tertiary"
-          className="flex gap-2 items-center"
+          className="flex items-center gap-2"
           href={`/providers/${row.id}`}
         >
           <Tool01 className="size-4" /> Manage
@@ -94,12 +94,12 @@ function CellRenderer({
         <Trash01 />
       </Button>
     ))
-    .exhaustive();
+    .exhaustive()
 }
 
 export function TableProviders() {
-  const { data: providers = [] } = useProviders();
-  const deleteProvider = useConfirmDeleteProvider();
+  const { data: providers = [] } = useProviders()
+  const deleteProvider = useConfirmDeleteProvider()
 
   return (
     <ResizableTableContainer>
@@ -123,7 +123,7 @@ export function TableProviders() {
                     deleteProvider={() => {
                       deleteProvider({
                         path: { provider_id: row.id as string },
-                      });
+                      })
                     }}
                   />
                 </Cell>
@@ -133,5 +133,5 @@ export function TableProviders() {
         </TableBody>
       </Table>
     </ResizableTableContainer>
-  );
+  )
 }

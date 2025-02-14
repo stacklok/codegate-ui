@@ -1,16 +1,16 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom'
 
-import { RouteWorkspace } from "./routes/route-workspace";
-import { RouteWorkspaces } from "./routes/route-workspaces";
-import { RouteCertificates } from "./routes/route-certificates";
-import { RouteChat } from "./routes/route-chat";
-import { RouteDashboard } from "./routes/route-dashboard";
-import { RouteCertificateSecurity } from "./routes/route-certificate-security";
-import { RouteWorkspaceCreation } from "./routes/route-workspace-creation";
-import { RouteNotFound } from "./routes/route-not-found";
-import { RouteProvider } from "./routes/route-providers";
-import { RouteProviderCreate } from "./routes/route-provider-create";
-import { RouteProviderUpdate } from "./routes/route-provider-update";
+import { RouteWorkspace } from './routes/route-workspace'
+import { RouteWorkspaces } from './routes/route-workspaces'
+import { RouteCertificates } from './routes/route-certificates'
+import { RouteChat } from './routes/route-chat'
+import { RouteDashboard } from './routes/route-dashboard'
+import { RouteCertificateSecurity } from './routes/route-certificate-security'
+import { RouteWorkspaceCreation } from './routes/route-workspace-creation'
+import { RouteNotFound } from './routes/route-not-found'
+import { RouteProvider } from './routes/route-providers'
+import { RouteProviderCreate } from './routes/route-provider-create'
+import { RouteProviderUpdate } from './routes/route-provider-update'
 
 export default function Page() {
   return (
@@ -36,5 +36,5 @@ export default function Page() {
 
       <Route path="*" element={<RouteNotFound />} />
     </Routes>
-  );
+  )
 }

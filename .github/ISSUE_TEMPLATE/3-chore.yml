@@ -1,8 +1,8 @@
 name: Chore
 description: Chore request
-type: "Chore 🧹"
-title: "[Chore]: "
-labels: ["chore", "needs-triage"]
+type: 'Chore 🧹'
+title: '[Chore]: '
+labels: ['chore', 'needs-triage']
 body:
   - type: textarea
     id: description
@@ -16,7 +16,7 @@ body:
   - type: textarea
     id: additional-context
     attributes:
-      label: "Additional Context"
-      description: "Add any other context or details about the problem here (e.g. link to Discussion, etc.)."
+      label: 'Additional Context'
+      description: 'Add any other context or details about the problem here (e.g. link to Discussion, etc.).'
     validations:
       required: false

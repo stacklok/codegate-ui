@@ -8,21 +8,21 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from "@stacklok/ui-kit";
+} from '@stacklok/ui-kit'
 
-import { useListAllWorkspaces } from "../../../hooks/use-query-list-all-workspaces";
-import { useQueryActiveWorkspaceName } from "../../../hooks/use-query-active-workspace-name";
-import { TableActionsWorkspaces } from "./table-actions-workspaces";
-import { hrefs } from "@/lib/hrefs";
+import { useListAllWorkspaces } from '../../../hooks/use-query-list-all-workspaces'
+import { useQueryActiveWorkspaceName } from '../../../hooks/use-query-active-workspace-name'
+import { TableActionsWorkspaces } from './table-actions-workspaces'
+import { hrefs } from '@/lib/hrefs'
 
 function CellName({
   name,
   isArchived = false,
   isActive = false,
 }: {
-  name: string;
-  isArchived: boolean;
-  isActive: boolean;
+  name: string
+  isArchived: boolean
+  isActive: boolean
 }) {
   if (isArchived)
     return (
@@ -33,7 +33,7 @@ function CellName({
           Archived
         </Badge>
       </Cell>
-    );
+    )
 
   if (isActive)
     return (
@@ -44,14 +44,14 @@ function CellName({
           Active
         </Badge>
       </Cell>
-    );
+    )
 
-  return <Cell>{name}</Cell>;
+  return <Cell>{name}</Cell>
 }
 
 export function TableWorkspaces() {
-  const { data: workspaces } = useListAllWorkspaces();
-  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
+  const { data: workspaces } = useListAllWorkspaces()
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName()
 
   return (
     <Card>
@@ -88,5 +88,5 @@ export function TableWorkspaces() {
         </Table>
       </CardBody>
     </Card>
-  );
+  )
 }
