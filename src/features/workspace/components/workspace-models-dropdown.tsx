@@ -2,7 +2,7 @@ import {
   ModelByProvider,
   MuxRule,
   V1ListAllModelsForAllProvidersResponse,
-} from "@/api/generated";
+} from '@/api/generated'
 import {
   DialogTrigger,
   Button,
@@ -12,71 +12,73 @@ import {
   Input,
   OptionRenderer,
   OptionsSchema,
-} from "@stacklok/ui-kit";
-import { ChevronDown, SearchMd } from "@untitled-ui/icons-react";
-import { useState } from "react";
+} from '@stacklok/ui-kit'
+import { ChevronDown, SearchMd } from '@untitled-ui/icons-react'
+import { useState } from 'react'
 
 type Props = {
-  rule: MuxRule & { id: string };
-  isArchived: boolean;
-  models: V1ListAllModelsForAllProvidersResponse;
+  rule: MuxRule & { id: string }
+  isArchived: boolean
+  models: V1ListAllModelsForAllProvidersResponse
   onChange: ({
     model,
     provider_id,
   }: {
-    model: string;
-    provider_id: string;
-  }) => void;
-};
+    model: string
+    provider_id: string
+  }) => void
+}
 
 function groupModelsByProviderName(
-  models: ModelByProvider[],
-): OptionsSchema<"listbox", string>[] {
-  return models.reduce<OptionsSchema<"listbox", string>[]>(
+  models: ModelByProvider[]
+): OptionsSchema<'listbox', string>[] {
+  return models.reduce<OptionsSchema<'listbox', string>[]>(
     (groupedProviders, item) => {
       const providerData = groupedProviders.find(
-        (group) => group.id === item.provider_name,
-      );
+        (group) => group.id === item.provider_name
+      )
       if (!providerData) {
         groupedProviders.push({
           id: item.provider_name,
           items: [],
           textValue: item.provider_name,
-        });
+        })
       }
 
-      (providerData?.items ?? []).push({
-        id: item.name,
+      ;(providerData?.items ?? []).push({
+        id: `${item.provider_id}_${item.name}`,
         textValue: item.name,
-      });
+      })
 
-      return groupedProviders;
+      return groupedProviders
     },
-    [],
-  );
+    []
+  )
 }
 
 function filterModels({
   groupedModels,
   searchItem,
 }: {
-  searchItem: string;
-  groupedModels: OptionsSchema<"listbox", string>[];
+  searchItem: string
+  groupedModels: OptionsSchema<'listbox', string>[]
 }) {
-  return groupedModels
+  const test = groupedModels
     .map((modelData) => {
-      if (!searchItem) return modelData;
+      if (!searchItem) return modelData
       const filteredModels = modelData.items?.filter((item) => {
-        return item.textValue.includes(searchItem);
-      });
+        return item.textValue.includes(searchItem)
+      })
 
       const data = {
         ...modelData,
         items: filteredModels,
-      };
-      return data;
+      }
+      return data
     })
-    .filter((item) => (item.items ? item.items.length > 0 : false));
+    .filter((item) => (item.items ? item.items.length > 0 : false))
+
+  return test
 }
 
 export function WorkspaceModelsDropdown({
@@ -85,27 +87,28 @@ export function WorkspaceModelsDropdown({
   models = [],
   onChange,
 }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchItem, setSearchItem] = useState("");
-  const groupedModels = groupModelsByProviderName(models);
-  const currentProvider = models.find(
-    (p) => p.provider_id === rule.provider_id,
-  );
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchItem, setSearchItem] = useState('')
+  const groupedModels = groupModelsByProviderName(models)
+  console.log({ groupedModels, rule: rule })
+  const currentProvider = models.find((p) => p.provider_id === rule.provider_id)
   const currentModel =
     currentProvider && rule.model
       ? `${currentProvider?.provider_name}/${rule.model}`
-      : "";
+      : ''
+  const selectedKey = `${rule.provider_id}_${rule.model}`
 
   return (
-    <div className="w-full flex">
+    <div className="flex w-full">
       <DialogTrigger isOpen={isOpen} onOpenChange={(test) => setIsOpen(test)}>
         <Button
           variant="secondary"
           isDisabled={isArchived}
           data-testid="workspace-models-dropdown"
-          className="flex justify-between cursor-pointer bg-gray-25 border-gray-400 shadow-none font-normal w-full"
+          className="flex w-full cursor-pointer justify-between border-gray-400 bg-gray-25
+            font-normal shadow-none"
         >
-          <span>{currentModel || "Select a model"}</span>
+          <span>{currentModel || 'Select a model'}</span>
           <ChevronDown className="shrink-0" />
         </Button>
 
@@ -119,22 +122,21 @@ export function WorkspaceModelsDropdown({
             items={filterModels({ searchItem, groupedModels })}
             selectionMode="single"
             selectionBehavior="replace"
-            selectedKeys={rule.model ? [rule.model] : []}
+            selectedKeys={selectedKey ? [selectedKey] : []}
             onSelectionChange={(v) => {
-              if (v === "all") {
-                return;
+              if (v === 'all') {
+                return
               }
-              const selectedValue = v.values().next().value;
-              const providerId = models.find(
-                (item) => item.name === selectedValue,
-              )?.provider_id;
-              if (typeof selectedValue === "string" && providerId) {
+              const selectedValue = v.values().next().value
+              if (!selectedValue && typeof selectedValue !== 'string') return
+              if (typeof selectedValue === 'string') {
+                const [provider_id, modelName] = selectedValue.split('_')
+                if (!provider_id || !modelName) return
                 onChange({
-                  model: selectedValue,
-                  provider_id: providerId,
-                });
-
-                setIsOpen(false);
+                  model: modelName,
+                  provider_id,
+                })
+                setIsOpen(false)
               }
             }}
             className="-mx-1 mt-2 max-h-72 overflow-auto"
@@ -154,5 +156,5 @@ export function WorkspaceModelsDropdown({
         </Popover>
       </DialogTrigger>
     </div>
-  );
+  )
 }
