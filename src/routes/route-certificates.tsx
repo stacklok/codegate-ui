@@ -16,6 +16,8 @@ import { markdown as windowsRemove } from '../markdown/certificates/windows-remo
 import { markdown as macosInstall } from '../markdown/certificates/macos-install.md'
 import { markdown as macosRemove } from '../markdown/certificates/macos-remove.md'
 import { Markdown } from '@/components/Markdown'
+import { PageContainer } from '@/components/page-container'
+import { PageHeading } from '@/components/heading'
 
 type OS = 'macos' | 'windows' | 'linux'
 type Action = 'install' | 'remove'
@@ -95,145 +97,140 @@ export function RouteCertificates() {
   const currentSteps = steps[activeOS][activeAction]
 
   return (
-    <>
+    <PageContainer className="max-w-4xl">
       <Breadcrumbs>
         <BreadcrumbHome />
         <Breadcrumb>Certificates</Breadcrumb>
       </Breadcrumbs>
+      <PageHeading title="Certificates" level={1} />
 
-      <div className="mx-auto max-w-4xl px-4 pr-6">
-        <h1 className="mb-8 text-3xl font-bold">Certificates</h1>
-
-        <Card className="mb-8">
-          <CardBody>
-            <div className="flex items-start gap-6">
-              <div className="flex size-16 shrink-0 items-center justify-center rounded-full bg-brand-50">
-                <ShieldIcon />
-              </div>
-              <div className="grow">
-                <h2 className="mb-2 text-xl font-semibold">
-                  CodeGate CA certificate
-                </h2>
-                <p className="mb-4 text-secondary">
-                  This certificate allows CodeGate to act as a secure proxy for
-                  GitHub Copilot. This certificate is unique to your system.
-                </p>
-                <Button onPress={handleDownload}>Download certificate</Button>
-              </div>
+      <Card className="mb-8">
+        <CardBody>
+          <div className="flex items-start gap-6">
+            <div className="flex size-16 shrink-0 items-center justify-center rounded-full bg-brand-50">
+              <ShieldIcon />
             </div>
-          </CardBody>
-        </Card>
+            <div className="grow">
+              <h2 className="mb-2 text-xl font-semibold">
+                CodeGate CA certificate
+              </h2>
+              <p className="mb-4 text-secondary">
+                This certificate allows CodeGate to act as a secure proxy for
+                GitHub Copilot. This certificate is unique to your system.
+              </p>
+              <Button onPress={handleDownload}>Download certificate</Button>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
 
-        <Card className="mb-8">
-          <CardBody>
-            <h2 className="mb-4 text-xl font-semibold">
-              Is this certificate safe to install on my machine?
-            </h2>
+      <Card className="mb-8">
+        <CardBody>
+          <h2 className="mb-4 text-xl font-semibold">
+            Is this certificate safe to install on my machine?
+          </h2>
+          <div className="space-y-4">
+            <div className="flex gap-3">
+              <CheckIcon />
+              <p className="text-secondary">
+                <strong>Local-only:</strong> CodeGate runs entirely on your
+                machine within an isolated container, ensuring all data
+                processing stays local without any external transmissions.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <CheckIcon />
+              <p className="text-secondary">
+                <strong>Secure certificate handling:</strong> This custom CA is
+                locally generated and managed. It is unique to your installation
+                and CodeGate developers have no access to it.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <CheckIcon />
+              <p className="text-secondary">
+                <strong>No external communications:</strong> CodeGate is
+                designed with no capability to call home or communicate with
+                external servers, outside of those requested by the IDE or
+                agent.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 flex justify-start">
+            <LinkButton href="/certificates/security">
+              <span className="mr-2">Learn more</span>
+              <ArrowIcon />
+            </LinkButton>
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card className="mb-8">
+        <CardBody>
+          <h2 className="mb-6 text-xl font-semibold">Certificate management</h2>
+          {/* OS Selection Tabs */}
+          <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
+            <button
+              onClick={() => setActiveOS('macos')}
+              className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                activeOS === 'macos'
+                  ? 'bg-base text-brand-700 shadow-sm'
+                  : 'text-gray-500 hover:text-secondary'
+                        }`}
+            >
+              macOS
+            </button>
+            <button
+              onClick={() => setActiveOS('windows')}
+              className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                activeOS === 'windows'
+                  ? 'bg-base text-brand-700 shadow-sm'
+                  : 'text-gray-500 hover:text-secondary'
+              }`}
+            >
+              Windows
+            </button>
+            <button
+              onClick={() => setActiveOS('linux')}
+              className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                activeOS === 'linux'
+                  ? 'bg-base text-brand-700 shadow-sm'
+                  : 'text-gray-500 hover:text-secondary'
+              }`}
+            >
+              Linux
+            </button>
+          </div>
+          {/* Action Selection Tabs */}
+          <div className="my-6 flex space-x-4">
+            <button
+              onClick={() => setActiveAction('install')}
+              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                activeAction === 'install'
+                  ? 'border-brand-200 bg-brand-50 text-brand-700'
+                  : 'border-gray-200 text-gray-500 hover:text-secondary'
+              }`}
+            >
+              Install certificate
+            </button>
+            <button
+              onClick={() => setActiveAction('remove')}
+              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                activeAction === 'remove'
+                  ? 'border-brand-200 bg-brand-50 text-brand-700'
+                  : 'border-gray-200 text-gray-500 hover:text-secondary'
+              }`}
+            >
+              Remove certificate
+            </button>
+          </div>
+          <div className="mt-6">
             <div className="space-y-4">
-              <div className="flex gap-3">
-                <CheckIcon />
-                <p className="text-secondary">
-                  <strong>Local-only:</strong> CodeGate runs entirely on your
-                  machine within an isolated container, ensuring all data
-                  processing stays local without any external transmissions.
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <CheckIcon />
-                <p className="text-secondary">
-                  <strong>Secure certificate handling:</strong> This custom CA
-                  is locally generated and managed. It is unique to your
-                  installation and CodeGate developers have no access to it.
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <CheckIcon />
-                <p className="text-secondary">
-                  <strong>No external communications:</strong> CodeGate is
-                  designed with no capability to call home or communicate with
-                  external servers, outside of those requested by the IDE or
-                  agent.
-                </p>
-              </div>
+              <Markdown children={currentSteps} />
             </div>
-            <div className="mt-6 flex justify-start">
-              <LinkButton href="/certificates/security">
-                <span className="mr-2">Learn more</span>
-                <ArrowIcon />
-              </LinkButton>
-            </div>
-          </CardBody>
-        </Card>
-
-        <Card className="mb-8">
-          <CardBody>
-            <h2 className="mb-6 text-xl font-semibold">
-              Certificate management
-            </h2>
-            {/* OS Selection Tabs */}
-            <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
-              <button
-                onClick={() => setActiveOS('macos')}
-                className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                  activeOS === 'macos'
-                    ? 'bg-base text-brand-700 shadow-sm'
-                    : 'text-gray-500 hover:text-secondary'
-                          }`}
-              >
-                macOS
-              </button>
-              <button
-                onClick={() => setActiveOS('windows')}
-                className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                  activeOS === 'windows'
-                    ? 'bg-base text-brand-700 shadow-sm'
-                    : 'text-gray-500 hover:text-secondary'
-                }`}
-              >
-                Windows
-              </button>
-              <button
-                onClick={() => setActiveOS('linux')}
-                className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                  activeOS === 'linux'
-                    ? 'bg-base text-brand-700 shadow-sm'
-                    : 'text-gray-500 hover:text-secondary'
-                }`}
-              >
-                Linux
-              </button>
-            </div>
-            {/* Action Selection Tabs */}
-            <div className="my-6 flex space-x-4">
-              <button
-                onClick={() => setActiveAction('install')}
-                className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
-                  activeAction === 'install'
-                    ? 'border-brand-200 bg-brand-50 text-brand-700'
-                    : 'border-gray-200 text-gray-500 hover:text-secondary'
-                }`}
-              >
-                Install certificate
-              </button>
-              <button
-                onClick={() => setActiveAction('remove')}
-                className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
-                  activeAction === 'remove'
-                    ? 'border-brand-200 bg-brand-50 text-brand-700'
-                    : 'border-gray-200 text-gray-500 hover:text-secondary'
-                }`}
-              >
-                Remove certificate
-              </button>
-            </div>
-            <div className="mt-6">
-              <div className="space-y-4">
-                <Markdown children={currentSteps} />
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-      </div>
-    </>
+          </div>
+        </CardBody>
+      </Card>
+    </PageContainer>
   )
 }

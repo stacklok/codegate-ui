@@ -41,16 +41,19 @@ describe('Certificates', () => {
   it('should render macOS certificate installation', async () => {
     render(<RouteCertificates />)
 
-    expect(
-      screen.getByText(
-        'Open the downloaded certificate file; Keychain Access will open and prompt you to to add the certificates.'
-      )
-    ).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'CLI method' })).toBeVisible()
+    expect(screen.getByText('After downloading the certificate')).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'GUI method' })).toBeVisible()
+    expect(screen.getByText('Open the downloaded certificate')).toBeVisible()
 
     await userEvent.click(
       screen.getByRole('button', { name: 'Remove certificate' })
     )
-    expect(screen.getByText('Launch the Keychain Access app.')).toBeVisible()
+
+    expect(screen.getByRole('heading', { name: 'CLI method' })).toBeVisible()
+    expect(screen.getByText('Open a terminal and run')).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'GUI method' })).toBeVisible()
+    expect(screen.getByText('Launch the Keychain Access app')).toBeVisible()
   })
 
   it('should render Windows certificate installation', async () => {
