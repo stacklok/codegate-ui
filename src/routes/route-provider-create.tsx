@@ -7,6 +7,7 @@ import { ProviderDialog } from '@/features/providers/components/provider-dialog'
 import { ProviderDialogFooter } from '@/features/providers/components/provider-dialog-footer'
 import { ProviderForm } from '@/features/providers/components/provider-form'
 import { useMutationCreateProvider } from '@/features/providers/hooks/use-mutation-create-provider'
+import { getProviderEndpointByAuthType } from '@/features/providers/lib/utils'
 import { DialogContent, Form } from '@stacklok/ui-kit'
 import { useState } from 'react'
 
@@ -20,9 +21,13 @@ const DEFAULT_PROVIDER_STATE = {
 }
 
 export function RouteProviderCreate() {
-  const [provider, setProvider] = useState<AddProviderEndpointRequest>(
-    DEFAULT_PROVIDER_STATE
-  )
+  const [provider, setProvider] = useState<AddProviderEndpointRequest>({
+    ...DEFAULT_PROVIDER_STATE,
+    endpoint: getProviderEndpointByAuthType(
+      DEFAULT_PROVIDER_STATE.provider_type
+    ),
+  })
+
   const { mutateAsync } = useMutationCreateProvider()
 
   const handleSubmit = (event: React.FormEvent) => {
