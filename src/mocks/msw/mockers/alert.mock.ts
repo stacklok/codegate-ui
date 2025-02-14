@@ -1,9 +1,14 @@
-import { Alert, AlertSeverity } from "@/api/generated";
-import { faker } from "@faker-js/faker";
+import { Alert, AlertSeverity } from '@/api/generated'
+import { faker } from '@faker-js/faker'
 
 const ALERT_SECRET_FIELDS = {
   trigger_string: 'foo',
   trigger_type: 'codegate-secrets',
+} satisfies Pick<Alert, 'trigger_string' | 'trigger_type'>
+
+const ALERT_PII_FIELDS = {
+  trigger_string: 'fakemail@fakedomain.mock',
+  trigger_type: 'codegate-pii',
 } satisfies Pick<Alert, 'trigger_string' | 'trigger_type'>
 
 const ALERT_MALICIOUS_FIELDS = {
@@ -31,7 +36,7 @@ const getBaseAlert = ({
 export const mockAlert = ({
   type,
 }: {
-  type: 'secret' | 'malicious'
+  type: 'secret' | 'malicious' | 'pii'
 }): Alert => {
   const timestamp = faker.date.recent().toISOString()
 
@@ -52,6 +57,14 @@ export const mockAlert = ({
       const result: Alert = {
         ...base,
         ...ALERT_SECRET_FIELDS,
+      }
+
+      return result
+    }
+    case 'pii': {
+      const result: Alert = {
+        ...base,
+        ...ALERT_PII_FIELDS,
       }
 
       return result

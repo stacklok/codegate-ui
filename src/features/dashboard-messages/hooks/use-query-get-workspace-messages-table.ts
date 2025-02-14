@@ -9,6 +9,7 @@ import { isConversationWithMaliciousAlerts } from '../../../lib/is-alert-malicio
 import { isConversationWithSecretAlerts } from '../../../lib/is-alert-secret'
 import { filterMessagesBySubstring } from '../lib/filter-messages-by-substring'
 import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
+import { isConversationWithPII } from '@/lib/is-alert-pii'
 
 const FILTER: Record<
   AlertsFilterView,
@@ -17,6 +18,7 @@ const FILTER: Record<
   all: () => true,
   malicious: isConversationWithMaliciousAlerts,
   secrets: isConversationWithSecretAlerts,
+  pii: isConversationWithPII,
 }
 
 export function useQueryGetWorkspaceMessagesTable() {
