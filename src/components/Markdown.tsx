@@ -57,7 +57,6 @@ const CodeBlock = ({
         }}
         PreTag={undefined}
         useInlineStyles={false}
-        // className="overflow-hidden whitespace-normal rounded-lg text-sm shadow-lg"
         wrapLines
       >
         {String(children).replace(/\n$/, '')}
@@ -84,10 +83,9 @@ const CodeInline = ({
   return (
     <SyntaxHighlighter
       data-testid="syntax-highlighter-inline"
-      // style={customStyle}
       language={language}
       codeTagProps={{
-        className: 'p-1 bg-gray-200 rounded-sm border border-gray-400',
+        className: 'px-1 py-0.5 bg-gray-200 rounded-sm border border-gray-400',
       }}
       useInlineStyles={false}
       PreTag="span"
