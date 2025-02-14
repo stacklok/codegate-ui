@@ -7,18 +7,18 @@ import {
   Link,
   LinkButton,
   Text,
-} from "@stacklok/ui-kit";
-import { twMerge } from "tailwind-merge";
-import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
-import { MuxMatcherType } from "@/api/generated";
-import { FormEvent } from "react";
-import { usePreferredModelWorkspace } from "../hooks/use-preferred-preferred-model";
-import { Select, SelectButton } from "@stacklok/ui-kit";
-import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
-import { FormButtons } from "@/components/FormButtons";
-import { invalidateQueries } from "@/lib/react-query-utils";
-import { v1GetWorkspaceMuxesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
-import { useQueryClient } from "@tanstack/react-query";
+} from '@stacklok/ui-kit'
+import { twMerge } from 'tailwind-merge'
+import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
+import { MuxMatcherType } from '@/api/generated'
+import { FormEvent } from 'react'
+import { usePreferredModelWorkspace } from '../hooks/use-preferred-preferred-model'
+import { Select, SelectButton } from '@stacklok/ui-kit'
+import { useQueryListAllModelsForAllProviders } from '@/hooks/use-query-list-all-models-for-all-providers'
+import { FormButtons } from '@/components/FormButtons'
+import { invalidateQueries } from '@/lib/react-query-utils'
+import { v1GetWorkspaceMuxesQueryKey } from '@/api/generated/@tanstack/react-query.gen'
+import { useQueryClient } from '@tanstack/react-query'
 
 function MissingProviderBanner() {
   return (
@@ -30,7 +30,7 @@ function MissingProviderBanner() {
         Add Provider
       </LinkButton>
     </Alert>
-  );
+  )
 }
 
 export function WorkspacePreferredModel({
@@ -38,24 +38,24 @@ export function WorkspacePreferredModel({
   workspaceName,
   isArchived,
 }: {
-  className?: string;
-  workspaceName: string;
-  isArchived: boolean | undefined;
+  className?: string
+  workspaceName: string
+  isArchived: boolean | undefined
 }) {
-  const queryClient = useQueryClient();
-  const { formState, isPending } = usePreferredModelWorkspace(workspaceName);
-  const { mutateAsync } = useMutationPreferredModelWorkspace();
-  const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
-  const isModelsEmpty = !isPending && providerModels.length === 0;
+  const queryClient = useQueryClient()
+  const { formState, isPending } = usePreferredModelWorkspace(workspaceName)
+  const { mutateAsync } = useMutationPreferredModelWorkspace()
+  const { data: providerModels = [] } = useQueryListAllModelsForAllProviders()
+  const isModelsEmpty = !isPending && providerModels.length === 0
 
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     mutateAsync(
       {
         path: { workspace_name: workspaceName },
         body: [
           {
-            matcher: "",
+            matcher: '',
             matcher_type: MuxMatcherType.CATCH_ALL,
             ...formState.values.preferredModel,
           },
@@ -64,9 +64,9 @@ export function WorkspacePreferredModel({
       {
         onSuccess: () =>
           invalidateQueries(queryClient, [v1GetWorkspaceMuxesQueryKey]),
-      },
-    );
-  };
+      }
+    )
+  }
 
   return (
     <Form
@@ -74,13 +74,13 @@ export function WorkspacePreferredModel({
       validationBehavior="aria"
       data-testid="preferred-model"
     >
-      <Card className={twMerge(className, "shrink-0")}>
+      <Card className={twMerge(className, 'shrink-0')}>
         <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">
             <Text className="text-primary">Preferred Model</Text>
-            <Text className="flex items-center gap-1 text-secondary mb-0 text-balance">
+            <Text className="mb-0 flex items-center gap-1 text-balance text-secondary">
               Select the model you would like to use in this workspace. This
-              section applies only if you are using the{" "}
+              section applies only if you are using the{' '}
               <Link variant="primary" href="/providers">
                 MUX endpoint.
               </Link>
@@ -99,15 +99,15 @@ export function WorkspacePreferredModel({
                 placeholder="Select the model"
                 onSelectionChange={(model) => {
                   const preferredModelProvider = providerModels.find(
-                    (item) => item.name === model,
-                  );
+                    (item) => item.name === model
+                  )
                   if (preferredModelProvider) {
                     formState.updateFormValues({
                       preferredModel: {
                         model: preferredModelProvider.name,
                         provider_id: preferredModelProvider.provider_id,
                       },
-                    });
+                    })
                   }
                 }}
                 items={providerModels.map((model) => ({
@@ -130,5 +130,5 @@ export function WorkspacePreferredModel({
         </CardFooter>
       </Card>
     </Form>
-  );
+  )
 }

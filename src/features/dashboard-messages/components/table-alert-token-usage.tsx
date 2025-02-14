@@ -1,18 +1,18 @@
-import { TokenUsageAggregate } from "@/api/generated";
-import { TextLinkButton, Tooltip, TooltipTrigger } from "@stacklok/ui-kit";
-import { Download01, Upload01 } from "@untitled-ui/icons-react";
-import { TokenUsageByProviders } from "./token-usage-by-providers";
-import { formatNumberCompact } from "@/lib/format-number";
+import { TokenUsageAggregate } from '@/api/generated'
+import { TextLinkButton, Tooltip, TooltipTrigger } from '@stacklok/ui-kit'
+import { Download01, Upload01 } from '@untitled-ui/icons-react'
+import { TokenUsageByProviders } from './token-usage-by-providers'
+import { formatNumberCompact } from '@/lib/format-number'
 
 function Icons({
   input_tokens = 0,
   output_tokens = 0,
 }: {
-  input_tokens: number | null;
-  output_tokens: number | null;
+  input_tokens: number | null
+  output_tokens: number | null
 }) {
   return (
-    <div className="flex tabular-nums gap-4 items-center">
+    <div className="flex items-center gap-4 tabular-nums">
       <div className="flex items-center gap-1">
         <Download01 className="size-4" />
         {formatNumberCompact(input_tokens ?? 0)}
@@ -22,15 +22,15 @@ function Icons({
         <span className="block">{formatNumberCompact(output_tokens ?? 0)}</span>
       </div>
     </div>
-  );
+  )
 }
 
 export function TableAlertTokenUsage({
   usage,
 }: {
-  usage: TokenUsageAggregate | null;
+  usage: TokenUsageAggregate | null
 }) {
-  if (!usage) return "N/A";
+  if (!usage) return 'N/A'
 
   return (
     <TooltipTrigger delay={0}>
@@ -47,5 +47,5 @@ export function TableAlertTokenUsage({
         />
       </Tooltip>
     </TooltipTrigger>
-  );
+  )
 }

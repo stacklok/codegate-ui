@@ -1,7 +1,7 @@
-import { isConversationWithMaliciousAlerts } from "../../../lib/is-alert-malicious";
-import { multiFilter } from "@/lib/multi-filter";
-import { isConversationWithSecretAlerts } from "../../../lib/is-alert-secret";
-import { V1GetWorkspaceMessagesResponse } from "@/api/generated";
+import { isConversationWithMaliciousAlerts } from '../../../lib/is-alert-malicious'
+import { multiFilter } from '@/lib/multi-filter'
+import { isConversationWithSecretAlerts } from '../../../lib/is-alert-secret'
+import { V1GetWorkspaceMessagesResponse } from '@/api/generated'
 import {
   Tab as BaseTab,
   Tabs,
@@ -10,56 +10,58 @@ import {
   Badge,
   Card,
   CardBody,
-} from "@stacklok/ui-kit";
+} from '@stacklok/ui-kit'
 import {
   AlertsFilterView,
   useMessagesFilterSearchParams,
-} from "../hooks/use-messages-filter-search-params";
-import { SearchFieldMessages } from "./search-field-messages";
-import { tv } from "tailwind-variants";
-import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
+} from '../hooks/use-messages-filter-search-params'
+import { SearchFieldMessages } from './search-field-messages'
+import { tv } from 'tailwind-variants'
+import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
 
 type AlertsCount = {
-  all: number;
-  malicious: number;
-  secrets: number;
-};
+  all: number
+  malicious: number
+  secrets: number
+}
 
 function select(data: V1GetWorkspaceMessagesResponse): AlertsCount {
-  const all: number = data?.length ?? 0;
+  const all: number = data?.length ?? 0
 
   const malicious: number = multiFilter(data, [
     isConversationWithMaliciousAlerts,
-  ]).length;
+  ]).length
 
   const secrets: number = multiFilter(data, [
     isConversationWithSecretAlerts,
-  ]).length;
+  ]).length
 
   return {
     all,
     malicious,
     secrets,
-  };
+  }
 }
 
 const tabStyle = tv({
   base: [
-    "my-1 mx-0.5 first:ml-1 last:mr-1",
-    "rounded bg-transparent h-[calc(2rem-2px)] flex text-secondary items-center gap-1 !border-0",
-    "hover:bg-gray-50 hover:text-secondary",
-    "selected:bg-base hover:selected:bg-base selected:shadow-sm selected:border-gray-200 selected:text-secondary",
+    'mx-0.5 my-1 first:ml-1 last:mr-1',
+    `flex h-[calc(2rem-2px)] items-center gap-1 rounded !border-0 bg-transparent
+    text-secondary`,
+    'hover:bg-gray-50 hover:text-secondary',
+    `selected:border-gray-200 selected:bg-base selected:text-secondary
+    selected:shadow-sm hover:selected:bg-base`,
   ],
-});
+})
 
 function Tab({
   id,
   title,
   count,
 }: {
-  title: string;
-  id: AlertsFilterView;
-  count: number;
+  title: string
+  id: AlertsFilterView
+  count: number
 }) {
   return (
     <BaseTab className={tabStyle()} id={id}>
@@ -72,15 +74,15 @@ function Tab({
         {count}
       </Badge>
     </BaseTab>
-  );
+  )
 }
 
 export function TabsMessages({ children }: { children: React.ReactNode }) {
-  const { state, setView } = useMessagesFilterSearchParams();
+  const { state, setView } = useMessagesFilterSearchParams()
 
   const { data } = useQueryGetWorkspaceMessages({
     select,
-  });
+  })
 
   return (
     <Tabs
@@ -88,8 +90,8 @@ export function TabsMessages({ children }: { children: React.ReactNode }) {
       selectedKey={state.view}
       defaultSelectedKey={AlertsFilterView.ALL}
     >
-      <div className="flex gap-2 items-center mb-4">
-        <TabList className="bg-gray-100 rounded-sm overflow-hidden">
+      <div className="mb-4 flex items-center gap-2">
+        <TabList className="overflow-hidden rounded-sm bg-gray-100">
           <Tab title="All" count={data?.all ?? 0} id={AlertsFilterView.ALL} />
           <Tab
             title="Malicious"
@@ -111,5 +113,5 @@ export function TabsMessages({ children }: { children: React.ReactNode }) {
         </Card>
       </TabPanel>
     </Tabs>
-  );
+  )
 }

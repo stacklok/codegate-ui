@@ -1,9 +1,9 @@
-import { Header } from "./features/header/components/header";
-import { useSse } from "./hooks/useSse";
-import Page from "./Page";
+import { Header } from './features/header/components/header'
+import { useSse } from './hooks/useSse'
+import Page from './Page'
 
 export default function App() {
-  useSse();
+  useSse()
 
   return (
     <>
@@ -12,5 +12,5 @@ export default function App() {
         <Page />
       </main>
     </>
-  );
+  )
 }

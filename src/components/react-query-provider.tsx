@@ -1,12 +1,12 @@
-import { V1ListActiveWorkspacesResponse } from "@/api/generated";
-import { v1ListActiveWorkspacesQueryKey } from "@/api/generated/@tanstack/react-query.gen";
-import { getQueryCacheConfig } from "@/lib/react-query-utils";
+import { V1ListActiveWorkspacesResponse } from '@/api/generated'
+import { v1ListActiveWorkspacesQueryKey } from '@/api/generated/@tanstack/react-query.gen'
+import { getQueryCacheConfig } from '@/lib/react-query-utils'
 import {
   QueryCacheNotifyEvent,
   QueryClient,
   QueryClientProvider as VendorQueryClientProvider,
-} from "@tanstack/react-query";
-import { ReactNode, useState, useEffect } from "react";
+} from '@tanstack/react-query'
+import { ReactNode, useState, useEffect } from 'react'
 
 /**
  * Responsible for determining whether a queryKey attached to a queryCache event
@@ -16,7 +16,7 @@ function isActiveWorkspacesQueryKey(queryKey: unknown): boolean {
   return (
     Array.isArray(queryKey) &&
     queryKey[0]._id === v1ListActiveWorkspacesQueryKey()[0]?._id
-  );
+  )
 }
 
 /**
@@ -24,69 +24,69 @@ function isActiveWorkspacesQueryKey(queryKey: unknown): boolean {
  * nested payload attached to a queryCache event.
  */
 function getWorkspaceName(event: QueryCacheNotifyEvent): string | null {
-  if ("action" in event === false || "data" in event.action === false)
-    return null;
+  if ('action' in event === false || 'data' in event.action === false)
+    return null
   return (
     (event.action.data as V1ListActiveWorkspacesResponse | undefined | null)
       ?.workspaces[0]?.name ?? null
-  );
+  )
 }
 
 export function QueryClientProvider({ children }: { children: ReactNode }) {
   const [activeWorkspaceName, setActiveWorkspaceName] = useState<string | null>(
-    null,
-  );
+    null
+  )
 
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            ...getQueryCacheConfig("no-cache"),
+            ...getQueryCacheConfig('no-cache'),
             refetchOnMount: false, // additional instances of a query shouldn't trigger background refetch
             refetchOnReconnect: true,
             refetchOnWindowFocus: true,
           },
         },
-      }),
-  );
+      })
+  )
 
   useEffect(() => {
-    const queryCache = queryClient.getQueryCache();
+    const queryCache = queryClient.getQueryCache()
     const unsubscribe = queryCache.subscribe((event) => {
       if (
-        event.type === "updated" &&
-        event.action.type === "success" &&
+        event.type === 'updated' &&
+        event.action.type === 'success' &&
         isActiveWorkspacesQueryKey(event.query.options.queryKey)
       ) {
-        const newWorkspaceName: string | null = getWorkspaceName(event);
+        const newWorkspaceName: string | null = getWorkspaceName(event)
         if (
           newWorkspaceName === activeWorkspaceName ||
           newWorkspaceName === null
         )
-          return;
+          return
 
-        setActiveWorkspaceName(newWorkspaceName);
+        setActiveWorkspaceName(newWorkspaceName)
 
         // eslint-disable-next-line no-restricted-syntax
         void queryClient.invalidateQueries({
-          refetchType: "all",
+          refetchType: 'all',
           // Avoid a continuous loop
           predicate(query) {
-            return !isActiveWorkspacesQueryKey(query.queryKey);
+            return !isActiveWorkspacesQueryKey(query.queryKey)
           },
-        });
+        })
       }
-    });
+    })
 
     return () => {
-      return unsubscribe();
-    };
-  }, [activeWorkspaceName, queryClient]);
+      return unsubscribe()
+    }
+  }, [activeWorkspaceName, queryClient])
 
   return (
     <VendorQueryClientProvider client={queryClient}>
       {children}
     </VendorQueryClientProvider>
-  );
+  )
 }

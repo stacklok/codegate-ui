@@ -1,18 +1,18 @@
-import { ArrowUp, ArrowDown } from "@untitled-ui/icons-react";
+import { ArrowUp, ArrowDown } from '@untitled-ui/icons-react'
 
 export function TokenUsageIcon({
   iconType: iconType,
   ...props
 }: {
-  iconType: "input" | "output";
-  className?: string;
+  iconType: 'input' | 'output'
+  className?: string
 }) {
   switch (iconType) {
-    case "input":
-      return <ArrowUp {...props} />;
-    case "output":
-      return <ArrowDown {...props} />;
+    case 'input':
+      return <ArrowUp {...props} />
+    case 'output':
+      return <ArrowDown {...props} />
     default:
-      iconType satisfies never;
+      iconType satisfies never
   }
 }

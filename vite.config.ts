@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
-import path from "path";
-import react from "@vitejs/plugin-react-swc";
-import tsconfigPaths from "vite-tsconfig-paths";
-import { Mode, plugin as mdPlugin } from "vite-plugin-markdown";
+import { defineConfig } from 'vite'
+import path from 'path'
+import react from '@vitejs/plugin-react-swc'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { Mode, plugin as mdPlugin } from 'vite-plugin-markdown'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,16 +13,16 @@ export default defineConfig({
     }),
     react(),
   ],
-  base: "/",
+  base: '/',
   build: {
-    outDir: "dist",
+    outDir: 'dist',
     rollupOptions: {
-      input: "./index.html",
+      input: './index.html',
     },
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-});
+})

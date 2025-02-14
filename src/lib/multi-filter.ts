@@ -12,9 +12,9 @@
  */
 export function multiFilter<T>(
   array: T[] | undefined,
-  predicates: ((i: T) => boolean)[],
+  predicates: ((i: T) => boolean)[]
 ): T[] {
-  if (!array) return [];
+  if (!array) return []
 
-  return array.filter((i) => predicates.every((p) => p(i) === true));
+  return array.filter((i) => predicates.every((p) => p(i) === true))
 }

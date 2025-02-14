@@ -1,16 +1,16 @@
-import { LinkExternal02 } from "@untitled-ui/icons-react";
+import { LinkExternal02 } from '@untitled-ui/icons-react'
 // eslint-disable-next-line import/no-restricted-paths
-import { Header } from "../features/header/components/header";
-import { PageContainer } from "./page-container";
-import { EmptyState } from "./empty-state";
-import { IllustrationAlert, LinkButton } from "@stacklok/ui-kit";
-import { emptyStateStrings } from "@/constants/empty-state-strings";
-import { hrefs } from "@/lib/hrefs";
+import { Header } from '../features/header/components/header'
+import { PageContainer } from './page-container'
+import { EmptyState } from './empty-state'
+import { IllustrationAlert, LinkButton } from '@stacklok/ui-kit'
+import { emptyStateStrings } from '@/constants/empty-state-strings'
+import { hrefs } from '@/lib/hrefs'
 
 export function ErrorFallbackContent() {
   return (
     <PageContainer>
-      <div className="py-20 flex flex-col items-center">
+      <div className="flex flex-col items-center py-20">
         <EmptyState
           title={emptyStateStrings.title.anErrorOccurred}
           body={emptyStateStrings.body.errorDesc}
@@ -40,16 +40,16 @@ export function ErrorFallbackContent() {
         />
       </div>
     </PageContainer>
-  );
+  )
 }
 
 export function Error() {
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center">
-      <div className="shrink-0 w-full">
+    <div className="flex h-screen w-screen flex-col items-center justify-center">
+      <div className="w-full shrink-0">
         <Header />
       </div>
       <ErrorFallbackContent />
     </div>
-  );
+  )
 }

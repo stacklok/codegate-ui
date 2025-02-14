@@ -34,7 +34,7 @@ jobs:
     name: Build App Check
     runs-on: ubuntu-latest
     env:
-      NODE_OPTIONS: "--max_old_space_size=4096"
+      NODE_OPTIONS: '--max_old_space_size=4096'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4

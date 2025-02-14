@@ -4,7 +4,7 @@ import {
   createClient,
   createConfig,
   type OptionsLegacyParser,
-} from "@hey-api/client-fetch";
+} from '@hey-api/client-fetch'
 import type {
   HealthCheckHealthGetError,
   HealthCheckHealthGetResponse,
@@ -80,15 +80,15 @@ import type {
   V1GetWorkspaceTokenUsageData,
   V1GetWorkspaceTokenUsageError,
   V1GetWorkspaceTokenUsageResponse,
-} from "./types.gen";
+} from './types.gen'
 
-export const client = createClient(createConfig());
+export const client = createClient(createConfig())
 
 /**
  * Health Check
  */
 export const healthCheckHealthGet = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     HealthCheckHealthGetResponse,
@@ -96,16 +96,16 @@ export const healthCheckHealthGet = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/health",
-  });
-};
+    url: '/health',
+  })
+}
 
 /**
  * List Provider Endpoints
  * List all provider endpoints.
  */
 export const v1ListProviderEndpoints = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<V1ListProviderEndpointsData, ThrowOnError>,
+  options?: OptionsLegacyParser<V1ListProviderEndpointsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1ListProviderEndpointsResponse,
@@ -113,16 +113,16 @@ export const v1ListProviderEndpoints = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints",
-  });
-};
+    url: '/api/v1/provider-endpoints',
+  })
+}
 
 /**
  * Add Provider Endpoint
  * Add a provider endpoint.
  */
 export const v1AddProviderEndpoint = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1AddProviderEndpointData, ThrowOnError>,
+  options: OptionsLegacyParser<V1AddProviderEndpointData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     V1AddProviderEndpointResponse,
@@ -130,9 +130,9 @@ export const v1AddProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints",
-  });
-};
+    url: '/api/v1/provider-endpoints',
+  })
+}
 
 /**
  * List All Models For All Providers
@@ -141,7 +141,7 @@ export const v1AddProviderEndpoint = <ThrowOnError extends boolean = false>(
 export const v1ListAllModelsForAllProviders = <
   ThrowOnError extends boolean = false,
 >(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1ListAllModelsForAllProvidersResponse,
@@ -149,16 +149,16 @@ export const v1ListAllModelsForAllProviders = <
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints/models",
-  });
-};
+    url: '/api/v1/provider-endpoints/models',
+  })
+}
 
 /**
  * List Models By Provider
  * List models by provider.
  */
 export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1ListModelsByProviderData, ThrowOnError>,
+  options: OptionsLegacyParser<V1ListModelsByProviderData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1ListModelsByProviderResponse,
@@ -166,16 +166,16 @@ export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints/{provider_id}/models",
-  });
-};
+    url: '/api/v1/provider-endpoints/{provider_id}/models',
+  })
+}
 
 /**
  * Get Provider Endpoint
  * Get a provider endpoint by ID.
  */
 export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1GetProviderEndpointData, ThrowOnError>,
+  options: OptionsLegacyParser<V1GetProviderEndpointData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1GetProviderEndpointResponse,
@@ -183,16 +183,16 @@ export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints/{provider_id}",
-  });
-};
+    url: '/api/v1/provider-endpoints/{provider_id}',
+  })
+}
 
 /**
  * Update Provider Endpoint
  * Update a provider endpoint by ID.
  */
 export const v1UpdateProviderEndpoint = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1UpdateProviderEndpointData, ThrowOnError>,
+  options: OptionsLegacyParser<V1UpdateProviderEndpointData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
     V1UpdateProviderEndpointResponse,
@@ -200,16 +200,16 @@ export const v1UpdateProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints/{provider_id}",
-  });
-};
+    url: '/api/v1/provider-endpoints/{provider_id}',
+  })
+}
 
 /**
  * Delete Provider Endpoint
  * Delete a provider endpoint by id.
  */
 export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1DeleteProviderEndpointData, ThrowOnError>,
+  options: OptionsLegacyParser<V1DeleteProviderEndpointData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
     V1DeleteProviderEndpointResponse,
@@ -217,16 +217,16 @@ export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints/{provider_id}",
-  });
-};
+    url: '/api/v1/provider-endpoints/{provider_id}',
+  })
+}
 
 /**
  * Configure Auth Material
  * Configure auth material for a provider.
  */
 export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1ConfigureAuthMaterialData, ThrowOnError>,
+  options: OptionsLegacyParser<V1ConfigureAuthMaterialData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
     V1ConfigureAuthMaterialResponse,
@@ -234,16 +234,16 @@ export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/provider-endpoints/{provider_id}/auth-material",
-  });
-};
+    url: '/api/v1/provider-endpoints/{provider_id}/auth-material',
+  })
+}
 
 /**
  * List Workspaces
  * List all workspaces.
  */
 export const v1ListWorkspaces = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1ListWorkspacesResponse,
@@ -251,16 +251,16 @@ export const v1ListWorkspaces = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces",
-  });
-};
+    url: '/api/v1/workspaces',
+  })
+}
 
 /**
  * Create Workspace
  * Create a new workspace.
  */
 export const v1CreateWorkspace = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1CreateWorkspaceData, ThrowOnError>,
+  options: OptionsLegacyParser<V1CreateWorkspaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     V1CreateWorkspaceResponse,
@@ -268,9 +268,9 @@ export const v1CreateWorkspace = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces",
-  });
-};
+    url: '/api/v1/workspaces',
+  })
+}
 
 /**
  * List Active Workspaces
@@ -280,7 +280,7 @@ export const v1CreateWorkspace = <ThrowOnError extends boolean = false>(
  * the globally active workspace.
  */
 export const v1ListActiveWorkspaces = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1ListActiveWorkspacesResponse,
@@ -288,16 +288,16 @@ export const v1ListActiveWorkspaces = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/active",
-  });
-};
+    url: '/api/v1/workspaces/active',
+  })
+}
 
 /**
  * Activate Workspace
  * Activate a workspace by name.
  */
 export const v1ActivateWorkspace = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1ActivateWorkspaceData, ThrowOnError>,
+  options: OptionsLegacyParser<V1ActivateWorkspaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     V1ActivateWorkspaceResponse,
@@ -305,16 +305,16 @@ export const v1ActivateWorkspace = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/active",
-  });
-};
+    url: '/api/v1/workspaces/active',
+  })
+}
 
 /**
  * Delete Workspace
  * Delete a workspace by name.
  */
 export const v1DeleteWorkspace = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1DeleteWorkspaceData, ThrowOnError>,
+  options: OptionsLegacyParser<V1DeleteWorkspaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
     V1DeleteWorkspaceResponse,
@@ -322,16 +322,16 @@ export const v1DeleteWorkspace = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}',
+  })
+}
 
 /**
  * List Archived Workspaces
  * List all archived workspaces.
  */
 export const v1ListArchivedWorkspaces = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1ListArchivedWorkspacesResponse,
@@ -339,16 +339,16 @@ export const v1ListArchivedWorkspaces = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/archive",
-  });
-};
+    url: '/api/v1/workspaces/archive',
+  })
+}
 
 /**
  * Recover Workspace
  * Recover an archived workspace by name.
  */
 export const v1RecoverWorkspace = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1RecoverWorkspaceData, ThrowOnError>,
+  options: OptionsLegacyParser<V1RecoverWorkspaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     V1RecoverWorkspaceResponse,
@@ -356,16 +356,16 @@ export const v1RecoverWorkspace = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/archive/{workspace_name}/recover",
-  });
-};
+    url: '/api/v1/workspaces/archive/{workspace_name}/recover',
+  })
+}
 
 /**
  * Hard Delete Workspace
  * Hard delete an archived workspace by name.
  */
 export const v1HardDeleteWorkspace = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1HardDeleteWorkspaceData, ThrowOnError>,
+  options: OptionsLegacyParser<V1HardDeleteWorkspaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
     V1HardDeleteWorkspaceResponse,
@@ -373,16 +373,16 @@ export const v1HardDeleteWorkspace = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/archive/{workspace_name}",
-  });
-};
+    url: '/api/v1/workspaces/archive/{workspace_name}',
+  })
+}
 
 /**
  * Get Workspace Alerts
  * Get alerts for a workspace.
  */
 export const v1GetWorkspaceAlerts = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1GetWorkspaceAlertsData, ThrowOnError>,
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1GetWorkspaceAlertsResponse,
@@ -390,16 +390,16 @@ export const v1GetWorkspaceAlerts = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/alerts",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/alerts',
+  })
+}
 
 /**
  * Get Workspace Messages
  * Get messages for a workspace.
  */
 export const v1GetWorkspaceMessages = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1GetWorkspaceMessagesData, ThrowOnError>,
+  options: OptionsLegacyParser<V1GetWorkspaceMessagesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1GetWorkspaceMessagesResponse,
@@ -407,9 +407,9 @@ export const v1GetWorkspaceMessages = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/messages",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/messages',
+  })
+}
 
 /**
  * Get Workspace Custom Instructions
@@ -421,7 +421,7 @@ export const v1GetWorkspaceCustomInstructions = <
   options: OptionsLegacyParser<
     V1GetWorkspaceCustomInstructionsData,
     ThrowOnError
-  >,
+  >
 ) => {
   return (options?.client ?? client).get<
     V1GetWorkspaceCustomInstructionsResponse,
@@ -429,9 +429,9 @@ export const v1GetWorkspaceCustomInstructions = <
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/custom-instructions',
+  })
+}
 
 /**
  * Set Workspace Custom Instructions
@@ -442,7 +442,7 @@ export const v1SetWorkspaceCustomInstructions = <
   options: OptionsLegacyParser<
     V1SetWorkspaceCustomInstructionsData,
     ThrowOnError
-  >,
+  >
 ) => {
   return (options?.client ?? client).put<
     V1SetWorkspaceCustomInstructionsResponse,
@@ -450,9 +450,9 @@ export const v1SetWorkspaceCustomInstructions = <
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/custom-instructions',
+  })
+}
 
 /**
  * Delete Workspace Custom Instructions
@@ -463,7 +463,7 @@ export const v1DeleteWorkspaceCustomInstructions = <
   options: OptionsLegacyParser<
     V1DeleteWorkspaceCustomInstructionsData,
     ThrowOnError
-  >,
+  >
 ) => {
   return (options?.client ?? client).delete<
     V1DeleteWorkspaceCustomInstructionsResponse,
@@ -471,9 +471,9 @@ export const v1DeleteWorkspaceCustomInstructions = <
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/custom-instructions",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/custom-instructions',
+  })
+}
 
 /**
  * Get Workspace Muxes
@@ -483,7 +483,7 @@ export const v1DeleteWorkspaceCustomInstructions = <
  * has the highest priority.
  */
 export const v1GetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1GetWorkspaceMuxesData, ThrowOnError>,
+  options: OptionsLegacyParser<V1GetWorkspaceMuxesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1GetWorkspaceMuxesResponse,
@@ -491,16 +491,16 @@ export const v1GetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/muxes",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/muxes',
+  })
+}
 
 /**
  * Set Workspace Muxes
  * Set the mux rules of a workspace.
  */
 export const v1SetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1SetWorkspaceMuxesData, ThrowOnError>,
+  options: OptionsLegacyParser<V1SetWorkspaceMuxesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
     V1SetWorkspaceMuxesResponse,
@@ -508,16 +508,16 @@ export const v1SetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/muxes",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/muxes',
+  })
+}
 
 /**
  * Stream Sse
  * Send alerts event
  */
 export const v1StreamSse = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1StreamSseResponse,
@@ -525,15 +525,15 @@ export const v1StreamSse = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/alerts_notification",
-  });
-};
+    url: '/api/v1/alerts_notification',
+  })
+}
 
 /**
  * Version Check
  */
 export const v1VersionCheck = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1VersionCheckResponse,
@@ -541,16 +541,16 @@ export const v1VersionCheck = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/version",
-  });
-};
+    url: '/api/v1/version',
+  })
+}
 
 /**
  * Get Workspace Token Usage
  * Get the token usage of a workspace.
  */
 export const v1GetWorkspaceTokenUsage = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1GetWorkspaceTokenUsageData, ThrowOnError>,
+  options: OptionsLegacyParser<V1GetWorkspaceTokenUsageData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1GetWorkspaceTokenUsageResponse,
@@ -558,6 +558,6 @@ export const v1GetWorkspaceTokenUsage = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/workspaces/{workspace_name}/token-usage",
-  });
-};
+    url: '/api/v1/workspaces/{workspace_name}/token-usage',
+  })
+}

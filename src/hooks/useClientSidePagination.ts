@@ -1,15 +1,15 @@
 export function useClientSidePagination<T>(
   data: T[],
   page: number,
-  pageSize: number,
+  pageSize: number
 ) {
-  const pageStart = page * pageSize;
-  const pageEnd = page * pageSize + pageSize;
+  const pageStart = page * pageSize
+  const pageEnd = page * pageSize + pageSize
 
-  const dataView = data.slice(pageStart, pageEnd);
+  const dataView = data.slice(pageStart, pageEnd)
 
-  const hasPreviousPage = page > 0;
-  const hasNextPage = pageEnd < data.length;
+  const hasPreviousPage = page > 0
+  const hasNextPage = pageEnd < data.length
 
-  return { pageStart, pageEnd, dataView, hasPreviousPage, hasNextPage };
+  return { pageStart, pageEnd, dataView, hasPreviousPage, hasNextPage }
 }

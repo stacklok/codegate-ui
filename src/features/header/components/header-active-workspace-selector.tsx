@@ -1,4 +1,4 @@
-import { useQueryListWorkspaces } from "@/hooks/use-query-list-workspaces";
+import { useQueryListWorkspaces } from '@/hooks/use-query-list-workspaces'
 import {
   Button,
   DialogTrigger,
@@ -9,55 +9,55 @@ import {
   Popover,
   SearchField,
   Separator,
-} from "@stacklok/ui-kit";
-import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { useMutationActivateWorkspace } from "../../../hooks/use-mutation-activate-workspace";
-import clsx from "clsx";
-import { useQueryActiveWorkspaceName } from "../../../hooks/use-query-active-workspace-name";
-import { hrefs } from "@/lib/hrefs";
-import { twMerge } from "tailwind-merge";
-import ChevronDown from "@untitled-ui/icons-react/build/cjs/ChevronDown";
-import { SearchMd, Settings01 } from "@untitled-ui/icons-react";
-import { useLocation, useNavigate } from "react-router-dom";
+} from '@stacklok/ui-kit'
+import { useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useMutationActivateWorkspace } from '../../../hooks/use-mutation-activate-workspace'
+import clsx from 'clsx'
+import { useQueryActiveWorkspaceName } from '../../../hooks/use-query-active-workspace-name'
+import { hrefs } from '@/lib/hrefs'
+import { twMerge } from 'tailwind-merge'
+import ChevronDown from '@untitled-ui/icons-react/build/cjs/ChevronDown'
+import { SearchMd, Settings01 } from '@untitled-ui/icons-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-const ROUTES_REQUIRING_REDIRECT = [/^\/$/, /^\/prompt\/(.*)$/];
+const ROUTES_REQUIRING_REDIRECT = [/^\/$/, /^\/prompt\/(.*)$/]
 
 export function HeaderActiveWorkspaceSelector() {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { pathname } = location;
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { pathname } = location
 
-  const { data: workspacesResponse } = useQueryListWorkspaces();
-  const { mutateAsync: activateWorkspace } = useMutationActivateWorkspace();
+  const { data: workspacesResponse } = useQueryListWorkspaces()
+  const { mutateAsync: activateWorkspace } = useMutationActivateWorkspace()
 
-  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName();
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName()
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchWorkspace, setSearchWorkspace] = useState("");
-  const workspaces = workspacesResponse?.workspaces ?? [];
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchWorkspace, setSearchWorkspace] = useState('')
+  const workspaces = workspacesResponse?.workspaces ?? []
   const filteredWorkspaces = workspaces.filter((workspace) =>
-    workspace.name.toLowerCase().includes(searchWorkspace.toLowerCase()),
-  );
+    workspace.name.toLowerCase().includes(searchWorkspace.toLowerCase())
+  )
 
   const handleWorkspaceClick = (name: string) => {
     activateWorkspace({ body: { name } }).then(() => {
       // eslint-disable-next-line no-restricted-syntax
-      queryClient.invalidateQueries({ refetchType: "all" }); // Global setting, refetch **everything**
+      queryClient.invalidateQueries({ refetchType: 'all' }) // Global setting, refetch **everything**
       if (ROUTES_REQUIRING_REDIRECT.some((route) => route.test(pathname))) {
-        navigate("/");
+        navigate('/')
       }
-      setIsOpen(false);
-    });
-  };
+      setIsOpen(false)
+    })
+  }
 
   return (
     <DialogTrigger isOpen={isOpen} onOpenChange={(test) => setIsOpen(test)}>
       <Button variant="tertiary" className="flex cursor-pointer">
-        Active workspace{" "}
-        <span className="font-bold">{activeWorkspaceName ?? "default"}</span>
+        Active workspace{' '}
+        <span className="font-bold">{activeWorkspaceName ?? 'default'}</span>
         <ChevronDown />
       </Button>
 
@@ -78,7 +78,7 @@ export function HeaderActiveWorkspaceSelector() {
             items={filteredWorkspaces}
             selectedKeys={activeWorkspaceName ? [activeWorkspaceName] : []}
             onAction={(v) => {
-              handleWorkspaceClick(v?.toString());
+              handleWorkspaceClick(v?.toString())
             }}
             className="-mx-1 my-2 max-h-80 overflow-auto"
             renderEmptyState={() => (
@@ -92,11 +92,12 @@ export function HeaderActiveWorkspaceSelector() {
                 textValue={item.name}
                 data-is-selected={item.name === activeWorkspaceName}
                 className={clsx(
-                  "grid grid-cols-[auto_1.5rem] group/selector cursor-pointer py-2 m-1 text-base hover:bg-gray-200 rounded-sm",
+                  `group/selector m-1 grid cursor-pointer grid-cols-[auto_1.5rem] rounded-sm py-2
+                  text-base hover:bg-gray-200`,
                   {
-                    "!bg-gray-900 hover:bg-gray-900 !text-gray-25 hover:!text-gray-25":
+                    '!bg-gray-900 !text-gray-25 hover:bg-gray-900 hover:!text-gray-25':
                       item.is_active,
-                  },
+                  }
                 )}
               >
                 <span className="block truncate">{item.name}</span>
@@ -107,15 +108,15 @@ export function HeaderActiveWorkspaceSelector() {
                   isIcon
                   variant="tertiary"
                   className={twMerge(
-                    "ml-auto size-6 group-hover/selector:opacity-100 opacity-0 transition-opacity",
+                    'ml-auto size-6 opacity-0 transition-opacity group-hover/selector:opacity-100',
                     item.is_active
-                      ? "hover:bg-gray-800 pressed:bg-gray-700"
-                      : "hover:bg-gray-50 hover:text-primary",
+                      ? 'hover:bg-gray-800 pressed:bg-gray-700'
+                      : 'hover:bg-gray-50 hover:text-primary'
                   )}
                 >
                   <Settings01
                     className={twMerge(
-                      item.is_active ? "text-gray-25" : "text-secondary",
+                      item.is_active ? 'text-gray-25' : 'text-secondary'
                     )}
                   />
                 </LinkButton>
@@ -127,7 +128,7 @@ export function HeaderActiveWorkspaceSelector() {
             href="/workspaces"
             onPress={() => setIsOpen(false)}
             variant="tertiary"
-            className="text-secondary h-10 pl-2 gap-2 flex mt-2 justify-start"
+            className="mt-2 flex h-10 justify-start gap-2 pl-2 text-secondary"
           >
             <Settings01 />
             Manage Workspaces
@@ -135,5 +136,5 @@ export function HeaderActiveWorkspaceSelector() {
         </div>
       </Popover>
     </DialogTrigger>
-  );
+  )
 }

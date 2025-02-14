@@ -1,21 +1,21 @@
-import { Conversation, QuestionType } from "@/api/generated";
-import { faker } from "@faker-js/faker";
-import { TOKEN_USAGE_AGG } from "./token-usage.mock";
-import { mockAlert } from "./alert.mock";
+import { Conversation, QuestionType } from '@/api/generated'
+import { faker } from '@faker-js/faker'
+import { TOKEN_USAGE_AGG } from './token-usage.mock'
+import { mockAlert } from './alert.mock'
 
 export function mockConversation({
   type = QuestionType.CHAT,
   withTokenUsage = true,
   alertsConfig = {},
 }: {
-  type?: QuestionType;
-  withTokenUsage?: boolean;
+  type?: QuestionType
+  withTokenUsage?: boolean
   alertsConfig?: {
-    numAlerts?: number;
-    type?: "secret" | "malicious" | "any";
-  };
+    numAlerts?: number
+    type?: 'secret' | 'malicious' | 'any'
+  }
 } = {}) {
-  const timestamp = faker.date.recent().toISOString();
+  const timestamp = faker.date.recent().toISOString()
 
   return {
     question_answers: [
@@ -32,23 +32,23 @@ export function mockConversation({
         },
       },
     ],
-    provider: "vllm",
+    provider: 'vllm',
     alerts: Array.from({
       length:
-        typeof alertsConfig?.numAlerts === "number"
+        typeof alertsConfig?.numAlerts === 'number'
           ? alertsConfig?.numAlerts
           : faker.number.int({ min: 2, max: 5 }),
     }).map(() =>
       mockAlert({
         type:
-          alertsConfig?.type == null || alertsConfig.type === "any"
-            ? faker.helpers.arrayElement(["secret", "malicious"])
+          alertsConfig?.type == null || alertsConfig.type === 'any'
+            ? faker.helpers.arrayElement(['secret', 'malicious'])
             : alertsConfig.type,
-      }),
+      })
     ),
     token_usage_agg: withTokenUsage ? TOKEN_USAGE_AGG : null,
     type,
     chat_id: faker.string.uuid(), // NOTE: This isn't a UUID in the API
     conversation_timestamp: timestamp,
-  } as const satisfies Conversation;
+  } as const satisfies Conversation
 }

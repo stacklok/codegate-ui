@@ -1,11 +1,11 @@
-import { useConfirm } from "@/hooks/use-confirm";
-import { useCallback } from "react";
-import { useMutationHardDeleteWorkspace } from "./use-mutation-hard-delete-workspace";
+import { useConfirm } from '@/hooks/use-confirm'
+import { useCallback } from 'react'
+import { useMutationHardDeleteWorkspace } from './use-mutation-hard-delete-workspace'
 
 export function useConfirmHardDeleteWorkspace() {
-  const { mutateAsync: hardDeleteWorkspace } = useMutationHardDeleteWorkspace();
+  const { mutateAsync: hardDeleteWorkspace } = useMutationHardDeleteWorkspace()
 
-  const { confirm } = useConfirm();
+  const { confirm } = useConfirm()
 
   return useCallback(
     async (...params: Parameters<typeof hardDeleteWorkspace>) => {
@@ -21,17 +21,17 @@ export function useConfirmHardDeleteWorkspace() {
         </>,
         {
           buttons: {
-            yes: "Delete",
-            no: "Cancel",
+            yes: 'Delete',
+            no: 'Cancel',
           },
-          title: "Permanently delete workspace",
+          title: 'Permanently delete workspace',
           isDestructive: true,
-        },
-      );
+        }
+      )
       if (answer) {
-        return hardDeleteWorkspace(...params);
+        return hardDeleteWorkspace(...params)
       }
     },
-    [confirm, hardDeleteWorkspace],
-  );
+    [confirm, hardDeleteWorkspace]
+  )
 }

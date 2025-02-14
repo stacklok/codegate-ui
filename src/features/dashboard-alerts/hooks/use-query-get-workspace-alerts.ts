@@ -1,16 +1,16 @@
 import {
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceAlertsResponse,
-} from "@/api/generated";
-import { v1GetWorkspaceAlertsOptions } from "@/api/generated/@tanstack/react-query.gen";
-import { useQueryActiveWorkspaceName } from "@/hooks/use-query-active-workspace-name";
-import { getQueryCacheConfig } from "@/lib/react-query-utils";
-import { useQuery } from "@tanstack/react-query";
+} from '@/api/generated'
+import { v1GetWorkspaceAlertsOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { useQueryActiveWorkspaceName } from '@/hooks/use-query-active-workspace-name'
+import { getQueryCacheConfig } from '@/lib/react-query-utils'
+import { useQuery } from '@tanstack/react-query'
 
 export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
   select,
 }: {
-  select?: (data: V1GetWorkspaceAlertsResponse) => T;
+  select?: (data: V1GetWorkspaceAlertsResponse) => T
 } = {}) {
   const {
     data: activeWorkspaceName,
@@ -18,13 +18,13 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     isFetching: isWorkspaceFetching,
     isLoading: isWorkspaceLoading,
     isRefetching: isWorkspaceRefetching,
-  } = useQueryActiveWorkspaceName();
+  } = useQueryActiveWorkspaceName()
 
   const options: V1GetWorkspaceAlertsData = {
     path: {
-      workspace_name: activeWorkspaceName ?? "default",
+      workspace_name: activeWorkspaceName ?? 'default',
     },
-  };
+  }
 
   const {
     isPending: isAlertsPending,
@@ -34,9 +34,9 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     ...rest
   } = useQuery({
     ...v1GetWorkspaceAlertsOptions(options),
-    ...getQueryCacheConfig("5s"),
+    ...getQueryCacheConfig('5s'),
     select,
-  });
+  })
 
   return {
     ...rest,
@@ -44,5 +44,5 @@ export function useQueryGetWorkspaceAlerts<T = V1GetWorkspaceAlertsResponse>({
     isFetching: isAlertsFetching || isWorkspaceFetching,
     isLoading: isAlertsLoading || isWorkspaceLoading,
     isRefetching: isAlertsRefetching || isWorkspaceRefetching,
-  };
+  }
 }
