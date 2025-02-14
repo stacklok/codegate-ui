@@ -2,10 +2,17 @@ import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react-swc";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { Mode, plugin as mdPlugin } from "vite-plugin-markdown";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [
+    tsconfigPaths(),
+    mdPlugin({
+      mode: [Mode.MARKDOWN],
+    }),
+    react(),
+  ],
   base: "/",
   build: {
     outDir: "dist",
@@ -18,5 +25,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  assetsInclude: ["**/*.md"],
 });

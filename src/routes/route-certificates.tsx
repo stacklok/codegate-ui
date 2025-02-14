@@ -8,38 +8,17 @@ import {
   Breadcrumbs,
   Breadcrumb,
 } from "@stacklok/ui-kit";
-import { useState, ReactNode } from "react";
+import { useState } from "react";
+import { markdown as linuxInstall } from "../markdown/certificates/linux-install.md";
+import { markdown as linuxRemove } from "../markdown/certificates/linux-remove.md";
+import { markdown as windowsInstall } from "../markdown/certificates/windows-install.md";
+import { markdown as windowsRemove } from "../markdown/certificates/windows-remove.md";
+import { markdown as macosInstall } from "../markdown/certificates/macos-install.md";
+import { markdown as macosRemove } from "../markdown/certificates/macos-remove.md";
+import { Markdown } from "@/components/Markdown";
 
 type OS = "macos" | "windows" | "linux";
 type Action = "install" | "remove";
-
-function renderWithCode(text: string): ReactNode {
-  const parts = text.split(/(`[^`]+`)/);
-  return parts.map((part, index) => {
-    if (part.startsWith("`") && part.endsWith("`")) {
-      return (
-        <code
-          key={index}
-          className="px-1.5 py-0.5 mx-0.5 bg-gray-100 rounded font-code text-sm"
-        >
-          {part.slice(1, -1)}
-        </code>
-      );
-    }
-    return part;
-  });
-}
-
-function InstructionStep({ number, text }: { number: number; text: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <div className="size-6 rounded-full bg-brand-50 flex items-center justify-center shrink-0 mt-1">
-        <span className="text-brand-700 text-sm font-semibold">{number}</span>
-      </div>
-      <p className="text-secondary">{renderWithCode(text)}</p>
-    </div>
-  );
-}
 
 const CheckIcon = () => (
   <svg viewBox="0 0 24 24" className="size-5 text-brand-700 shrink-0 mt-1">
@@ -93,53 +72,25 @@ export function RouteCertificates() {
     document.body.removeChild(link);
   };
 
+  type ListSchema = Record<
+    "macos" | "windows" | "linux",
+    Record<string, string>
+  >;
+
   const steps = {
     macos: {
-      install: [
-        "CLI method: Open a terminal and run `security add-trusted-cert -d -r trustRoot -p ssl -p basic -k ~/Library/Keychains/login.keychain ~/Downloads/codegate.crt`",
-        "GUI method: Open the downloaded certificate file; Keychain Access will open.",
-        "Depending on your macOS version, you may see the Add Certificates dialog. If so, select the `login` keychain, and click Add.",
-        "In Keychain Access, select the `login` keychain from the Default Keychains list on the left.",
-        'Search for "CodeGate" (it may not appear until you search), then in the search results, double-click the "CodeGate CA" certificate.',
-        'Expand the Trust section and set the "Secure Sockets Layer" and "X.509 Basic Policy" options to "Always Trust".',
-      ],
-      remove: [
-        'CLI method: Open a terminal and run `security delete-certificate -c "CodeGate CA" -t ~/Library/Keychains/login.keychain`',
-        "GUI method: Launch the Keychain Access app (Note: on newer macOS versions, Keychain Access is hidden from Launcher, but can be run from Spotlight Search).",
-        'Select the login keychain and search for "CodeGate".',
-        'Right-click the "CodeGate CA" certificate and Delete the certificate.',
-        "Confirm the deletion when prompted.",
-      ],
+      install: macosInstall,
+      remove: macosRemove,
     },
     windows: {
-      install: [
-        "Double-click the downloaded certificate file.",
-        'Click "Install Certificate".',
-        'Select "Current User" and click Next.',
-        'Choose "Place all certificates in the following store".',
-        'Click Browse and select "Trusted Root Certification Authorities".',
-        "Click Next and Finish.",
-      ],
-      remove: [
-        'Open "Run" (Win + R) and enter `certmgr.msc`.',
-        'Navigate to "Trusted Root Certification Authorities" → "Certificates".',
-        'Find the "CodeGate CA" certificate.',
-        "Right-click and Delete the certificate.",
-        "Confirm the deletion when prompted.",
-      ],
+      install: windowsInstall,
+      remove: windowsRemove,
     },
     linux: {
-      install: [
-        "Install the `certutil` tool: `sudo apt install libnss3-tools` (Ubuntu/Debian) or `sudo dnf install nss-tools` (RHEL/Fedora).",
-        'Run `certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n CodeGate-CA -i ~/Downloads/codegate.crt` to install the certificate for your account.',
-        "Restart VS Code.",
-      ],
-      remove: [
-        "Run `certutil -d sql:$HOME/.pki/nssdb -D -n CodeGate-CA`",
-        "Restart VS Code.",
-      ],
+      install: linuxInstall,
+      remove: linuxRemove,
     },
-  };
+  } as const satisfies ListSchema;
 
   const currentSteps = steps[activeOS][activeAction];
 
@@ -277,9 +228,7 @@ export function RouteCertificates() {
             </div>
             <div className="mt-6">
               <div className="space-y-4">
-                {currentSteps.map((step, index) => (
-                  <InstructionStep key={index} number={index + 1} text={step} />
-                ))}
+                <Markdown children={currentSteps} />
               </div>
             </div>
           </CardBody>

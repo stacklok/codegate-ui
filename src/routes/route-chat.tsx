@@ -15,6 +15,7 @@ export function RouteChat() {
   const { id } = useParams();
   const { data: prompts } = usePromptsData();
   const chat = prompts?.find((prompt) => prompt.chat_id === id);
+  console.debug("👉  chat:", chat);
 
   const title =
     chat === undefined ||
@@ -43,10 +44,11 @@ export function RouteChat() {
                 <ChatBubbleAvatar data-testid="avatar-user" fallback="User" />
                 <ChatBubbleMessage variant="sent">
                   <Markdown>
-                    {sanitizeQuestionPrompt({
+                    {question.message}
+                    {/* {sanitizeQuestionPrompt({
                       question: question?.message ?? "",
                       answer: answer?.message ?? "",
-                    })}
+                    })} */}
                   </Markdown>
                 </ChatBubbleMessage>
               </ChatBubble>
