@@ -14,6 +14,7 @@ import {
   OptionsSchema,
 } from '@stacklok/ui-kit'
 import { ChevronDown, SearchMd } from '@untitled-ui/icons-react'
+import { map, groupBy } from 'lodash'
 import { useState } from 'react'
 
 type Props = {
@@ -32,28 +33,14 @@ type Props = {
 function groupModelsByProviderName(
   models: ModelByProvider[]
 ): OptionsSchema<'listbox', string>[] {
-  return models.reduce<OptionsSchema<'listbox', string>[]>(
-    (groupedProviders, item) => {
-      const providerData = groupedProviders.find(
-        (group) => group.id === item.provider_name
-      )
-      if (!providerData) {
-        groupedProviders.push({
-          id: item.provider_name,
-          items: [],
-          textValue: item.provider_name,
-        })
-      }
-
-      ;(providerData?.items ?? []).push({
-        id: `${item.provider_id}/${item.name}`,
-        textValue: item.name,
-      })
-
-      return groupedProviders
-    },
-    []
-  )
+  return map(groupBy(models, 'provider_name'), (items, providerName) => ({
+    id: providerName,
+    textValue: providerName,
+    items: items.map((item) => ({
+      id: `${item.provider_id}/${item.name}`,
+      textValue: item.name,
+    })),
+  }))
 }
 
 function filterModels({
@@ -95,7 +82,7 @@ export function WorkspaceModelsDropdown({
     currentProvider && rule.model
       ? `${currentProvider?.provider_name}/${rule.model}`
       : ''
-  const selectedKey = `${rule.provider_id}_${rule.model}`
+  const selectedKey = `${rule.provider_id}/${rule.model}`
 
   return (
     <div className="flex w-full">

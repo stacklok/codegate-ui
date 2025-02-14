@@ -77,7 +77,7 @@ function SortableItem({
   isArchived,
   isDefaultRule,
 }: SortableItemProps) {
-  const placeholder = isDefaultRule ? 'Catch All' : 'eg file type, file name'
+  const placeholder = isDefaultRule ? 'Catch-all' : 'e.g. file type, file name'
   return (
     <div className="flex items-center gap-2" key={rule.id}>
       <div className="flex w-full justify-between">
