@@ -1,19 +1,19 @@
-import { defineConfig } from "@hey-api/openapi-ts";
+import { defineConfig } from '@hey-api/openapi-ts'
 
 export default defineConfig({
-  client: "@hey-api/client-fetch",
-  input: "src/api/openapi.json",
+  client: '@hey-api/client-fetch',
+  input: 'src/api/openapi.json',
   output: {
-    format: "prettier",
-    path: "./src/api/generated",
-    lint: "eslint",
+    format: 'prettier',
+    path: './src/api/generated',
+    lint: 'eslint',
   },
   plugins: [
-    "@hey-api/sdk",
-    "@tanstack/react-query",
+    '@hey-api/sdk',
+    '@tanstack/react-query',
     {
-      enums: "typescript",
-      name: "@hey-api/typescript",
+      enums: 'typescript',
+      name: '@hey-api/typescript',
     },
   ],
-});
+})

@@ -1,4 +1,4 @@
-import { useMutationCreateWorkspace } from "@/features/workspace/hooks/use-mutation-create-workspace";
+import { useMutationCreateWorkspace } from '@/features/workspace/hooks/use-mutation-create-workspace'
 import {
   Button,
   Card,
@@ -9,27 +9,27 @@ import {
   Label,
   LinkButton,
   TextField,
-} from "@stacklok/ui-kit";
-import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+} from '@stacklok/ui-kit'
+import { FormEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export function WorkspaceCreation() {
-  const navigate = useNavigate();
-  const [workspaceName, setWorkspaceName] = useState("");
-  const { mutateAsync, isPending, error } = useMutationCreateWorkspace();
-  const errorMsg = error?.detail ? `${error?.detail}` : "";
+  const navigate = useNavigate()
+  const [workspaceName, setWorkspaceName] = useState('')
+  const { mutateAsync, isPending, error } = useMutationCreateWorkspace()
+  const errorMsg = error?.detail ? `${error?.detail}` : ''
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     mutateAsync(
       {
         body: { name: workspaceName },
       },
       {
-        onSuccess: () => navigate("/workspaces"),
-      },
-    );
-  };
+        onSuccess: () => navigate('/workspaces'),
+      }
+    )
+  }
 
   return (
     <Form onSubmit={handleSubmit} validationBehavior="aria">
@@ -53,7 +53,7 @@ export function WorkspaceCreation() {
             Cancel
           </LinkButton>
           <Button
-            isDisabled={workspaceName === ""}
+            isDisabled={workspaceName === ''}
             isPending={isPending}
             type="submit"
           >
@@ -62,5 +62,5 @@ export function WorkspaceCreation() {
         </CardFooter>
       </Card>
     </Form>
-  );
+  )
 }

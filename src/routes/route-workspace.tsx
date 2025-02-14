@@ -1,18 +1,18 @@
-import { BreadcrumbHome } from "@/components/BreadcrumbHome";
-import { ArchiveWorkspace } from "@/features/workspace/components/archive-workspace";
+import { BreadcrumbHome } from '@/components/BreadcrumbHome'
+import { ArchiveWorkspace } from '@/features/workspace/components/archive-workspace'
 
-import { PageHeading } from "@/components/heading";
-import { WorkspaceName } from "@/features/workspace/components/workspace-name";
-import { Alert, Breadcrumb, Breadcrumbs } from "@stacklok/ui-kit";
-import { useParams } from "react-router-dom";
-import { useArchivedWorkspaces } from "@/features/workspace/hooks/use-archived-workspaces";
-import { useRestoreWorkspaceButton } from "@/features/workspace/hooks/use-restore-workspace-button";
-import { WorkspaceCustomInstructions } from "@/features/workspace/components/workspace-custom-instructions";
-import { WorkspacePreferredModel } from "@/features/workspace/components/workspace-preferred-model";
-import { PageContainer } from "@/components/page-container";
+import { PageHeading } from '@/components/heading'
+import { WorkspaceName } from '@/features/workspace/components/workspace-name'
+import { Alert, Breadcrumb, Breadcrumbs } from '@stacklok/ui-kit'
+import { useParams } from 'react-router-dom'
+import { useArchivedWorkspaces } from '@/features/workspace/hooks/use-archived-workspaces'
+import { useRestoreWorkspaceButton } from '@/features/workspace/hooks/use-restore-workspace-button'
+import { WorkspaceCustomInstructions } from '@/features/workspace/components/workspace-custom-instructions'
+import { WorkspacePreferredModel } from '@/features/workspace/components/workspace-preferred-model'
+import { PageContainer } from '@/components/page-container'
 
 function WorkspaceArchivedBanner({ name }: { name: string }) {
-  const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name });
+  const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name })
 
   return (
     <Alert
@@ -24,18 +24,18 @@ function WorkspaceArchivedBanner({ name }: { name: string }) {
       You can still view this workspace's configuration. To begin using it
       again, you must restore it.
     </Alert>
-  );
+  )
 }
 
 export function RouteWorkspace() {
-  const { name } = useParams();
+  const { name } = useParams()
 
-  if (!name) throw Error("Workspace name is required");
+  if (!name) throw Error('Workspace name is required')
 
   const { data: isArchived } = useArchivedWorkspaces<boolean>({
     select: (data) =>
       data?.workspaces.find((w) => w.name === name) !== undefined,
-  });
+  })
 
   return (
     <PageContainer>
@@ -66,5 +66,5 @@ export function RouteWorkspace() {
       />
       <ArchiveWorkspace isArchived={isArchived} workspaceName={name} />
     </PageContainer>
-  );
+  )
 }

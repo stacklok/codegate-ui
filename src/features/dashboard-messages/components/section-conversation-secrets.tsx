@@ -1,16 +1,16 @@
-import { IllustrationDone } from "@stacklok/ui-kit";
-import { isAlertSecret } from "@/lib/is-alert-secret";
-import { ConversationSecretsDetected } from "./conversation-secrets-detected";
-import { EmptyState } from "@/components/empty-state";
-import { emptyStateStrings } from "../../../constants/empty-state-strings";
-import { Conversation } from "@/api/generated";
+import { IllustrationDone } from '@stacklok/ui-kit'
+import { isAlertSecret } from '@/lib/is-alert-secret'
+import { ConversationSecretsDetected } from './conversation-secrets-detected'
+import { EmptyState } from '@/components/empty-state'
+import { emptyStateStrings } from '../../../constants/empty-state-strings'
+import { Conversation } from '@/api/generated'
 
 export function SectionConversationSecrets({
   conversation,
 }: {
-  conversation: Conversation;
+  conversation: Conversation
 }) {
-  const secrets = conversation.alerts?.filter(isAlertSecret) ?? [];
+  const secrets = conversation.alerts?.filter(isAlertSecret) ?? []
 
   if (secrets.length === 0)
     return (
@@ -20,10 +20,10 @@ export function SectionConversationSecrets({
         illustration={IllustrationDone}
         actions={null}
       />
-    );
+    )
 
   return (
-    <section className="py-4 border-b-gray-200 border-b ">
+    <section className="border-b border-b-gray-200 py-4">
       <p className="mb-2">
         CodeGate helps you protect sensitive information from being accidentally
         exposed to AI models and third-party AI provider systems by redacting
@@ -36,5 +36,5 @@ export function SectionConversationSecrets({
 
       <ConversationSecretsDetected alerts={secrets} />
     </section>
-  );
+  )
 }

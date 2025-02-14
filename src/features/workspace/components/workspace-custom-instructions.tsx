@@ -1,4 +1,4 @@
-import Editor, { type Theme } from "@monaco-editor/react";
+import Editor, { type Theme } from '@monaco-editor/react'
 import {
   Button,
   Card,
@@ -23,7 +23,7 @@ import {
   SearchFieldClearButton,
   Text,
   TextLink,
-} from "@stacklok/ui-kit";
+} from '@stacklok/ui-kit'
 import {
   Dispatch,
   FormEvent,
@@ -33,77 +33,77 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
+} from 'react'
 
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge'
 import {
   V1GetWorkspaceCustomInstructionsData,
   V1GetWorkspaceCustomInstructionsResponse,
   V1SetWorkspaceCustomInstructionsData,
-} from "@/api/generated";
+} from '@/api/generated'
 
 import {
   QueryCacheNotifyEvent,
   QueryClient,
   useQueryClient,
-} from "@tanstack/react-query";
-import { v1GetWorkspaceCustomInstructionsQueryKey } from "@/api/generated/@tanstack/react-query.gen";
-import { useQueryGetWorkspaceCustomInstructions } from "../hooks/use-query-get-workspace-custom-instructions";
-import { useMutationSetWorkspaceCustomInstructions } from "../hooks/use-mutation-set-workspace-custom-instructions";
-import Fuse from "fuse.js";
-import systemPrompts from "../constants/built-in-system-prompts.json";
-import { MessageTextSquare02, SearchMd } from "@untitled-ui/icons-react";
-import { invalidateQueries } from "@/lib/react-query-utils";
-import { useFormState } from "@/hooks/useFormState";
-import { FormButtons } from "@/components/FormButtons";
+} from '@tanstack/react-query'
+import { v1GetWorkspaceCustomInstructionsQueryKey } from '@/api/generated/@tanstack/react-query.gen'
+import { useQueryGetWorkspaceCustomInstructions } from '../hooks/use-query-get-workspace-custom-instructions'
+import { useMutationSetWorkspaceCustomInstructions } from '../hooks/use-mutation-set-workspace-custom-instructions'
+import Fuse from 'fuse.js'
+import systemPrompts from '../constants/built-in-system-prompts.json'
+import { MessageTextSquare02, SearchMd } from '@untitled-ui/icons-react'
+import { invalidateQueries } from '@/lib/react-query-utils'
+import { useFormState } from '@/hooks/useFormState'
+import { FormButtons } from '@/components/FormButtons'
 
 type DarkModeContextValue = {
-  preference: "dark" | "light" | null;
-  override: "dark" | "light" | null;
-};
+  preference: 'dark' | 'light' | null
+  override: 'dark' | 'light' | null
+}
 
 function inferDarkMode(
   contextValue:
     | null
-    | [DarkModeContextValue, Dispatch<SetStateAction<DarkModeContextValue>>],
+    | [DarkModeContextValue, Dispatch<SetStateAction<DarkModeContextValue>>]
 ): Theme {
-  if (contextValue === null) return "light";
+  if (contextValue === null) return 'light'
 
   // Handle override
-  if (contextValue[0].override === "dark") return "vs-dark";
-  if (contextValue[0].override === "light") return "light";
+  if (contextValue[0].override === 'dark') return 'vs-dark'
+  if (contextValue[0].override === 'light') return 'light'
 
   // Handle preference
-  if (contextValue[0].preference === "dark") return "vs-dark";
-  return "light";
+  if (contextValue[0].preference === 'dark') return 'vs-dark'
+  return 'light'
 }
 
 function EditorLoadingUI() {
   return (
     // arbitrary value to match the monaco editor height
     // eslint-disable-next-line tailwindcss/no-unnecessary-arbitrary-value
-    <div className="min-h-[20rem] w-full flex items-center justify-center">
+    <div className="flex min-h-[20rem] w-full items-center justify-center">
       <Loader className="my-auto" />
     </div>
-  );
+  )
 }
 
 function isGetWorkspaceCustomInstructionsQuery(
   queryKey: unknown,
-  options: V1GetWorkspaceCustomInstructionsData,
+  options: V1GetWorkspaceCustomInstructionsData
 ): boolean {
   return (
     Array.isArray(queryKey) &&
     queryKey[0]._id ===
       v1GetWorkspaceCustomInstructionsQueryKey(options)[0]?._id
-  );
+  )
 }
 
 function getCustomInstructionsFromEvent(
-  event: QueryCacheNotifyEvent,
+  event: QueryCacheNotifyEvent
 ): string | null {
-  if ("action" in event === false || "data" in event.action === false)
-    return null;
+  if ('action' in event === false || 'data' in event.action === false)
+    return null
   return (
     (
       event.action.data as
@@ -111,7 +111,7 @@ function getCustomInstructionsFromEvent(
         | undefined
         | null
     )?.prompt ?? null
-  );
+  )
 }
 
 function useCustomInstructionsValue({
@@ -119,61 +119,61 @@ function useCustomInstructionsValue({
   options,
   queryClient,
 }: {
-  initialValue: string;
-  options: V1GetWorkspaceCustomInstructionsData;
-  queryClient: QueryClient;
+  initialValue: string
+  options: V1GetWorkspaceCustomInstructionsData
+  queryClient: QueryClient
 }) {
   const initialFormValues = useMemo(
     () => ({ prompt: initialValue }),
-    [initialValue],
-  );
-  const formState = useFormState(initialFormValues);
-  const { values, updateFormValues } = formState;
+    [initialValue]
+  )
+  const formState = useFormState(initialFormValues)
+  const { values, updateFormValues } = formState
 
   // Subscribe to changes in the workspace system prompt value in the query cache
   useEffect(() => {
-    const queryCache = queryClient.getQueryCache();
+    const queryCache = queryClient.getQueryCache()
     const unsubscribe = queryCache.subscribe((event) => {
       if (
-        event.type === "updated" &&
-        event.action.type === "success" &&
+        event.type === 'updated' &&
+        event.action.type === 'success' &&
         isGetWorkspaceCustomInstructionsQuery(
           event.query.options.queryKey,
-          options,
+          options
         )
       ) {
-        const prompt: string | null = getCustomInstructionsFromEvent(event);
-        if (prompt === values.prompt || prompt === null) return;
+        const prompt: string | null = getCustomInstructionsFromEvent(event)
+        if (prompt === values.prompt || prompt === null) return
 
-        updateFormValues({ prompt });
+        updateFormValues({ prompt })
       }
-    });
+    })
 
     return () => {
-      return unsubscribe();
-    };
-  }, [options, queryClient, updateFormValues, values.prompt]);
+      return unsubscribe()
+    }
+  }, [options, queryClient, updateFormValues, values.prompt])
 
-  return { ...formState };
+  return { ...formState }
 }
 
 type PromptPresetPickerProps = {
-  onActivate: (text: string) => void;
-};
+  onActivate: (text: string) => void
+}
 
 function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>('')
 
   const fuse = new Fuse(systemPrompts, {
-    keys: ["name", "text"],
-  });
+    keys: ['name', 'text'],
+  })
 
   const handleActivate = useCallback(
     (prompt: string) => {
-      onActivate(prompt);
+      onActivate(prompt)
     },
-    [onActivate],
-  );
+    [onActivate]
+  )
 
   return (
     <>
@@ -181,11 +181,11 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
         <DialogTitle>Choose a prompt template</DialogTitle>
         <DialogCloseButton />
       </DialogHeader>
-      <DialogContent className="p-0 relative">
+      <DialogContent className="relative p-0">
         <div
-          className="bg-base pt-4 px-4 pb-2 mb-2 sticky top-0 z-10"
+          className="sticky top-0 z-10 mb-2 bg-base px-4 pb-2 pt-4"
           style={{
-            boxShadow: "0px 4px 4px 4px var(--bg-base)",
+            boxShadow: '0px 4px 4px 4px var(--bg-base)',
           }}
         >
           <SearchField className="w-full" value={query} onChange={setQuery}>
@@ -201,23 +201,24 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
           </SearchField>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4 pb-4">
-          {fuse.search(query.length > 0 ? query : " ").map(({ item }) => {
+        <div className="grid grid-cols-1 gap-4 px-4 pb-4 lg:grid-cols-2 xl:grid-cols-3">
+          {fuse.search(query.length > 0 ? query : ' ').map(({ item }) => {
             return (
               <Card className="min-h-96">
-                <h2 className="font-bold p-2 flex gap-2 items-center">
+                <h2 className="flex items-center gap-2 p-2 font-bold">
                   <MessageTextSquare02 className="size-4" />
                   <div className="truncate">{item.name}</div>
                 </h2>
-                <pre className="h-72 overflow-hidden text-wrap text-sm bg-gray-50 p-2 overflow-y-auto">
+                <pre className="h-72 overflow-hidden overflow-y-auto text-wrap bg-gray-50 p-2 text-sm">
                   {item.text}
                 </pre>
-                <div className="flex gap-4 justify-between p-2">
+                <div className="flex justify-between gap-4 p-2">
                   <div className="h-full items-center">
-                    <div className="flex h-full items-center max-w-52 text-clip">
+                    <div className="flex h-full max-w-52 items-center text-clip">
                       {item.contributors.map((contributor) => (
                         <Link
-                          className="font-bold text-sm no-underline text-secondary flex gap-1 items-center hover:bg-gray-200 h-full px-2 rounded-md"
+                          className="flex h-full items-center gap-1 rounded-md px-2 text-sm font-bold text-secondary
+                            no-underline hover:bg-gray-200"
                           target="_blank"
                           href={`https://github.com/${contributor}/`}
                         >
@@ -234,20 +235,20 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
                     slot="close"
                     variant="secondary"
                     onPress={() => {
-                      handleActivate(item.text);
+                      handleActivate(item.text)
                     }}
                   >
                     Use prompt
                   </Button>
                 </div>
               </Card>
-            );
+            )
           })}
         </div>
       </DialogContent>
       <DialogFooter>
         <span className="ml-auto">
-          Prompt templates sourced from{" "}
+          Prompt templates sourced from{' '}
           <TextLink
             className="text-primary"
             href="https://github.com/PatrickJS/awesome-cursorrules"
@@ -257,7 +258,7 @@ function PromptPresetPicker({ onActivate }: PromptPresetPickerProps) {
         </span>
       </DialogFooter>
     </>
-  );
+  )
 }
 
 export function WorkspaceCustomInstructions({
@@ -265,37 +266,37 @@ export function WorkspaceCustomInstructions({
   workspaceName,
   isArchived,
 }: {
-  className?: string;
-  workspaceName: string;
-  isArchived: boolean | undefined;
+  className?: string
+  workspaceName: string
+  isArchived: boolean | undefined
 }) {
-  const context = useContext(DarkModeContext);
-  const theme: Theme = inferDarkMode(context);
+  const context = useContext(DarkModeContext)
+  const theme: Theme = inferDarkMode(context)
 
   const options: V1GetWorkspaceCustomInstructionsData &
-    Omit<V1SetWorkspaceCustomInstructionsData, "body"> = useMemo(
+    Omit<V1SetWorkspaceCustomInstructionsData, 'body'> = useMemo(
     () => ({
       path: { workspace_name: workspaceName },
     }),
-    [workspaceName],
-  );
+    [workspaceName]
+  )
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   const {
     data: customInstructionsResponse,
     isPending: isCustomInstructionsPending,
-  } = useQueryGetWorkspaceCustomInstructions(options);
+  } = useQueryGetWorkspaceCustomInstructions(options)
   const { mutateAsync, isPending: isMutationPending } =
-    useMutationSetWorkspaceCustomInstructions(options);
+    useMutationSetWorkspaceCustomInstructions(options)
 
   const formState = useCustomInstructionsValue({
-    initialValue: customInstructionsResponse?.prompt ?? "",
+    initialValue: customInstructionsResponse?.prompt ?? '',
     options,
     queryClient,
-  });
+  })
 
-  const { values, updateFormValues } = formState;
+  const { values, updateFormValues } = formState
 
   const handleSubmit = useCallback(
     (value: string) => {
@@ -306,43 +307,43 @@ export function WorkspaceCustomInstructions({
             invalidateQueries(queryClient, [
               v1GetWorkspaceCustomInstructionsQueryKey,
             ]),
-        },
-      );
+        }
+      )
     },
-    [mutateAsync, options, queryClient],
-  );
+    [mutateAsync, options, queryClient]
+  )
 
   return (
     <Form
       onSubmit={(e: FormEvent) => {
-        e.preventDefault();
-        handleSubmit(values.prompt);
+        e.preventDefault()
+        handleSubmit(values.prompt)
       }}
       validationBehavior="aria"
     >
-      <Card className={twMerge(className, "shrink-0")}>
+      <Card className={twMerge(className, 'shrink-0')}>
         <CardBody>
           <Text className="text-primary">Custom instructions</Text>
-          <Text className="text-secondary mb-4">
+          <Text className="mb-4 text-secondary">
             Pass custom instructions to your LLM to augment its behavior, and
             save time & tokens.
           </Text>
-          <div className="border border-gray-200 rounded overflow-hidden">
+          <div className="overflow-hidden rounded border border-gray-200">
             {isCustomInstructionsPending ? (
               <EditorLoadingUI />
             ) : (
               <Editor
                 options={{
                   minimap: { enabled: false },
-                  wordWrap: "on",
+                  wordWrap: 'on',
                   readOnly: isArchived,
                 }}
                 value={values.prompt}
-                onChange={(v) => updateFormValues({ prompt: v ?? "" })}
+                onChange={(v) => updateFormValues({ prompt: v ?? '' })}
                 height="20rem"
                 defaultLanguage="Markdown"
                 theme={theme}
-                className={twMerge("bg-base", isArchived ? "opacity-25" : "")}
+                className={twMerge('bg-base', isArchived ? 'opacity-25' : '')}
               />
             )}
           </div>
@@ -362,11 +363,11 @@ export function WorkspaceCustomInstructions({
                   <Dialog
                     width="lg"
                     className="min-h-[44rem]"
-                    style={{ maxWidth: "min(calc(100vw - 64px), 1200px)" }}
+                    style={{ maxWidth: 'min(calc(100vw - 64px), 1200px)' }}
                   >
                     <PromptPresetPicker
                       onActivate={(prompt: string) => {
-                        updateFormValues({ prompt });
+                        updateFormValues({ prompt })
                       }}
                     />
                   </Dialog>
@@ -377,5 +378,5 @@ export function WorkspaceCustomInstructions({
         </CardFooter>
       </Card>
     </Form>
-  );
+  )
 }

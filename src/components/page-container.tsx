@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 export function PageContainer({ children }: { children: ReactNode }) {
   return (
-    <section className="flex-col p-6 max-w-[1440px] mx-auto">
+    <section className="mx-auto max-w-[1440px] flex-col p-6">
       {children}
     </section>
-  );
+  )
 }

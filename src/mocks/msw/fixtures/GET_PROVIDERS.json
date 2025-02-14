@@ -1,10 +1,10 @@
-    [
-        {
-            "id": 1,
-            "name": "dummy",
-            "description": "Dummy provider endpoint",
-            "provider_type": "openai",
-            "endpoint": "http://example.com",
-            "auth_type": "none"
-        }
-    ]
+[
+  {
+    "id": 1,
+    "name": "dummy",
+    "description": "Dummy provider endpoint",
+    "provider_type": "openai",
+    "endpoint": "http://example.com",
+    "auth_type": "none"
+  }
+]

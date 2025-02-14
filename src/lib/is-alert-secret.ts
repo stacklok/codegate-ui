@@ -1,14 +1,14 @@
-import { Alert, AlertConversation, Conversation } from "@/api/generated";
+import { Alert, AlertConversation, Conversation } from '@/api/generated'
 
 export function isConversationWithSecretAlerts(
-  conversation: Conversation | null,
+  conversation: Conversation | null
 ): boolean {
-  return conversation?.alerts?.some(isAlertSecret) ?? false;
+  return conversation?.alerts?.some(isAlertSecret) ?? false
 }
 
 export function isAlertSecret(alert: Alert | AlertConversation | null) {
   return (
-    alert?.trigger_category === "critical" &&
-    alert.trigger_type === "codegate-secrets"
-  );
+    alert?.trigger_category === 'critical' &&
+    alert.trigger_type === 'codegate-secrets'
+  )
 }

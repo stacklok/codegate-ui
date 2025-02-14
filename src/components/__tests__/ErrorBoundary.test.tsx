@@ -1,22 +1,22 @@
-import { screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-import ErrorBoundary from "../ErrorBoundary";
-import { Error } from "../Error";
-import { render } from "@/lib/test-utils";
+import { screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
+import ErrorBoundary from '../ErrorBoundary'
+import { Error } from '../Error'
+import { render } from '@/lib/test-utils'
 
 const ErrorComponent = () => {
-  throw Error();
-};
+  throw Error()
+}
 
-describe("ErrorBoundary", () => {
-  it("renders fallback when a child throws an error", () => {
-    vi.spyOn(console, "error").mockImplementation(() => {});
+describe('ErrorBoundary', () => {
+  it('renders fallback when a child throws an error', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     render(
       <ErrorBoundary fallback={<Error />}>
         <ErrorComponent />
-      </ErrorBoundary>,
-    );
+      </ErrorBoundary>
+    )
 
-    expect(screen.getByText(/an error occurred/i)).toBeVisible();
-  });
-});
+    expect(screen.getByText(/an error occurred/i)).toBeVisible()
+  })
+})

@@ -1,5 +1,5 @@
-import { PageHeading } from "@/components/heading";
-import { BreadcrumbHome } from "@/components/BreadcrumbHome";
+import { PageHeading } from '@/components/heading'
+import { BreadcrumbHome } from '@/components/BreadcrumbHome'
 import {
   Breadcrumb,
   Breadcrumbs,
@@ -7,18 +7,18 @@ import {
   LinkButton,
   Tooltip,
   TooltipTrigger,
-} from "@stacklok/ui-kit";
-import { TableWorkspaces } from "@/features/workspace/components/table-workspaces";
-import { useKbdShortcuts } from "@/hooks/use-kbd-shortcuts";
-import { useNavigate } from "react-router-dom";
-import { hrefs } from "@/lib/hrefs";
-import { PlusSquare } from "@untitled-ui/icons-react";
-import { PageContainer } from "@/components/page-container";
+} from '@stacklok/ui-kit'
+import { TableWorkspaces } from '@/features/workspace/components/table-workspaces'
+import { useKbdShortcuts } from '@/hooks/use-kbd-shortcuts'
+import { useNavigate } from 'react-router-dom'
+import { hrefs } from '@/lib/hrefs'
+import { PlusSquare } from '@untitled-ui/icons-react'
+import { PageContainer } from '@/components/page-container'
 
 export function RouteWorkspaces() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  useKbdShortcuts([["c", () => navigate(hrefs.workspaces.create)]]);
+  useKbdShortcuts([['c', () => navigate(hrefs.workspaces.create)]])
 
   return (
     <PageContainer>
@@ -32,7 +32,7 @@ export function RouteWorkspaces() {
           <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
             <PlusSquare /> Create
           </LinkButton>
-          <Tooltip className="flex gap-2 items-center">
+          <Tooltip className="flex items-center gap-2">
             <span className="block">Create a new workspace</span>
             <Kbd>C</Kbd>
           </Tooltip>
@@ -41,5 +41,5 @@ export function RouteWorkspaces() {
 
       <TableWorkspaces />
     </PageContainer>
-  );
+  )
 }

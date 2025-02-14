@@ -61,5 +61,3 @@ Then run:
 ```bash
 npm run generate-icons
 ```
-
-

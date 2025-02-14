@@ -6,21 +6,21 @@ import {
   IllustrationNoSearchResults,
   LinkButton,
   Loader,
-} from "@stacklok/ui-kit";
-import { ReactNode } from "react";
+} from '@stacklok/ui-kit'
+import { ReactNode } from 'react'
 
-import { emptyStateStrings } from "../../../constants/empty-state-strings";
-import { EmptyState } from "@/components/empty-state";
-import { hrefs } from "@/lib/hrefs";
-import { LinkExternal02 } from "@untitled-ui/icons-react";
-import { useListAllWorkspaces } from "@/hooks/use-query-list-all-workspaces";
+import { emptyStateStrings } from '../../../constants/empty-state-strings'
+import { EmptyState } from '@/components/empty-state'
+import { hrefs } from '@/lib/hrefs'
+import { LinkExternal02 } from '@untitled-ui/icons-react'
+import { useListAllWorkspaces } from '@/hooks/use-query-list-all-workspaces'
 import {
   AlertsFilterView,
   useMessagesFilterSearchParams,
-} from "../hooks/use-messages-filter-search-params";
-import { match, P } from "ts-pattern";
-import { useQueryGetWorkspaceMessages } from "@/hooks/use-query-get-workspace-messages";
-import { twMerge } from "tailwind-merge";
+} from '../hooks/use-messages-filter-search-params'
+import { match, P } from 'ts-pattern'
+import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
+import { twMerge } from 'tailwind-merge'
 
 function EmptyStateLoading() {
   return (
@@ -28,11 +28,11 @@ function EmptyStateLoading() {
       title={emptyStateStrings.title.loading}
       body={emptyStateStrings.body.loading}
       illustration={(props) => (
-        <Loader {...props} className={twMerge(props.className, "!size-16")} />
+        <Loader {...props} className={twMerge(props.className, '!size-16')} />
       )}
       actions={null}
     />
-  );
+  )
 }
 
 function EmptyStateGetStarted() {
@@ -53,15 +53,15 @@ function EmptyStateGetStarted() {
         </LinkButton>,
       ]}
     />
-  );
+  )
 }
 
 function EmptyStateSearch({
   search,
   setSearch,
 }: {
-  search: string;
-  setSearch: (v: string | null) => void;
+  search: string
+  setSearch: (v: string | null) => void
 }) {
   return (
     <EmptyState
@@ -74,7 +74,7 @@ function EmptyStateSearch({
         </Button>,
       ]}
     />
-  );
+  )
 }
 
 function EmptyStateNoMessagesInWorkspace() {
@@ -95,7 +95,7 @@ function EmptyStateNoMessagesInWorkspace() {
         </LinkButton>,
       ]}
     />
-  );
+  )
 }
 
 function EmptyStateMalicious() {
@@ -106,7 +106,7 @@ function EmptyStateMalicious() {
       illustration={IllustrationDone}
       actions={null}
     />
-  );
+  )
 }
 
 function EmptyStateSecrets() {
@@ -117,7 +117,7 @@ function EmptyStateSecrets() {
       illustration={IllustrationDone}
       actions={null}
     />
-  );
+  )
 }
 
 export function EmptyStateError() {
@@ -149,33 +149,33 @@ export function EmptyStateError() {
         </LinkButton>,
       ]}
     />
-  );
+  )
 }
 
 type MatchInput = {
-  isLoading: boolean;
-  hasWorkspaceMessages: boolean;
-  hasMultipleWorkspaces: boolean;
-  search: string | null;
-  view: AlertsFilterView | null;
-};
+  isLoading: boolean
+  hasWorkspaceMessages: boolean
+  hasMultipleWorkspaces: boolean
+  search: string | null
+  view: AlertsFilterView | null
+}
 
 export function TableMessagesEmptyState() {
-  const { state, setSearch } = useMessagesFilterSearchParams();
+  const { state, setSearch } = useMessagesFilterSearchParams()
 
   const { data: messages = [], isLoading: isMessagesLoading } =
-    useQueryGetWorkspaceMessages();
+    useQueryGetWorkspaceMessages()
 
   const { data: workspaces = [], isLoading: isWorkspacesLoading } =
-    useListAllWorkspaces();
+    useListAllWorkspaces()
 
-  const isLoading = isMessagesLoading || isWorkspacesLoading;
+  const isLoading = isMessagesLoading || isWorkspacesLoading
 
   return match<MatchInput, ReactNode>({
     isLoading,
     hasWorkspaceMessages: messages.length > 0,
     hasMultipleWorkspaces:
-      workspaces.filter((w) => w.name !== "default").length > 0,
+      workspaces.filter((w) => w.name !== 'default').length > 0,
     search: state.search || null,
     view: state.view,
   })
@@ -187,7 +187,7 @@ export function TableMessagesEmptyState() {
         view: P.any,
         isLoading: false,
       },
-      () => <EmptyStateGetStarted />,
+      () => <EmptyStateGetStarted />
     )
     .with(
       {
@@ -197,7 +197,7 @@ export function TableMessagesEmptyState() {
         view: P.any,
         isLoading: false,
       },
-      (search) => <EmptyStateSearch search={search} setSearch={setSearch} />,
+      (search) => <EmptyStateSearch search={search} setSearch={setSearch} />
     )
     .with(
       {
@@ -207,7 +207,7 @@ export function TableMessagesEmptyState() {
         view: P.any,
         isLoading: false,
       },
-      () => <EmptyStateNoMessagesInWorkspace />,
+      () => <EmptyStateNoMessagesInWorkspace />
     )
     .with(
       {
@@ -217,7 +217,7 @@ export function TableMessagesEmptyState() {
         view: AlertsFilterView.MALICIOUS,
         isLoading: false,
       },
-      () => <EmptyStateMalicious />,
+      () => <EmptyStateMalicious />
     )
     .with(
       {
@@ -226,7 +226,7 @@ export function TableMessagesEmptyState() {
         view: AlertsFilterView.SECRETS,
         isLoading: false,
       },
-      () => <EmptyStateSecrets />,
+      () => <EmptyStateSecrets />
     )
-    .otherwise(() => <EmptyStateLoading />);
+    .otherwise(() => <EmptyStateLoading />)
 }
