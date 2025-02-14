@@ -14,36 +14,36 @@ import {
   Tooltip,
   TooltipInfoButton,
   TooltipTrigger,
-} from "@stacklok/ui-kit";
-import { twMerge } from "tailwind-merge";
-import { useMutationPreferredModelWorkspace } from "../hooks/use-mutation-preferred-model-workspace";
+} from '@stacklok/ui-kit'
+import { twMerge } from 'tailwind-merge'
+import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
 import {
   MuxMatcherType,
   V1ListAllModelsForAllProvidersResponse,
-} from "@/api/generated";
-import { FormEvent } from "react";
+} from '@/api/generated'
+import { FormEvent } from 'react'
 import {
   LayersThree01,
   LinkExternal01,
   Plus,
   Trash01,
-} from "@untitled-ui/icons-react";
-import { SortableArea } from "@/components/SortableArea";
-import { WorkspaceModelsDropdown } from "./workspace-models-dropdown";
-import { useQueryListAllModelsForAllProviders } from "@/hooks/use-query-list-all-models-for-all-providers";
-import { useQueryMuxingRulesWorkspace } from "../hooks/use-query-muxing-rules-workspace";
+} from '@untitled-ui/icons-react'
+import { SortableArea } from '@/components/SortableArea'
+import { WorkspaceModelsDropdown } from './workspace-models-dropdown'
+import { useQueryListAllModelsForAllProviders } from '@/hooks/use-query-list-all-models-for-all-providers'
+import { useQueryMuxingRulesWorkspace } from '../hooks/use-query-muxing-rules-workspace'
 import {
   PreferredMuxRule,
   useMuxingRulesFormState,
-} from "../hooks/use-muxing-rules-form-workspace";
-import { FormButtons } from "@/components/FormButtons";
+} from '../hooks/use-muxing-rules-form-workspace'
+import { FormButtons } from '@/components/FormButtons'
 
 function MissingProviderBanner() {
   return (
     // TODO needs to update the related ui-kit component that diverges from the design
     <Alert
       variant="warning"
-      className="bg-brand-200 text-primary font-normal dark:bg-[#272472]"
+      className="bg-brand-200 font-normal text-primary dark:bg-[#272472]"
       title="You must configure at least one provider before selecting your desired model."
     >
       <LinkButton
@@ -53,19 +53,19 @@ function MissingProviderBanner() {
         Configure a provider
       </LinkButton>
     </Alert>
-  );
+  )
 }
 
 type SortableItemProps = {
-  index: number;
-  rule: PreferredMuxRule;
-  models: V1ListAllModelsForAllProvidersResponse;
-  isArchived: boolean;
-  showRemoveButton: boolean;
-  isDefaultRule: boolean;
-  setRuleItem: (rule: PreferredMuxRule) => void;
-  removeRule: (index: number) => void;
-};
+  index: number
+  rule: PreferredMuxRule
+  models: V1ListAllModelsForAllProvidersResponse
+  isArchived: boolean
+  showRemoveButton: boolean
+  isDefaultRule: boolean
+  setRuleItem: (rule: PreferredMuxRule) => void
+  removeRule: (index: number) => void
+}
 
 function SortableItem({
   rule,
@@ -77,18 +77,17 @@ function SortableItem({
   isArchived,
   isDefaultRule,
 }: SortableItemProps) {
-  const placeholder = isDefaultRule ? "Catch All" : "eg file type, file name";
+  const placeholder = isDefaultRule ? 'Catch All' : 'eg file type, file name'
   return (
     <div className="flex items-center gap-2" key={rule.id}>
       <div className="flex w-full justify-between">
         <TextField
           aria-labelledby="filter-by-label-id"
-          onFocus={(event) => event.preventDefault()}
-          value={rule?.matcher ?? ""}
+          value={rule?.matcher ?? ''}
           isDisabled={isArchived || isDefaultRule}
           name="matcher"
           onChange={(matcher) => {
-            setRuleItem({ ...rule, matcher });
+            setRuleItem({ ...rule, matcher })
           }}
         >
           <Input placeholder={placeholder} />
@@ -117,7 +116,7 @@ function SortableItem({
         )}
       </div>
     </div>
-  );
+  )
 }
 
 export function WorkspaceMuxingModel({
@@ -125,53 +124,53 @@ export function WorkspaceMuxingModel({
   workspaceName,
   isArchived,
 }: {
-  className?: string;
-  workspaceName: string;
-  isArchived: boolean | undefined;
+  className?: string
+  workspaceName: string
+  isArchived: boolean | undefined
 }) {
   const { data: muxingRules, isPending } =
-    useQueryMuxingRulesWorkspace(workspaceName);
+    useQueryMuxingRulesWorkspace(workspaceName)
   const { addRule, setRules, setRuleItem, removeRule, formState } =
-    useMuxingRulesFormState(muxingRules);
+    useMuxingRulesFormState(muxingRules)
   const {
     values: { rules },
-  } = formState;
+  } = formState
 
-  const { mutateAsync } = useMutationPreferredModelWorkspace();
-  const { data: providerModels = [] } = useQueryListAllModelsForAllProviders();
-  const isModelsEmpty = !isPending && providerModels.length === 0;
-  const showRemoveButton = rules.length > 1;
+  const { mutateAsync } = useMutationPreferredModelWorkspace()
+  const { data: providerModels = [] } = useQueryListAllModelsForAllProviders()
+  const isModelsEmpty = !isPending && providerModels.length === 0
+  const showRemoveButton = rules.length > 1
 
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     mutateAsync(
       {
         path: { workspace_name: workspaceName },
         body: rules.map(({ id, ...rest }) => {
-          void id;
+          void id
 
           return rest.matcher
             ? { ...rest, matcher_type: MuxMatcherType.FILENAME_MATCH }
-            : { ...rest };
+            : { ...rest }
         }),
       },
       {
         onSuccess: () => {
-          formState.setInitialValues({ rules });
+          formState.setInitialValues({ rules })
         },
-      },
-    );
-  };
+      }
+    )
+  }
 
   if (isModelsEmpty) {
     return (
-      <Card className={twMerge(className, "shrink-0")}>
+      <Card className={twMerge(className, 'shrink-0')}>
         <CardBody className="flex flex-col gap-2">
           <Text className="text-primary">Model Muxing</Text>
           <MissingProviderBanner />
         </CardBody>
       </Card>
-    );
+    )
   }
 
   return (
@@ -180,11 +179,11 @@ export function WorkspaceMuxingModel({
       validationBehavior="aria"
       data-testid="preferred-model"
     >
-      <Card className={twMerge(className, "shrink-0")}>
+      <Card className={twMerge(className, 'shrink-0')}>
         <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">
             <Text className="text-primary">Model Muxing</Text>
-            <Text className="flex items-center gap-1 text-secondary mb-0 text-balance">
+            <Text className="mb-0 flex items-center gap-1 text-balance text-secondary">
               Select the model you would like to use in this workspace. This
               section applies only if you are using the MUX endpoint.
               <Link
@@ -198,7 +197,7 @@ export function WorkspaceMuxingModel({
             </Text>
           </div>
 
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex w-full flex-col gap-2">
             <div className="flex gap-2">
               <div className="w-12">&nbsp;</div>
               <div className="w-full">
@@ -224,7 +223,7 @@ export function WorkspaceMuxingModel({
               disableDragByIndex={rules.length - 1}
             >
               {(rule, index) => {
-                const isDefaultRule = rules.length - 1 === index;
+                const isDefaultRule = rules.length - 1 === index
                 return (
                   <SortableItem
                     key={rule.id}
@@ -237,7 +236,7 @@ export function WorkspaceMuxingModel({
                     isArchived={!!isArchived}
                     isDefaultRule={isDefaultRule}
                   />
-                );
+                )
               }}
             </SortableArea>
           </div>
@@ -265,5 +264,5 @@ export function WorkspaceMuxingModel({
         </CardFooter>
       </Card>
     </Form>
-  );
+  )
 }
