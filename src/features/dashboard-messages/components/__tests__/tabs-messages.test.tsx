@@ -42,7 +42,8 @@ test('shows correct count of all packages', async () => {
 
 const filteredCases = [
   { tabLabel: /malicious/i, alertType: 'malicious' as const, count: 13 },
-  { tabLabel: /secrets/i, alertType: 'secret' as const, count: 13 },
+  { tabLabel: /secrets/i, alertType: 'secret' as const, count: 10 },
+  { tabLabel: /pii/i, alertType: 'pii' as const, count: 9 },
 ]
 
 filteredCases.forEach(({ tabLabel, alertType, count }) => {
