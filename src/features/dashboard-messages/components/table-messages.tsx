@@ -16,7 +16,7 @@ import { useClientSidePagination } from '@/hooks/useClientSidePagination'
 import { TableAlertTokenUsage } from './table-alert-token-usage'
 
 import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
-import { Key01, PackageX } from '@untitled-ui/icons-react'
+import { Key01, PackageX, Passport } from '@untitled-ui/icons-react'
 import {
   EmptyStateError,
   TableMessagesEmptyState,
@@ -31,6 +31,7 @@ import {
   TableMessagesColumn,
 } from '../constants/table-messages-columns'
 import { formatTime } from '@/lib/format-time'
+import { isAlertPii } from '@/lib/is-alert-pii'
 
 const getPromptText = (conversation: Conversation) => {
   return (conversation.question_answers[0]?.question?.message ?? 'N/A')
@@ -52,10 +53,12 @@ function getTypeText(type: QuestionType) {
 function countAlerts(alerts: Alert[]): {
   secrets: number
   malicious: number
+  pii: number
 } {
   return {
     secrets: alerts.filter(isAlertSecret).length,
     malicious: alerts.filter(isAlertMalicious).length,
+    pii: alerts.filter(isAlertPii).length,
   }
 }
 
@@ -93,7 +96,7 @@ function AlertsSummaryCount({
 }
 
 function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
-  const { malicious, secrets } = countAlerts(alerts)
+  const { malicious, secrets, pii } = countAlerts(alerts)
 
   return (
     <div className="flex items-center gap-2">
@@ -112,6 +115,14 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
         }}
         count={secrets}
         icon={Key01}
+      />
+      <AlertsSummaryCount
+        strings={{
+          singular: 'personally identifiable information (PII)',
+          plural: 'personally identifiable information (PII)',
+        }}
+        count={pii}
+        icon={Passport}
       />
     </div>
   )
