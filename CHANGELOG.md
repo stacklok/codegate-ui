@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.0](https://github.com/stacklok/codegate-ui/compare/v0.15.0...v0.16.0) (2025-02-17)
+
+
+### Features
+
+* add activate workspace button into detail page ([#328](https://github.com/stacklok/codegate-ui/issues/328)) ([c85e1aa](https://github.com/stacklok/codegate-ui/commit/c85e1aa8011c688d435e0abb11b44cf297d05e61))
+
+
+### Bug Fixes
+
+* cert instructions ([#317](https://github.com/stacklok/codegate-ui/issues/317)) ([2eb9579](https://github.com/stacklok/codegate-ui/commit/2eb95794f63988fa7f7f29daf2e0c41a9cd9c356))
+
 ## [0.15.0](https://github.com/stacklok/codegate-ui/compare/v0.14.1...v0.15.0) (2025-02-14)
 
 
