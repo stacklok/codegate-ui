@@ -13,7 +13,7 @@ export function PageHeading({
   return (
     <UIKitHeading
       level={level}
-      className="mb-4 flex items-center justify-between text-2xl font-bold"
+      className="mb-4 flex items-center justify-between text-2xl font-bold text-primary"
     >
       {title}
       {children}

@@ -3,9 +3,16 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react-swc'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
+import { Mode, plugin as mdPlugin } from 'vite-plugin-markdown'
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [
+    tsconfigPaths(),
+    mdPlugin({
+      mode: [Mode.MARKDOWN],
+    }),
+    react(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

@@ -3,6 +3,9 @@ import { test, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { RouteWorkspace } from '../route-workspace'
 import { useParams } from 'react-router-dom'
+import { server } from '@/mocks/msw/node'
+import { http, HttpResponse } from 'msw'
+import { mswEndpoint } from '@/test/msw-endpoint'
 
 const mockNavigate = vi.fn()
 
@@ -147,4 +150,62 @@ test('revert changes button', async () => {
       name: /workspace name/i,
     })
   ).toHaveValue('foo')
+})
+
+test('disable activate workspace button', async () => {
+  server.use(
+    http.get(mswEndpoint('/api/v1/workspaces/active'), async () => {
+      return HttpResponse.json({
+        workspaces: [
+          {
+            name: 'foo',
+            is_active: true,
+            last_updated: new Date(Date.now()).toISOString(),
+          },
+        ],
+      })
+    })
+  )
+
+  const { getByTestId } = renderComponent()
+  const activateSection = getByTestId(/workspace-activate/i)
+  await waitFor(() => {
+    expect(
+      within(activateSection).getByRole('button', { name: /activate/i })
+    ).toBeDisabled()
+  })
+
+  expect(
+    within(activateSection).getByRole('button', {
+      name: /context active button/i,
+    })
+  ).toBeVisible()
+})
+
+test('activate workspace', async () => {
+  server.use(
+    http.get(mswEndpoint('/api/v1/workspaces/active'), async () => {
+      return HttpResponse.json({
+        workspaces: [
+          {
+            name: 'bar',
+            is_active: true,
+            last_updated: new Date(Date.now()).toISOString(),
+          },
+        ],
+      })
+    })
+  )
+  const { getByTestId, getByText } = renderComponent()
+  const activateSection = getByTestId(/workspace-activate/i)
+  const activateButton = await within(activateSection).findByRole('button', {
+    name: /activate/i,
+  })
+  expect(activateButton).not.toBeDisabled()
+
+  await userEvent.click(activateButton)
+
+  await waitFor(() => {
+    expect(getByText(/Activated "foo" workspace/i)).toBeVisible()
+  })
 })

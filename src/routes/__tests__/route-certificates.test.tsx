@@ -19,7 +19,7 @@ describe('Certificates', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: 'Certificate Management' })
+      screen.getByRole('heading', { name: 'Certificate management' })
     ).toBeVisible()
 
     expect(screen.getByText('macOS')).toBeVisible()
@@ -41,16 +41,29 @@ describe('Certificates', () => {
   it('should render macOS certificate installation', async () => {
     render(<RouteCertificates />)
 
+    expect(screen.getByRole('heading', { name: 'CLI method' })).toBeVisible()
     expect(
-      screen.getByText(
-        'Open the downloaded certificate file; Keychain Access will open and prompt you to to add the certificates.'
-      )
+      screen.getByText('After downloading the certificate', { exact: false })
+    ).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'GUI method' })).toBeVisible()
+    expect(
+      screen.getByText('Open the downloaded certificate', { exact: false })
     ).toBeVisible()
 
     await userEvent.click(
       screen.getByRole('button', { name: 'Remove certificate' })
     )
-    expect(screen.getByText('Launch the Keychain Access app.')).toBeVisible()
+
+    expect(screen.getByRole('heading', { name: 'CLI method' })).toBeVisible()
+    expect(
+      screen.getByText('Open a terminal and run', { exact: false })
+    ).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'GUI method' })).toBeVisible()
+    expect(
+      screen.getByText('Right-click the "CodeGate CA" certificate', {
+        exact: false,
+      })
+    ).toBeVisible()
   })
 
   it('should render Windows certificate installation', async () => {
@@ -74,12 +87,16 @@ describe('Certificates', () => {
     await userEvent.click(screen.getByText('Linux'))
 
     expect(
-      screen.getByText('/usr/local/share/ca-certificates/codegate.crt')
+      screen.getByText(
+        "Add the certificate to your account's NSS shared database:"
+      )
     ).toBeVisible()
 
     await userEvent.click(
       screen.getByRole('button', { name: 'Remove certificate' })
     )
-    expect(screen.getByText('/usr/local/share/ca-certificates/')).toBeVisible()
+    expect(
+      screen.getByText('Remove the certificate from your account:')
+    ).toBeVisible()
   })
 })
