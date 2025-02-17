@@ -100,7 +100,7 @@ export function ConversationSummary({
 }) {
   const { malicious, secrets, pii } = conversation.alerts
     ? countConversationAlerts(conversation.alerts)
-    : { malicious: 0, secrets: 0 }
+    : { malicious: 0, secrets: 0, pii: 0 }
 
   return (
     <div className="flex gap-4">
