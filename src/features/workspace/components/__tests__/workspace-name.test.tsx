@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest'
-import { WorkspaceName } from '../workspace-name'
+import { FormWorkspaceName } from '../form-workspace-name'
 import { render, waitFor } from '@/lib/test-utils'
 import userEvent from '@testing-library/user-event'
 import { server } from '@/mocks/msw/node'
@@ -8,7 +8,7 @@ import { mswEndpoint } from '@/test/msw-endpoint'
 
 test('can rename workspace', async () => {
   const { getByRole, getByText } = render(
-    <WorkspaceName workspaceName="foo-bar" isArchived={false} />
+    <FormWorkspaceName workspaceName="foo-bar" isArchived={false} />
   )
 
   const input = getByRole('textbox', { name: /workspace name/i })
@@ -26,7 +26,7 @@ test('can rename workspace', async () => {
 
 test("can't rename archived workspace", async () => {
   const { getByRole } = render(
-    <WorkspaceName workspaceName="foo" isArchived={true} />
+    <FormWorkspaceName workspaceName="foo" isArchived={true} />
   )
 
   expect(getByRole('textbox', { name: /workspace name/i })).toBeDisabled()
@@ -48,7 +48,7 @@ test("can't rename active workspace", async () => {
     )
   )
   const { getByRole } = render(
-    <WorkspaceName workspaceName="foo" isArchived={true} />
+    <FormWorkspaceName workspaceName="foo" isArchived={true} />
   )
 
   expect(getByRole('textbox', { name: /workspace name/i })).toBeDisabled()
@@ -57,7 +57,7 @@ test("can't rename active workspace", async () => {
 
 test("can't rename archived workspace", async () => {
   const { getByRole, queryByText } = render(
-    <WorkspaceName workspaceName="foo" isArchived={true} />
+    <FormWorkspaceName workspaceName="foo" isArchived={true} />
   )
 
   expect(getByRole('textbox', { name: /workspace name/i })).toBeDisabled()
@@ -69,7 +69,7 @@ test("can't rename archived workspace", async () => {
 
 test("can't rename default workspace", async () => {
   const { getByRole, getByText } = render(
-    <WorkspaceName workspaceName="default" isArchived={false} />
+    <FormWorkspaceName workspaceName="default" isArchived={false} />
   )
 
   expect(getByRole('textbox', { name: /workspace name/i })).toBeDisabled()

@@ -1,7 +1,7 @@
 import { BreadcrumbHome } from '@/components/BreadcrumbHome'
 import { ArchiveWorkspace } from '@/features/workspace/components/archive-workspace'
 import { PageHeading } from '@/components/heading'
-import { WorkspaceName } from '@/features/workspace/components/workspace-name'
+import { FormWorkspaceName } from '@/features/workspace/components/form-workspace-name'
 import { Alert, Breadcrumb, Breadcrumbs } from '@stacklok/ui-kit'
 import { useParams } from 'react-router-dom'
 import { useArchivedWorkspaces } from '@/features/workspace/hooks/use-archived-workspaces'
@@ -51,20 +51,23 @@ export function RouteWorkspace() {
 
       {isArchived ? <WorkspaceArchivedBanner name={name} /> : null}
 
-      <WorkspaceName
+      <FormWorkspaceName
         isArchived={isArchived}
         className="mb-4"
         workspaceName={name}
+        key={`${name}-workspace-name`}
       />
       <WorkspaceMuxingModel
         className="mb-4"
         isArchived={isArchived}
         workspaceName={name}
+        key={`${name}-workspace-muxing`}
       />
       <WorkspaceCustomInstructions
         isArchived={isArchived}
         workspaceName={name}
         className="mb-4"
+        key={`${name}-workspace-custom-instructions`}
       />
       <ArchiveWorkspace isArchived={isArchived} workspaceName={name} />
     </PageContainer>

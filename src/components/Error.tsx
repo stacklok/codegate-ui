@@ -45,11 +45,9 @@ export function ErrorFallbackContent() {
 
 export function Error() {
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center">
-      <div className="w-full shrink-0">
-        <Header />
-      </div>
+    <>
+      <Header />
       <ErrorFallbackContent />
-    </div>
+    </>
   )
 }
