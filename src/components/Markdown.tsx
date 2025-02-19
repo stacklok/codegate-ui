@@ -86,6 +86,9 @@ const CodeInline = ({
       language={language}
       codeTagProps={{
         className: 'px-1 py-0.5 bg-gray-200 rounded-sm border border-gray-400',
+        style: {
+          whiteSpace: 'unset',
+        },
       }}
       useInlineStyles={false}
       PreTag="span"
