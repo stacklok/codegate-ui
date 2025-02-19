@@ -11,6 +11,8 @@ import {
   TooltipTrigger,
 } from '@stacklok/ui-kit'
 import { Alert, Conversation, QuestionType } from '@/api/generated'
+import { remark } from 'remark'
+import strip from 'strip-markdown'
 
 import { useClientSidePagination } from '@/hooks/useClientSidePagination'
 import { TableAlertTokenUsage } from './table-alert-token-usage'
@@ -34,9 +36,11 @@ import { formatTime } from '@/lib/format-time'
 import { isAlertPii } from '@/lib/is-alert-pii'
 
 const getPromptText = (conversation: Conversation) => {
-  return (conversation.question_answers[0]?.question?.message ?? 'N/A')
-    .trim()
-    .slice(0, 200) // arbitrary slice to prevent long prompts
+  const markdownSource =
+    conversation.question_answers[0]?.question?.message ?? 'N/A'
+  const fullText = remark().use(strip).processSync(markdownSource)
+
+  return fullText.toString().trim().slice(0, 200) // arbitrary slice to prevent long prompts
 }
 
 function getTypeText(type: QuestionType) {
