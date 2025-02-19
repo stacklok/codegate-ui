@@ -7,6 +7,8 @@ export const emptyStateStrings = {
     anErrorOccurred: 'An error occurred',
     noLeakedSecretsDetected: 'No leaked secrets detected',
     noMaliciousPackagesDetected: 'No malicious packages detected',
+    noPIIDetected:
+      'No leaked personally identifiable information (PII) detected',
     noSearchResultsFor: (x: string | undefined): string =>
       !x ? 'No search results' : `No search results for "${x}"`,
   },
@@ -22,6 +24,8 @@ export const emptyStateStrings = {
       'Messages are issues that CodeGate has detected and mitigated in your interactions with the LLM.',
     secretsDesc:
       'CodeGate helps you protect sensitive information from being accidentally exposed to AI models and third-party AI provider systems by redacting detected secrets from your prompts using encryption.',
+    piiDesc:
+      'CodeGate helps you protect sensitive personally identifiable information (PII) from being accidentally exposed to AI models and third-party AI provider systems by redacting detected PII from your prompts using encryption.',
     maliciousDesc:
       "CodeGate's dependency risk insight helps protect your codebase from malicious or vulnerable dependencies. It identifies potentially risky packages and suggests fixed versions or alternative packages to consider.",
   },

@@ -120,6 +120,17 @@ function EmptyStateSecrets() {
   )
 }
 
+function EmptyStatePII() {
+  return (
+    <EmptyState
+      title={emptyStateStrings.title.noPIIDetected}
+      body={emptyStateStrings.body.piiDesc}
+      illustration={IllustrationDone}
+      actions={null}
+    />
+  )
+}
+
 export function EmptyStateError() {
   return (
     <EmptyState
@@ -208,6 +219,15 @@ export function TableMessagesEmptyState() {
         isLoading: false,
       },
       () => <EmptyStateNoMessagesInWorkspace />
+    )
+    .with(
+      {
+        hasWorkspaceMessages: true,
+        hasMultipleWorkspaces: P.any,
+        view: AlertsFilterView.PII,
+        isLoading: false,
+      },
+      () => <EmptyStatePII />
     )
     .with(
       {

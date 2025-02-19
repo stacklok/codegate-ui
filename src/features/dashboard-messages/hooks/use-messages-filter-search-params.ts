@@ -6,6 +6,7 @@ export enum AlertsFilterView {
   ALL = 'all',
   MALICIOUS = 'malicious',
   SECRETS = 'secrets',
+  PII = 'pii',
 }
 
 const alertsFilterSchema = z.object({

@@ -33,6 +33,11 @@ it('shows zero in alerts counts when no alerts', async () => {
       name: /secrets count/i,
     })
   ).toHaveTextContent('0')
+  expect(
+    screen.getByRole('button', {
+      name: /personally identifiable information.*count/i,
+    })
+  ).toHaveTextContent('0')
 })
 
 it('shows count of malicious alerts in row', async () => {
@@ -77,6 +82,29 @@ it('shows count of secret alerts in row', async () => {
   expect(
     screen.getByRole('button', {
       name: /secrets count/i,
+    })
+  ).toHaveTextContent('10')
+})
+
+it('shows count of pii alerts in row', async () => {
+  server.use(
+    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () =>
+      HttpResponse.json([
+        mockConversation({
+          alertsConfig: { numAlerts: 10, type: 'pii' },
+        }),
+      ])
+    )
+  )
+  render(<TableMessages />)
+
+  await waitFor(() => {
+    expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument()
+  })
+
+  expect(
+    screen.getByRole('button', {
+      name: /pii/i,
     })
   ).toHaveTextContent('10')
 })

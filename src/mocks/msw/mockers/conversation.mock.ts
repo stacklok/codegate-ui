@@ -12,7 +12,7 @@ export function mockConversation({
   withTokenUsage?: boolean
   alertsConfig?: {
     numAlerts?: number
-    type?: 'secret' | 'malicious' | 'any'
+    type?: 'secret' | 'malicious' | 'any' | 'pii'
   }
 } = {}) {
   const timestamp = faker.date.recent().toISOString()

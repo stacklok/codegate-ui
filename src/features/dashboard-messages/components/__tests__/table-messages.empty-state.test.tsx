@@ -304,6 +304,48 @@ const TEST_CASES: TestCase[] = [
       actions: null,
     },
   },
+  {
+    testDescription: 'Has alerts, view is "pii"',
+    handlers: [
+      http.get(mswEndpoint('/api/v1/workspaces'), () => {
+        return HttpResponse.json({
+          workspaces: [
+            {
+              name: 'default',
+              is_active: true,
+            },
+            {
+              name: 'foo-bar',
+              is_active: false,
+            },
+          ],
+        })
+      }),
+      http.get(mswEndpoint('/api/v1/workspaces/archive'), () => {
+        return HttpResponse.json({
+          workspaces: [],
+        })
+      }),
+      http.get(
+        mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
+        () => {
+          return HttpResponse.json(
+            Array.from({ length: 10 }).map(() => mockAlert({ type: 'pii' }))
+          )
+        }
+      ),
+    ],
+    searchParams: {
+      view: AlertsFilterView.PII,
+      search: null,
+    },
+    expected: {
+      title: emptyStateStrings.title.noPIIDetected,
+      body: emptyStateStrings.body.piiDesc,
+      illustrationTestId: IllustrationTestId.DONE,
+      actions: null,
+    },
+  },
 ]
 
 test.each(TEST_CASES)('$testDescription', async (testCase) => {

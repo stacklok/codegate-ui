@@ -12,6 +12,7 @@ import {
   Hash01,
   Key01,
   PackageX,
+  Passport,
   Server05,
 } from '@untitled-ui/icons-react'
 
@@ -51,8 +52,8 @@ function AlertsSummaryCount({
 }: {
   count: number
   type: {
-    singular: 'malicious package' | 'secret'
-    plural: 'malicious packages' | 'secrets'
+    singular: string
+    plural: string
   }
 }) {
   const typeText = count === 1 ? type.singular : type.plural
@@ -97,9 +98,9 @@ export function ConversationSummary({
 }: {
   conversation: Conversation
 }) {
-  const { malicious, secrets } = conversation.alerts
+  const { malicious, secrets, pii } = conversation.alerts
     ? countConversationAlerts(conversation.alerts)
-    : { malicious: 0, secrets: 0 }
+    : { malicious: 0, secrets: 0, pii: 0 }
 
   return (
     <div className="flex gap-4">
@@ -163,6 +164,19 @@ export function ConversationSummary({
                 plural: 'secrets',
               }}
               count={secrets}
+            />
+          }
+        />
+        <ConversationSummaryListItem
+          icon={Passport}
+          title="PII"
+          value={
+            <AlertsSummaryCount
+              type={{
+                singular: 'personally identifiable information',
+                plural: 'personally identifiable information',
+              }}
+              count={pii}
             />
           }
         />

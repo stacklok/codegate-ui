@@ -18,11 +18,13 @@ import {
 import { SearchFieldMessages } from './search-field-messages'
 import { tv } from 'tailwind-variants'
 import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
+import { isConversationWithPII } from '@/lib/is-alert-pii'
 
 type AlertsCount = {
   all: number
   malicious: number
   secrets: number
+  pii: number
 }
 
 function select(data: V1GetWorkspaceMessagesResponse): AlertsCount {
@@ -36,10 +38,13 @@ function select(data: V1GetWorkspaceMessagesResponse): AlertsCount {
     isConversationWithSecretAlerts,
   ]).length
 
+  const pii: number = multiFilter(data, [isConversationWithPII]).length
+
   return {
     all,
     malicious,
     secrets,
+    pii,
   }
 }
 
@@ -103,6 +108,7 @@ export function TabsMessages({ children }: { children: React.ReactNode }) {
             count={data?.secrets ?? 0}
             id={AlertsFilterView.SECRETS}
           />
+          <Tab title="PII" count={data?.pii ?? 0} id={AlertsFilterView.PII} />
         </TabList>
 
         <SearchFieldMessages className="ml-auto" />
