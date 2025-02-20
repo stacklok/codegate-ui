@@ -35,11 +35,11 @@ export type Alert = {
     | {
         [key: string]: unknown
       }
-    | null;
-  trigger_type: string;
-  trigger_category: AlertSeverity;
-  timestamp: string;
-};
+    | null
+  trigger_type: string
+  trigger_category: AlertSeverity
+  timestamp: string
+}
 
 /**
  * Represents an alert with it's respective conversation.
@@ -60,8 +60,8 @@ export type AlertConversation = {
 }
 
 export enum AlertSeverity {
-  INFO = "info",
-  CRITICAL = "critical",
+  INFO = 'info',
+  CRITICAL = 'critical',
 }
 
 /**
@@ -111,6 +111,7 @@ export type Conversation = {
 
 export type CreateOrRenameWorkspaceRequest = {
   name: string
+  config?: WorkspaceConfig | null
   rename_to?: string | null
 }
 
@@ -145,15 +146,16 @@ export type ModelByProvider = {
  * Represents the different types of matchers we support.
  */
 export enum MuxMatcherType {
-  CATCH_ALL = "catch_all",
-  FILENAME_MATCH = "filename_match",
-  REQUEST_TYPE_MATCH = "request_type_match",
+  CATCH_ALL = 'catch_all',
+  FILENAME_MATCH = 'filename_match',
+  REQUEST_TYPE_MATCH = 'request_type_match',
 }
 
 /**
  * Represents a mux rule for a provider.
  */
 export type MuxRule = {
+  provider_name?: string | null
   provider_id: string
   model: string
   matcher_type: MuxMatcherType
@@ -249,6 +251,20 @@ export type ValidationError = {
 export type Workspace = {
   name: string
   is_active: boolean
+}
+
+export type WorkspaceConfig = {
+  system_prompt: string
+  muxing_rules: Array<MuxRule>
+}
+
+/**
+ * Returns a workspace ID with model name
+ */
+export type WorkspaceWithModel = {
+  id: string
+  name: string
+  provider_model_name: string
 }
 
 export type HealthCheckHealthGetResponse = unknown
@@ -461,6 +477,16 @@ export type V1SetWorkspaceMuxesData = {
 export type V1SetWorkspaceMuxesResponse = void
 
 export type V1SetWorkspaceMuxesError = HTTPValidationError
+
+export type V1ListWorkspacesByProviderData = {
+  path: {
+    provider_id: string
+  }
+}
+
+export type V1ListWorkspacesByProviderResponse = Array<WorkspaceWithModel>
+
+export type V1ListWorkspacesByProviderError = HTTPValidationError
 
 export type V1StreamSseResponse = unknown
 

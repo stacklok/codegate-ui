@@ -28,6 +28,7 @@ import {
   v1DeleteWorkspaceCustomInstructions,
   v1GetWorkspaceMuxes,
   v1SetWorkspaceMuxes,
+  v1ListWorkspacesByProvider,
   v1StreamSse,
   v1VersionCheck,
   v1GetWorkspaceTokenUsage,
@@ -76,6 +77,7 @@ import type {
   V1SetWorkspaceMuxesData,
   V1SetWorkspaceMuxesError,
   V1SetWorkspaceMuxesResponse,
+  V1ListWorkspacesByProviderData,
   V1GetWorkspaceTokenUsageData,
 } from '../types.gen'
 
@@ -685,6 +687,27 @@ export const v1SetWorkspaceMuxesMutation = (
     },
   }
   return mutationOptions
+}
+
+export const v1ListWorkspacesByProviderQueryKey = (
+  options: OptionsLegacyParser<V1ListWorkspacesByProviderData>
+) => [createQueryKey('v1ListWorkspacesByProvider', options)]
+
+export const v1ListWorkspacesByProviderOptions = (
+  options: OptionsLegacyParser<V1ListWorkspacesByProviderData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListWorkspacesByProvider({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      })
+      return data
+    },
+    queryKey: v1ListWorkspacesByProviderQueryKey(options),
+  })
 }
 
 export const v1StreamSseQueryKey = (options?: OptionsLegacyParser) => [

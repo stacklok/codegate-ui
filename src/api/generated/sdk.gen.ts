@@ -73,6 +73,9 @@ import type {
   V1SetWorkspaceMuxesData,
   V1SetWorkspaceMuxesError,
   V1SetWorkspaceMuxesResponse,
+  V1ListWorkspacesByProviderData,
+  V1ListWorkspacesByProviderError,
+  V1ListWorkspacesByProviderResponse,
   V1StreamSseError,
   V1StreamSseResponse,
   V1VersionCheckError,
@@ -509,6 +512,25 @@ export const v1SetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/workspaces/{workspace_name}/muxes',
+  })
+}
+
+/**
+ * List Workspaces By Provider
+ * List workspaces by provider ID.
+ */
+export const v1ListWorkspacesByProvider = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<V1ListWorkspacesByProviderData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    V1ListWorkspacesByProviderResponse,
+    V1ListWorkspacesByProviderError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/workspaces/{provider_id}',
   })
 }
 
