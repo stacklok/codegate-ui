@@ -10,5 +10,7 @@ export function useQueryWorkspacesByProvider(
 
   return useQuery({
     ...v1ListWorkspacesByProviderOptions({ path: { provider_id: providerId } }),
+    // eslint-disable-next-line no-restricted-syntax
+    refetchOnMount: true,
   })
 }

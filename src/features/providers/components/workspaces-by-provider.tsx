@@ -7,6 +7,7 @@ export function WorkspacesByProvider({
 }: {
   workspaces: V1ListWorkspacesByProviderResponse | undefined
 }) {
+  if (workspaces.length === 0) return null
   return (
     <div className="mb-6 flex flex-col gap-1">
       <p>The following workspaces will be impacted by this action</p>
