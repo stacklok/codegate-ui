@@ -1641,11 +1641,11 @@
         "type": "string",
         "enum": [
           "catch_all",
-          "filename_match",
-          "request_type_match"
+          "fim",
+          "chat"
         ],
         "title": "MuxMatcherType",
-        "description": "Represents the different types of matchers we support."
+        "description": "Represents the different types of matchers we support.\n\nThe 3 rules present match filenames and request types. They're used in conjunction with the\nmatcher field in the MuxRule model.\nE.g.\n- catch_all and match: None -> Always match\n- fim and match: requests.py -> Match the request if the filename is requests.py and FIM\n- chat and match: None -> Match the request if it's a chat request\n- chat and match: .js -> Match the request if the filename has a .js extension and is chat\n\nNOTE: Removing or updating fields from this enum will require a migration."
       },
       "MuxRule": {
         "properties": {
