@@ -51,12 +51,12 @@ const COLUMNS: Column[] = [
 function CellRenderer({
   column,
   row,
-  deleteProvider,
 }: {
   column: Column
   row: ProviderEndpoint
-  deleteProvider: () => void
 }) {
+  const deleteProvider = useConfirmDeleteProvider(row.id)
+
   return match(column.id)
     .with(COLUMN_MAP.provider, () => (
       <>
@@ -90,7 +90,15 @@ function CellRenderer({
       </div>
     ))
     .with(COLUMN_MAP.configuration, () => (
-      <Button isIcon variant="tertiary" onPress={deleteProvider}>
+      <Button
+        isIcon
+        variant="tertiary"
+        onPress={() =>
+          deleteProvider({
+            path: { provider_id: row.id as string },
+          })
+        }
+      >
         <Trash01 />
       </Button>
     ))
@@ -99,7 +107,6 @@ function CellRenderer({
 
 export function TableProviders() {
   const { data: providers = [] } = useProviders()
-  const deleteProvider = useConfirmDeleteProvider()
 
   return (
     <ResizableTableContainer>
@@ -117,15 +124,7 @@ export function TableProviders() {
                   id={column.id}
                   alignment={column.alignment}
                 >
-                  <CellRenderer
-                    column={column}
-                    row={row}
-                    deleteProvider={() => {
-                      deleteProvider({
-                        path: { provider_id: row.id as string },
-                      })
-                    }}
-                  />
+                  <CellRenderer column={column} row={row} />
                 </Cell>
               )}
             </Row>

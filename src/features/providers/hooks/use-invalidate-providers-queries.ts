@@ -1,6 +1,7 @@
 import {
   v1ListAllModelsForAllProvidersQueryKey,
   v1ListProviderEndpointsQueryKey,
+  v1ListWorkspacesByProviderQueryKey,
 } from '@/api/generated/@tanstack/react-query.gen'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
@@ -13,6 +14,7 @@ export function useInvalidateProvidersQueries() {
     invalidateQueries(queryClient, [
       v1ListProviderEndpointsQueryKey,
       v1ListAllModelsForAllProvidersQueryKey,
+      v1ListWorkspacesByProviderQueryKey,
     ])
   }, [queryClient])
 

@@ -1,19 +1,22 @@
 import { useConfirm } from '@/hooks/use-confirm'
 import { useCallback } from 'react'
 import { useMutationDeleteProvider } from './use-mutation-delete-provider'
+import { useQueryWorkspacesByProvider } from './use-query-workspaces-by-provider'
+import { WorkspacesByProvider } from '../components/workspaces-by-provider'
 
-export function useConfirmDeleteProvider() {
+export function useConfirmDeleteProvider(
+  providerId: string | undefined | null
+) {
   const { mutateAsync: deleteProvider } = useMutationDeleteProvider()
-
+  const { data: workspaces } = useQueryWorkspacesByProvider(providerId)
   const { confirm } = useConfirm()
 
   return useCallback(
     async (...params: Parameters<typeof deleteProvider>) => {
       const answer = await confirm(
         <>
-          <p className="mb-1">
-            Are you sure you want to permanently delete this provider?
-          </p>
+          <WorkspacesByProvider workspaces={workspaces} />
+          <p>Are you sure you want to permanently delete this provider?</p>
         </>,
         {
           buttons: {
@@ -28,6 +31,6 @@ export function useConfirmDeleteProvider() {
         return deleteProvider(...params)
       }
     },
-    [confirm, deleteProvider]
+    [confirm, deleteProvider, workspaces]
   )
 }
