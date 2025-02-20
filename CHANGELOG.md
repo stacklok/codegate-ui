@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.17.0](https://github.com/stacklok/codegate-ui/compare/v0.16.0...v0.17.0) (2025-02-20)
+
+
+### Features
+
+* add workspaces impacted by provider deletion ([#340](https://github.com/stacklok/codegate-ui/issues/340)) ([5c0544f](https://github.com/stacklok/codegate-ui/commit/5c0544f57fadc742fe160ee6f359cc5da5f8337e))
+* strip markdown in messages table ([#336](https://github.com/stacklok/codegate-ui/issues/336)) ([2f8ab95](https://github.com/stacklok/codegate-ui/commit/2f8ab953590deca22271604b0400b7c5c19c40be))
+* support PII on the dashboard ([#326](https://github.com/stacklok/codegate-ui/issues/326)) ([279fe57](https://github.com/stacklok/codegate-ui/commit/279fe57f68994466c8b1f94c227dadb177e56c77))
+
+
+### Bug Fixes
+
+* audit vuln deps ([#332](https://github.com/stacklok/codegate-ui/issues/332)) ([73c55a2](https://github.com/stacklok/codegate-ui/commit/73c55a2b3cf763c7b78747836c551f41dc8dfda5))
+* inline code word wrap ([#335](https://github.com/stacklok/codegate-ui/issues/335)) ([38715de](https://github.com/stacklok/codegate-ui/commit/38715de6395b7ae0e2f50fd6ce8f64e4c341c42f))
+
 ## [0.16.0](https://github.com/stacklok/codegate-ui/compare/v0.15.0...v0.16.0) (2025-02-17)
 
 
