@@ -9,6 +9,8 @@ import {
   Label,
   Link,
   LinkButton,
+  Select,
+  SelectButton,
   Text,
   TextField,
   Tooltip,
@@ -17,10 +19,7 @@ import {
 } from '@stacklok/ui-kit'
 import { twMerge } from 'tailwind-merge'
 import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
-import {
-  MuxMatcherType,
-  V1ListAllModelsForAllProvidersResponse,
-} from '@/api/generated'
+import { V1ListAllModelsForAllProvidersResponse } from '@/api/generated'
 import { FormEvent } from 'react'
 import {
   LayersThree01,
@@ -37,6 +36,7 @@ import {
   useMuxingRulesFormState,
 } from '../hooks/use-muxing-rules-form-workspace'
 import { FormButtons } from '@/components/FormButtons'
+import { getRequestType, isRequestType } from '../lib/utils'
 
 function MissingProviderBanner() {
   return (
@@ -80,6 +80,24 @@ function SortableItem({
   const placeholder = isDefaultRule ? 'Catch-all' : 'e.g. file type, file name'
   return (
     <div className="flex items-center gap-2" key={rule.id}>
+      <div className="flex w-2/5 justify-between">
+        <Select
+          aria-labelledby="request type"
+          selectedKey={rule.matcher_type}
+          name="request_type"
+          isRequired
+          isDisabled={isDefaultRule}
+          className="w-full"
+          items={getRequestType()}
+          onSelectionChange={(matcher_type) => {
+            if (isRequestType(matcher_type)) {
+              setRuleItem({ ...rule, matcher_type })
+            }
+          }}
+        >
+          <SelectButton />
+        </Select>
+      </div>
       <div className="flex w-full justify-between">
         <TextField
           aria-labelledby="filter-by-label-id"
@@ -149,9 +167,7 @@ export function WorkspaceMuxingModel({
         body: rules.map(({ id, ...rest }) => {
           void id
 
-          return rest.matcher
-            ? { ...rest, matcher_type: MuxMatcherType.FILENAME_MATCH }
-            : { ...rest }
+          return rest
         }),
       },
       {
@@ -200,6 +216,7 @@ export function WorkspaceMuxingModel({
           <div className="flex w-full flex-col gap-2">
             <div className="flex gap-2">
               <div className="w-12">&nbsp;</div>
+              <div className="w-2/5">Request Type</div>
               <div className="w-full">
                 <Label id="filter-by-label-id" className="flex items-center">
                   Filter by
@@ -214,7 +231,7 @@ export function WorkspaceMuxingModel({
                 </Label>
               </div>
               <div className="w-3/5">
-                <Label id="preferred-model-id">Preferred Model</Label>
+                <Label id="preferred-model-id">Model</Label>
               </div>
             </div>
             <SortableArea

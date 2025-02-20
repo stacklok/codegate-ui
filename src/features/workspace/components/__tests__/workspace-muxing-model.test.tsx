@@ -7,6 +7,12 @@ test('renders muxing model', async () => {
   render(
     <WorkspaceMuxingModel isArchived={false} workspaceName="fake-workspace" />
   )
+
+  expect(
+    screen.getByRole('button', {
+      name: /all types/i,
+    })
+  ).toBeVisible()
   expect(screen.getByText(/model muxing/i)).toBeVisible()
   expect(
     screen.getByText(
@@ -47,6 +53,11 @@ test('disabled muxing fields and buttons for archived workspace', async () => {
   expect(await screen.findByRole('button', { name: /save/i })).toBeDisabled()
   expect(screen.getByTestId(/workspace-models-dropdown/i)).toBeDisabled()
   expect(
+    screen.getByRole('button', {
+      name: /all types/i,
+    })
+  ).toBeDisabled()
+  expect(
     await screen.findByRole('button', { name: /add filter/i })
   ).toBeDisabled()
 })
@@ -75,6 +86,22 @@ test('submit additional model overrides', async () => {
     name: /filter by/i,
   })
   expect(textFields.length).toEqual(2)
+
+  const requestTypeSelect = screen.getAllByRole('button', {
+    name: /all types/i,
+  })[0]
+  await userEvent.click(requestTypeSelect as HTMLFormElement)
+
+  await userEvent.click(
+    screen.getByRole('option', {
+      name: /fim/i,
+    })
+  )
+  expect(
+    screen.getByRole('button', {
+      name: /fim/i,
+    })
+  ).toBeVisible()
   const modelsButton = await screen.findAllByTestId(
     /workspace-models-dropdown/i
   )
