@@ -27,7 +27,6 @@ createRoot(document.getElementById('root')!).render(
         <DarkModeProvider>
           <QueryClientProvider>
             <ErrorBoundary fallback={<Error />}>
-              <ReactQueryDevtools />
               <ConfirmProvider>
                 <Toaster />
                 <App />
