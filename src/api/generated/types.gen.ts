@@ -148,17 +148,19 @@ export type ModelByProvider = {
  * The 3 rules present match filenames and request types. They're used in conjunction with the
  * matcher field in the MuxRule model.
  * E.g.
- * - catch_all and match: None -> Always match
- * - fim and match: requests.py -> Match the request if the filename is requests.py and FIM
- * - chat and match: None -> Match the request if it's a chat request
- * - chat and match: .js -> Match the request if the filename has a .js extension and is chat
+ * - catch_all-> Always match
+ * - filename_match and match: requests.py -> Match the request if the filename is requests.py
+ * - fim_filename and match: main.py -> Match the request if the request type is fim
+ * and the filename is main.py
  *
  * NOTE: Removing or updating fields from this enum will require a migration.
+ * Adding new fields is safe.
  */
 export enum MuxMatcherType {
   CATCH_ALL = 'catch_all',
-  FIM = 'fim',
-  CHAT = 'chat',
+  FILENAME_MATCH = 'filename_match',
+  FIM_FILENAME = 'fim_filename',
+  CHAT_FILENAME = 'chat_filename',
 }
 
 /**
