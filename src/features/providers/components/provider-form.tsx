@@ -69,7 +69,7 @@ export function ProviderForm({ provider, setProvider }: Props) {
           validationBehavior="aria"
           onChange={(description) => setProvider({ ...provider, description })}
         >
-          <Label>Description (Optional)</Label>
+          <Label>Description (optional)</Label>
           <Input
             placeholder="Provider description"
             value={provider.description}

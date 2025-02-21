@@ -86,7 +86,7 @@ function EmptyStateNoMessagesInWorkspace() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn about Workspaces
+          Learn about workspaces
           <LinkExternal02 />
         </LinkButton>,
       ]}
@@ -151,7 +151,7 @@ export function EmptyStateError() {
           rel="noopener noreferrer"
           target="_blank"
         >
-          Github issues
+          GitHub issues
           <LinkExternal02 />
         </LinkButton>,
       ]}

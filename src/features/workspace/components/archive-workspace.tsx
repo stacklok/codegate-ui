@@ -97,7 +97,7 @@ export function ArchiveWorkspace({
     <Card className={twMerge(className, 'shrink-0')}>
       <CardBody className="flex items-center justify-between">
         <div>
-          <Text className="text-primary">Archive Workspace</Text>
+          <Text className="text-primary">Archive workspace</Text>
           <Text className="mb-0 flex items-center text-balance text-secondary">
             Archiving this workspace removes it from the main workspaces list,
             though it can be restored if needed.

@@ -186,7 +186,7 @@ const TEST_CASES: TestCase[] = [
       actions: [
         {
           role: 'link',
-          name: 'Learn about Workspaces',
+          name: 'Learn about workspaces',
           href: hrefs.external.docs.workspaces,
         },
       ],

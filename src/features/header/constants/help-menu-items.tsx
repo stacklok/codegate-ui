@@ -10,14 +10,14 @@ export const HELP_MENU_ITEMS = [
       {
         icon: <Continue />,
         id: 'continue-setup',
-        href: 'https://docs.codegate.ai/how-to/use-with-continue',
+        href: 'https://docs.codegate.ai/integrations/continue',
         textValue: 'Use with Continue',
         target: '_blank',
       },
       {
         icon: <Copilot />,
         id: 'copilot-setup',
-        href: 'https://docs.codegate.ai/how-to/use-with-copilot',
+        href: 'https://docs.codegate.ai/integrations/copilot',
         textValue: 'Use with Copilot',
         target: '_blank',
       },

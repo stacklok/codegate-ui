@@ -198,7 +198,7 @@ export function WorkspaceMuxingModel({
     return (
       <Card className={twMerge(className, 'shrink-0')}>
         <CardBody className="flex flex-col gap-2">
-          <Text className="text-primary">Model Muxing</Text>
+          <Text className="text-primary">Model muxing</Text>
           <MissingProviderBanner />
         </CardBody>
       </Card>
@@ -214,10 +214,10 @@ export function WorkspaceMuxingModel({
       <Card className={twMerge(className, 'shrink-0')}>
         <CardBody className="flex flex-col gap-6">
           <div className="flex flex-col justify-start">
-            <Text className="text-primary">Model Muxing</Text>
+            <Text className="text-primary">Model muxing</Text>
             <Text className="mb-0 flex items-center gap-1 text-balance text-secondary">
-              Select the model you would like to use in this workspace. This
-              section applies only if you are using the MUX endpoint.
+              Select the model(s) to use in this workspace. This section applies
+              only if you are using the mux endpoint.
               <Link
                 variant="primary"
                 className="flex items-center gap-1 no-underline"
@@ -232,7 +232,7 @@ export function WorkspaceMuxingModel({
           <div className="flex w-full flex-col gap-2">
             <div className="flex gap-2">
               <div className="w-12">&nbsp;</div>
-              <div className="w-2/5">Request Type</div>
+              <div className="w-2/5">Request type</div>
               <div className="w-full">
                 <Label id="filter-by-label-id" className="flex items-center">
                   Filter by
@@ -282,7 +282,7 @@ export function WorkspaceMuxingModel({
               onPress={addRule}
               isDisabled={isArchived}
             >
-              <Plus /> Add Filter
+              <Plus /> Add filter
             </Button>
 
             <LinkButton className="w-fit" variant="tertiary" href="/providers">

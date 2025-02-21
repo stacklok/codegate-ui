@@ -65,10 +65,10 @@ export function RouteCertificateSecurity() {
     <PageContainer className="max-w-4xl">
       <Breadcrumbs>
         <BreadcrumbHome />
-        <Breadcrumb>Certificate Security</Breadcrumb>
+        <Breadcrumb>Certificate security</Breadcrumb>
       </Breadcrumbs>
 
-      <PageHeading title="Certificate Security" level={1} />
+      <PageHeading title="Certificate security" level={1} />
 
       <Card className="mb-8">
         <CardBody>
@@ -76,7 +76,7 @@ export function RouteCertificateSecurity() {
             <SecurityShieldIcon />
           </div>
           <h2 className="mb-4 text-xl font-semibold">
-            Robust Certificate Security
+            Robust certificate security
           </h2>
           <p className="mb-4 text-secondary">
             Security is a top priority for us. We have designed CodeGate's local

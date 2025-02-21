@@ -42,8 +42,8 @@ export function RouteWorkspace() {
     <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
-        <Breadcrumb href="/workspaces">Manage Workspaces</Breadcrumb>
-        <Breadcrumb>Workspace Settings</Breadcrumb>
+        <Breadcrumb href="/workspaces">Manage workspaces</Breadcrumb>
+        <Breadcrumb>Workspace settings</Breadcrumb>
       </Breadcrumbs>
 
       <PageHeading level={1} title={`Workspace settings for ${name}`}>

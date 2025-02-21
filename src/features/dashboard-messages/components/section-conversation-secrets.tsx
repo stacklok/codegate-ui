@@ -27,7 +27,7 @@ export function SectionConversationSecrets({
       <p className="mb-2">
         CodeGate helps you protect sensitive information from being accidentally
         exposed to AI models and third-party AI provider systems by redacting
-        detected secrets from your prompts using encryption.
+        detected secrets from your prompts.
       </p>
       <p className="mb-2">
         The following secrets were detected in plain-text in the input provided

@@ -22,7 +22,7 @@ export function RouteProvider({ className }: { className?: string }) {
       </Breadcrumbs>
       <PageHeading level={4} title="Providers">
         <LinkButton className="w-fit" href="/providers/new">
-          <PlusSquare /> Add Provider
+          <PlusSquare /> Add provider
         </LinkButton>
       </PageHeading>
       <Card className={twMerge(className, 'shrink-0')}>

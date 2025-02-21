@@ -38,7 +38,7 @@ export function RouteProviderCreate() {
   }
 
   return (
-    <ProviderDialog title="Add Provider">
+    <ProviderDialog title="Add provider">
       <Form
         onSubmit={handleSubmit}
         validationBehavior="aria"

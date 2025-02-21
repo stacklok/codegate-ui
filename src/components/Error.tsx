@@ -33,7 +33,7 @@ export function ErrorFallbackContent() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Github issues
+              GitHub issues
               <LinkExternal02 />
             </LinkButton>,
           ]}

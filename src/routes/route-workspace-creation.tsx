@@ -9,11 +9,11 @@ export function RouteWorkspaceCreation() {
     <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
-        <Breadcrumb href="/workspaces">Manage Workspaces</Breadcrumb>
-        <Breadcrumb>Create Workspace</Breadcrumb>
+        <Breadcrumb href="/workspaces">Manage workspaces</Breadcrumb>
+        <Breadcrumb>Create workspace</Breadcrumb>
       </Breadcrumbs>
 
-      <PageHeading level={1} title="Create Workspace" />
+      <PageHeading level={1} title="Create workspace" />
       <WorkspaceCreation />
     </PageContainer>
   )

@@ -16,7 +16,7 @@ test('renders muxing model', async () => {
   expect(screen.getByText(/model muxing/i)).toBeVisible()
   expect(
     screen.getByText(
-      /select the model you would like to use in this workspace. This section applies only if you are using the MUX endpoint./i
+      /Select the model\(s\) to use in this workspace. This section applies only if you are using the mux endpoint./i
     )
   ).toBeVisible()
   expect(

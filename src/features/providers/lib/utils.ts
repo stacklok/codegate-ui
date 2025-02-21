@@ -4,7 +4,7 @@ import { match } from 'ts-pattern'
 export const PROVIDER_AUTH_TYPE_MAP = {
   [ProviderAuthType.NONE]: 'None',
   [ProviderAuthType.PASSTHROUGH]: 'Passthrough',
-  [ProviderAuthType.API_KEY]: 'API Key',
+  [ProviderAuthType.API_KEY]: 'API key',
 }
 
 export function getAuthTypeOptions() {

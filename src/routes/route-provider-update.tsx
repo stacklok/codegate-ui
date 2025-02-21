@@ -23,7 +23,7 @@ export function RouteProviderUpdate() {
   if (provider === undefined) return
 
   return (
-    <ProviderDialog title="Manage Provider">
+    <ProviderDialog title="Manage provider">
       <Form
         onSubmit={handleSubmit}
         validationBehavior="aria"

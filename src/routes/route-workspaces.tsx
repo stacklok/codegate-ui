@@ -25,10 +25,10 @@ export function RouteWorkspaces() {
     <PageContainer>
       <Breadcrumbs>
         <BreadcrumbHome />
-        <Breadcrumb>Manage Workspaces</Breadcrumb>
+        <Breadcrumb>Manage workspaces</Breadcrumb>
       </Breadcrumbs>
 
-      <PageHeading level={1} title="Manage Workspaces">
+      <PageHeading level={1} title="Manage workspaces">
         <div className="flex gap-2">
           <WorkspaceUploadButton />
           <TooltipTrigger delay={0}>
