@@ -4,7 +4,8 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Form,
+  FormSubmitButton,
+  FormV2,
   Input,
   Label,
   Link,
@@ -21,7 +22,6 @@ import {
   MuxMatcherType,
   V1ListAllModelsForAllProvidersResponse,
 } from '@/api/generated'
-import { FormEvent } from 'react'
 import {
   LayersThree01,
   LinkExternal01,
@@ -37,6 +37,24 @@ import {
   useMuxingRulesFormState,
 } from '../hooks/use-muxing-rules-form-workspace'
 import { FormButtons } from '@/components/FormButtons'
+import { WorkspaceMuxesFieldsArray } from './workspace-muxes-fields-array'
+import {
+  schemaWorkspaceConfig,
+  WorkspaceConfigFieldValues,
+} from '../lib/workspace-config-schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const DEFAULT_VALUES: WorkspaceConfigFieldValues = {
+  muxing_rules: [
+    {
+      provider_id: '',
+      provider_name: '',
+      model: '',
+      matcher: '',
+      matcher_type: MuxMatcherType.CATCH_ALL,
+    },
+  ],
+}
 
 function MissingProviderBanner() {
   return (
@@ -80,19 +98,17 @@ function SortableItem({
   const placeholder = isDefaultRule ? 'Catch-all' : 'e.g. file type, file name'
   return (
     <div className="flex items-center gap-2" key={rule.id}>
-      <div className="flex w-full justify-between">
-        <TextField
-          aria-labelledby="filter-by-label-id"
-          value={rule?.matcher ?? ''}
-          isDisabled={isArchived || isDefaultRule}
-          name="matcher"
-          onChange={(matcher) => {
-            setRuleItem({ ...rule, matcher })
-          }}
-        >
-          <Input placeholder={placeholder} />
-        </TextField>
-      </div>
+      <TextField
+        aria-labelledby="filter-by-label-id"
+        value={rule?.matcher ?? ''}
+        isDisabled={isArchived || isDefaultRule}
+        name="matcher"
+        onChange={(matcher) => {
+          setRuleItem({ ...rule, matcher })
+        }}
+      >
+        <Input placeholder={placeholder} />
+      </TextField>
       <div className="flex w-3/5 gap-2">
         <WorkspaceModelsDropdown
           rule={rule}
@@ -141,25 +157,15 @@ export function WorkspaceMuxingModel({
   const isModelsEmpty = !isPending && providerModels.length === 0
   const showRemoveButton = rules.length > 1
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
-    mutateAsync(
-      {
-        path: { workspace_name: workspaceName },
-        body: rules.map(({ id, ...rest }) => {
-          void id
-
-          return rest.matcher
-            ? { ...rest, matcher_type: MuxMatcherType.FILENAME_MATCH }
-            : { ...rest }
-        }),
-      },
-      {
-        onSuccess: () => {
-          formState.setInitialValues({ rules })
-        },
-      }
-    )
+  const handleSubmit = (data: WorkspaceConfigFieldValues) => {
+    mutateAsync({
+      path: { workspace_name: workspaceName },
+      body: data.muxing_rules.map((rule) => {
+        return rule.matcher
+          ? { ...rule, matcher_type: MuxMatcherType.FILENAME_MATCH }
+          : { ...rule }
+      }),
+    })
   }
 
   if (isModelsEmpty) {
@@ -174,10 +180,13 @@ export function WorkspaceMuxingModel({
   }
 
   return (
-    <Form
+    <FormV2<WorkspaceConfigFieldValues>
       onSubmit={handleSubmit}
-      validationBehavior="aria"
       data-testid="preferred-model"
+      options={{
+        defaultValues: DEFAULT_VALUES,
+        resolver: zodResolver(schemaWorkspaceConfig),
+      }}
     >
       <Card className={twMerge(className, 'shrink-0')}>
         <CardBody className="flex flex-col gap-6">
@@ -198,25 +207,8 @@ export function WorkspaceMuxingModel({
           </div>
 
           <div className="flex w-full flex-col gap-2">
-            <div className="flex gap-2">
-              <div className="w-12">&nbsp;</div>
-              <div className="w-full">
-                <Label id="filter-by-label-id" className="flex items-center">
-                  Filter by
-                  <TooltipTrigger delay={0}>
-                    <TooltipInfoButton aria-label="Filter by description" />
-                    <Tooltip>
-                      Filters are applied in top-down order. The first rule that
-                      matches each prompt determines the chosen model. An empty
-                      filter applies to all prompts.
-                    </Tooltip>
-                  </TooltipTrigger>
-                </Label>
-              </div>
-              <div className="w-3/5">
-                <Label id="preferred-model-id">Preferred Model</Label>
-              </div>
-            </div>
+            <WorkspaceMuxesFieldsArray />
+
             <SortableArea
               items={rules}
               setItems={setRules}
@@ -241,7 +233,10 @@ export function WorkspaceMuxingModel({
             </SortableArea>
           </div>
         </CardBody>
-        <CardFooter className="justify-between">
+        <div>
+          <FormSubmitButton />
+        </div>
+        {/* <CardFooter className="justify-between">
           <div className="flex gap-2">
             <Button
               className="w-fit"
@@ -261,8 +256,8 @@ export function WorkspaceMuxingModel({
             formState={formState}
             canSubmit={!isArchived}
           />
-        </CardFooter>
+        </CardFooter> */}
       </Card>
-    </Form>
+    </FormV2>
   )
 }
