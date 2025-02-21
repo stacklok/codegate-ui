@@ -88,18 +88,17 @@ test('submit additional model overrides', async () => {
   expect(textFields.length).toEqual(2)
 
   const requestTypeSelect = screen.getAllByRole('button', {
-    name: /all types/i,
+    name: /fim & chat/i,
   })[0]
   await userEvent.click(requestTypeSelect as HTMLFormElement)
-
   await userEvent.click(
     screen.getByRole('option', {
-      name: /fim/i,
+      name: 'FIM',
     })
   )
   expect(
     screen.getByRole('button', {
-      name: /fim/i,
+      name: 'FIM',
     })
   ).toBeVisible()
   const modelsButton = await screen.findAllByTestId(
@@ -107,7 +106,7 @@ test('submit additional model overrides', async () => {
   )
   expect(modelsButton.length).toEqual(2)
 
-  await userEvent.type(textFields[1] as HTMLFormElement, '.ts')
+  await userEvent.type(textFields[0] as HTMLFormElement, '.tsx')
 
   await userEvent.click(
     (await screen.findByRole('button', {
@@ -121,6 +120,37 @@ test('submit additional model overrides', async () => {
     })
   )
 
+  await userEvent.click(screen.getByRole('button', { name: /add filter/i }))
+  await userEvent.click(
+    screen.getAllByRole('button', {
+      name: /chat/i,
+    })[1] as HTMLFormElement
+  )
+
+  await userEvent.click(
+    screen.getByRole('option', {
+      name: 'Chat',
+    })
+  )
+
+  await userEvent.type(
+    screen.getAllByRole('textbox', {
+      name: /filter by/i,
+    })[1] as HTMLFormElement,
+    '.ts'
+  )
+
+  await userEvent.click(
+    (await screen.findByRole('button', {
+      name: /select a model/i,
+    })) as HTMLFormElement
+  )
+
+  await userEvent.click(
+    screen.getByRole('option', {
+      name: /chatgpt-4o/i,
+    })
+  )
   await userEvent.click(screen.getByRole('button', { name: /save/i }))
 
   await waitFor(() => {

@@ -36,7 +36,7 @@ import {
   useMuxingRulesFormState,
 } from '../hooks/use-muxing-rules-form-workspace'
 import { FormButtons } from '@/components/FormButtons'
-import { getRequestType, isRequestType } from '../lib/utils'
+import { getRuleData, isRequestType } from '../lib/utils'
 
 function MissingProviderBanner() {
   return (
@@ -77,18 +77,22 @@ function SortableItem({
   isArchived,
   isDefaultRule,
 }: SortableItemProps) {
-  const placeholder = isDefaultRule ? 'Catch-all' : 'e.g. file type, file name'
+  const { selectedKey, placeholder, items } = getRuleData({
+    isDefaultRule,
+    matcher_type: rule.matcher_type,
+  })
+
   return (
     <div className="flex items-center gap-2" key={rule.id}>
       <div className="flex w-2/5 justify-between">
         <Select
           aria-labelledby="request type"
-          selectedKey={rule.matcher_type}
+          selectedKey={selectedKey}
           name="request_type"
           isRequired
           isDisabled={isDefaultRule}
           className="w-full"
-          items={getRequestType()}
+          items={items}
           onSelectionChange={(matcher_type) => {
             if (isRequestType(matcher_type)) {
               setRuleItem({ ...rule, matcher_type })
