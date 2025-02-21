@@ -17,6 +17,7 @@ import {
   v1CreateWorkspace,
   v1ListActiveWorkspaces,
   v1ActivateWorkspace,
+  v1UpdateWorkspace,
   v1DeleteWorkspace,
   v1ListArchivedWorkspaces,
   v1RecoverWorkspace,
@@ -55,6 +56,9 @@ import type {
   V1ActivateWorkspaceData,
   V1ActivateWorkspaceError,
   V1ActivateWorkspaceResponse,
+  V1UpdateWorkspaceData,
+  V1UpdateWorkspaceError,
+  V1UpdateWorkspaceResponse,
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
@@ -431,6 +435,26 @@ export const v1ActivateWorkspaceMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await v1ActivateWorkspace({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      })
+      return data
+    },
+  }
+  return mutationOptions
+}
+
+export const v1UpdateWorkspaceMutation = (
+  options?: Partial<OptionsLegacyParser<V1UpdateWorkspaceData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1UpdateWorkspaceResponse,
+    V1UpdateWorkspaceError,
+    OptionsLegacyParser<V1UpdateWorkspaceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1UpdateWorkspace({
         ...options,
         ...localOptions,
         throwOnError: true,

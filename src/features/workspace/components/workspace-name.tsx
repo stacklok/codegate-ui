@@ -6,17 +6,17 @@ import {
   Input,
   Label,
   TextField,
-} from "@stacklok/ui-kit";
-import { useMutationCreateWorkspace } from "../hooks/use-mutation-create-workspace";
-import { useNavigate } from "react-router-dom";
-import { twMerge } from "tailwind-merge";
-import { useFormState } from "@/hooks/useFormState";
-import { FormButtons } from "@/components/FormButtons";
-import { FormEvent, useEffect } from "react";
+} from '@stacklok/ui-kit'
+import { useNavigate } from 'react-router-dom'
+import { twMerge } from 'tailwind-merge'
+import { useFormState } from '@/hooks/useFormState'
+import { FormButtons } from '@/components/FormButtons'
+import { FormEvent, useEffect } from 'react'
+import { useMutationUpdateWorkspace } from '../hooks/use-mutation-update-workspace'
 
 export function WorkspaceName({
   className,
-  workspaceName,
+  workspaceName: oldWorkspaceName,
   isArchived,
 }: {
   className?: string
@@ -24,32 +24,37 @@ export function WorkspaceName({
   isArchived: boolean | undefined
 }) {
   const navigate = useNavigate()
-  const { mutateAsync, isPending, error } = useMutationCreateWorkspace()
+  const { mutateAsync, isPending, error } = useMutationUpdateWorkspace()
   const errorMsg = error?.detail ? `${error?.detail}` : ''
   const formState = useFormState({
-    workspaceName,
-  });
-  const { values, updateFormValues, setInitialValues } = formState;
-  const isDefault = workspaceName === "default";
-  const isUneditable = isArchived || isPending || isDefault;
+    workspaceName: oldWorkspaceName,
+  })
+  const { values, updateFormValues, setInitialValues } = formState
+  const isDefault = oldWorkspaceName === 'default'
+  const isUneditable = isArchived || isPending || isDefault
 
   useEffect(() => {
-    setInitialValues({ workspaceName });
-  }, [setInitialValues, workspaceName]);
+    setInitialValues({ workspaceName: oldWorkspaceName })
+  }, [setInitialValues, oldWorkspaceName])
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
 
     mutateAsync(
-      { body: { name: workspaceName, rename_to: values.workspaceName } },
+      {
+        path: {
+          workspace_name: oldWorkspaceName,
+        },
+        body: { name: values.workspaceName, config: null },
+      },
       {
         onSuccess: () => {
-          formState.setInitialValues({ workspaceName: values.workspaceName });
-          navigate(`/workspace/${values.workspaceName}`);
+          formState.setInitialValues({ workspaceName: values.workspaceName })
+          navigate(`/workspace/${values.workspaceName}`)
         },
-      },
-    );
-  };
+      }
+    )
+  }
 
   return (
     <Form
@@ -61,7 +66,7 @@ export function WorkspaceName({
         <CardBody className="flex flex-col gap-6">
           <TextField
             isReadOnly={isUneditable}
-            key={workspaceName}
+            key={oldWorkspaceName}
             aria-label="Workspace name"
             value={values.workspaceName}
             name="Workspace name"
