@@ -10,8 +10,9 @@ import {
   addEdge,
   Position,
   Handle,
+  ConnectionLineType,
 } from '@xyflow/react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import '@xyflow/react/dist/style.css'
 import {
@@ -28,6 +29,7 @@ import {
 } from '@stacklok/ui-kit'
 import { tv } from 'tailwind-variants'
 import { PageHeading } from '@/components/heading'
+import { Plus } from '@untitled-ui/icons-react'
 
 const nodeStyles = tv({
   base: 'w-full rounded border border-gray-200 bg-base p-4 shadow-sm',
@@ -84,8 +86,17 @@ export function RouteMuxes() {
     setNodes((nds) => applyNodeChanges(changes, nds))
   const onEdgesChange = (changes) =>
     setEdges((eds) => applyEdgeChanges(changes, eds))
-  const onConnect = (connection) => setEdges((eds) => addEdge(connection, eds))
 
+  const onConnect = useCallback(
+    (params) =>
+      setEdges((eds) =>
+        addEdge(
+          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
+          eds
+        )
+      ),
+    []
+  )
   const addMatcherNode = () => {
     const newNode: Node = {
       id: `matcher-${nodes.length}`,
@@ -189,10 +200,10 @@ const GroupNode = ({
 }) => {
   return (
     <div
-      className={`-z-10 h-auto min-h-64 rounded-lg !border !border-gray-200 bg-gray-50
-        stroke-gray-200`}
+      className={`-z-10 flex h-auto min-h-64 flex-col rounded-lg !border !border-gray-200
+        bg-gray-50 stroke-gray-200 p-2`}
     >
-      <div className="flex gap-1 rounded-t-lg bg-gray-50 px-3 py-2">
+      <div className="flex gap-1 rounded-t-lg bg-gray-50">
         <Heading level={3} className="mb-0 text-lg">
           {data.title}
         </Heading>
@@ -201,15 +212,15 @@ const GroupNode = ({
           <Tooltip placement="right">{data.description}</Tooltip>
         </TooltipTrigger>
       </div>
-      <div className="footer rounded-b-lg p-2">
-        <Button
-          className="w-full"
-          variant="tertiary"
-          onPress={() => data.onAddNode(id)}
-        >
-          Add Node
-        </Button>
-      </div>
+
+      <Button
+        className="mt-auto w-full"
+        variant="tertiary"
+        onPress={() => data.onAddNode(id)}
+      >
+        <Plus />
+        Add Node
+      </Button>
     </div>
   )
 }
