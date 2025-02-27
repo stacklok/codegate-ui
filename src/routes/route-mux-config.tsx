@@ -14,14 +14,27 @@ import {
 import { useState } from 'react'
 
 import '@xyflow/react/dist/style.css'
-import { Input, Select, SelectButton, TextField } from '@stacklok/ui-kit'
+import {
+  Button,
+  ButtonDarkMode,
+  Heading,
+  Input,
+  Select,
+  SelectButton,
+  TextField,
+  Tooltip,
+  TooltipInfoButton,
+  TooltipTrigger,
+} from '@stacklok/ui-kit'
 import { tv } from 'tailwind-variants'
+import { PageHeading } from '@/components/heading'
 
 const nodeStyles = tv({
-  base: 'rounded border border-gray-200 bg-base p-4 shadow-sm',
+  base: 'w-full rounded border border-gray-200 bg-base p-4 shadow-sm',
 })
 const groupStyles = tv({
-  base: 'h-auto min-h-64 rounded-lg !border !border-gray-400 bg-gray-50 stroke-gray-200',
+  base: `bg-gray-50/50 -z-10 h-auto min-h-64 rounded-lg !border !border-gray-200
+  stroke-gray-200 backdrop-blur-sm`,
 })
 
 const initialNodes: Node[] = [
@@ -29,27 +42,35 @@ const initialNodes: Node[] = [
     id: 'prompt',
     type: 'input',
     data: { label: 'Prompt' },
-    position: { x: 0, y: 80 },
+    position: { x: 50, y: 50 },
+    origin: [0.5, 0.5],
     sourcePosition: Position.Right,
     draggable: false,
   },
   {
     id: 'matcher-group',
-    type: 'group',
-    data: { label: 'Matcher Group' },
+    type: 'matcherGroup',
+    data: {
+      title: 'Matchers',
+      description:
+        'Matchers use regex patterns to route requests to specific models.',
+      // onAddNode: addMatcherNode,
+    },
     position: { x: 200, y: 0 },
     style: { width: 400 },
     draggable: false,
-    className: groupStyles(),
   },
   {
     id: 'model-group',
-    type: 'group',
-    data: { label: 'Model Group' },
+    type: 'modelGroup',
+    data: {
+      title: 'Model Group',
+      description: 'Add model nodes here',
+      // onAddNode: addModelNode,
+    },
     position: { x: 620, y: 0 },
-    draggable: false,
     style: { width: 400 },
-    className: groupStyles(),
+    draggable: false,
   },
 ]
 
@@ -72,9 +93,10 @@ export function RouteMuxes() {
       data: { label: '', onChange: handleNodeChange },
       position: {
         x: 0,
-        y: nodes.filter((node) => node.id.startsWith('matcher')).length * 10,
+        y: nodes.filter((node) => node.id.startsWith('matcher')).length * 80,
       },
       parentId: 'matcher-group',
+      origin: [0.5, 0.5],
       extent: 'parent',
       targetPosition: Position.Left,
       sourcePosition: Position.Right,
@@ -109,12 +131,21 @@ export function RouteMuxes() {
   }
 
   return (
-    <PageContainer className="min-h-dvh w-full">
-      <div className="h-dvh w-dvw border border-gray-200">
-        <div className="controls">
-          <button onClick={addMatcherNode}>Add Matcher Node</button>
-          <button onClick={addModelNode}>Add Model Node</button>
-        </div>
+    <PageContainer className="flex min-h-dvh flex-col">
+      <PageHeading level={1} title="Muxing" />
+      <p className="mb-2 max-w-6xl text-balance text-secondary">
+        Model muxing (or multiplexing), allows you to configure your AI
+        assistant once and use CodeGate workspaces to switch between LLM
+        providers and models without reconfiguring your development environment.
+      </p>
+      <p className="mb-8 max-w-6xl text-balance text-secondary">
+        Configure your IDE integration to send OpenAI-compatible requests to{' '}
+        <code className="rounded-sm border border-gray-200 bg-gray-50 px-1 py-0.5">
+          http://localhost:8989/v1/mux
+        </code>{' '}
+        and configure the routing from here.
+      </p>
+      <div className="h-[32rem] border border-gray-200">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -124,16 +155,66 @@ export function RouteMuxes() {
           nodeTypes={{
             matcher: MatcherNode,
             model: ModelNode,
+            matcherGroup: (props) => (
+              <GroupNode
+                {...props}
+                data={{ ...props.data, onAddNode: addMatcherNode }}
+              />
+            ),
+            modelGroup: (props) => (
+              <GroupNode
+                {...props}
+                data={{ ...props.data, onAddNode: addModelNode }}
+              />
+            ),
           }}
         >
           <Controls />
-          <Background />
-          <MiniMap />
+          <Background className="bg-gray-100" />
         </ReactFlow>
       </div>
     </PageContainer>
   )
 }
+
+const GroupNode = ({
+  id,
+  data,
+}: Partial<Node> & {
+  data: {
+    title: string
+    description: string
+    onAddNode: (id: string | undefined) => void
+  }
+}) => {
+  return (
+    <div
+      className={`-z-10 h-auto min-h-64 rounded-lg !border !border-gray-200 bg-gray-50
+        stroke-gray-200`}
+    >
+      <div className="flex gap-1 rounded-t-lg bg-gray-50 px-3 py-2">
+        <Heading level={3} className="mb-0 text-lg">
+          {data.title}
+        </Heading>
+        <TooltipTrigger delay={0}>
+          <TooltipInfoButton />
+          <Tooltip placement="right">{data.description}</Tooltip>
+        </TooltipTrigger>
+      </div>
+      <div className="footer rounded-b-lg p-2">
+        <Button
+          className="w-full"
+          variant="tertiary"
+          onPress={() => data.onAddNode(id)}
+        >
+          Add Node
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+export default GroupNode
 
 const MatcherNode = ({ id, data }) => {
   return (
@@ -146,7 +227,7 @@ const MatcherNode = ({ id, data }) => {
           value={data.label}
           onChange={(v) => data.onChange(id, v)}
         >
-          <Input placeholder="Enter regex" />
+          <Input placeholder="e.g. *.ts" />
         </TextField>
       </div>
       <Handle type="source" position={Position.Right} />
