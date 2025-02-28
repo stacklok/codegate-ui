@@ -28,7 +28,7 @@ import {
 } from '@stacklok/ui-kit'
 import { tv } from 'tailwind-variants'
 import { PageHeading } from '@/components/heading'
-import { Plus } from '@untitled-ui/icons-react'
+import { Lock01, Plus } from '@untitled-ui/icons-react'
 
 const nodeStyles = tv({
   base: 'w-full rounded border border-gray-200 bg-base p-4 shadow-sm',
@@ -71,9 +71,28 @@ const initialNodes: Node[] = [
     style: { width: 400 },
     draggable: false,
   },
+  {
+    id: 'matcher-0',
+    type: 'matcher',
+    data: { label: 'catch-all', isDisabled: true },
+    position: { x: 0, y: 0 },
+    parentId: 'matcher-group',
+    origin: [0.5, 0.5],
+    extent: 'parent',
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+  },
 ]
 
-const initialEdges = []
+const initialEdges = [
+  {
+    id: 'edge-0',
+    source: 'prompt',
+    target: 'matcher-0',
+    type: ConnectionLineType.SmoothStep,
+    animated: true,
+  },
+]
 
 export function RouteMuxes() {
   const [nodes, setNodes] = useState(initialNodes)
@@ -88,7 +107,12 @@ export function RouteMuxes() {
     (params) =>
       setEdges((eds) =>
         addEdge(
-          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
+          {
+            ...params,
+            type: ConnectionLineType.SmoothStep,
+            animated: true,
+            className: 'z-10',
+          },
           eds
         )
       ),
@@ -219,16 +243,16 @@ const GroupNode = ({
           <TooltipInfoButton />
           <Tooltip placement="right">{data.description}</Tooltip>
         </TooltipTrigger>
-      </div>
 
-      <Button
-        className="mt-auto w-full"
-        variant="tertiary"
-        onPress={() => data.onAddNode(id)}
-      >
-        <Plus />
-        Add Node
-      </Button>
+        <Button
+          className="ml-auto h-8 px-2"
+          variant="secondary"
+          onPress={() => data.onAddNode(id)}
+        >
+          <Plus />
+          Add
+        </Button>
+      </div>
     </div>
   )
 }
@@ -244,18 +268,31 @@ const PromptNode = ({ id, data }) => {
   )
 }
 
-const MatcherNode = ({ id, data }) => {
+const MatcherNode = ({
+  id,
+  data,
+}: Partial<Node> & {
+  data: {
+    label: string
+    isDisabled?: boolean
+    onChange: (id: string | undefined, v: string) => void
+  }
+}) => {
   return (
     <>
       <Handle type="target" position={Position.Left} />
 
       <div className={nodeStyles()}>
         <TextField
+          isDisabled={data.isDisabled}
           type="text"
           value={data.label}
           onChange={(v) => data.onChange(id, v)}
         >
-          <Input placeholder="e.g. *.ts" />
+          <Input
+            icon={data.isDisabled ? <Lock01 /> : undefined}
+            placeholder="e.g. *.ts"
+          />
         </TextField>
       </div>
       <Handle type="source" position={Position.Right} />
