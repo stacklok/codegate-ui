@@ -17,7 +17,6 @@ import { useCallback, useState } from 'react'
 import '@xyflow/react/dist/style.css'
 import {
   Button,
-  ButtonDarkMode,
   Heading,
   Input,
   Select,
@@ -56,7 +55,6 @@ const initialNodes: Node[] = [
       title: 'Matchers',
       description:
         'Matchers use regex patterns to route requests to specific models.',
-      // onAddNode: addMatcherNode,
     },
     position: { x: 200, y: 0 },
     style: { width: 400 },
@@ -68,7 +66,6 @@ const initialNodes: Node[] = [
     data: {
       title: 'Model Group',
       description: 'Add model nodes here',
-      // onAddNode: addModelNode,
     },
     position: { x: 620, y: 0 },
     style: { width: 400 },
@@ -97,6 +94,7 @@ export function RouteMuxes() {
       ),
     []
   )
+
   const addMatcherNode = () => {
     const newNode: Node = {
       id: `matcher-${nodes.length}`,
@@ -113,6 +111,15 @@ export function RouteMuxes() {
       sourcePosition: Position.Right,
     }
     setNodes((nds) => [...nds, newNode])
+
+    const newEdge = {
+      id: `edge-${nodes.length}`,
+      source: 'prompt',
+      target: newNode.id,
+      type: ConnectionLineType.SmoothStep,
+      animated: true,
+    }
+    setEdges((eds) => [...eds, newEdge])
   }
 
   const addModelNode = () => {
@@ -226,8 +233,6 @@ const GroupNode = ({
   )
 }
 
-export default GroupNode
-
 const PromptNode = ({ id, data }) => {
   return (
     <>
@@ -238,6 +243,7 @@ const PromptNode = ({ id, data }) => {
     </>
   )
 }
+
 const MatcherNode = ({ id, data }) => {
   return (
     <>
