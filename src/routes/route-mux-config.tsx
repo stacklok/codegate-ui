@@ -17,6 +17,9 @@ import { useCallback, useState } from 'react'
 import '@xyflow/react/dist/style.css'
 import {
   Button,
+  ComboBox,
+  ComboBoxInput,
+  FieldGroup,
   Heading,
   Input,
   Select,
@@ -28,14 +31,14 @@ import {
 } from '@stacklok/ui-kit'
 import { tv } from 'tailwind-variants'
 import { PageHeading } from '@/components/heading'
-import { Lock01, Plus } from '@untitled-ui/icons-react'
+import { Lock01, Plus, SearchMd } from '@untitled-ui/icons-react'
 
 const nodeStyles = tv({
   base: 'w-full rounded border border-gray-200 bg-base p-4 shadow-sm',
 })
 const groupStyles = tv({
-  base: `bg-gray-50/50 -z-10 h-auto min-h-64 rounded-lg !border !border-gray-200
-  stroke-gray-200 backdrop-blur-sm`,
+  base: `bg-gray-50/50 -z-10 h-auto min-h-[calc(100%-48px)] rounded-lg !border
+  !border-gray-200 stroke-gray-200 backdrop-blur-sm`,
 })
 
 const initialNodes: Node[] = [
@@ -43,7 +46,7 @@ const initialNodes: Node[] = [
     id: 'prompt',
     type: 'prompt',
     data: { label: 'Prompt' },
-    position: { x: 50, y: 50 },
+    position: { x: 50, y: 114 },
     origin: [0.5, 0.5],
     sourcePosition: Position.Right,
     draggable: false,
@@ -56,8 +59,11 @@ const initialNodes: Node[] = [
       description:
         'Matchers use regex patterns to route requests to specific models.',
     },
-    position: { x: 200, y: 0 },
-    style: { width: 400 },
+    position: { x: 200, y: 24 },
+    style: {
+      width: 500,
+      height: '100%',
+    },
     draggable: false,
   },
   {
@@ -67,15 +73,21 @@ const initialNodes: Node[] = [
       title: 'Model Group',
       description: 'Add model nodes here',
     },
-    position: { x: 620, y: 0 },
-    style: { width: 400 },
+    position: { x: 720, y: 24 },
+    style: {
+      width: 500,
+      height: '100%',
+    },
     draggable: false,
   },
   {
     id: 'matcher-0',
     type: 'matcher',
     data: { label: 'catch-all', isDisabled: true },
-    position: { x: 0, y: 0 },
+    position: {
+      x: 250,
+      y: 90,
+    },
     parentId: 'matcher-group',
     origin: [0.5, 0.5],
     extent: 'parent',
@@ -84,13 +96,23 @@ const initialNodes: Node[] = [
   },
 ]
 
+const EDGE = {
+  type: ConnectionLineType.Bezier,
+  animated: true,
+}
+
 const initialEdges = [
   {
     id: 'edge-0',
     source: 'prompt',
     target: 'matcher-0',
-    type: ConnectionLineType.SmoothStep,
-    animated: true,
+    ...EDGE,
+  },
+  {
+    id: 'edge-1',
+    source: 'matcher-0',
+    target: 'model-0',
+    ...EDGE,
   },
 ]
 
@@ -101,7 +123,15 @@ export function RouteMuxes() {
   const onNodesChange = (changes) =>
     setNodes((nds) => applyNodeChanges(changes, nds))
   const onEdgesChange = (changes) =>
-    setEdges((eds) => applyEdgeChanges(changes, eds))
+    setEdges((eds) =>
+      applyEdgeChanges(
+        {
+          ...changes,
+          ...EDGE,
+        },
+        eds
+      )
+    )
 
   const onConnect = useCallback(
     (params) =>
@@ -109,9 +139,7 @@ export function RouteMuxes() {
         addEdge(
           {
             ...params,
-            type: ConnectionLineType.SmoothStep,
-            animated: true,
-            className: 'z-10',
+            ...EDGE,
           },
           eds
         )
@@ -125,8 +153,8 @@ export function RouteMuxes() {
       type: 'matcher',
       data: { label: '', onChange: handleNodeChange },
       position: {
-        x: 0,
-        y: nodes.filter((node) => node.id.startsWith('matcher')).length * 80,
+        x: 250,
+        y: nodes.filter((node) => node.id.startsWith('matcher')).length * 90,
       },
       parentId: 'matcher-group',
       origin: [0.5, 0.5],
@@ -140,7 +168,7 @@ export function RouteMuxes() {
       id: `edge-${nodes.length}`,
       source: 'prompt',
       target: newNode.id,
-      type: ConnectionLineType.SmoothStep,
+      type: ConnectionLineType.Bezier,
       animated: true,
     }
     setEdges((eds) => [...eds, newEdge])
@@ -152,9 +180,10 @@ export function RouteMuxes() {
       type: 'model',
       data: { label: 'Qwen', onChange: handleNodeChange },
       position: {
-        x: 400,
-        y: nodes.filter((node) => node.id.startsWith('model')).length * 100,
+        x: 250,
+        y: nodes.filter((node) => node.id.startsWith('model')).length * 90,
       },
+      origin: [0.5, 0.5],
       parentId: 'model-group',
       extent: 'parent',
       targetPosition: Position.Right,
@@ -232,10 +261,10 @@ const GroupNode = ({
 }) => {
   return (
     <div
-      className={`-z-10 flex h-auto min-h-64 flex-col rounded-lg !border !border-gray-200
-        bg-gray-50 stroke-gray-200 p-2`}
+      className={`-z-10 flex h-auto min-h-[calc(100%-48px)] flex-col rounded-lg !border-2
+        border-dashed !border-gray-200 p-3`}
     >
-      <div className="flex gap-1 rounded-t-lg bg-gray-50">
+      <div className="flex gap-1 rounded-t-lg">
         <Heading level={3} className="mb-0 text-lg">
           {data.title}
         </Heading>
@@ -250,7 +279,7 @@ const GroupNode = ({
           onPress={() => data.onAddNode(id)}
         >
           <Plus />
-          Add
+          Add Node
         </Button>
       </div>
     </div>
@@ -306,16 +335,30 @@ const ModelNode = ({ id, data }) => {
       <Handle type="target" position={Position.Left} />
 
       <div className={nodeStyles()}>
-        <Select
+        <ComboBox
           items={[
             {
-              textValue: 'Qwen2.5-Coder-32B',
-              id: 'Qwen2.5-Coder-32B',
+              textValue: 'anthropic/claude-3.7-sonnet',
+              id: 'anthropic/claude-3.7-sonnet',
+            },
+            {
+              textValue: 'deepseek-r1',
+              id: 'deepseek-r1',
+            },
+            {
+              textValue: 'mistral:7b-instruct',
+              id: 'mistral:7b-instruct',
             },
           ]}
         >
-          <SelectButton />
-        </Select>
+          <FieldGroup>
+            <ComboBoxInput
+              icon={<SearchMd />}
+              isBorderless
+              placeholder="Search for a model..."
+            />
+          </FieldGroup>
+        </ComboBox>
       </div>
     </>
   )
