@@ -42,7 +42,7 @@ const groupStyles = tv({
 const initialNodes: Node[] = [
   {
     id: 'prompt',
-    type: 'input',
+    type: 'prompt',
     data: { label: 'Prompt' },
     position: { x: 50, y: 50 },
     origin: [0.5, 0.5],
@@ -164,6 +164,7 @@ export function RouteMuxes() {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           nodeTypes={{
+            prompt: PromptNode,
             matcher: MatcherNode,
             model: ModelNode,
             matcherGroup: (props) => (
@@ -227,6 +228,16 @@ const GroupNode = ({
 
 export default GroupNode
 
+const PromptNode = ({ id, data }) => {
+  return (
+    <>
+      <div className={nodeStyles()}>
+        <span>Prompt</span>
+      </div>
+      <Handle type="source" position={Position.Right} />
+    </>
+  )
+}
 const MatcherNode = ({ id, data }) => {
   return (
     <>
