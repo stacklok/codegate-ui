@@ -41,16 +41,9 @@ const groupStyles = tv({
   !border-gray-200 stroke-gray-200 backdrop-blur-sm`,
 })
 
+const GRID_SIZE = 90
+
 const initialNodes: Node[] = [
-  {
-    id: 'prompt',
-    type: 'prompt',
-    data: { label: 'Prompt' },
-    position: { x: 50, y: 114 },
-    origin: [0.5, 0.5],
-    sourcePosition: Position.Right,
-    draggable: false,
-  },
   {
     id: 'matcher-group',
     type: 'matcherGroup',
@@ -78,6 +71,15 @@ const initialNodes: Node[] = [
       width: 500,
       height: '100%',
     },
+    draggable: false,
+  },
+  {
+    id: 'prompt',
+    type: 'prompt',
+    data: { label: 'Prompt' },
+    position: { x: 50, y: 114 },
+    origin: [0.5, 0.5],
+    sourcePosition: Position.Right,
     draggable: false,
   },
   {
@@ -148,13 +150,16 @@ export function RouteMuxes() {
   )
 
   const addMatcherNode = () => {
+    const matcherNodes = nodes.filter(
+      (node) => node.type === 'matcher' && node.id !== 'matcher-0'
+    )
     const newNode: Node = {
-      id: `matcher-${nodes.length}`,
+      id: `matcher-${matcherNodes.length + 1}`,
       type: 'matcher',
       data: { label: '', onChange: handleNodeChange },
       position: {
         x: 250,
-        y: nodes.filter((node) => node.id.startsWith('matcher')).length * 90,
+        y: matcherNodes.length * GRID_SIZE,
       },
       parentId: 'matcher-group',
       origin: [0.5, 0.5],
@@ -162,7 +167,10 @@ export function RouteMuxes() {
       targetPosition: Position.Left,
       sourcePosition: Position.Right,
     }
-    setNodes((nds) => [...nds, newNode])
+    setNodes((nds) => {
+      const updatedNodes = [...nds, newNode]
+      return alignNodesToGrid(updatedNodes)
+    })
 
     const newEdge = {
       id: `edge-${nodes.length}`,
@@ -181,7 +189,9 @@ export function RouteMuxes() {
       data: { label: 'Qwen', onChange: handleNodeChange },
       position: {
         x: 250,
-        y: nodes.filter((node) => node.id.startsWith('model')).length * 90,
+        y:
+          nodes.filter((node) => node.id.startsWith('model')).length *
+          GRID_SIZE,
       },
       origin: [0.5, 0.5],
       parentId: 'model-group',
@@ -200,6 +210,51 @@ export function RouteMuxes() {
       )
     )
   }
+
+  const alignNodesToGrid = (nodes) => {
+    const matcherNodes = nodes.filter(
+      (node) => node.type === 'matcher' && node.id !== 'matcher-0'
+    )
+    const catchAllNode = nodes.find((node) => node.id === 'matcher-0')
+
+    matcherNodes.sort((a, b) => a.position.y - b.position.y)
+
+    matcherNodes.forEach((node, index) => {
+      node.position.y = index * GRID_SIZE
+    })
+
+    if (catchAllNode) {
+      catchAllNode.position.y = matcherNodes.length * GRID_SIZE
+    }
+
+    return [
+      ...matcherNodes,
+      catchAllNode,
+      ...nodes.filter((node) => node.type !== 'matcher'),
+    ]
+  }
+
+  const onDragStop = useCallback(
+    (event, node) => {
+      const { project } = useReactFlow()
+      if (node.type === 'matcher' && node.id !== 'matcher-0') {
+        const updatedNodes = nodes.map((n) => {
+          if (n.id === node.id) {
+            return {
+              ...n,
+              position: project({
+                x: node.position.x,
+                y: Math.round(node.position.y / GRID_SIZE) * GRID_SIZE,
+              }),
+            }
+          }
+          return n
+        })
+        setNodes(alignNodesToGrid(updatedNodes))
+      }
+    },
+    [nodes]
+  )
 
   return (
     <PageContainer className="flex min-h-dvh flex-col">
@@ -223,6 +278,7 @@ export function RouteMuxes() {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          onNodeDragStop={onDragStop}
           nodeTypes={{
             prompt: PromptNode,
             matcher: MatcherNode,
