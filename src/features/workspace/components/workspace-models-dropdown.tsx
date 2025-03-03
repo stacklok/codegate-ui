@@ -37,7 +37,7 @@ function groupModelsByProviderName(
     id: providerName,
     textValue: providerName,
     items: items.map((item) => ({
-      id: `${item.provider_id}:${item.name}`,
+      id: `${item.provider_id}+${item.name}`,
       textValue: item.name,
     })),
   }))
@@ -116,7 +116,7 @@ export function WorkspaceModelsDropdown({
               const selectedValue = v.values().next().value
               if (!selectedValue && typeof selectedValue !== 'string') return
               if (typeof selectedValue === 'string') {
-                const [provider_id, modelName] = selectedValue.split(':')
+                const [provider_id, modelName] = selectedValue.split('+')
                 if (!provider_id || !modelName) return
                 onChange({
                   model: modelName,
