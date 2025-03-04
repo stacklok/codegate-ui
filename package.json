@@ -38,6 +38,7 @@
     "@types/prismjs": "^1.26.5",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@untitled-ui/icons-react": "^0.1.4",
+    "@xyflow/react": "^12.4.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "fuse.js": "^7.0.0",
