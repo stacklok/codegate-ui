@@ -1,25 +1,21 @@
+import { AlertTriggerType } from '@/api/generated'
 import { useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
-export enum AlertsFilterView {
-  ALL = 'all',
-  MALICIOUS = 'malicious',
-  SECRETS = 'secrets',
-  PII = 'pii',
-}
-
 const alertsFilterSchema = z.object({
   search: z.string().optional(),
-  view: z.nativeEnum(AlertsFilterView).optional().default(AlertsFilterView.ALL),
-  page: z.coerce.number().optional().default(0),
+  view: z.nativeEnum(AlertTriggerType).nullable().default(null),
+  page: z.coerce
+    .number()
+    .optional()
+    .default(1)
+    .transform((v) => (v < 1 ? 1 : v)),
 })
 
 type AlertsFilterSchema = z.input<typeof alertsFilterSchema>
 
-const DEFAULT_FILTER = {
-  view: AlertsFilterView.ALL,
-} as const satisfies AlertsFilterSchema
+const DEFAULT_FILTER = {} as const satisfies AlertsFilterSchema
 
 export const useMessagesFilterSearchParams = () => {
   const [searchParams, setSearchParams] = useSearchParams(
@@ -27,7 +23,7 @@ export const useMessagesFilterSearchParams = () => {
   )
 
   const setView = useCallback(
-    (view: AlertsFilterView) => {
+    (view: AlertTriggerType | undefined) => {
       setSearchParams((prev) => {
         if (view) prev.set('view', view)
         if (!view) prev.delete('view')
@@ -54,23 +50,40 @@ export const useMessagesFilterSearchParams = () => {
     [setSearchParams]
   )
 
-  const nextPage = useCallback(() => {
+  const goToNextPage = useCallback(() => {
     setSearchParams((prev) => {
       const page = Number(prev.get('page') ?? 0)
-      prev.set('page', (page + 1).toString())
+      prev.set('page', Math.max(page + 1, 1).toString())
       return prev
     })
   }, [setSearchParams])
 
-  const prevPage = useCallback(() => {
+  const goToPrevPage = useCallback(() => {
     setSearchParams((prev) => {
       const page = Number(prev.get('page') ?? 0)
-      prev.set('page', (page - 1).toString())
+      prev.set('page', Math.max(page - 1, 1).toString())
       return prev
     })
   }, [setSearchParams])
+
+  const setPage = useCallback(
+    (page: number) => {
+      setSearchParams((prev) => {
+        prev.set('page', Math.max(page, 1).toString())
+        return prev
+      })
+    },
+    [setSearchParams]
+  )
 
   const state = alertsFilterSchema.parse(Object.fromEntries(searchParams))
 
-  return { state, setView, setSearch, nextPage, prevPage }
+  return {
+    state,
+    setView,
+    setSearch,
+    goToNextPage,
+    goToPrevPage,
+    setPage,
+  }
 }

@@ -14,13 +14,11 @@ import { EmptyState } from '@/components/empty-state'
 import { hrefs } from '@/lib/hrefs'
 import { LinkExternal02 } from '@untitled-ui/icons-react'
 import { useListAllWorkspaces } from '@/hooks/use-query-list-all-workspaces'
-import {
-  AlertsFilterView,
-  useMessagesFilterSearchParams,
-} from '../hooks/use-messages-filter-search-params'
+import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
 import { match, P } from 'ts-pattern'
-import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
 import { twMerge } from 'tailwind-merge'
+import { AlertTriggerType } from '@/api/generated'
+import { useQueryGetWorkspaceMessagesTable } from '../hooks/use-query-get-workspace-messages-table'
 
 function EmptyStateLoading() {
   return (
@@ -168,14 +166,14 @@ type MatchInput = {
   hasWorkspaceMessages: boolean
   hasMultipleWorkspaces: boolean
   search: string | null
-  view: AlertsFilterView | null
+  view: AlertTriggerType | null
 }
 
 export function TableMessagesEmptyState() {
   const { state, setSearch } = useMessagesFilterSearchParams()
 
-  const { data: messages = [], isLoading: isMessagesLoading } =
-    useQueryGetWorkspaceMessages()
+  const { data: response, isLoading: isMessagesLoading } =
+    useQueryGetWorkspaceMessagesTable()
 
   const { data: workspaces = [], isLoading: isWorkspacesLoading } =
     useListAllWorkspaces()
@@ -184,11 +182,11 @@ export function TableMessagesEmptyState() {
 
   return match<MatchInput, ReactNode>({
     isLoading,
-    hasWorkspaceMessages: messages.length > 0,
+    hasWorkspaceMessages: Boolean(response?.data && response.data.length > 0),
     hasMultipleWorkspaces:
       workspaces.filter((w) => w.name !== 'default').length > 0,
     search: state.search || null,
-    view: state.view,
+    view: state.view ?? null,
   })
     .with(
       {
@@ -224,7 +222,7 @@ export function TableMessagesEmptyState() {
       {
         hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        view: AlertsFilterView.PII,
+        view: AlertTriggerType.CODEGATE_PII,
         isLoading: false,
       },
       () => <EmptyStatePII />
@@ -234,7 +232,7 @@ export function TableMessagesEmptyState() {
         hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
         search: P.any,
-        view: AlertsFilterView.MALICIOUS,
+        view: AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER,
         isLoading: false,
       },
       () => <EmptyStateMalicious />
@@ -243,7 +241,7 @@ export function TableMessagesEmptyState() {
       {
         hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        view: AlertsFilterView.SECRETS,
+        view: AlertTriggerType.CODEGATE_SECRETS,
         isLoading: false,
       },
       () => <EmptyStateSecrets />

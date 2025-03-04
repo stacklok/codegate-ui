@@ -14,11 +14,9 @@ import { Alert, Conversation, QuestionType } from '@/api/generated'
 import { remark } from 'remark'
 import strip from 'strip-markdown'
 
-import { useClientSidePagination } from '@/hooks/useClientSidePagination'
 import { TableAlertTokenUsage } from './table-alert-token-usage'
 
-import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
-import { Key01, PackageX, Passport } from '@untitled-ui/icons-react'
+import { Key01, PackageX, User01 } from '@untitled-ui/icons-react'
 import {
   EmptyStateError,
   TableMessagesEmptyState,
@@ -34,6 +32,7 @@ import {
 } from '../constants/table-messages-columns'
 import { formatTime } from '@/lib/format-time'
 import { isAlertPii } from '@/lib/is-alert-pii'
+import { TableMessagesPagination } from './table-messages-pagination'
 
 const getPromptText = (conversation: Conversation) => {
   const markdownSource =
@@ -126,7 +125,7 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
           plural: 'personally identifiable information (PII)',
         }}
         count={pii}
-        icon={Passport}
+        icon={User01}
       />
     </div>
   )
@@ -161,14 +160,7 @@ function CellRenderer({
 }
 
 export function TableMessages() {
-  const { state, prevPage, nextPage } = useMessagesFilterSearchParams()
-
-  const { data = [], isError } = useQueryGetWorkspaceMessagesTable()
-  const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
-    data,
-    state.page,
-    15
-  )
+  const { data: response, isError } = useQueryGetWorkspaceMessagesTable()
 
   return (
     <>
@@ -183,7 +175,7 @@ export function TableMessages() {
 
               return <TableMessagesEmptyState />
             }}
-            items={dataView}
+            items={response?.data}
           >
             {(row) => (
               <Row
@@ -207,26 +199,7 @@ export function TableMessages() {
         </Table>
       </ResizableTableContainer>
 
-      {hasNextPage || hasPreviousPage ? (
-        <div className="flex w-full justify-center p-4">
-          <div className="grid grid-cols-2 gap-2">
-            <Button
-              variant="secondary"
-              isDisabled={!hasPreviousPage}
-              onPress={prevPage}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="secondary"
-              isDisabled={!hasNextPage}
-              onPress={nextPage}
-            >
-              Next
-            </Button>
-          </div>
-        </div>
-      ) : null}
+      <TableMessagesPagination />
     </>
   )
 }

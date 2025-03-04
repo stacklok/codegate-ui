@@ -65,6 +65,21 @@ export enum AlertSeverity {
 }
 
 /**
+ * Represents a set of summary alerts
+ */
+export type AlertSummary = {
+  malicious_packages: number
+  pii: number
+  secrets: number
+}
+
+export enum AlertTriggerType {
+  CODEGATE_PII = 'codegate-pii',
+  CODEGATE_CONTEXT_RETRIEVER = 'codegate-context-retriever',
+  CODEGATE_SECRETS = 'codegate-secrets',
+}
+
+/**
  * Represents a chat message.
  */
 export type ChatMessage = {
@@ -172,6 +187,13 @@ export type MuxRule = {
   model: string
   matcher_type: MuxMatcherType
   matcher?: string | null
+}
+
+export type PaginatedMessagesResponse = {
+  data: Array<Conversation>
+  limit: number
+  offset: number
+  total: number
 }
 
 /**
@@ -428,13 +450,29 @@ export type V1GetWorkspaceAlertsResponse = Array<AlertConversation | null>
 
 export type V1GetWorkspaceAlertsError = HTTPValidationError
 
-export type V1GetWorkspaceMessagesData = {
+export type V1GetWorkspaceAlertsSummaryData = {
   path: {
     workspace_name: string
   }
 }
 
-export type V1GetWorkspaceMessagesResponse = Array<Conversation>
+export type V1GetWorkspaceAlertsSummaryResponse = AlertSummary
+
+export type V1GetWorkspaceAlertsSummaryError = HTTPValidationError
+
+export type V1GetWorkspaceMessagesData = {
+  path: {
+    workspace_name: string
+  }
+  query?: {
+    filter_by_alert_trigger_types?: Array<AlertTriggerType> | null
+    filter_by_ids?: Array<string> | null
+    page?: number
+    page_size?: number
+  }
+}
+
+export type V1GetWorkspaceMessagesResponse = PaginatedMessagesResponse
 
 export type V1GetWorkspaceMessagesError = HTTPValidationError
 

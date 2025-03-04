@@ -55,6 +55,9 @@ import type {
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceAlertsError,
   V1GetWorkspaceAlertsResponse,
+  V1GetWorkspaceAlertsSummaryData,
+  V1GetWorkspaceAlertsSummaryError,
+  V1GetWorkspaceAlertsSummaryResponse,
   V1GetWorkspaceMessagesData,
   V1GetWorkspaceMessagesError,
   V1GetWorkspaceMessagesResponse,
@@ -394,6 +397,25 @@ export const v1GetWorkspaceAlerts = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/workspaces/{workspace_name}/alerts',
+  })
+}
+
+/**
+ * Get Workspace Alerts Summary
+ * Get alert summary for a workspace.
+ */
+export const v1GetWorkspaceAlertsSummary = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceAlertsSummaryResponse,
+    V1GetWorkspaceAlertsSummaryError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/workspaces/{workspace_name}/alerts-summary',
   })
 }
 

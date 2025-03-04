@@ -1,7 +1,3 @@
-import { isConversationWithMaliciousAlerts } from '../../../lib/is-alert-malicious'
-import { multiFilter } from '@/lib/multi-filter'
-import { isConversationWithSecretAlerts } from '../../../lib/is-alert-secret'
-import { V1GetWorkspaceMessagesResponse } from '@/api/generated'
 import {
   Tab as BaseTab,
   Tabs,
@@ -11,42 +7,12 @@ import {
   Card,
   CardBody,
 } from '@stacklok/ui-kit'
-import {
-  AlertsFilterView,
-  useMessagesFilterSearchParams,
-} from '../hooks/use-messages-filter-search-params'
+import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
 import { SearchFieldMessages } from './search-field-messages'
 import { tv } from 'tailwind-variants'
+import { useQueryGetWorkspaceAlertsSummary } from '@/hooks/use-query-get-workspace-alerts-summary'
 import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
-import { isConversationWithPII } from '@/lib/is-alert-pii'
-
-type AlertsCount = {
-  all: number
-  malicious: number
-  secrets: number
-  pii: number
-}
-
-function select(data: V1GetWorkspaceMessagesResponse): AlertsCount {
-  const all: number = data?.length ?? 0
-
-  const malicious: number = multiFilter(data, [
-    isConversationWithMaliciousAlerts,
-  ]).length
-
-  const secrets: number = multiFilter(data, [
-    isConversationWithSecretAlerts,
-  ]).length
-
-  const pii: number = multiFilter(data, [isConversationWithPII]).length
-
-  return {
-    all,
-    malicious,
-    secrets,
-    pii,
-  }
-}
+import { AlertTriggerType } from '@/api/generated'
 
 const tabStyle = tv({
   base: [
@@ -65,55 +31,66 @@ function Tab({
   count,
 }: {
   title: string
-  id: AlertsFilterView
-  count: number
+  id: 'all' | AlertTriggerType
+  count?: number
 }) {
   return (
     <BaseTab className={tabStyle()} id={id}>
       <span className="block">{title}</span>
-      <Badge
-        data-testid={`tab-${id}-count`}
-        size="sm"
-        className="max-h-5 text-[11px]"
-      >
-        {count}
-      </Badge>
+      {typeof count === 'number' ? (
+        <Badge
+          data-testid={`tab-${id}-count`}
+          size="sm"
+          className="max-h-5 text-[11px]"
+        >
+          {count}
+        </Badge>
+      ) : null}
     </BaseTab>
   )
 }
 
 export function TabsMessages({ children }: { children: React.ReactNode }) {
   const { state, setView } = useMessagesFilterSearchParams()
-
-  const { data } = useQueryGetWorkspaceMessages({
-    select,
-  })
+  const { data: messages } = useQueryGetWorkspaceMessages({ query: {} })
+  const { data: alertsSummary } = useQueryGetWorkspaceAlertsSummary()
+  console.debug('👉 state:', state)
 
   return (
     <Tabs
-      onSelectionChange={(key) => setView(key.toString() as AlertsFilterView)}
-      selectedKey={state.view}
-      defaultSelectedKey={AlertsFilterView.ALL}
+      onSelectionChange={(key) =>
+        setView(
+          key.toString() === 'all'
+            ? undefined
+            : (key.toString() as AlertTriggerType)
+        )
+      }
+      selectedKey={state.view || 'all'}
+      defaultSelectedKey="all"
     >
       <div className="mb-4 flex items-center gap-2">
         <TabList className="overflow-hidden rounded-sm bg-gray-100">
-          <Tab title="All" count={data?.all ?? 0} id={AlertsFilterView.ALL} />
+          <Tab title="All" count={messages?.total ?? 0} id="all" />
           <Tab
             title="Malicious"
-            count={data?.malicious ?? 0}
-            id={AlertsFilterView.MALICIOUS}
+            count={alertsSummary?.malicious_packages ?? 0}
+            id={AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER}
           />
           <Tab
             title="Secrets"
-            count={data?.secrets ?? 0}
-            id={AlertsFilterView.SECRETS}
+            count={alertsSummary?.secrets ?? 0}
+            id={AlertTriggerType.CODEGATE_SECRETS}
           />
-          <Tab title="PII" count={data?.pii ?? 0} id={AlertsFilterView.PII} />
+          <Tab
+            title="PII"
+            count={alertsSummary?.pii ?? 0}
+            id={AlertTriggerType.CODEGATE_PII}
+          />
         </TabList>
 
         <SearchFieldMessages className="ml-auto" />
       </div>
-      <TabPanel id={state.view}>
+      <TabPanel id={state.view ?? 'all'}>
         <Card>
           <CardBody className="p-0">{children}</CardBody>
         </Card>
