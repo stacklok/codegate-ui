@@ -54,7 +54,6 @@ export function TabsMessages({ children }: { children: React.ReactNode }) {
   const { state, setView } = useMessagesFilterSearchParams()
   const { data: messages } = useQueryGetWorkspaceMessages({ query: {} })
   const { data: alertsSummary } = useQueryGetWorkspaceAlertsSummary()
-  console.debug('👉 state:', state)
 
   return (
     <Tabs
