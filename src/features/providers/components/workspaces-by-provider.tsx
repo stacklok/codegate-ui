@@ -10,7 +10,10 @@ export function WorkspacesByProvider({
   if (workspaces.length === 0) return null
   return (
     <div className="mb-6 flex flex-col gap-1">
-      <p>The following workspaces will be impacted by this action</p>
+      <p>
+        The following workspaces are currently using this provider and will need
+        to be updated:
+      </p>
       <div className="flex flex-wrap gap-1">
         {uniqBy(workspaces, 'name').map((item, index) => {
           return (

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.18.1](https://github.com/stacklok/codegate-ui/compare/v0.18.0...v0.18.1) (2025-03-03)
+
+
+### Bug Fixes
+
+* id separator for provider, model muxing rule ([#360](https://github.com/stacklok/codegate-ui/issues/360)) ([3cff061](https://github.com/stacklok/codegate-ui/commit/3cff0613a57f4c9c69add80f63d072238e797656))
+
+## [0.18.0](https://github.com/stacklok/codegate-ui/compare/v0.17.0...v0.18.0) (2025-02-21)
+
+
+### Features
+
+* support muxing fim and chat ([#343](https://github.com/stacklok/codegate-ui/issues/343)) ([14b1b2d](https://github.com/stacklok/codegate-ui/commit/14b1b2d470889957ca836de4a26a179fb6c56e5c))
+
 ## [0.17.0](https://github.com/stacklok/codegate-ui/compare/v0.16.0...v0.17.0) (2025-02-20)
 
 
