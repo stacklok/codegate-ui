@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0](https://github.com/stacklok/codegate-ui/compare/v0.18.1...v0.19.0) (2025-03-04)
+
+
+### Features
+
+* replace muxing placeholder ([#365](https://github.com/stacklok/codegate-ui/issues/365)) ([b426bf4](https://github.com/stacklok/codegate-ui/commit/b426bf417bccd294a2bd29d4ab98a5883135529d))
+
 ## [0.18.1](https://github.com/stacklok/codegate-ui/compare/v0.18.0...v0.18.1) (2025-03-03)
 
 
