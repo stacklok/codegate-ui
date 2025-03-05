@@ -41,6 +41,9 @@ import type {
   V1ActivateWorkspaceData,
   V1ActivateWorkspaceError,
   V1ActivateWorkspaceResponse,
+  V1UpdateWorkspaceData,
+  V1UpdateWorkspaceError,
+  V1UpdateWorkspaceResponse,
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
@@ -309,6 +312,23 @@ export const v1ActivateWorkspace = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/workspaces/active',
+  })
+}
+
+/**
+ * Update Workspace
+ * Update a workspace.
+ */
+export const v1UpdateWorkspace = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1UpdateWorkspaceData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    V1UpdateWorkspaceResponse,
+    V1UpdateWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/workspaces/{workspace_name}',
   })
 }
 

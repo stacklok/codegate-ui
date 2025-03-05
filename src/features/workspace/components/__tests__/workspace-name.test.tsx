@@ -20,7 +20,7 @@ test('can rename workspace', async () => {
   await userEvent.click(getByRole('button', { name: /save/i }))
 
   await waitFor(() => {
-    expect(getByText(/renamed workspace to "baz-qux"/i)).toBeVisible()
+    expect(getByText(/updated workspace/i)).toBeVisible()
   })
 })
 
