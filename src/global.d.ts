@@ -1,5 +1,5 @@
 export interface AppConfig {
-  BASE_API_URL?: string
+  DASHBOARD_API_BASE_URL?: string
 }
 
 declare global {
