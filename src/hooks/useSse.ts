@@ -6,8 +6,9 @@ import {
   v1GetWorkspaceMessagesQueryKey,
 } from '@/api/generated/@tanstack/react-query.gen'
 import { invalidateQueries } from '@/lib/react-query-utils'
+import { getAppConfig } from '@/lib/utils'
 
-const BASE_URL = import.meta.env.VITE_BASE_API_URL
+const baseApiUrl = getAppConfig().BASE_API_URL
 
 export function useSse() {
   const location = useLocation()
@@ -15,7 +16,7 @@ export function useSse() {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${BASE_URL}/api/v1/alerts_notification`
+      `${baseApiUrl}/api/v1/alerts_notification`
     )
 
     eventSource.onmessage = function (event) {

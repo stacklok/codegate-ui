@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { AppConfig } from '@/global'
 
 const FILEPATH_REGEX = /(?:---FILEPATH|Path:|\/\/\s*filepath:)\s*([^\s]+)/g
 const COMPARE_CODE_REGEX = /Compare this snippet[^:]*:/g
@@ -68,5 +69,21 @@ export function sanitizeQuestionPrompt({
     // Log the error and return the original question as a fallback
     console.error('Error processing the question:', error)
     return question
+  }
+}
+
+export function getAppConfig(): AppConfig {
+  const baseApiUrl = window.APP_CONFIG?.BASE_API_URL
+
+  if (!baseApiUrl || baseApiUrl === '${BASE_API_URL}') {
+    return {
+      ...window.APP_CONFIG,
+      BASE_API_URL: import.meta.env.VITE_BASE_API_URL,
+    }
+  }
+
+  return {
+    ...window.APP_CONFIG,
+    BASE_API_URL: baseApiUrl,
   }
 }

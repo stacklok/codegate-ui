@@ -29,7 +29,8 @@
     "openapi-ts.config.ts",
     "tailwind.config.ts",
     "vitest.config.ts",
-    "vitest.setup.ts"
+    "vitest.setup.ts",
+    "./global.d.ts" 
   ],
   "exclude": ["node_modules"]
 }
