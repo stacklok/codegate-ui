@@ -124,14 +124,18 @@ export type Conversation = {
   alerts?: Array<Alert>
 }
 
-export type CreateOrRenameWorkspaceRequest = {
-  name: string
-  config?: WorkspaceConfig | null
-  rename_to?: string | null
-}
-
 export type CustomInstructions = {
   prompt: string
+}
+
+export type FullWorkspace_Input = {
+  name: string
+  config?: WorkspaceConfig_Input | null
+}
+
+export type FullWorkspace_Output = {
+  name: string
+  config?: WorkspaceConfig_Output | null
 }
 
 export type HTTPValidationError = {
@@ -287,8 +291,13 @@ export type Workspace = {
   is_active: boolean
 }
 
-export type WorkspaceConfig = {
-  system_prompt: string
+export type WorkspaceConfig_Input = {
+  custom_instructions: string
+  muxing_rules: Array<MuxRule>
+}
+
+export type WorkspaceConfig_Output = {
+  custom_instructions: string
   muxing_rules: Array<MuxRule>
 }
 
@@ -384,10 +393,10 @@ export type V1ListWorkspacesResponse = ListWorkspacesResponse
 export type V1ListWorkspacesError = unknown
 
 export type V1CreateWorkspaceData = {
-  body: CreateOrRenameWorkspaceRequest
+  body: FullWorkspace_Input
 }
 
-export type V1CreateWorkspaceResponse = Workspace
+export type V1CreateWorkspaceResponse = FullWorkspace_Output
 
 export type V1CreateWorkspaceError = HTTPValidationError
 
@@ -405,6 +414,17 @@ export type V1ActivateWorkspaceData = {
 export type V1ActivateWorkspaceResponse = unknown
 
 export type V1ActivateWorkspaceError = HTTPValidationError
+
+export type V1UpdateWorkspaceData = {
+  body: FullWorkspace_Input
+  path: {
+    workspace_name: string
+  }
+}
+
+export type V1UpdateWorkspaceResponse = FullWorkspace_Output
+
+export type V1UpdateWorkspaceError = HTTPValidationError
 
 export type V1DeleteWorkspaceData = {
   path: {
