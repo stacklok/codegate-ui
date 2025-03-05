@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.19.0](https://github.com/stacklok/codegate-ui/compare/v0.18.1...v0.19.0) (2025-03-05)
+
+
+### Features
+
+* replace muxing placeholder ([#365](https://github.com/stacklok/codegate-ui/issues/365)) ([b426bf4](https://github.com/stacklok/codegate-ui/commit/b426bf417bccd294a2bd29d4ab98a5883135529d))
+
+
+### Bug Fixes
+
+* handle breaking changes to workspace config ([#349](https://github.com/stacklok/codegate-ui/issues/349)) ([6a897e3](https://github.com/stacklok/codegate-ui/commit/6a897e3331d3b907b7d0a264bf51bc9239bc3aee))
+* remove duplicate react-query-devtools ([#342](https://github.com/stacklok/codegate-ui/issues/342)) ([63bf5ea](https://github.com/stacklok/codegate-ui/commit/63bf5ea14caebd1acf812c7bd71ac40226938b09))
+
 ## [0.18.1](https://github.com/stacklok/codegate-ui/compare/v0.18.0...v0.18.1) (2025-03-03)
 
 
