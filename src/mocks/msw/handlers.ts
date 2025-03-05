@@ -58,6 +58,18 @@ export const handlers = [
     mswEndpoint('/api/v1/workspaces/active'),
     () => new HttpResponse(null, { status: 204 })
   ),
+  http.put(mswEndpoint('/api/v1/workspaces/:workspace_name'), () =>
+    HttpResponse.json(
+      {
+        name: 'foo',
+        config: {
+          custom_instructions: '',
+          muxing_rules: [],
+        },
+      },
+      { status: 201 }
+    )
+  ),
   http.post(
     mswEndpoint('/api/v1/workspaces/archive/:workspace_name/recover'),
     () => new HttpResponse(null, { status: 204 })
@@ -105,8 +117,8 @@ export const handlers = [
     mswEndpoint('/api/v1/workspaces/:workspace_name/custom-instructions'),
     () => new HttpResponse(null, { status: 204 })
   ),
-  http.get(mswEndpoint("/api/v1/workspaces/:workspace_name/muxes"), () =>
-    HttpResponse.json([]),
+  http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/muxes'), () =>
+    HttpResponse.json([])
   ),
   http.put(
     mswEndpoint('/api/v1/workspaces/:workspace_name/muxes'),
