@@ -32,7 +32,7 @@ const DEFAULT_RULE = {
 }
 
 const CUSTOM_RULE = {
-  placeholder: 'e.g. file type, file name',
+  placeholder: 'e.g. file glob patterns like *.py',
   selectedKey: '',
   items: getRequestType(),
 }
