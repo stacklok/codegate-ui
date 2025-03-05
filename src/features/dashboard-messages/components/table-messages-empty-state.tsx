@@ -166,7 +166,7 @@ type MatchInput = {
   hasWorkspaceMessages: boolean
   hasMultipleWorkspaces: boolean
   search: string | null
-  view: AlertTriggerType | null
+  view: AlertTriggerType | 'all'
 }
 
 export function TableMessagesEmptyState() {
@@ -186,7 +186,7 @@ export function TableMessagesEmptyState() {
     hasMultipleWorkspaces:
       workspaces.filter((w) => w.name !== 'default').length > 0,
     search: state.search || null,
-    view: state.view ?? null,
+    view: state.view ?? 'all',
   })
     .with(
       {

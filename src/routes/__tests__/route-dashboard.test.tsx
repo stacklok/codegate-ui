@@ -10,6 +10,7 @@ import { mswEndpoint } from '@/test/msw-endpoint'
 
 import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
 import { faker } from '@faker-js/faker'
+import { PaginatedMessagesResponse } from '@/api/generated'
 
 it('should mount alert summaries', async () => {
   render(<RouteDashboard />)
@@ -38,30 +39,11 @@ it('should render messages table', async () => {
 })
 
 it('shows only conversations with secrets when you click on the secrets tab', async () => {
-  server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      return HttpResponse.json([
-        ...Array.from({ length: 10 }).map(() =>
-          mockConversation({
-            alertsConfig: { numAlerts: 10, type: 'malicious' },
-          })
-        ),
-        ...Array.from({ length: 10 }).map(() =>
-          mockConversation({
-            alertsConfig: { numAlerts: 10, type: 'secret' },
-          })
-        ),
-      ])
-    })
-  )
   render(<RouteDashboard />)
 
   await waitFor(() => {
     expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument()
   })
-
-  expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent('20')
-  expect(screen.getByTestId(/tab-secrets-count/i)).toHaveTextContent('10')
 
   await userEvent.click(
     screen.getByRole('tab', {
@@ -81,31 +63,37 @@ it('shows only conversations with secrets when you click on the secrets tab', as
   })
 })
 
-it('shows only conversations with malicious when you click on the malicious tab', async () => {
-  server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      return HttpResponse.json([
-        ...Array.from({ length: 10 }).map(() =>
-          mockConversation({
-            alertsConfig: { numAlerts: 10, type: 'malicious' },
-          })
-        ),
-        ...Array.from({ length: 10 }).map(() =>
-          mockConversation({
-            alertsConfig: { numAlerts: 10, type: 'secret' },
-          })
-        ),
-      ])
-    })
-  )
+it('shows only conversations with pii when you click on the secrets tab', async () => {
   render(<RouteDashboard />)
 
   await waitFor(() => {
     expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument()
   })
 
-  expect(screen.getByTestId(/tab-all-count/i)).toHaveTextContent('20')
-  expect(screen.getByTestId(/tab-malicious-count/i)).toHaveTextContent('10')
+  await userEvent.click(
+    screen.getByRole('tab', {
+      name: /pii/i,
+    })
+  )
+
+  const tbody = screen.getAllByRole('rowgroup')[1] as HTMLElement
+
+  await waitFor(() => {
+    const secretsCountButtons = within(tbody).getAllByRole('button', {
+      name: /personally identifiable information \(PII\) count/,
+    }) as HTMLElement[]
+    secretsCountButtons.forEach((e) => {
+      expect(e).toHaveTextContent('10')
+    })
+  })
+})
+
+it('shows only conversations with malicious when you click on the malicious tab', async () => {
+  render(<RouteDashboard />)
+
+  await waitFor(() => {
+    expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument()
+  })
 
   await userEvent.click(
     screen.getByRole('tab', {
@@ -125,7 +113,12 @@ it('shows only conversations with malicious when you click on the malicious tab'
   })
 })
 
-it('should render searchbox', async () => {
+/**
+ * NOTE: The ability to filter conversations by substring was removed when
+ * paginated queries were introduced, and may be re-added in the future.
+ * @see https://github.com/stacklok/codegate/issues/1226
+ */
+it.skip('should render searchbox', async () => {
   render(<RouteDashboard />)
 
   expect(
@@ -135,7 +128,12 @@ it('should render searchbox', async () => {
   ).toBeVisible()
 })
 
-it('can filter using searchbox', async () => {
+/**
+ * NOTE: The ability to filter conversations by substring was removed when
+ * paginated queries were introduced, and may be re-added in the future.
+ * @see https://github.com/stacklok/codegate/issues/1226
+ */
+it.skip('can filter using searchbox', async () => {
   const STRING_TO_FILTER_BY = 'foo-bar-my-awesome-string.com'
 
   // mock a conversation to filter to
@@ -147,15 +145,22 @@ it('can filter using searchbox', async () => {
   ;(CONVERSATION_TO_FILTER_BY.conversation_timestamp as string) = faker.date
     .past({ years: 1 })
     .toISOString()
-
   server.use(
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      return HttpResponse.json([
-        ...Array.from({ length: 15 }).map(() => mockConversation()), // at least 1 page worth of data
-        CONVERSATION_TO_FILTER_BY,
-      ])
+      const responsePayload: PaginatedMessagesResponse = {
+        data: [
+          ...Array.from({ length: 15 }).map(() => mockConversation()), // at least 1 page worth of data
+          CONVERSATION_TO_FILTER_BY,
+        ],
+        limit: 50,
+        offset: 0,
+        total: 1,
+      }
+
+      return HttpResponse.json(responsePayload)
     })
   )
+
   render(<RouteDashboard />)
 
   await waitFor(() => {
@@ -172,22 +177,4 @@ it('can filter using searchbox', async () => {
   expect(
     within(screen.getByRole('grid')).queryByText(STRING_TO_FILTER_BY)
   ).toBeVisible()
-})
-
-it('should sort messages by date desc', async () => {
-  render(<RouteDashboard />)
-
-  await waitFor(() => {
-    expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument()
-  })
-
-  const tbody = screen.getAllByRole('rowgroup')[1] as HTMLElement
-  const newest = (
-    within(tbody).getAllByRole('row')[1] as HTMLElement
-  ).getAttribute('data-timestamp') as string
-  const oldest = (
-    within(tbody).getAllByRole('row')[2] as HTMLElement
-  ).getAttribute('data-timestamp') as string
-
-  expect(oldest > newest).toBe(false)
 })

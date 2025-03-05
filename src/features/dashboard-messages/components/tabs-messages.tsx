@@ -8,7 +8,6 @@ import {
   CardBody,
 } from '@stacklok/ui-kit'
 import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
-import { SearchFieldMessages } from './search-field-messages'
 import { tv } from 'tailwind-variants'
 import { useQueryGetWorkspaceAlertsSummary } from '@/hooks/use-query-get-workspace-alerts-summary'
 import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
@@ -35,7 +34,7 @@ function Tab({
   count?: number
 }) {
   return (
-    <BaseTab className={tabStyle()} id={id}>
+    <BaseTab aria-label={title} className={tabStyle()} id={id}>
       <span className="block">{title}</span>
       {typeof count === 'number' ? (
         <Badge
@@ -87,7 +86,7 @@ export function TabsMessages({ children }: { children: React.ReactNode }) {
           />
         </TabList>
 
-        <SearchFieldMessages className="ml-auto" />
+        {/* <SearchFieldMessages className="ml-auto" /> */}
       </div>
       <TabPanel id={state.view ?? 'all'}>
         <Card>

@@ -42,7 +42,7 @@ export function mockConversation({
       mockAlert({
         type:
           alertsConfig?.type == null || alertsConfig.type === 'any'
-            ? faker.helpers.arrayElement(['secret', 'malicious'])
+            ? faker.helpers.arrayElement(['secret', 'malicious', 'pii'])
             : alertsConfig.type,
       })
     ),

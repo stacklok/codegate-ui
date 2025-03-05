@@ -5,7 +5,10 @@ import { z } from 'zod'
 
 const alertsFilterSchema = z.object({
   search: z.string().optional(),
-  view: z.nativeEnum(AlertTriggerType).nullable().default(null),
+  view: z
+    .union([z.literal('all'), z.nativeEnum(AlertTriggerType)])
+    .nullish()
+    .default('all'),
   page: z.coerce
     .number()
     .optional()
