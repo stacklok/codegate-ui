@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import { useArchivedWorkspaces } from '@/features/workspace/hooks/use-archived-workspaces'
 import { useRestoreWorkspaceButton } from '@/features/workspace/hooks/use-restore-workspace-button'
 import { WorkspaceCustomInstructions } from '@/features/workspace/components/workspace-custom-instructions'
-import { WorkspaceMuxingModel } from '@/features/workspace/components/workspace-muxing-model'
+import { WorkspaceMuxingModel } from '@/features/workspace/components/form-mux'
 import { PageContainer } from '@/components/page-container'
 import { WorkspaceActivateButton } from '@/features/workspace/components/workspace-activate-button'
 

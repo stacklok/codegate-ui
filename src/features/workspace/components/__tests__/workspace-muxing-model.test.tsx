@@ -1,6 +1,6 @@
 import { render } from '@/lib/test-utils'
 import { screen, waitFor } from '@testing-library/react'
-import { WorkspaceMuxingModel } from '../workspace-muxing-model'
+import { WorkspaceMuxingModel } from '../form-mux'
 import userEvent from '@testing-library/user-event'
 
 test('renders muxing model', async () => {
