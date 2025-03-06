@@ -1,4 +1,4 @@
-import { v1ListWorkspacesByProviderOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { v1ListWorkspacesOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { useQuery } from '@tanstack/react-query'
 
 export function useQueryWorkspacesByProvider(
@@ -9,7 +9,7 @@ export function useQueryWorkspacesByProvider(
   }
 
   return useQuery({
-    ...v1ListWorkspacesByProviderOptions({ path: { provider_id: providerId } }),
+    ...v1ListWorkspacesOptions({ query: { provider_id: providerId } }),
     // eslint-disable-next-line no-restricted-syntax
     refetchOnMount: true,
   })

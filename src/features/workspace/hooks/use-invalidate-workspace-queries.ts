@@ -1,7 +1,6 @@
 import {
   v1GetWorkspaceMuxesQueryKey,
   v1ListArchivedWorkspacesQueryKey,
-  v1ListWorkspacesByProviderQueryKey,
   v1ListWorkspacesQueryKey,
 } from '@/api/generated/@tanstack/react-query.gen'
 import { invalidateQueries } from '@/lib/react-query-utils'
@@ -16,7 +15,6 @@ export function useInvalidateWorkspaceQueries() {
       v1ListWorkspacesQueryKey,
       v1ListArchivedWorkspacesQueryKey,
       v1GetWorkspaceMuxesQueryKey,
-      v1ListWorkspacesByProviderQueryKey,
     ])
   }, [queryClient])
 
