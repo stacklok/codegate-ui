@@ -22,15 +22,15 @@ import type {
   V1GetProviderEndpointData,
   V1GetProviderEndpointError,
   V1GetProviderEndpointResponse,
+  V1ConfigureAuthMaterialData,
+  V1ConfigureAuthMaterialError,
+  V1ConfigureAuthMaterialResponse,
   V1UpdateProviderEndpointData,
   V1UpdateProviderEndpointError,
   V1UpdateProviderEndpointResponse,
   V1DeleteProviderEndpointData,
   V1DeleteProviderEndpointError,
   V1DeleteProviderEndpointResponse,
-  V1ConfigureAuthMaterialData,
-  V1ConfigureAuthMaterialError,
-  V1ConfigureAuthMaterialResponse,
   V1ListWorkspacesData,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
@@ -196,7 +196,7 @@ export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
 
 /**
  * Get Provider Endpoint
- * Get a provider endpoint by ID.
+ * Get a provider endpoint by name.
  */
 export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
   options: OptionsLegacyParser<V1GetProviderEndpointData, ThrowOnError>
@@ -207,7 +207,24 @@ export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}',
+    url: '/api/v1/provider-endpoints/{provider_name}',
+  })
+}
+
+/**
+ * Configure Auth Material
+ * Configure auth material for a provider.
+ */
+export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1ConfigureAuthMaterialData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    V1ConfigureAuthMaterialResponse,
+    V1ConfigureAuthMaterialError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/provider-endpoints/{provider_id}/auth-material',
   })
 }
 
@@ -242,23 +259,6 @@ export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/provider-endpoints/{provider_id}',
-  })
-}
-
-/**
- * Configure Auth Material
- * Configure auth material for a provider.
- */
-export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1ConfigureAuthMaterialData, ThrowOnError>
-) => {
-  return (options?.client ?? client).put<
-    V1ConfigureAuthMaterialResponse,
-    V1ConfigureAuthMaterialError,
-    ThrowOnError
-  >({
-    ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}/auth-material',
   })
 }
 

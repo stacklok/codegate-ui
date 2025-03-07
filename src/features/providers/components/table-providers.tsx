@@ -83,7 +83,7 @@ function CellRenderer({
         <LinkButton
           variant="tertiary"
           className="flex items-center gap-2"
-          href={`/providers/${row.id}`}
+          href={`/providers/${row.name}`}
         >
           <Tool01 className="size-4" /> Manage
         </LinkButton>

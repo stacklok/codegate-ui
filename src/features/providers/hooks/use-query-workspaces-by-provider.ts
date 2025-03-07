@@ -2,14 +2,14 @@ import { v1ListWorkspacesOptions } from '@/api/generated/@tanstack/react-query.g
 import { useQuery } from '@tanstack/react-query'
 
 export function useQueryWorkspacesByProvider(
-  providerId: string | undefined | null
+  providerName: string | undefined | null
 ) {
-  if (!providerId) {
-    throw new Error('providerId is required')
+  if (!providerName) {
+    throw new Error('providerName is required')
   }
 
   return useQuery({
-    ...v1ListWorkspacesOptions({ query: { provider_id: providerId } }),
+    ...v1ListWorkspacesOptions({ query: { provider_name: providerName } }),
     // eslint-disable-next-line no-restricted-syntax
     refetchOnMount: true,
   })

@@ -1,6 +1,5 @@
 import {
   ModelByProvider,
-  MuxRule,
   V1ListAllModelsForAllProvidersResponse,
 } from '@/api/generated'
 import {
@@ -16,17 +15,21 @@ import {
 import { ChevronDown, SearchMd } from '@untitled-ui/icons-react'
 import { map, groupBy } from 'lodash'
 import { useState } from 'react'
+import { deserializeMuxModel, serializeMuxModel } from '../lib/mux-model-serde'
+import { PreferredMuxRule } from '../hooks/use-muxing-rules-form-workspace'
 
 type Props = {
-  rule: MuxRule & { id: string }
+  rule: PreferredMuxRule
   isArchived: boolean
   models: V1ListAllModelsForAllProvidersResponse
   onChange: ({
     model,
-    provider_id,
+    provider_name,
+    provider_type,
   }: {
     model: string
-    provider_id: string
+    provider_name: string
+    provider_type: string
   }) => void
 }
 
@@ -37,7 +40,7 @@ function groupModelsByProviderName(
     id: providerName,
     textValue: providerName,
     items: items.map((item) => ({
-      id: `${item.provider_id}@${item.name}`,
+      id: serializeMuxModel(item),
       textValue: item.name,
     })),
   }))
@@ -77,12 +80,20 @@ export function WorkspaceModelsDropdown({
   const [isOpen, setIsOpen] = useState(false)
   const [searchItem, setSearchItem] = useState('')
   const groupedModels = groupModelsByProviderName(models)
-  const currentProvider = models.find((p) => p.provider_id === rule.provider_id)
+  const currentProvider = models.find(
+    (p) => p.provider_name === rule.provider_name
+  )
   const currentModel =
     currentProvider && rule.model
       ? `${currentProvider?.provider_name}/${rule.model}`
       : ''
-  const selectedKey = `${rule.provider_id}/${rule.model}`
+  const selectedKey = rule.provider_type
+    ? serializeMuxModel({
+        name: rule.model,
+        provider_name: rule.provider_name,
+        provider_type: rule.provider_type,
+      })
+    : undefined
 
   return (
     <div className="flex w-full">
@@ -110,19 +121,14 @@ export function WorkspaceModelsDropdown({
             selectionBehavior="replace"
             selectedKeys={selectedKey ? [selectedKey] : []}
             onSelectionChange={(v) => {
-              if (v === 'all') {
-                return
-              }
-              const selectedValue = v.values().next().value
-              if (!selectedValue && typeof selectedValue !== 'string') return
-              if (typeof selectedValue === 'string') {
-                const atIndex = selectedValue.indexOf('@')
-                const provider_id = selectedValue.slice(0, atIndex)
-                const modelName = selectedValue.slice(atIndex + 1)
-                if (atIndex === -1 && (!provider_id || !modelName)) return
+              if (v === 'all') return
+              const id = v.values().next().value?.toString()
+              if (typeof id === 'string') {
+                const model = deserializeMuxModel(id)
                 onChange({
-                  model: modelName,
-                  provider_id,
+                  model: model.name,
+                  provider_name: model.provider_name,
+                  provider_type: model.provider_type,
                 })
                 setIsOpen(false)
               }

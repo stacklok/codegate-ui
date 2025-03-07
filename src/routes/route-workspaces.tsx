@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { hrefs } from '@/lib/hrefs'
 import { PlusSquare } from '@untitled-ui/icons-react'
 import { PageContainer } from '@/components/page-container'
+import { WorkspaceUploadButton } from '@/features/workspace/components/workspace-upload-button'
 
 export function RouteWorkspaces() {
   const navigate = useNavigate()
@@ -28,15 +29,18 @@ export function RouteWorkspaces() {
       </Breadcrumbs>
 
       <PageHeading level={1} title="Manage Workspaces">
-        <TooltipTrigger delay={0}>
-          <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
-            <PlusSquare /> Create
-          </LinkButton>
-          <Tooltip className="flex items-center gap-2">
-            <span className="block">Create a new workspace</span>
-            <Kbd>C</Kbd>
-          </Tooltip>
-        </TooltipTrigger>
+        <div className="flex gap-2">
+          <WorkspaceUploadButton />
+          <TooltipTrigger delay={0}>
+            <LinkButton href={hrefs.workspaces.create} className="w-fit gap-2">
+              <PlusSquare /> Create
+            </LinkButton>
+            <Tooltip className="flex items-center gap-2">
+              <span className="block">Create a new workspace</span>
+              <Kbd>C</Kbd>
+            </Tooltip>
+          </TooltipTrigger>
+        </div>
       </PageHeading>
 
       <TableWorkspaces />

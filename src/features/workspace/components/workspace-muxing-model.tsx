@@ -19,7 +19,10 @@ import {
 } from '@stacklok/ui-kit'
 import { twMerge } from 'tailwind-merge'
 import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
-import { V1ListAllModelsForAllProvidersResponse } from '@/api/generated'
+import {
+  ProviderType,
+  V1ListAllModelsForAllProvidersResponse,
+} from '@/api/generated'
 import { FormEvent } from 'react'
 import {
   LayersThree01,
@@ -37,6 +40,7 @@ import {
 } from '../hooks/use-muxing-rules-form-workspace'
 import { FormButtons } from '@/components/FormButtons'
 import { getRuleData, isRequestType } from '../lib/utils'
+import { z } from 'zod'
 
 function MissingProviderBanner() {
   return (
@@ -120,9 +124,15 @@ function SortableItem({
           rule={rule}
           isArchived={isArchived}
           models={models}
-          onChange={({ model, provider_id }) =>
-            setRuleItem({ ...rule, provider_id, model })
-          }
+          onChange={({ model, provider_name, provider_type }) => {
+            if (provider_type === undefined) return
+            setRuleItem({
+              ...rule,
+              provider_name,
+              provider_type: z.nativeEnum(ProviderType).parse(provider_type),
+              model,
+            })
+          }}
         />
         {showRemoveButton && !isDefaultRule ? (
           <Button
@@ -168,10 +178,12 @@ export function WorkspaceMuxingModel({
     mutateAsync(
       {
         path: { workspace_name: workspaceName },
-        body: rules.map(({ id, ...rest }) => {
+        body: rules.map(({ id, provider_type, ...rest }) => {
           void id
+          if (provider_type === undefined)
+            throw new Error('provider_type is required')
 
-          return rest
+          return { provider_type, ...rest }
         }),
       },
       {

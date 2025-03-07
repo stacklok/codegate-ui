@@ -183,74 +183,23 @@
         }
       }
     },
-    "/api/v1/provider-endpoints/{provider_id}": {
+    "/api/v1/provider-endpoints/{provider_name}": {
       "get": {
         "tags": ["CodeGate API", "Providers"],
         "summary": "Get Provider Endpoint",
-        "description": "Get a provider endpoint by ID.",
+        "description": "Get a provider endpoint by name.",
         "operationId": "v1_get_provider_endpoint",
         "parameters": [
           {
-            "name": "provider_id",
+            "name": "provider_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
+              "title": "Provider Name"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProviderEndpoint"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": ["CodeGate API", "Providers"],
-        "summary": "Update Provider Endpoint",
-        "description": "Update a provider endpoint by ID.",
-        "operationId": "v1_update_provider_endpoint",
-        "parameters": [
-          {
-            "name": "provider_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProviderEndpoint"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -281,13 +230,12 @@
         "operationId": "v1_delete_provider_endpoint",
         "parameters": [
           {
-            "name": "provider_id",
+            "name": "provider_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
+              "title": "Provider Name"
             }
           }
         ],
@@ -344,6 +292,58 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/provider-endpoints/{provider_id}": {
+      "put": {
+        "tags": ["CodeGate API", "Providers"],
+        "summary": "Update Provider Endpoint",
+        "description": "Update a provider endpoint by ID.",
+        "operationId": "v1_update_provider_endpoint",
+        "parameters": [
+          {
+            "name": "provider_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Provider Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderEndpoint"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderEndpoint"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -540,7 +540,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -1829,9 +1829,8 @@
             "type": "string",
             "title": "Name"
           },
-          "provider_id": {
-            "type": "string",
-            "title": "Provider Id"
+          "provider_type": {
+            "$ref": "#/components/schemas/ProviderType"
           },
           "provider_name": {
             "type": "string",
@@ -1839,7 +1838,7 @@
           }
         },
         "type": "object",
-        "required": ["name", "provider_id", "provider_name"],
+        "required": ["name", "provider_type", "provider_name"],
         "title": "ModelByProvider",
         "description": "Represents a model supported by a provider.\n\nNote that these are auto-discovered by the provider."
       },
@@ -1857,19 +1856,11 @@
       "MuxRule": {
         "properties": {
           "provider_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Provider Name"
           },
-          "provider_id": {
-            "type": "string",
-            "title": "Provider Id"
+          "provider_type": {
+            "$ref": "#/components/schemas/ProviderType"
           },
           "model": {
             "type": "string",
@@ -1891,7 +1882,7 @@
           }
         },
         "type": "object",
-        "required": ["provider_id", "model", "matcher_type"],
+        "required": ["provider_name", "provider_type", "model", "matcher_type"],
         "title": "MuxRule",
         "description": "Represents a mux rule for a provider."
       },

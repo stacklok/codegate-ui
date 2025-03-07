@@ -151,7 +151,7 @@ export type ListWorkspacesResponse = {
  */
 export type ModelByProvider = {
   name: string
-  provider_id: string
+  provider_type: ProviderType
   provider_name: string
 }
 
@@ -180,8 +180,8 @@ export enum MuxMatcherType {
  * Represents a mux rule for a provider.
  */
 export type MuxRule = {
-  provider_name?: string | null
-  provider_id: string
+  provider_name: string
+  provider_type: ProviderType
   model: string
   matcher_type: MuxMatcherType
   matcher?: string | null
@@ -351,13 +351,24 @@ export type V1ListModelsByProviderError = HTTPValidationError
 
 export type V1GetProviderEndpointData = {
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
 export type V1GetProviderEndpointResponse = ProviderEndpoint
 
 export type V1GetProviderEndpointError = HTTPValidationError
+
+export type V1ConfigureAuthMaterialData = {
+  body: ConfigureAuthMaterial
+  path: {
+    provider_id: string
+  }
+}
+
+export type V1ConfigureAuthMaterialResponse = void
+
+export type V1ConfigureAuthMaterialError = HTTPValidationError
 
 export type V1UpdateProviderEndpointData = {
   body: ProviderEndpoint
@@ -379,17 +390,6 @@ export type V1DeleteProviderEndpointData = {
 export type V1DeleteProviderEndpointResponse = unknown
 
 export type V1DeleteProviderEndpointError = HTTPValidationError
-
-export type V1ConfigureAuthMaterialData = {
-  body: ConfigureAuthMaterial
-  path: {
-    provider_id: string
-  }
-}
-
-export type V1ConfigureAuthMaterialResponse = void
-
-export type V1ConfigureAuthMaterialError = HTTPValidationError
 
 export type V1ListWorkspacesData = {
   query?: {
