@@ -4,17 +4,16 @@ import {
   ReactFlow,
   Controls,
   Background,
-  MiniMap,
   applyNodeChanges,
   applyEdgeChanges,
   addEdge,
   Position,
   Handle,
   ConnectionLineType,
-  useReactFlow,
+  OnNodeDrag,
 } from '@xyflow/react'
-import { useCallback, useMemo, useState } from 'react'
-
+import { useCallback, useState } from 'react'
+import * as config from '../features/muxing/constants/mux-node-config'
 import '@xyflow/react/dist/style.css'
 import {
   Button,
@@ -41,6 +40,8 @@ import {
 import { twMerge } from 'tailwind-merge'
 import SvgDrag from '@/components/icons/Drag'
 import { IconRegex } from '@/components/icons/icon-regex'
+import { MuxNodePrompt } from '@/features/muxing/components/mux-node-prompt'
+import { MuxNodeMatcher } from '@/features/muxing/components/mux-node-matcher'
 
 const nodeStyles = tv({
   base: 'w-full rounded border border-gray-200 bg-base p-4 shadow-sm',
@@ -49,14 +50,6 @@ const groupStyles = tv({
   base: `bg-gray-50/50 -z-10 h-auto min-h-[calc(100%-48px)] rounded-lg !border
   !border-gray-200 stroke-gray-200 backdrop-blur-sm`,
 })
-
-const GRID_SIZE = 90
-const PADDING_GROUP = 12
-const HEIGHT_GROUP_HEADER = 40
-const HEIGHT_NODE = 74
-const HEIGHT_CONTAINER = 512
-const WIDTH_GROUP = 500
-const WIDTH_NODE = WIDTH_GROUP - PADDING_GROUP * 2
 
 enum NodeType {
   MATCHER_GROUP = 'matcherGroup',
@@ -68,10 +61,10 @@ enum NodeType {
 
 function computeGroupNodeY(index: number) {
   return (
-    PADDING_GROUP * 4 +
-    HEIGHT_GROUP_HEADER +
-    HEIGHT_NODE * index +
-    PADDING_GROUP * index
+    config.PADDING_GROUP * 4 +
+    config.HEIGHT_GROUP_HEADER +
+    config.HEIGHT_NODE * index +
+    config.PADDING_GROUP * index
   )
 }
 
@@ -80,7 +73,7 @@ const initialNodes: Node[] = [
     id: 'prompt',
     type: NodeType.PROMPT,
     data: { label: 'Prompt' },
-    position: { x: 50, y: HEIGHT_CONTAINER / 2 },
+    position: { x: 50, y: config.HEIGHT_CONTAINER / 2 },
     origin: [0.5, 0.5],
     sourcePosition: Position.Right,
     draggable: false,
@@ -93,10 +86,13 @@ const initialNodes: Node[] = [
       description:
         'Matchers use regex patterns to route requests to specific models.',
     },
-    position: { x: 200, y: HEIGHT_CONTAINER / 2 - HEIGHT_GROUP_HEADER / 2 },
+    position: {
+      x: 200,
+      y: config.HEIGHT_CONTAINER / 2 - config.HEIGHT_GROUP_HEADER / 2,
+    },
     origin: [0, 0.5],
     style: {
-      width: WIDTH_GROUP,
+      width: config.WIDTH_GROUP,
       // height: '100%',
     },
     draggable: false,
@@ -108,10 +104,13 @@ const initialNodes: Node[] = [
       title: 'Models',
       description: 'Add model nodes here',
     },
-    position: { x: 720, y: HEIGHT_CONTAINER / 2 - HEIGHT_GROUP_HEADER / 2 },
+    position: {
+      x: 720,
+      y: config.HEIGHT_CONTAINER / 2 - config.HEIGHT_GROUP_HEADER / 2,
+    },
     origin: [0, 0.5],
     style: {
-      width: WIDTH_GROUP,
+      width: config.WIDTH_GROUP,
       // height: '100%',
     },
     draggable: false,
@@ -187,6 +186,18 @@ function alignMatcherNodes(nodes: Node[]) {
   )
 }
 
+function isOverlapping(node1: Node, node2: Node) {
+  const node1Bottom = node1.position.y + config.HEIGHT_NODE
+  const node2Bottom = node2.position.y + config.HEIGHT_NODE
+
+  return (
+    node1.position.y < node2Bottom &&
+    node1Bottom > node2.position.y &&
+    node1.position.x < node2.position.x + config.WIDTH_NODE &&
+    node1.position.x + config.WIDTH_NODE > node2.position.x
+  )
+}
+
 export function RouteMuxes() {
   const [nodes, setNodes] = useState(initialNodes)
   const [edges, setEdges] = useState(initialEdges)
@@ -227,7 +238,7 @@ export function RouteMuxes() {
       type: 'matcher',
       data: { label: '', onChange: handleNodeChange },
       position: {
-        x: WIDTH_GROUP / 2,
+        x: config.WIDTH_GROUP / 2,
         y: computeGroupNodeY(0),
       },
       parentId: 'matcher-group',
@@ -280,26 +291,41 @@ export function RouteMuxes() {
     )
   }
 
-  const onNodeDragStop = useCallback((event, node) => {
-    console.debug('👉 node:', node)
-    console.debug('👉 event:', event)
-    // const { project } = useReactFlow()
-    // console.debug('👉 project:', project)
-    // if (node.type === NodeType.MATCHER && node.id !== 'matcher-0') {
-    //   const updatedNodes = nodes.map((n) => {
-    //     if (n.id === node.id) {
-    //       return {
-    //         ...n,
-    //         position: project({
-    //           x: node.position.x,
-    //           y: Math.round(node.position.y / GRID_SIZE) * GRID_SIZE,
-    //         }),
-    //       }
-    //     }
-    //     return n
-    //   })
-    //   setNodes(alignMatcherNodes(updatedNodes))
-    // }
+  const onNodeDragStop = useCallback<OnNodeDrag<Node>>((event, node) => {
+    setNodes((nds) => {
+      const updatedNodes = nds.map((n) =>
+        n.id === node.id ? { ...n, position: node.position } : n
+      )
+
+      const overlappingNode = updatedNodes.find(
+        (n) => n.id !== node.id && isOverlapping(n, node)
+      )
+
+      if (overlappingNode) {
+        const nodeIndex = updatedNodes.findIndex((n) => n.id === node.id)
+        const overlappingNodeIndex = updatedNodes.findIndex(
+          (n) => n.id === overlappingNode.id
+        )
+
+        if (nodeIndex !== -1 && overlappingNodeIndex !== -1) {
+          const temp = updatedNodes[nodeIndex]
+          if (
+            updatedNodes[overlappingNodeIndex] &&
+            updatedNodes[nodeIndex] &&
+            temp
+          ) {
+            updatedNodes[nodeIndex] = updatedNodes[overlappingNodeIndex]
+            updatedNodes[overlappingNodeIndex] = temp
+
+            updatedNodes[nodeIndex].position.y = computeGroupNodeY(nodeIndex)
+            updatedNodes[overlappingNodeIndex].position.y =
+              computeGroupNodeY(overlappingNodeIndex)
+          }
+        }
+      }
+
+      return alignMatcherNodes(updatedNodes)
+    })
   }, [])
 
   return (
@@ -319,7 +345,7 @@ export function RouteMuxes() {
       </p>
       <div
         style={{
-          height: HEIGHT_CONTAINER,
+          height: config.HEIGHT_CONTAINER,
         }}
         className="border border-gray-200"
       >
@@ -330,10 +356,10 @@ export function RouteMuxes() {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onNodeDragStop={(...args) => console.log('onNodeDragStop', args)}
-          onNodeDragStart={(...args) => console.log('onNodeDragStart', args)}
+          onNodeDragStart={onNodeDragStop}
           nodeTypes={{
-            prompt: PromptNode,
-            matcher: MatcherNode,
+            prompt: MuxNodePrompt,
+            matcher: MuxNodeMatcher,
             model: ModelNode,
             matcherGroup: (props) => (
               <GroupNode
@@ -383,19 +409,19 @@ const GroupNode = ({
   return (
     <div
       style={{
-        // padding: PADDING_GROUP,
+        // padding: config.PADDING_GROUP,
         height:
-          HEIGHT_GROUP_HEADER +
-          PADDING_GROUP * 2 + // space around all nodes
-          (data.numNodes - 1) * PADDING_GROUP + // space between nodes
-          data.numNodes * HEIGHT_NODE,
+          config.HEIGHT_GROUP_HEADER +
+          config.PADDING_GROUP * 2 + // space around all nodes
+          (data.numNodes - 1) * config.PADDING_GROUP + // space between nodes
+          data.numNodes * config.HEIGHT_NODE,
       }}
       className={`-z-10 flex h-auto min-h-[calc(100%-48px)] flex-col rounded-lg !border-2
         border-dashed !border-gray-200`}
     >
       <div
         style={{
-          height: HEIGHT_GROUP_HEADER,
+          height: config.HEIGHT_GROUP_HEADER,
         }}
         className="flex items-center gap-1 rounded-t-lg px-3"
       >
@@ -420,29 +446,11 @@ const GroupNode = ({
   )
 }
 
-const PromptNode = ({ id, data }) => {
-  return (
-    <>
-      <div
-        style={{
-          height: HEIGHT_NODE,
-        }}
-        className={twMerge(nodeStyles(), 'flex items-center gap-2')}
-      >
-        <ChartBreakoutCircle />
-        <span>Prompt</span>
-      </div>
-      <Handle type="source" position={Position.Right} />
-    </>
-  )
-}
-
 const MatcherNode = ({
   id,
   data,
 }: Partial<Node> & {
   data: {
-    label: string
     isDisabled?: boolean
     onChange: (id: string | undefined, v: string) => void
   }
@@ -453,8 +461,8 @@ const MatcherNode = ({
 
       <div
         style={{
-          height: HEIGHT_NODE,
-          width: WIDTH_NODE,
+          height: config.HEIGHT_NODE,
+          width: config.WIDTH_NODE,
         }}
         className={twMerge(
           nodeStyles(),
@@ -506,8 +514,8 @@ const ModelNode = ({ id, data }) => {
 
       <div
         style={{
-          height: HEIGHT_NODE,
-          width: WIDTH_NODE,
+          height: config.HEIGHT_NODE,
+          width: config.WIDTH_NODE,
         }}
         className={nodeStyles()}
       >
