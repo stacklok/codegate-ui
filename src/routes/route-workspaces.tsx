@@ -36,7 +36,9 @@ export function RouteWorkspaces() {
               <PlusSquare /> Create
             </LinkButton>
             <Tooltip className="flex items-center gap-2">
-              <span className="block">Create a new workspace</span>
+              <span className="block whitespace-nowrap">
+                Create a new workspace
+              </span>
               <Kbd>C</Kbd>
             </Tooltip>
           </TooltipTrigger>

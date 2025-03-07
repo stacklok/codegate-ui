@@ -16,7 +16,7 @@ export function RouteProviderUpdate() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    mutateAsync(provider)
+    mutateAsync({ ...provider, oldName: name })
   }
 
   // TODO add empty state and loading in a next step

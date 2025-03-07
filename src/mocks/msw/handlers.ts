@@ -70,6 +70,15 @@ export const handlers = [
       { status: 201 }
     )
   ),
+  http.get(mswEndpoint('/api/v1/workspaces/:workspace_name'), () =>
+    HttpResponse.json({
+      name: 'foo',
+      config: {
+        custom_instructions: '',
+        muxing_rules: [],
+      },
+    })
+  ),
   http.post(
     mswEndpoint('/api/v1/workspaces/archive/:workspace_name/recover'),
     () => new HttpResponse(null, { status: 204 })
@@ -124,13 +133,14 @@ export const handlers = [
     mswEndpoint('/api/v1/workspaces/:workspace_name/muxes'),
     () => new HttpResponse(null, { status: 204 })
   ),
-  http.get(mswEndpoint('/api/v1/provider-endpoints/:provider_id/models'), () =>
-    HttpResponse.json(mockedProvidersModels)
+  http.get(
+    mswEndpoint('/api/v1/provider-endpoints/:provider_name/models'),
+    () => HttpResponse.json(mockedProvidersModels)
   ),
   http.get(mswEndpoint('/api/v1/provider-endpoints/models'), () =>
     HttpResponse.json(mockedProvidersModels)
   ),
-  http.get(mswEndpoint('/api/v1/provider-endpoints/:provider_id'), () =>
+  http.get(mswEndpoint('/api/v1/provider-endpoints/:provider_name'), () =>
     HttpResponse.json(mockedProviders[0])
   ),
   http.get(mswEndpoint('/api/v1/provider-endpoints'), () =>

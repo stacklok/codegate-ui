@@ -341,7 +341,7 @@ export type V1ListAllModelsForAllProvidersError = unknown
 
 export type V1ListModelsByProviderData = {
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -359,21 +359,10 @@ export type V1GetProviderEndpointResponse = ProviderEndpoint
 
 export type V1GetProviderEndpointError = HTTPValidationError
 
-export type V1ConfigureAuthMaterialData = {
-  body: ConfigureAuthMaterial
-  path: {
-    provider_id: string
-  }
-}
-
-export type V1ConfigureAuthMaterialResponse = void
-
-export type V1ConfigureAuthMaterialError = HTTPValidationError
-
 export type V1UpdateProviderEndpointData = {
   body: ProviderEndpoint
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -383,7 +372,7 @@ export type V1UpdateProviderEndpointError = HTTPValidationError
 
 export type V1DeleteProviderEndpointData = {
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -391,9 +380,20 @@ export type V1DeleteProviderEndpointResponse = unknown
 
 export type V1DeleteProviderEndpointError = HTTPValidationError
 
+export type V1ConfigureAuthMaterialData = {
+  body: ConfigureAuthMaterial
+  path: {
+    provider_name: string
+  }
+}
+
+export type V1ConfigureAuthMaterialResponse = void
+
+export type V1ConfigureAuthMaterialError = HTTPValidationError
+
 export type V1ListWorkspacesData = {
   query?: {
-    provider_id?: string | null
+    provider_name?: string | null
   }
 }
 

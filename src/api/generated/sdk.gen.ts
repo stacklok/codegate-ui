@@ -22,15 +22,15 @@ import type {
   V1GetProviderEndpointData,
   V1GetProviderEndpointError,
   V1GetProviderEndpointResponse,
-  V1ConfigureAuthMaterialData,
-  V1ConfigureAuthMaterialError,
-  V1ConfigureAuthMaterialResponse,
   V1UpdateProviderEndpointData,
   V1UpdateProviderEndpointError,
   V1UpdateProviderEndpointResponse,
   V1DeleteProviderEndpointData,
   V1DeleteProviderEndpointError,
   V1DeleteProviderEndpointResponse,
+  V1ConfigureAuthMaterialData,
+  V1ConfigureAuthMaterialError,
+  V1ConfigureAuthMaterialResponse,
   V1ListWorkspacesData,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
@@ -190,7 +190,7 @@ export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}/models',
+    url: '/api/v1/provider-endpoints/{provider_name}/models',
   })
 }
 
@@ -212,6 +212,40 @@ export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
 }
 
 /**
+ * Update Provider Endpoint
+ * Update a provider endpoint by name.
+ */
+export const v1UpdateProviderEndpoint = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1UpdateProviderEndpointData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    V1UpdateProviderEndpointResponse,
+    V1UpdateProviderEndpointError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/provider-endpoints/{provider_name}',
+  })
+}
+
+/**
+ * Delete Provider Endpoint
+ * Delete a provider endpoint by name.
+ */
+export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1DeleteProviderEndpointData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    V1DeleteProviderEndpointResponse,
+    V1DeleteProviderEndpointError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/provider-endpoints/{provider_name}',
+  })
+}
+
+/**
  * Configure Auth Material
  * Configure auth material for a provider.
  */
@@ -224,41 +258,7 @@ export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}/auth-material',
-  })
-}
-
-/**
- * Update Provider Endpoint
- * Update a provider endpoint by ID.
- */
-export const v1UpdateProviderEndpoint = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1UpdateProviderEndpointData, ThrowOnError>
-) => {
-  return (options?.client ?? client).put<
-    V1UpdateProviderEndpointResponse,
-    V1UpdateProviderEndpointError,
-    ThrowOnError
-  >({
-    ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}',
-  })
-}
-
-/**
- * Delete Provider Endpoint
- * Delete a provider endpoint by id.
- */
-export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<V1DeleteProviderEndpointData, ThrowOnError>
-) => {
-  return (options?.client ?? client).delete<
-    V1DeleteProviderEndpointResponse,
-    V1DeleteProviderEndpointError,
-    ThrowOnError
-  >({
-    ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}',
+    url: '/api/v1/provider-endpoints/{provider_name}/auth-material',
   })
 }
 
@@ -267,10 +267,9 @@ export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
  * List all workspaces.
  *
  * Args:
- * provider_id (Optional[UUID]): Filter workspaces by provider ID. If provided,
+ * provider_name (Optional[str]): Filter workspaces by provider name. If provided,
  * will return workspaces where models from the specified provider (e.g., OpenAI,
- * Anthropic) have been used in workspace muxing rules. Note that you must
- * refer to a provider by ID, not by name.
+ * Anthropic) have been used in workspace muxing rules.
  *
  * Returns:
  * ListWorkspacesResponse: A response object containing the list of workspaces.

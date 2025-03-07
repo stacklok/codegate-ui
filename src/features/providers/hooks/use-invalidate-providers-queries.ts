@@ -1,4 +1,5 @@
 import {
+  v1GetWorkspaceMuxesQueryKey,
   v1ListAllModelsForAllProvidersQueryKey,
   v1ListProviderEndpointsQueryKey,
   v1ListWorkspacesQueryKey,
@@ -15,6 +16,7 @@ export function useInvalidateProvidersQueries() {
       v1ListProviderEndpointsQueryKey,
       v1ListAllModelsForAllProvidersQueryKey,
       v1ListWorkspacesQueryKey,
+      v1GetWorkspaceMuxesQueryKey,
     ])
   }, [queryClient])
 
