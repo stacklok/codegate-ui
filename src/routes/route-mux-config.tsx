@@ -11,8 +11,9 @@ import {
   Position,
   Handle,
   ConnectionLineType,
+  useReactFlow,
 } from '@xyflow/react'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import '@xyflow/react/dist/style.css'
 import {
@@ -31,7 +32,15 @@ import {
 } from '@stacklok/ui-kit'
 import { tv } from 'tailwind-variants'
 import { PageHeading } from '@/components/heading'
-import { Lock01, Plus, SearchMd } from '@untitled-ui/icons-react'
+import {
+  ChartBreakoutCircle,
+  Lock01,
+  Plus,
+  SearchMd,
+} from '@untitled-ui/icons-react'
+import { twMerge } from 'tailwind-merge'
+import SvgDrag from '@/components/icons/Drag'
+import { IconRegex } from '@/components/icons/icon-regex'
 
 const nodeStyles = tv({
   base: 'w-full rounded border border-gray-200 bg-base p-4 shadow-sm',
@@ -42,53 +51,79 @@ const groupStyles = tv({
 })
 
 const GRID_SIZE = 90
+const PADDING_GROUP = 12
+const HEIGHT_GROUP_HEADER = 40
+const HEIGHT_NODE = 74
+const HEIGHT_CONTAINER = 512
+const WIDTH_GROUP = 500
+const WIDTH_NODE = WIDTH_GROUP - PADDING_GROUP * 2
+
+enum NodeType {
+  MATCHER_GROUP = 'matcherGroup',
+  MODEL_GROUP = 'modelGroup',
+  PROMPT = 'prompt',
+  MATCHER = 'matcher',
+  MODEL = 'model',
+}
+
+function computeGroupNodeY(index: number) {
+  return (
+    PADDING_GROUP * 4 +
+    HEIGHT_GROUP_HEADER +
+    HEIGHT_NODE * index +
+    PADDING_GROUP * index
+  )
+}
 
 const initialNodes: Node[] = [
   {
-    id: 'matcher-group',
-    type: 'matcherGroup',
-    data: {
-      title: 'Matchers',
-      description:
-        'Matchers use regex patterns to route requests to specific models.',
-    },
-    position: { x: 200, y: 24 },
-    style: {
-      width: 500,
-      height: '100%',
-    },
-    draggable: false,
-  },
-  {
-    id: 'model-group',
-    type: 'modelGroup',
-    data: {
-      title: 'Model Group',
-      description: 'Add model nodes here',
-    },
-    position: { x: 720, y: 24 },
-    style: {
-      width: 500,
-      height: '100%',
-    },
-    draggable: false,
-  },
-  {
     id: 'prompt',
-    type: 'prompt',
+    type: NodeType.PROMPT,
     data: { label: 'Prompt' },
-    position: { x: 50, y: 114 },
+    position: { x: 50, y: HEIGHT_CONTAINER / 2 },
     origin: [0.5, 0.5],
     sourcePosition: Position.Right,
     draggable: false,
   },
   {
+    id: 'matcher-group',
+    type: NodeType.MATCHER_GROUP,
+    data: {
+      title: 'Matchers',
+      description:
+        'Matchers use regex patterns to route requests to specific models.',
+    },
+    position: { x: 200, y: HEIGHT_CONTAINER / 2 - HEIGHT_GROUP_HEADER / 2 },
+    origin: [0, 0.5],
+    style: {
+      width: WIDTH_GROUP,
+      // height: '100%',
+    },
+    draggable: false,
+  },
+  {
+    id: 'model-group',
+    type: NodeType.MODEL_GROUP,
+    data: {
+      title: 'Models',
+      description: 'Add model nodes here',
+    },
+    position: { x: 720, y: HEIGHT_CONTAINER / 2 - HEIGHT_GROUP_HEADER / 2 },
+    origin: [0, 0.5],
+    style: {
+      width: WIDTH_GROUP,
+      // height: '100%',
+    },
+    draggable: false,
+  },
+
+  {
     id: 'matcher-0',
-    type: 'matcher',
+    type: NodeType.MATCHER,
     data: { label: 'catch-all', isDisabled: true },
     position: {
       x: 250,
-      y: 90,
+      y: computeGroupNodeY(0),
     },
     parentId: 'matcher-group',
     origin: [0.5, 0.5],
@@ -117,6 +152,40 @@ const initialEdges = [
     ...EDGE,
   },
 ]
+
+/**
+ * Ensures correct ordering of "matcher" nodes,
+ * both visually, and in the list of nodes.
+ */
+function alignMatcherNodes(nodes: Node[]) {
+  const matcherNodes = nodes.filter((n) => n.type === NodeType.MATCHER)
+
+  // Ensure that the last matcher node is always
+  // `matcher-0` (the catch-all matcher)
+  if (
+    matcherNodes.length > 0 &&
+    matcherNodes[matcherNodes.length - 1]?.id !== 'matcher-0'
+  ) {
+    const catchallNodeIndex = matcherNodes.findIndex(
+      (n) => n.id === 'matcher-0'
+    )
+    if (catchallNodeIndex !== -1) {
+      const fallbackNode = matcherNodes.splice(catchallNodeIndex, 1)[0]
+      if (fallbackNode) matcherNodes.push(fallbackNode)
+    }
+  }
+
+  // Update Y position of matcher nodes, so that their
+  // visual position reflects their position in the list
+  matcherNodes.forEach((n, i) => {
+    n.position.y = computeGroupNodeY(i)
+  })
+
+  // Re-integrate the matcher nodes into the node list
+  return nodes.map((n) =>
+    n.type === NodeType.MATCHER ? matcherNodes.shift() : n
+  )
+}
 
 export function RouteMuxes() {
   const [nodes, setNodes] = useState(initialNodes)
@@ -158,8 +227,8 @@ export function RouteMuxes() {
       type: 'matcher',
       data: { label: '', onChange: handleNodeChange },
       position: {
-        x: 250,
-        y: matcherNodes.length * GRID_SIZE,
+        x: WIDTH_GROUP / 2,
+        y: computeGroupNodeY(0),
       },
       parentId: 'matcher-group',
       origin: [0.5, 0.5],
@@ -169,7 +238,7 @@ export function RouteMuxes() {
     }
     setNodes((nds) => {
       const updatedNodes = [...nds, newNode]
-      return alignNodesToGrid(updatedNodes)
+      return alignMatcherNodes(updatedNodes)
     })
 
     const newEdge = {
@@ -182,10 +251,10 @@ export function RouteMuxes() {
     setEdges((eds) => [...eds, newEdge])
   }
 
-  const addModelNode = () => {
+  const addModelNode = useCallback(() => {
     const newNode: Node = {
       id: `model-${nodes.length}`,
-      type: 'model',
+      type: NodeType.MODEL,
       data: { label: 'Qwen', onChange: handleNodeChange },
       position: {
         x: 250,
@@ -199,7 +268,7 @@ export function RouteMuxes() {
       targetPosition: Position.Right,
     }
     setNodes((nds) => [...nds, newNode])
-  }
+  }, [nodes])
 
   const handleNodeChange = (id, value) => {
     setNodes((nds) =>
@@ -211,50 +280,27 @@ export function RouteMuxes() {
     )
   }
 
-  const alignNodesToGrid = (nodes) => {
-    const matcherNodes = nodes.filter(
-      (node) => node.type === 'matcher' && node.id !== 'matcher-0'
-    )
-    const catchAllNode = nodes.find((node) => node.id === 'matcher-0')
-
-    matcherNodes.sort((a, b) => a.position.y - b.position.y)
-
-    matcherNodes.forEach((node, index) => {
-      node.position.y = index * GRID_SIZE
-    })
-
-    if (catchAllNode) {
-      catchAllNode.position.y = matcherNodes.length * GRID_SIZE
-    }
-
-    return [
-      ...matcherNodes,
-      catchAllNode,
-      ...nodes.filter((node) => node.type !== 'matcher'),
-    ]
-  }
-
-  const onDragStop = useCallback(
-    (event, node) => {
-      const { project } = useReactFlow()
-      if (node.type === 'matcher' && node.id !== 'matcher-0') {
-        const updatedNodes = nodes.map((n) => {
-          if (n.id === node.id) {
-            return {
-              ...n,
-              position: project({
-                x: node.position.x,
-                y: Math.round(node.position.y / GRID_SIZE) * GRID_SIZE,
-              }),
-            }
-          }
-          return n
-        })
-        setNodes(alignNodesToGrid(updatedNodes))
-      }
-    },
-    [nodes]
-  )
+  const onNodeDragStop = useCallback((event, node) => {
+    console.debug('👉 node:', node)
+    console.debug('👉 event:', event)
+    // const { project } = useReactFlow()
+    // console.debug('👉 project:', project)
+    // if (node.type === NodeType.MATCHER && node.id !== 'matcher-0') {
+    //   const updatedNodes = nodes.map((n) => {
+    //     if (n.id === node.id) {
+    //       return {
+    //         ...n,
+    //         position: project({
+    //           x: node.position.x,
+    //           y: Math.round(node.position.y / GRID_SIZE) * GRID_SIZE,
+    //         }),
+    //       }
+    //     }
+    //     return n
+    //   })
+    //   setNodes(alignMatcherNodes(updatedNodes))
+    // }
+  }, [])
 
   return (
     <PageContainer className="flex min-h-dvh flex-col">
@@ -271,14 +317,20 @@ export function RouteMuxes() {
         </code>{' '}
         and configure the routing from here.
       </p>
-      <div className="h-[32rem] border border-gray-200">
+      <div
+        style={{
+          height: HEIGHT_CONTAINER,
+        }}
+        className="border border-gray-200"
+      >
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          onNodeDragStop={onDragStop}
+          onNodeDragStop={(...args) => console.log('onNodeDragStop', args)}
+          onNodeDragStart={(...args) => console.log('onNodeDragStart', args)}
           nodeTypes={{
             prompt: PromptNode,
             matcher: MatcherNode,
@@ -286,13 +338,23 @@ export function RouteMuxes() {
             matcherGroup: (props) => (
               <GroupNode
                 {...props}
-                data={{ ...props.data, onAddNode: addMatcherNode }}
+                data={{
+                  ...props.data,
+                  onAddNode: addMatcherNode,
+                  numNodes: nodes.filter((n) => n.type === NodeType.MATCHER)
+                    .length,
+                }}
               />
             ),
             modelGroup: (props) => (
               <GroupNode
                 {...props}
-                data={{ ...props.data, onAddNode: addModelNode }}
+                data={{
+                  ...props.data,
+                  onAddNode: addModelNode,
+                  numNodes: nodes.filter((n) => n.type === NodeType.MODEL)
+                    .length,
+                }}
               />
             ),
           }}
@@ -308,21 +370,37 @@ export function RouteMuxes() {
 const GroupNode = ({
   id,
   data,
+  ...rest
 }: Partial<Node> & {
   data: {
     title: string
     description: string
     onAddNode: (id: string | undefined) => void
+    numNodes: number
   }
 }) => {
+  console.debug('👉 data:', rest)
   return (
     <div
+      style={{
+        // padding: PADDING_GROUP,
+        height:
+          HEIGHT_GROUP_HEADER +
+          PADDING_GROUP * 2 + // space around all nodes
+          (data.numNodes - 1) * PADDING_GROUP + // space between nodes
+          data.numNodes * HEIGHT_NODE,
+      }}
       className={`-z-10 flex h-auto min-h-[calc(100%-48px)] flex-col rounded-lg !border-2
-        border-dashed !border-gray-200 p-3`}
+        border-dashed !border-gray-200`}
     >
-      <div className="flex gap-1 rounded-t-lg">
+      <div
+        style={{
+          height: HEIGHT_GROUP_HEADER,
+        }}
+        className="flex items-center gap-1 rounded-t-lg px-3"
+      >
         <Heading level={3} className="mb-0 text-lg">
-          {data.title}
+          {data.title} ({data.numNodes})
         </Heading>
         <TooltipTrigger delay={0}>
           <TooltipInfoButton />
@@ -330,7 +408,7 @@ const GroupNode = ({
         </TooltipTrigger>
 
         <Button
-          className="ml-auto h-8 px-2"
+          className="ml-auto h-7 px-2"
           variant="secondary"
           onPress={() => data.onAddNode(id)}
         >
@@ -345,7 +423,13 @@ const GroupNode = ({
 const PromptNode = ({ id, data }) => {
   return (
     <>
-      <div className={nodeStyles()}>
+      <div
+        style={{
+          height: HEIGHT_NODE,
+        }}
+        className={twMerge(nodeStyles(), 'flex items-center gap-2')}
+      >
+        <ChartBreakoutCircle />
         <span>Prompt</span>
       </div>
       <Handle type="source" position={Position.Right} />
@@ -367,15 +451,45 @@ const MatcherNode = ({
     <>
       <Handle type="target" position={Position.Left} />
 
-      <div className={nodeStyles()}>
+      <div
+        style={{
+          height: HEIGHT_NODE,
+          width: WIDTH_NODE,
+        }}
+        className={twMerge(
+          nodeStyles(),
+          'grid grid-cols-[32px_1fr_2fr] items-center gap-4'
+        )}
+      >
+        <SvgDrag className="size-8" />
+        <Select
+          defaultSelectedKey={'all'}
+          items={[
+            {
+              textValue: 'All',
+              id: 'all',
+            },
+            {
+              textValue: 'FIM',
+              id: 'fim',
+            },
+            {
+              textValue: 'Chat',
+              id: 'chat',
+            },
+          ]}
+        >
+          <SelectButton />
+        </Select>
         <TextField
           isDisabled={data.isDisabled}
           type="text"
+          aria-label="Matcher"
           value={data.label}
           onChange={(v) => data.onChange(id, v)}
         >
           <Input
-            icon={data.isDisabled ? <Lock01 /> : undefined}
+            icon={data.isDisabled ? <Lock01 /> : <IconRegex />}
             placeholder="e.g. *.ts"
           />
         </TextField>
@@ -390,8 +504,15 @@ const ModelNode = ({ id, data }) => {
     <>
       <Handle type="target" position={Position.Left} />
 
-      <div className={nodeStyles()}>
+      <div
+        style={{
+          height: HEIGHT_NODE,
+          width: WIDTH_NODE,
+        }}
+        className={nodeStyles()}
+      >
         <ComboBox
+          aria-label="Model"
           items={[
             {
               textValue: 'anthropic/claude-3.7-sonnet',
