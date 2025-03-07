@@ -1,11 +1,11 @@
-import { V1ListWorkspacesByProviderResponse } from '@/api/generated'
+import { Workspace } from '@/api/generated'
 import { Badge } from '@stacklok/ui-kit'
 import { uniqBy } from 'lodash'
 
 export function WorkspacesByProvider({
   workspaces = [],
 }: {
-  workspaces: V1ListWorkspacesByProviderResponse | undefined
+  workspaces: Workspace[] | undefined
 }) {
   if (workspaces.length === 0) return null
   return (

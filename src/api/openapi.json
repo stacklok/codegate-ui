@@ -137,7 +137,7 @@
         }
       }
     },
-    "/api/v1/provider-endpoints/{provider_id}/models": {
+    "/api/v1/provider-endpoints/{provider_name}/models": {
       "get": {
         "tags": ["CodeGate API", "Providers"],
         "summary": "List Models By Provider",
@@ -145,13 +145,12 @@
         "operationId": "v1_list_models_by_provider",
         "parameters": [
           {
-            "name": "provider_id",
+            "name": "provider_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
+              "title": "Provider Name"
             }
           }
         ],
@@ -183,21 +182,20 @@
         }
       }
     },
-    "/api/v1/provider-endpoints/{provider_id}": {
+    "/api/v1/provider-endpoints/{provider_name}": {
       "get": {
         "tags": ["CodeGate API", "Providers"],
         "summary": "Get Provider Endpoint",
-        "description": "Get a provider endpoint by ID.",
+        "description": "Get a provider endpoint by name.",
         "operationId": "v1_get_provider_endpoint",
         "parameters": [
           {
-            "name": "provider_id",
+            "name": "provider_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
+              "title": "Provider Name"
             }
           }
         ],
@@ -227,17 +225,16 @@
       "put": {
         "tags": ["CodeGate API", "Providers"],
         "summary": "Update Provider Endpoint",
-        "description": "Update a provider endpoint by ID.",
+        "description": "Update a provider endpoint by name.",
         "operationId": "v1_update_provider_endpoint",
         "parameters": [
           {
-            "name": "provider_id",
+            "name": "provider_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
+              "title": "Provider Name"
             }
           }
         ],
@@ -277,17 +274,16 @@
       "delete": {
         "tags": ["CodeGate API", "Providers"],
         "summary": "Delete Provider Endpoint",
-        "description": "Delete a provider endpoint by id.",
+        "description": "Delete a provider endpoint by name.",
         "operationId": "v1_delete_provider_endpoint",
         "parameters": [
           {
-            "name": "provider_id",
+            "name": "provider_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
+              "title": "Provider Name"
             }
           }
         ],
@@ -313,7 +309,7 @@
         }
       }
     },
-    "/api/v1/provider-endpoints/{provider_id}/auth-material": {
+    "/api/v1/provider-endpoints/{provider_name}/auth-material": {
       "put": {
         "tags": ["CodeGate API", "Providers"],
         "summary": "Configure Auth Material",
@@ -321,13 +317,12 @@
         "operationId": "v1_configure_auth_material",
         "parameters": [
           {
-            "name": "provider_id",
+            "name": "provider_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
+              "title": "Provider Name"
             }
           }
         ],
@@ -362,8 +357,26 @@
       "get": {
         "tags": ["CodeGate API", "Workspaces"],
         "summary": "List Workspaces",
-        "description": "List all workspaces.",
+        "description": "List all workspaces.\n\nArgs:\n    provider_name (Optional[str]): Filter workspaces by provider name. If provided,\n    will return workspaces where models from the specified provider (e.g., OpenAI,\n    Anthropic) have been used in workspace muxing rules.\n\nReturns:\n    ListWorkspacesResponse: A response object containing the list of workspaces.",
         "operationId": "v1_list_workspaces",
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Provider Name"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -371,6 +384,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ListWorkspacesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -383,14 +406,14 @@
         "description": "Create a new workspace.",
         "operationId": "v1_create_workspace",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/FullWorkspace-Input"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -511,7 +534,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -555,6 +578,45 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["CodeGate API", "Workspaces"],
+        "summary": "Get Workspace By Name",
+        "description": "List workspaces by provider ID.",
+        "operationId": "v1_get_workspace_by_name",
+        "parameters": [
+          {
+            "name": "workspace_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullWorkspace-Output"
+                }
               }
             }
           },
@@ -699,6 +761,47 @@
                     ]
                   },
                   "title": "Response V1 Get Workspace Alerts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces/{workspace_name}/alerts-summary": {
+      "get": {
+        "tags": ["CodeGate API", "Workspaces"],
+        "summary": "Get Workspace Alerts Summary",
+        "description": "Get alert summary for a workspace.",
+        "operationId": "v1_get_workspace_alerts_summary",
+        "parameters": [
+          {
+            "name": "workspace_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertSummary"
                 }
               }
             }
@@ -965,52 +1068,6 @@
         }
       }
     },
-    "/api/v1/workspaces/{provider_id}": {
-      "get": {
-        "tags": ["CodeGate API", "Workspaces"],
-        "summary": "List Workspaces By Provider",
-        "description": "List workspaces by provider ID.",
-        "operationId": "v1_list_workspaces_by_provider",
-        "parameters": [
-          {
-            "name": "provider_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Provider Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WorkspaceWithModel"
-                  },
-                  "title": "Response V1 List Workspaces By Provider"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/alerts_notification": {
       "get": {
         "tags": ["CodeGate API", "Dashboard"],
@@ -1073,6 +1130,190 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/personas": {
+      "get": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "List Personas",
+        "description": "List all personas.",
+        "operationId": "v1_list_personas",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Persona"
+                  },
+                  "type": "array",
+                  "title": "Response V1 List Personas"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Create Persona",
+        "description": "Create a new persona.",
+        "operationId": "v1_create_persona",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/personas/{persona_name}": {
+      "get": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Get Persona",
+        "description": "Get a persona by name.",
+        "operationId": "v1_get_persona",
+        "parameters": [
+          {
+            "name": "persona_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Persona Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Update Persona",
+        "description": "Update an existing persona.",
+        "operationId": "v1_update_persona",
+        "parameters": [
+          {
+            "name": "persona_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Persona Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonaUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Delete Persona",
+        "description": "Delete a persona.",
+        "operationId": "v1_delete_persona",
+        "parameters": [
+          {
+            "name": "persona_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Persona Name"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -1302,6 +1543,26 @@
         "type": "string",
         "enum": ["info", "critical"],
         "title": "AlertSeverity"
+      },
+      "AlertSummary": {
+        "properties": {
+          "malicious_packages": {
+            "type": "integer",
+            "title": "Malicious Packages"
+          },
+          "pii": {
+            "type": "integer",
+            "title": "Pii"
+          },
+          "secrets": {
+            "type": "integer",
+            "title": "Secrets"
+          }
+        },
+        "type": "object",
+        "required": ["malicious_packages", "pii", "secrets"],
+        "title": "AlertSummary",
+        "description": "Represents a set of summary alerts"
       },
       "ChatMessage": {
         "properties": {
@@ -1562,9 +1823,8 @@
             "type": "string",
             "title": "Name"
           },
-          "provider_id": {
-            "type": "string",
-            "title": "Provider Id"
+          "provider_type": {
+            "$ref": "#/components/schemas/ProviderType"
           },
           "provider_name": {
             "type": "string",
@@ -1572,7 +1832,7 @@
           }
         },
         "type": "object",
-        "required": ["name", "provider_id", "provider_name"],
+        "required": ["name", "provider_type", "provider_name"],
         "title": "ModelByProvider",
         "description": "Represents a model supported by a provider.\n\nNote that these are auto-discovered by the provider."
       },
@@ -1590,19 +1850,11 @@
       "MuxRule": {
         "properties": {
           "provider_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Provider Name"
           },
-          "provider_id": {
-            "type": "string",
-            "title": "Provider Id"
+          "provider_type": {
+            "$ref": "#/components/schemas/ProviderType"
           },
           "model": {
             "type": "string",
@@ -1624,9 +1876,61 @@
           }
         },
         "type": "object",
-        "required": ["provider_id", "model", "matcher_type"],
+        "required": ["provider_name", "provider_type", "model", "matcher_type"],
         "title": "MuxRule",
         "description": "Represents a mux rule for a provider."
+      },
+      "Persona": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": ["id", "name", "description"],
+        "title": "Persona",
+        "description": "Represents a persona object."
+      },
+      "PersonaRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": ["name", "description"],
+        "title": "PersonaRequest",
+        "description": "Model for creating a new Persona."
+      },
+      "PersonaUpdateRequest": {
+        "properties": {
+          "new_name": {
+            "type": "string",
+            "title": "New Name"
+          },
+          "new_description": {
+            "type": "string",
+            "title": "New Description"
+          }
+        },
+        "type": "object",
+        "required": ["new_name", "new_description"],
+        "title": "PersonaUpdateRequest",
+        "description": "Model for updating a Persona."
       },
       "ProviderAuthType": {
         "type": "string",
@@ -1857,27 +2161,6 @@
         "type": "object",
         "required": ["custom_instructions", "muxing_rules"],
         "title": "WorkspaceConfig"
-      },
-      "WorkspaceWithModel": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "name": {
-            "type": "string",
-            "pattern": "^[a-zA-Z0-9_-]+$",
-            "title": "Name"
-          },
-          "provider_model_name": {
-            "type": "string",
-            "title": "Provider Model Name"
-          }
-        },
-        "type": "object",
-        "required": ["id", "name", "provider_model_name"],
-        "title": "WorkspaceWithModel",
-        "description": "Returns a workspace ID with model name"
       }
     }
   }
