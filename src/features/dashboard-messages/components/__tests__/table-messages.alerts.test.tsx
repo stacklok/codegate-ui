@@ -6,16 +6,24 @@ import { http, HttpResponse } from 'msw'
 
 import { mswEndpoint } from '@/test/msw-endpoint'
 import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
+import { PaginatedMessagesResponse } from '@/api/generated'
 
 it('shows zero in alerts counts when no alerts', async () => {
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () =>
-      HttpResponse.json([
-        mockConversation({
-          alertsConfig: { numAlerts: 0 },
-        }),
-      ])
-    )
+    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
+      const responsePayload: PaginatedMessagesResponse = {
+        data: [
+          mockConversation({
+            alertsConfig: { numAlerts: 0 },
+          }),
+        ],
+        limit: 50,
+        offset: 0,
+        total: 30,
+      }
+
+      return HttpResponse.json(responsePayload)
+    })
   )
   render(<TableMessages />)
 
@@ -42,14 +50,22 @@ it('shows zero in alerts counts when no alerts', async () => {
 
 it('shows count of malicious alerts in row', async () => {
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () =>
-      HttpResponse.json([
-        mockConversation({
-          alertsConfig: { numAlerts: 10, type: 'malicious' },
-        }),
-      ])
-    )
+    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
+      const responsePayload: PaginatedMessagesResponse = {
+        data: [
+          mockConversation({
+            alertsConfig: { numAlerts: 10, type: 'malicious' },
+          }),
+        ],
+        limit: 50,
+        offset: 0,
+        total: 30,
+      }
+
+      return HttpResponse.json(responsePayload)
+    })
   )
+
   render(<TableMessages />)
 
   await waitFor(() => {
@@ -65,13 +81,20 @@ it('shows count of malicious alerts in row', async () => {
 
 it('shows count of secret alerts in row', async () => {
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () =>
-      HttpResponse.json([
-        mockConversation({
-          alertsConfig: { numAlerts: 10, type: 'secret' },
-        }),
-      ])
-    )
+    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
+      const responsePayload: PaginatedMessagesResponse = {
+        data: [
+          mockConversation({
+            alertsConfig: { numAlerts: 10, type: 'secret' },
+          }),
+        ],
+        limit: 50,
+        offset: 0,
+        total: 30,
+      }
+
+      return HttpResponse.json(responsePayload)
+    })
   )
   render(<TableMessages />)
 
@@ -88,13 +111,20 @@ it('shows count of secret alerts in row', async () => {
 
 it('shows count of pii alerts in row', async () => {
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () =>
-      HttpResponse.json([
-        mockConversation({
-          alertsConfig: { numAlerts: 10, type: 'pii' },
-        }),
-      ])
-    )
+    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
+      const responsePayload: PaginatedMessagesResponse = {
+        data: [
+          mockConversation({
+            alertsConfig: { numAlerts: 10, type: 'pii' },
+          }),
+        ],
+        limit: 50,
+        offset: 0,
+        total: 30,
+      }
+
+      return HttpResponse.json(responsePayload)
+    })
   )
   render(<TableMessages />)
 

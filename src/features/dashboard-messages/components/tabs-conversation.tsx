@@ -6,7 +6,6 @@ import {
   TabPanel,
   Badge,
 } from '@stacklok/ui-kit'
-import { AlertsFilterView } from '../hooks/use-messages-filter-search-params'
 
 import {
   ConversationView,
@@ -56,7 +55,7 @@ export function TabsConversation({
     <Tabs
       onSelectionChange={(key) => setView(key.toString() as ConversationView)}
       selectedKey={state.view}
-      defaultSelectedKey={AlertsFilterView.ALL}
+      defaultSelectedKey={ConversationView.OVERVIEW}
     >
       <TabList>
         <Tab title="Overview" id={ConversationView.OVERVIEW} />

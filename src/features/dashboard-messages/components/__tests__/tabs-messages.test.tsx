@@ -1,71 +1,44 @@
+import { describe } from 'vitest'
 import { server } from '@/mocks/msw/node'
 import { http, HttpResponse } from 'msw'
 import { render, waitFor } from '@/lib/test-utils'
 import { TabsMessages } from '../tabs-messages'
 import { mswEndpoint } from '@/test/msw-endpoint'
 import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
+import { AlertSummary, PaginatedMessagesResponse } from '@/api/generated'
 
-test('shows correct count of all packages', async () => {
-  server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      return HttpResponse.json([
-        ...Array.from({ length: 13 }).map(() =>
-          mockConversation({
-            alertsConfig: {
-              type: 'secret',
-              numAlerts: 1,
-            },
-          })
-        ),
-        ...Array.from({ length: 13 }).map(() =>
-          mockConversation({
-            alertsConfig: {
-              type: 'malicious',
-              numAlerts: 1,
-            },
-          })
-        ),
-      ])
-    })
-  )
+const SUMMARY: AlertSummary = {
+  malicious_packages: 13,
+  pii: 9,
+  secrets: 10,
+}
 
-  const { getByRole } = render(
-    <TabsMessages>
-      <div>foo</div>
-    </TabsMessages>
-  )
-
-  await waitFor(() => {
-    expect(getByRole('tab', { name: /all/i })).toHaveTextContent('26')
-  })
-})
-
-const filteredCases = [
-  { tabLabel: /malicious/i, alertType: 'malicious' as const, count: 13 },
-  { tabLabel: /secrets/i, alertType: 'secret' as const, count: 10 },
-  { tabLabel: /pii/i, alertType: 'pii' as const, count: 9 },
-]
-
-filteredCases.forEach(({ tabLabel, alertType, count }) => {
-  test(`shows correct count of ${alertType} packages`, async () => {
+describe('tabs-messages', () => {
+  beforeAll(() => {
     server.use(
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json(
-            Array.from({ length: count }).map(() =>
-              mockConversation({
-                alertsConfig: {
-                  type: alertType,
-                  numAlerts: 1,
-                },
-              })
-            )
-          )
+          const responsePayload: PaginatedMessagesResponse = {
+            data: Array.from({ length: 32 }).map(() => mockConversation()),
+            limit: 50,
+            offset: 0,
+            total: 32,
+          }
+
+          return HttpResponse.json(responsePayload)
+        }
+      ),
+      http.get(
+        mswEndpoint('/api/v1/workspaces/:workspace_name/alerts-summary'),
+        () => {
+          return HttpResponse.json(SUMMARY)
         }
       )
     )
+  })
 
+  test('shows correct count of all packages', async () => {
     const { getByRole } = render(
       <TabsMessages>
         <div>foo</div>
@@ -73,9 +46,32 @@ filteredCases.forEach(({ tabLabel, alertType, count }) => {
     )
 
     await waitFor(() => {
-      expect(getByRole('tab', { name: tabLabel })).toHaveTextContent(
-        String(count)
+      expect(getByRole('tab', { name: /all/i })).toHaveTextContent('32')
+    })
+  })
+
+  const filteredCases = [
+    {
+      name: 'Malicious',
+      count: SUMMARY.malicious_packages,
+    },
+    { name: 'Secrets', count: SUMMARY.secrets },
+    { name: 'PII', count: SUMMARY.pii },
+  ]
+
+  filteredCases.forEach(({ name, count }) => {
+    test(`shows correct count of ${name} packages`, async () => {
+      const { getByRole } = render(
+        <TabsMessages>
+          <div>foo</div>
+        </TabsMessages>
       )
+
+      await waitFor(() => {
+        expect(getByRole('tab', { name: name })).toHaveTextContent(
+          String(count)
+        )
+      })
     })
   })
 })

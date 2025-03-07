@@ -4,11 +4,11 @@ import { server } from '@/mocks/msw/node'
 import { emptyStateStrings } from '../../../../constants/empty-state-strings'
 import { useSearchParams } from 'react-router-dom'
 import { delay, http, HttpHandler, HttpResponse } from 'msw'
-import { mockAlert } from '../../../../mocks/msw/mockers/alert.mock'
-import { AlertsFilterView } from '../../hooks/use-messages-filter-search-params'
 import { hrefs } from '@/lib/hrefs'
 import { mswEndpoint } from '@/test/msw-endpoint'
 import { TableMessagesEmptyState } from '../table-messages-empty-state'
+import { AlertTriggerType, PaginatedMessagesResponse } from '@/api/generated'
+import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
 
 enum IllustrationTestId {
   ALERT = 'illustration-alert',
@@ -34,7 +34,7 @@ type TestCase = {
   testDescription: string
   handlers: HttpHandler[]
   searchParams: {
-    view: AlertsFilterView
+    view: AlertTriggerType | 'all' | null
     search: string | null
   }
   expected: {
@@ -81,7 +81,7 @@ const TEST_CASES: TestCase[] = [
     ],
     searchParams: {
       search: null,
-      view: AlertsFilterView.ALL,
+      view: 'all',
     },
     expected: {
       title: emptyStateStrings.title.loading,
@@ -111,13 +111,20 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json([])
+          const responsePayload: PaginatedMessagesResponse = {
+            data: [],
+            limit: 50,
+            offset: 0,
+            total: 0,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
     searchParams: {
       search: null,
-      view: AlertsFilterView.ALL,
+      view: 'all',
     },
     expected: {
       body: emptyStateStrings.body.getStartedDesc,
@@ -153,13 +160,25 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }, () => mockAlert({ type: 'malicious' }))
-          )
+          const responsePayload: PaginatedMessagesResponse = {
+            data: Array.from({ length: 10 }, () =>
+              mockConversation({
+                alertsConfig: {
+                  numAlerts: 10,
+                  type: 'malicious',
+                },
+              })
+            ),
+            limit: 50,
+            offset: 0,
+            total: 10,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
-    searchParams: { search: 'foo-bar', view: AlertsFilterView.ALL },
+    searchParams: { search: 'foo-bar', view: 'all' },
     expected: {
       title: emptyStateStrings.title.noSearchResultsFor('foo-bar'),
       body: emptyStateStrings.body.tryChangingSearch,
@@ -197,13 +216,20 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json([])
+          const responsePayload: PaginatedMessagesResponse = {
+            data: [],
+            limit: 50,
+            offset: 0,
+            total: 0,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
     searchParams: {
       search: null,
-      view: AlertsFilterView.ALL,
+      view: 'all',
     },
     expected: {
       title: emptyStateStrings.title.noMessagesWorkspace,
@@ -243,14 +269,26 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }).map(() => mockAlert({ type: 'secret' }))
-          )
+          const responsePayload: PaginatedMessagesResponse = {
+            data: Array.from({ length: 10 }).map(() =>
+              mockConversation({
+                alertsConfig: {
+                  type: 'secret',
+                  numAlerts: 10,
+                },
+              })
+            ),
+            limit: 50,
+            offset: 0,
+            total: 10,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
     searchParams: {
-      view: AlertsFilterView.MALICIOUS,
+      view: AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER,
       search: null,
     },
     expected: {
@@ -285,16 +323,26 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }).map(() =>
-              mockAlert({ type: 'malicious' })
-            )
-          )
+          const responsePayload: PaginatedMessagesResponse = {
+            data: Array.from({ length: 10 }).map(() =>
+              mockConversation({
+                alertsConfig: {
+                  type: 'malicious',
+                  numAlerts: 10,
+                },
+              })
+            ),
+            limit: 50,
+            offset: 0,
+            total: 10,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
     searchParams: {
-      view: AlertsFilterView.SECRETS,
+      view: AlertTriggerType.CODEGATE_SECRETS,
       search: null,
     },
     expected: {
@@ -329,14 +377,26 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }).map(() => mockAlert({ type: 'pii' }))
-          )
+          const responsePayload: PaginatedMessagesResponse = {
+            data: Array.from({ length: 10 }).map(() =>
+              mockConversation({
+                alertsConfig: {
+                  type: 'pii',
+                  numAlerts: 10,
+                },
+              })
+            ),
+            limit: 50,
+            offset: 0,
+            total: 10,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
     searchParams: {
-      view: AlertsFilterView.PII,
+      view: AlertTriggerType.CODEGATE_PII,
       search: null,
     },
     expected: {
@@ -354,7 +414,7 @@ test.each(TEST_CASES)('$testDescription', async (testCase) => {
   vi.mocked(useSearchParams).mockReturnValue([
     new URLSearchParams({
       search: testCase.searchParams.search ?? '',
-      view: testCase.searchParams.view,
+      view: testCase.searchParams.view ?? 'all',
     }),
     () => {},
   ])
