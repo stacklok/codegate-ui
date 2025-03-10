@@ -10,7 +10,6 @@ import {
 import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
 import { tv } from 'tailwind-variants'
 import { useQueryGetWorkspaceAlertsSummary } from '@/hooks/use-query-get-workspace-alerts-summary'
-import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
 import { AlertTriggerType } from '@/api/generated'
 
 const tabStyle = tv({
@@ -51,8 +50,7 @@ function Tab({
 
 export function TabsMessages({ children }: { children: React.ReactNode }) {
   const { state, setView } = useMessagesFilterSearchParams()
-  const { data: messages } = useQueryGetWorkspaceMessages({ query: {} })
-  const { data: alertsSummary } = useQueryGetWorkspaceAlertsSummary()
+  const { data } = useQueryGetWorkspaceAlertsSummary()
 
   return (
     <Tabs
@@ -68,20 +66,20 @@ export function TabsMessages({ children }: { children: React.ReactNode }) {
     >
       <div className="mb-4 flex items-center gap-2">
         <TabList className="overflow-hidden rounded-sm bg-gray-100">
-          <Tab title="All" count={messages?.total ?? 0} id="all" />
+          <Tab title="All" count={data?.total_alerts ?? 0} id="all" />
           <Tab
             title="Malicious"
-            count={alertsSummary?.malicious_packages ?? 0}
+            count={data?.malicious_packages ?? 0}
             id={AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER}
           />
           <Tab
             title="Secrets"
-            count={alertsSummary?.secrets ?? 0}
+            count={data?.secrets ?? 0}
             id={AlertTriggerType.CODEGATE_SECRETS}
           />
           <Tab
             title="PII"
-            count={alertsSummary?.pii ?? 0}
+            count={data?.pii ?? 0}
             id={AlertTriggerType.CODEGATE_PII}
           />
         </TabList>
