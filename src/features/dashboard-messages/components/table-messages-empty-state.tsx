@@ -1,9 +1,7 @@
 import {
-  Button,
   IllustrationAlert,
   IllustrationDone,
   IllustrationDragAndDrop,
-  IllustrationNoSearchResults,
   LinkButton,
   Loader,
 } from '@stacklok/ui-kit'
@@ -54,26 +52,26 @@ function EmptyStateGetStarted() {
   )
 }
 
-function EmptyStateSearch({
-  search,
-  setSearch,
-}: {
-  search: string
-  setSearch: (v: string | null) => void
-}) {
-  return (
-    <EmptyState
-      illustration={IllustrationNoSearchResults}
-      title={emptyStateStrings.title.noSearchResultsFor(search)}
-      body={emptyStateStrings.body.tryChangingSearch}
-      actions={[
-        <Button key="clear-search" onPress={() => setSearch(null)}>
-          Clear search
-        </Button>,
-      ]}
-    />
-  )
-}
+// function EmptyStateSearch({
+//   search,
+//   setSearch,
+// }: {
+//   search: string
+//   setSearch: (v: string | null) => void
+// }) {
+//   return (
+//     <EmptyState
+//       illustration={IllustrationNoSearchResults}
+//       title={emptyStateStrings.title.noSearchResultsFor(search)}
+//       body={emptyStateStrings.body.tryChangingSearch}
+//       actions={[
+//         <Button key="clear-search" onPress={() => setSearch(null)}>
+//           Clear search
+//         </Button>,
+//       ]}
+//     />
+//   )
+// }
 
 function EmptyStateNoMessagesInWorkspace() {
   return (
@@ -165,12 +163,11 @@ type MatchInput = {
   isLoading: boolean
   hasWorkspaceMessages: boolean
   hasMultipleWorkspaces: boolean
-  search: string | null
   view: AlertTriggerType | 'all'
 }
 
 export function TableMessagesEmptyState() {
-  const { state, setSearch } = useMessagesFilterSearchParams()
+  const { state } = useMessagesFilterSearchParams()
 
   const { data: response, isLoading: isMessagesLoading } =
     useQueryGetWorkspaceMessagesTable()
@@ -180,69 +177,59 @@ export function TableMessagesEmptyState() {
 
   const isLoading = isMessagesLoading || isWorkspacesLoading
 
+  const hasMultipleWorkspaces: boolean =
+    workspaces.filter((w) => w.name !== 'default').length > 0
+
+  const hasWorkspaceMessages: boolean = Boolean(response && response.total > 0)
+
   return match<MatchInput, ReactNode>({
+    hasMultipleWorkspaces,
+    hasWorkspaceMessages,
     isLoading,
-    hasWorkspaceMessages: Boolean(response?.data && response.data.length > 0),
-    hasMultipleWorkspaces:
-      workspaces.filter((w) => w.name !== 'default').length > 0,
-    search: state.search || null,
     view: state.view ?? 'all',
   })
     .with(
       {
-        hasWorkspaceMessages: false,
         hasMultipleWorkspaces: false,
-        search: P.any,
-        view: P.any,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: P.any,
       },
       () => <EmptyStateGetStarted />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
-        hasMultipleWorkspaces: P.any,
-        search: P.string.select(),
-        view: P.any,
-        isLoading: false,
-      },
-      (search) => <EmptyStateSearch search={search} setSearch={setSearch} />
-    )
-    .with(
-      {
+        hasMultipleWorkspaces: true,
         hasWorkspaceMessages: false,
-        hasMultipleWorkspaces: P.any,
-        search: P.any,
-        view: P.any,
         isLoading: false,
+        view: 'all',
       },
       () => <EmptyStateNoMessagesInWorkspace />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        view: AlertTriggerType.CODEGATE_PII,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: AlertTriggerType.CODEGATE_PII,
       },
       () => <EmptyStatePII />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        search: P.any,
-        view: AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER,
       },
       () => <EmptyStateMalicious />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        view: AlertTriggerType.CODEGATE_SECRETS,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: AlertTriggerType.CODEGATE_SECRETS,
       },
       () => <EmptyStateSecrets />
     )

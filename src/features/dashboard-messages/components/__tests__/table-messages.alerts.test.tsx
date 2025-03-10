@@ -5,18 +5,14 @@ import { server } from '@/mocks/msw/node'
 import { http, HttpResponse } from 'msw'
 
 import { mswEndpoint } from '@/test/msw-endpoint'
-import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
 import { PaginatedMessagesResponse } from '@/api/generated'
+import { mockConversationSummary } from '@/mocks/msw/mockers/conversation-summary.mock'
 
 it('shows zero in alerts counts when no alerts', async () => {
   server.use(
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
       const responsePayload: PaginatedMessagesResponse = {
-        data: [
-          mockConversation({
-            alertsConfig: { numAlerts: 0 },
-          }),
-        ],
+        data: [mockConversationSummary()],
         limit: 50,
         offset: 0,
         total: 30,
@@ -53,8 +49,13 @@ it('shows count of malicious alerts in row', async () => {
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
       const responsePayload: PaginatedMessagesResponse = {
         data: [
-          mockConversation({
-            alertsConfig: { numAlerts: 10, type: 'malicious' },
+          mockConversationSummary({
+            alertsSummary: {
+              malicious_packages: 10,
+              pii: 0,
+              secrets: 0,
+              total_alerts: 10,
+            },
           }),
         ],
         limit: 50,
@@ -84,8 +85,13 @@ it('shows count of secret alerts in row', async () => {
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
       const responsePayload: PaginatedMessagesResponse = {
         data: [
-          mockConversation({
-            alertsConfig: { numAlerts: 10, type: 'secret' },
+          mockConversationSummary({
+            alertsSummary: {
+              malicious_packages: 0,
+              pii: 0,
+              secrets: 10,
+              total_alerts: 10,
+            },
           }),
         ],
         limit: 50,
@@ -114,8 +120,13 @@ it('shows count of pii alerts in row', async () => {
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
       const responsePayload: PaginatedMessagesResponse = {
         data: [
-          mockConversation({
-            alertsConfig: { numAlerts: 10, type: 'pii' },
+          mockConversationSummary({
+            alertsSummary: {
+              malicious_packages: 0,
+              pii: 10,
+              secrets: 0,
+              total_alerts: 10,
+            },
           }),
         ],
         limit: 50,

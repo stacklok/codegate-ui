@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
 const alertsFilterSchema = z.object({
-  search: z.string().optional(),
+  // search: z.string().optional(),
   view: z
     .union([z.literal('all'), z.nativeEnum(AlertTriggerType)])
     .nullish()
@@ -38,20 +38,20 @@ export const useMessagesFilterSearchParams = () => {
     [setSearchParams]
   )
 
-  const setSearch = useCallback(
-    (query: string | null) => {
-      setSearchParams((prev) => {
-        if (query !== null && query !== '') {
-          prev.set('search', query)
-          prev.delete('page')
-        } else {
-          prev.delete('search')
-        }
-        return prev
-      })
-    },
-    [setSearchParams]
-  )
+  // const setSearch = useCallback(
+  //   (query: string | null) => {
+  //     setSearchParams((prev) => {
+  //       if (query !== null && query !== '') {
+  //         prev.set('search', query)
+  //         prev.delete('page')
+  //       } else {
+  //         prev.delete('search')
+  //       }
+  //       return prev
+  //     })
+  //   },
+  //   [setSearchParams]
+  // )
 
   const goToNextPage = useCallback(() => {
     setSearchParams((prev) => {
@@ -84,7 +84,6 @@ export const useMessagesFilterSearchParams = () => {
   return {
     state,
     setView,
-    setSearch,
     goToNextPage,
     goToPrevPage,
     setPage,

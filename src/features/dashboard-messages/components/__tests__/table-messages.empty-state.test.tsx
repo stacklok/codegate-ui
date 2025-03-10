@@ -8,7 +8,7 @@ import { hrefs } from '@/lib/hrefs'
 import { mswEndpoint } from '@/test/msw-endpoint'
 import { TableMessagesEmptyState } from '../table-messages-empty-state'
 import { AlertTriggerType, PaginatedMessagesResponse } from '@/api/generated'
-import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
+import { buildFilterablePaginatedMessagesHandler } from '@/mocks/msw/mockers/paginated-messages-response.mock'
 
 enum IllustrationTestId {
   ALERT = 'illustration-alert',
@@ -91,7 +91,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Only 1 workspace, no alerts',
+    testDescription: 'Only 1 workspace, no messages',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -140,59 +140,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'No search results',
-    handlers: [
-      http.get(mswEndpoint('/api/v1/workspaces'), () => {
-        return HttpResponse.json({
-          workspaces: [
-            {
-              name: 'default',
-              is_active: true,
-            },
-          ],
-        })
-      }),
-      http.get(mswEndpoint('/api/v1/workspaces/archive'), () => {
-        return HttpResponse.json({
-          workspaces: [],
-        })
-      }),
-      http.get(
-        mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          const responsePayload: PaginatedMessagesResponse = {
-            data: Array.from({ length: 10 }, () =>
-              mockConversation({
-                alertsConfig: {
-                  numAlerts: 10,
-                  type: 'malicious',
-                },
-              })
-            ),
-            limit: 50,
-            offset: 0,
-            total: 10,
-          }
-
-          return HttpResponse.json(responsePayload)
-        }
-      ),
-    ],
-    searchParams: { search: 'foo-bar', view: 'all' },
-    expected: {
-      title: emptyStateStrings.title.noSearchResultsFor('foo-bar'),
-      body: emptyStateStrings.body.tryChangingSearch,
-      illustrationTestId: IllustrationTestId.NO_SEARCH_RESULTS,
-      actions: [
-        {
-          role: 'button',
-          name: 'Clear search',
-        },
-      ],
-    },
-  },
-  {
-    testDescription: 'No alerts, multiple workspaces',
+    testDescription: 'No messages, multiple workspaces',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -245,7 +193,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Has alerts, view is "malicious"',
+    testDescription: 'View is "malicious", no messages with "malicious" alerts',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -268,23 +216,14 @@ const TEST_CASES: TestCase[] = [
       }),
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          const responsePayload: PaginatedMessagesResponse = {
-            data: Array.from({ length: 10 }).map(() =>
-              mockConversation({
-                alertsConfig: {
-                  type: 'secret',
-                  numAlerts: 10,
-                },
-              })
-            ),
-            limit: 50,
-            offset: 0,
-            total: 10,
-          }
-
-          return HttpResponse.json(responsePayload)
-        }
+        buildFilterablePaginatedMessagesHandler({
+          include: {
+            'codegate-context-retriever': false,
+            'codegate-pii': true,
+            'codegate-secrets': true,
+            no_alerts: true,
+          },
+        })
       ),
     ],
     searchParams: {
@@ -299,7 +238,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Has alerts, view is "secret"',
+    testDescription: 'View is "secret", no messages with "secret" alerts',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -322,23 +261,14 @@ const TEST_CASES: TestCase[] = [
       }),
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          const responsePayload: PaginatedMessagesResponse = {
-            data: Array.from({ length: 10 }).map(() =>
-              mockConversation({
-                alertsConfig: {
-                  type: 'malicious',
-                  numAlerts: 10,
-                },
-              })
-            ),
-            limit: 50,
-            offset: 0,
-            total: 10,
-          }
-
-          return HttpResponse.json(responsePayload)
-        }
+        buildFilterablePaginatedMessagesHandler({
+          include: {
+            'codegate-context-retriever': true,
+            'codegate-pii': true,
+            'codegate-secrets': false,
+            no_alerts: true,
+          },
+        })
       ),
     ],
     searchParams: {
@@ -353,7 +283,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Has alerts, view is "pii"',
+    testDescription: 'View is "pii", no messages with "pii" alerts',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -376,23 +306,14 @@ const TEST_CASES: TestCase[] = [
       }),
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          const responsePayload: PaginatedMessagesResponse = {
-            data: Array.from({ length: 10 }).map(() =>
-              mockConversation({
-                alertsConfig: {
-                  type: 'pii',
-                  numAlerts: 10,
-                },
-              })
-            ),
-            limit: 50,
-            offset: 0,
-            total: 10,
-          }
-
-          return HttpResponse.json(responsePayload)
-        }
+        buildFilterablePaginatedMessagesHandler({
+          include: {
+            'codegate-context-retriever': true,
+            'codegate-pii': false,
+            'codegate-secrets': true,
+            no_alerts: true,
+          },
+        })
       ),
     ],
     searchParams: {

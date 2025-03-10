@@ -5,9 +5,9 @@ import { server } from '@/mocks/msw/node'
 import { http, HttpResponse } from 'msw'
 
 import { mswEndpoint } from '@/test/msw-endpoint'
-import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
 import userEvent from '@testing-library/user-event'
 import { PaginatedMessagesResponse } from '@/api/generated'
+import { mockConversationSummary } from '@/mocks/msw/mockers/conversation-summary.mock'
 
 /**
  *
@@ -18,14 +18,7 @@ it.skip('allows pagination', async () => {
   server.use(
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
       const responsePayload: PaginatedMessagesResponse = {
-        data: Array.from({ length: 35 }).map(() =>
-          mockConversation({
-            alertsConfig: {
-              type: 'secret',
-              numAlerts: 10,
-            },
-          })
-        ),
+        data: Array.from({ length: 35 }).map(() => mockConversationSummary()),
         limit: 50,
         offset: 0,
         total: 35,

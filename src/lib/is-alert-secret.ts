@@ -1,10 +1,4 @@
-import { Alert, AlertConversation, Conversation } from '@/api/generated'
-
-export function isConversationWithSecretAlerts(
-  conversation: Conversation | null
-): boolean {
-  return conversation?.alerts?.some(isAlertSecret) ?? false
-}
+import { Alert, AlertConversation } from '@/api/generated'
 
 export function isAlertSecret(alert: Alert | AlertConversation | null) {
   return (

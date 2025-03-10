@@ -72,7 +72,7 @@ const restrictedSyntax = {
 }
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'coverage'] },
   {
     extends: [
       js.configs.recommended,
@@ -82,7 +82,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['*.js'],
+          allowDefaultProject: ['*.js', '*.mjs'],
         },
         tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
@@ -110,6 +110,8 @@ export default tseslint.config(
         config: './tailwind.config.ts',
       },
     },
+  },
+  {
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [

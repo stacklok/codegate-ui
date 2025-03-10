@@ -10,9 +10,7 @@ import { getConversationTitle } from '@/features/dashboard-messages/lib/get-conv
 import { formatTime } from '@/lib/format-time'
 import userEvent from '@testing-library/user-event'
 import { getProviderString } from '@/features/dashboard-messages/lib/get-provider-string'
-import { isAlertMalicious } from '@/lib/is-alert-malicious'
-import { isAlertSecret } from '@/lib/is-alert-secret'
-import { PaginatedMessagesResponse } from '@/api/generated'
+import { mockAlert } from '@/mocks/msw/mockers/alert.mock'
 
 vi.mock('@stacklok/ui-kit', async (importOriginal) => {
   return {
@@ -34,16 +32,10 @@ it('renders breadcrumbs', async () => {
   const conversation = mockConversation()
 
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      const responsePayload: PaginatedMessagesResponse = {
-        data: [conversation],
-        limit: 50,
-        offset: 0,
-        total: 1,
-      }
-
-      return HttpResponse.json(responsePayload)
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/messages/:prompt_id'),
+      () => HttpResponse.json(conversation)
+    )
   )
 
   render(<RouteChat />, {
@@ -67,16 +59,10 @@ it('renders title', async () => {
   const conversation = mockConversation()
 
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      const responsePayload: PaginatedMessagesResponse = {
-        data: [conversation],
-        limit: 50,
-        offset: 0,
-        total: 1,
-      }
-
-      return HttpResponse.json(responsePayload)
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/messages/:prompt_id'),
+      () => HttpResponse.json(conversation)
+    )
   )
 
   render(<RouteChat />, {
@@ -101,20 +87,17 @@ it('renders title', async () => {
 it('renders conversation summary correctly', async () => {
   const conversation = mockConversation({ alertsConfig: { numAlerts: 10 } })
 
-  const maliciousCount = conversation.alerts.filter(isAlertMalicious).length
-  const secretsCount = conversation.alerts.filter(isAlertSecret).length
+  conversation.alerts = [
+    ...Array.from({ length: 5 }).map(() => mockAlert({ type: 'malicious' })),
+    ...Array.from({ length: 5 }).map(() => mockAlert({ type: 'secret' })),
+    ...Array.from({ length: 5 }).map(() => mockAlert({ type: 'pii' })),
+  ]
 
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      const responsePayload: PaginatedMessagesResponse = {
-        data: [conversation],
-        limit: 50,
-        offset: 0,
-        total: 1,
-      }
-
-      return HttpResponse.json(responsePayload)
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/messages/:prompt_id'),
+      () => HttpResponse.json(conversation)
+    )
   )
 
   render(<RouteChat />, {
@@ -142,30 +125,22 @@ it('renders conversation summary correctly', async () => {
 
   expect(getByText(conversation.chat_id)).toBeVisible()
 
-  expect(
-    getByText(`${maliciousCount} malicious packages detected`)
-  ).toBeVisible()
-
-  expect(getByText(`${secretsCount} secrets detected`)).toBeVisible()
+  expect(getByText(`5 malicious packages detected`)).toBeVisible()
+  expect(getByText(`5 secrets detected`)).toBeVisible()
+  expect(getByText(`5 PII detected`)).toBeVisible()
 })
 
 it('renders chat correctly', async () => {
   const conversation = mockConversation()
 
-  const question = conversation.question_answers[0].question.message
-  const answer = conversation.question_answers[0].answer.message
+  const question = conversation.question_answers[0]?.question.message
+  const answer = conversation.question_answers[0]?.answer?.message
 
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      const responsePayload: PaginatedMessagesResponse = {
-        data: [conversation],
-        limit: 50,
-        offset: 0,
-        total: 1,
-      }
-
-      return HttpResponse.json(responsePayload)
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/messages/:prompt_id'),
+      () => HttpResponse.json(conversation)
+    )
   )
 
   render(<RouteChat />, {
@@ -179,8 +154,8 @@ it('renders chat correctly', async () => {
     const { getByText } = within(
       screen.getByLabelText('Conversation transcript')
     )
-    expect(getByText(question)).toBeVisible()
-    expect(getByText(answer)).toBeVisible()
+    expect(getByText(question as string)).toBeVisible()
+    expect(getByText(answer as string)).toBeVisible()
   })
 })
 
@@ -188,16 +163,10 @@ it('renders tabs', async () => {
   const conversation = mockConversation()
 
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      const responsePayload: PaginatedMessagesResponse = {
-        data: [conversation],
-        limit: 50,
-        offset: 0,
-        total: 1,
-      }
-
-      return HttpResponse.json(responsePayload)
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/messages/:prompt_id'),
+      () => HttpResponse.json(conversation)
+    )
   )
 
   render(<RouteChat />, {
@@ -217,16 +186,10 @@ it('can navigate using tabs', async () => {
   const conversation = mockConversation()
 
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      const responsePayload: PaginatedMessagesResponse = {
-        data: [conversation],
-        limit: 50,
-        offset: 0,
-        total: 1,
-      }
-
-      return HttpResponse.json(responsePayload)
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/messages/:prompt_id'),
+      () => HttpResponse.json(conversation)
+    )
   )
 
   render(<RouteChat />, {

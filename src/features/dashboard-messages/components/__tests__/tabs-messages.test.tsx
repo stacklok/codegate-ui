@@ -4,13 +4,14 @@ import { http, HttpResponse } from 'msw'
 import { render, waitFor } from '@/lib/test-utils'
 import { TabsMessages } from '../tabs-messages'
 import { mswEndpoint } from '@/test/msw-endpoint'
-import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
 import { AlertSummary, PaginatedMessagesResponse } from '@/api/generated'
+import { mockConversationSummary } from '@/mocks/msw/mockers/conversation-summary.mock'
 
 const SUMMARY: AlertSummary = {
   malicious_packages: 13,
   pii: 9,
   secrets: 10,
+  total_alerts: 32,
 }
 
 describe('tabs-messages', () => {
@@ -20,7 +21,9 @@ describe('tabs-messages', () => {
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
           const responsePayload: PaginatedMessagesResponse = {
-            data: Array.from({ length: 32 }).map(() => mockConversation()),
+            data: Array.from({ length: 32 }).map(() =>
+              mockConversationSummary()
+            ),
             limit: 50,
             offset: 0,
             total: 32,

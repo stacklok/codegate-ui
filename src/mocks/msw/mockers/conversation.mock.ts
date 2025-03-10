@@ -14,7 +14,7 @@ export function mockConversation({
     numAlerts?: number
     type?: 'secret' | 'malicious' | 'any' | 'pii'
   }
-} = {}) {
+} = {}): Conversation {
   const timestamp = faker.date.recent().toISOString()
 
   return {
@@ -50,5 +50,5 @@ export function mockConversation({
     type,
     chat_id: faker.string.uuid(), // NOTE: This isn't a UUID in the API
     conversation_timestamp: timestamp,
-  } as const satisfies Conversation
+  }
 }

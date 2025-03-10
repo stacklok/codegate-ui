@@ -3,14 +3,9 @@ import mockedAlerts from '@/mocks/msw/fixtures/GET_ALERTS.json'
 import mockedWorkspaces from '@/mocks/msw/fixtures/GET_WORKSPACES.json'
 import mockedProviders from '@/mocks/msw/fixtures/GET_PROVIDERS.json'
 import mockedProvidersModels from '@/mocks/msw/fixtures/GET_PROVIDERS_MODELS.json'
-import {
-  AlertSummary,
-  AlertTriggerType,
-  PaginatedMessagesResponse,
-  ProviderType,
-} from '@/api/generated'
-import { mockConversation } from './mockers/conversation.mock'
+import { AlertSummary, ProviderType } from '@/api/generated'
 import { mswEndpoint } from '@/test/msw-endpoint'
+import { buildFilterablePaginatedMessagesHandler } from './mockers/paginated-messages-response.mock'
 
 export const handlers = [
   http.get(mswEndpoint('/health'), () =>
@@ -37,49 +32,7 @@ export const handlers = [
   ),
   http.get(
     mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-    ({ request }) => {
-      const url = new URL(request.url)
-      const trigger_type = url.searchParams.get(
-        'filter_by_alert_trigger_types'
-      ) as AlertTriggerType
-
-      const secrets = Array.from({ length: 10 }).map(() =>
-        mockConversation({
-          alertsConfig: { numAlerts: 10, type: 'secret' },
-        })
-      )
-      const malicious = Array.from({ length: 10 }).map(() =>
-        mockConversation({
-          alertsConfig: { numAlerts: 10, type: 'malicious' },
-        })
-      )
-      const pii = Array.from({ length: 10 }).map(() =>
-        mockConversation({
-          alertsConfig: { numAlerts: 10, type: 'pii' },
-        })
-      )
-
-      const results = []
-
-      if (trigger_type === AlertTriggerType.CODEGATE_SECRETS) {
-        results.push(...secrets)
-      }
-      if (trigger_type === AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER) {
-        results.push(...malicious)
-      }
-      if (trigger_type === AlertTriggerType.CODEGATE_PII) {
-        results.push(...pii)
-      }
-
-      const responsePayload: PaginatedMessagesResponse = {
-        data: results,
-        limit: 50,
-        offset: 0,
-        total: 30,
-      }
-
-      return HttpResponse.json(responsePayload)
-    }
+    buildFilterablePaginatedMessagesHandler()
   ),
   http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/alerts'), () => {
     return HttpResponse.json(mockedAlerts)
@@ -91,6 +44,7 @@ export const handlers = [
         malicious_packages: 13,
         pii: 9,
         secrets: 10,
+        total_alerts: 32,
       }
       return HttpResponse.json(response)
     }

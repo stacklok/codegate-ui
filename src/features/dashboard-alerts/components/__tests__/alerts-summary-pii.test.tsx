@@ -16,6 +16,7 @@ test('shows correct count when there is a pii alert', async () => {
           malicious_packages: 0,
           pii: 1,
           secrets: 0,
+          total_alerts: 1,
         }
         return HttpResponse.json(response)
       }
@@ -38,6 +39,7 @@ test('shows correct count when there is no pii alert', async () => {
           malicious_packages: 0,
           pii: 0,
           secrets: 0,
+          total_alerts: 0,
         }
         return HttpResponse.json(response)
       }
