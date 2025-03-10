@@ -34,6 +34,7 @@ import {
 } from '../constants/table-messages-columns'
 import { formatTime } from '@/lib/format-time'
 import { TableMessagesPagination } from './table-messages-pagination'
+import { useQueryActiveWorkspaceName } from '@/hooks/use-query-active-workspace-name'
 
 const getPromptText = (conversation: ConversationSummary) => {
   const markdownSource = conversation.prompt.message ?? 'N/A'
@@ -150,12 +151,19 @@ function CellRenderer({
 }
 
 export function TableMessages() {
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName()
+
   const { data: response, isError } = useQueryGetWorkspaceMessagesTable()
+  console.debug('👉 response:', response)
 
   return (
     <>
       <ResizableTableContainer>
-        <Table data-testid="messages-table" aria-label="Alerts table">
+        <Table
+          key={activeWorkspaceName}
+          data-testid="messages-table"
+          aria-label="Alerts table"
+        >
           <TableHeader columns={TABLE_MESSAGES_COLUMNS}>
             {(column) => <Column {...column} id={column.id} />}
           </TableHeader>
