@@ -1,8 +1,16 @@
 import { MuxMatcherType } from '@/api/generated'
-import { FormSelect, SelectButton } from '@stacklok/ui-kit'
+import { SelectButton } from '@stacklok/ui-kit'
 import { getMuxFieldName } from '../lib/get-mux-field-name'
+import { FormSelect } from './tmp/form-select'
+import { FieldValuesMuxRow } from '../lib/schema-mux'
 
-export function FormMuxComboboxModel({ index }: { index: number }) {
+export function FormSelectMatcherType({
+  index,
+  row,
+}: {
+  index: number
+  row: FieldValuesMuxRow & { id: string }
+}) {
   return (
     <FormSelect
       aria-label="Matcher type"
@@ -21,9 +29,12 @@ export function FormMuxComboboxModel({ index }: { index: number }) {
         },
       ]}
       name={getMuxFieldName({
-        index,
         field: 'matcher_type',
+        index,
       })}
+      isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL}
+      disabledKeys={[MuxMatcherType.CATCH_ALL]}
+      shouldShowValidationError={false}
     >
       <SelectButton />
     </FormSelect>

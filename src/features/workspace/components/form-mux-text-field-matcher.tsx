@@ -1,33 +1,28 @@
-import { FormTextField, Input } from '@stacklok/ui-kit'
+import { Input } from '@stacklok/ui-kit'
 import { getMuxFieldName } from '../lib/get-mux-field-name'
-import { FormMuxDragToReorderButton } from './form-mux-drag-to-reorder-button'
 import { FieldValuesMuxRow } from '../lib/schema-mux'
+import { MuxMatcherType } from '@/api/generated'
+import { FormTextField } from './tmp/form-text-field'
 
 export function FormMuxTextFieldMatcher({
   index,
-  isCatchAll,
-  item,
+  row,
 }: {
   index: number
-  isCatchAll: boolean
-  item: FieldValuesMuxRow
+  row: FieldValuesMuxRow & { id: string }
 }) {
-  console.debug('👉 isCatchAll:', isCatchAll)
   return (
     <FormTextField
       aria-label="Matcher"
-      isDisabled={isCatchAll}
-      defaultValue={isCatchAll ? 'Catch-all' : undefined}
+      isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL}
+      defaultValue={row.matcher}
       name={getMuxFieldName({
-        index,
         field: 'matcher',
+        index,
       })}
+      shouldShowValidationError={false}
     >
-      <Input
-        icon={
-          isCatchAll ? undefined : <FormMuxDragToReorderButton item={item} />
-        }
-      />
+      <Input className="font-code" placeholder="Enter a glob pattern..." />
     </FormTextField>
   )
 }

@@ -5,12 +5,13 @@ import {
   ComboBoxClearButton,
   ComboBoxFieldGroup,
   ComboBoxInput,
-  FormComboBox,
   OptionsSchema,
 } from '@stacklok/ui-kit'
 import { groupBy, map } from 'lodash'
 import { getMuxFieldName } from '../lib/get-mux-field-name'
 import { SearchMd } from '@untitled-ui/icons-react'
+import { FormComboBox } from './tmp/form-combobox'
+import { serializeMuxModel } from '../lib/mux-model-serde'
 
 function groupModels(
   models: ModelByProvider[] = []
@@ -19,7 +20,7 @@ function groupModels(
     id: providerName,
     textValue: providerName,
     items: items.map((item) => ({
-      id: `${item.provider_id}/${item.name}`,
+      id: serializeMuxModel(item),
       textValue: item.name,
     })),
   }))
@@ -35,9 +36,10 @@ export function FormMuxComboboxModel({ index }: { index: number }) {
       aria-label="Matcher"
       items={models}
       name={getMuxFieldName({
-        index,
         field: 'model',
+        index,
       })}
+      shouldShowValidationError={false}
     >
       <ComboBoxFieldGroup>
         <ComboBoxInput

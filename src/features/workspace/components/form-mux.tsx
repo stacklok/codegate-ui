@@ -11,7 +11,7 @@ import {
 } from '@stacklok/ui-kit'
 import { twMerge } from 'tailwind-merge'
 import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
-import { MuxMatcherType } from '@/api/generated'
+import { MuxMatcherType, V1GetWorkspaceMuxesResponse } from '@/api/generated'
 import { LinkExternal01 } from '@untitled-ui/icons-react'
 import { useQueryListAllModelsForAllProviders } from '@/hooks/use-query-list-all-models-for-all-providers'
 import { useQueryMuxingRulesWorkspace } from '../hooks/use-query-muxing-rules-workspace'
@@ -21,16 +21,39 @@ import {
   WorkspaceConfigFieldValues,
 } from '../lib/schema-mux'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FormMuxButtonAddRow } from './form-mux-button-add-row'
+import { FormMuxRulesContextProvider } from './form-mux-context-provider'
+import { deserializeMuxModel, serializeMuxModel } from '../lib/mux-model-serde'
+import { SubmitHandler } from 'react-hook-form'
+import { handleMuxFormErrors } from '../lib/handle-mux-form-errors'
 
 const DEFAULT_VALUES: WorkspaceConfigFieldValues = {
   muxing_rules: [
     {
-      id: MuxMatcherType.CATCH_ALL,
-      model: '',
-      matcher: '',
+      // @ts-expect-error - we start with invalid state
+      model: undefined,
+      matcher: 'Catch-all',
       matcher_type: MuxMatcherType.CATCH_ALL,
     },
   ],
+}
+
+const fromApiMuxingRules = (
+  rules: V1GetWorkspaceMuxesResponse
+): WorkspaceConfigFieldValues => {
+  return {
+    muxing_rules: rules.map(
+      ({ matcher_type, model, matcher, provider_name, provider_id }) => ({
+        model: serializeMuxModel({
+          name: model,
+          provider_id,
+          provider_name: provider_name as string,
+        }),
+        matcher_type,
+        matcher: matcher ?? '',
+      })
+    ),
+  }
 }
 
 function MissingProviderBanner() {
@@ -60,20 +83,29 @@ export function WorkspaceMuxingModel({
   workspaceName: string
   isArchived: boolean | undefined
 }) {
-  const { data: muxingRules, isPending } =
+  const { data: muxRulesFromApi, isPending } =
     useQueryMuxingRulesWorkspace(workspaceName)
 
   const { mutateAsync } = useMutationPreferredModelWorkspace()
   const { data: providerModels = [] } = useQueryListAllModelsForAllProviders()
   const isModelsEmpty = !isPending && providerModels.length === 0
 
-  const handleSubmit = (data: WorkspaceConfigFieldValues) => {
+  const handleSubmit: SubmitHandler<WorkspaceConfigFieldValues> = (data) => {
     mutateAsync({
       path: { workspace_name: workspaceName },
-      body: data.muxing_rules.map((rule) => {
-        return rule.matcher
-          ? { ...rule, matcher_type: MuxMatcherType.FILENAME_MATCH }
-          : { ...rule }
+      body: data.muxing_rules.map(({ matcher, matcher_type, model }) => {
+        const {
+          name: modelName,
+          provider_id,
+          provider_name,
+        } = deserializeMuxModel(model)
+        return {
+          matcher_type,
+          model: modelName,
+          provider_id,
+          matcher,
+          provider_name,
+        }
       }),
     })
   }
@@ -89,43 +121,49 @@ export function WorkspaceMuxingModel({
     )
   }
 
+  const defaultValues =
+    muxRulesFromApi.length > 0
+      ? fromApiMuxingRules(muxRulesFromApi)
+      : DEFAULT_VALUES
+
   return (
     <FormV2<WorkspaceConfigFieldValues>
       onSubmit={handleSubmit}
-      data-testid="preferred-model"
+      onError={handleMuxFormErrors}
       options={{
-        defaultValues: DEFAULT_VALUES,
+        values: defaultValues,
         resolver: zodResolver(schemaWorkspaceConfig),
+        shouldFocusError: true,
       }}
     >
-      <Card className={twMerge(className, 'shrink-0')}>
-        <CardBody className="flex flex-col gap-6">
-          <div className="flex flex-col justify-start">
-            <Text className="text-primary">Model Muxing</Text>
-            <Text className="mb-0 flex items-center gap-1 text-balance text-secondary">
-              Select the model you would like to use in this workspace. This
-              section applies only if you are using the MUX endpoint.
-              <Link
-                variant="primary"
-                className="flex items-center gap-1 no-underline"
-                href="https://docs.codegate.ai/features/muxing"
-                target="_blank"
-              >
-                Learn more <LinkExternal01 className="size-4" />
-              </Link>
-            </Text>
-          </div>
+      <FormMuxRulesContextProvider>
+        <Card className={twMerge(className, 'shrink-0')}>
+          <CardBody>
+            <div className="flex flex-col justify-start">
+              <Text className="text-primary">Model Muxing</Text>
+              <Text className="mb-6 flex items-center gap-1 text-balance text-secondary">
+                Select the model you would like to use in this workspace. This
+                section applies only if you are using the MUX endpoint.
+                <Link
+                  variant="primary"
+                  className="flex items-center gap-1 no-underline"
+                  href="https://docs.codegate.ai/features/muxing"
+                  target="_blank"
+                >
+                  Learn more <LinkExternal01 className="size-4" />
+                </Link>
+              </Text>
+            </div>
 
-          <div className="flex w-full flex-col gap-2">
             <FormMuxFieldsArray />
-          </div>
-        </CardBody>
-        <div></div>
+          </CardBody>
 
-        <CardFooter className="justify-end">
-          <FormSubmitButton />
-        </CardFooter>
-      </Card>
+          <CardFooter className="justify-end">
+            <FormMuxButtonAddRow />
+            <FormSubmitButton />
+          </CardFooter>
+        </Card>
+      </FormMuxRulesContextProvider>
     </FormV2>
   )
 }

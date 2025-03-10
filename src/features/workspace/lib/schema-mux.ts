@@ -1,15 +1,12 @@
 import { MuxMatcherType } from '@/api/generated'
 import { z } from 'zod'
 
-const schemaMuxCatchAllId = z.literal(MuxMatcherType.CATCH_ALL)
-
-export type MuxCatchallId = z.infer<typeof schemaMuxCatchAllId>
-
 const schemaMuxRow = z.object({
-  model: z.string().optional(),
-  matcher_type: z.nativeEnum(MuxMatcherType),
-  matcher: z.string(),
-  id: z.union([z.string().uuid(), schemaMuxCatchAllId]),
+  model: z.string({ message: 'Muxing: Model is required' }),
+  matcher_type: z.nativeEnum(MuxMatcherType, {
+    message: 'Muxing: Matcher type is required',
+  }),
+  matcher: z.string({ message: 'Muxing: Matcher cannot be empty' }),
 })
 
 export type FieldValuesMuxRow = z.infer<typeof schemaMuxRow>
