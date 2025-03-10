@@ -8,7 +8,7 @@ import {
 import { invalidateQueries } from '@/lib/react-query-utils'
 import { getAppConfig } from '@/lib/utils'
 
-const baseApiUrl = getAppConfig().BASE_API_URL
+const baseApiUrl = getAppConfig().DASHBOARD_API_BASE_URL
 
 export function useSse() {
   const location = useLocation()

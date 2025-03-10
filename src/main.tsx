@@ -17,7 +17,7 @@ import { getAppConfig } from './lib/utils.ts'
 
 // Initialize the API client
 client.setConfig({
-  baseUrl: getAppConfig().BASE_API_URL,
+  baseUrl: getAppConfig().DASHBOARD_API_BASE_URL,
 })
 
 createRoot(document.getElementById('root')!).render(
