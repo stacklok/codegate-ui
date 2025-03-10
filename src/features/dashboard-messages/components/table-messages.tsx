@@ -10,7 +10,11 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@stacklok/ui-kit'
-import { Alert, Conversation, QuestionType } from '@/api/generated'
+import {
+  AlertSummary,
+  ConversationSummary,
+  QuestionType,
+} from '@/api/generated'
 import { remark } from 'remark'
 import strip from 'strip-markdown'
 
@@ -22,8 +26,6 @@ import {
   TableMessagesEmptyState,
 } from './table-messages-empty-state'
 import { hrefs } from '@/lib/hrefs'
-import { isAlertMalicious } from '../../../lib/is-alert-malicious'
-import { isAlertSecret } from '../../../lib/is-alert-secret'
 import { twMerge } from 'tailwind-merge'
 import { useQueryGetWorkspaceMessagesTable } from '../hooks/use-query-get-workspace-messages-table'
 import {
@@ -31,12 +33,10 @@ import {
   TableMessagesColumn,
 } from '../constants/table-messages-columns'
 import { formatTime } from '@/lib/format-time'
-import { isAlertPii } from '@/lib/is-alert-pii'
 import { TableMessagesPagination } from './table-messages-pagination'
 
-const getPromptText = (conversation: Conversation) => {
-  const markdownSource =
-    conversation.question_answers[0]?.question?.message ?? 'N/A'
+const getPromptText = (conversation: ConversationSummary) => {
+  const markdownSource = conversation.prompt.message ?? 'N/A'
   const fullText = remark().use(strip).processSync(markdownSource)
 
   return fullText.toString().trim().slice(0, 200) // arbitrary slice to prevent long prompts
@@ -50,18 +50,6 @@ function getTypeText(type: QuestionType) {
       return 'Fill in the middle (FIM)'
     default:
       return 'Unknown'
-  }
-}
-
-function countAlerts(alerts: Alert[]): {
-  secrets: number
-  malicious: number
-  pii: number
-} {
-  return {
-    secrets: alerts.filter(isAlertSecret).length,
-    malicious: alerts.filter(isAlertMalicious).length,
-    pii: alerts.filter(isAlertPii).length,
   }
 }
 
@@ -98,9 +86,11 @@ function AlertsSummaryCount({
   )
 }
 
-function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
-  const { malicious, secrets, pii } = countAlerts(alerts)
-
+function AlertsSummaryCellContent({
+  alertSummary,
+}: {
+  alertSummary: AlertSummary
+}) {
   return (
     <div className="flex items-center gap-2">
       <AlertsSummaryCount
@@ -108,7 +98,7 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
           singular: 'malicious package',
           plural: 'malicious packages',
         }}
-        count={malicious}
+        count={alertSummary.malicious_packages}
         icon={PackageX}
       />
       <AlertsSummaryCount
@@ -116,7 +106,7 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
           singular: 'secret',
           plural: 'secrets',
         }}
-        count={secrets}
+        count={alertSummary.secrets}
         icon={Key01}
       />
       <AlertsSummaryCount
@@ -124,7 +114,7 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
           singular: 'personally identifiable information (PII)',
           plural: 'personally identifiable information (PII)',
         }}
-        count={pii}
+        count={alertSummary.pii}
         icon={User01}
       />
     </div>
@@ -136,7 +126,7 @@ function CellRenderer({
   row,
 }: {
   column: TableMessagesColumn
-  row: Conversation
+  row: ConversationSummary
 }) {
   switch (column.id) {
     case 'time':
@@ -150,7 +140,7 @@ function CellRenderer({
     case 'prompt':
       return getPromptText(row)
     case 'alerts':
-      return <AlertsSummaryCellContent alerts={row.alerts ?? []} />
+      return <AlertsSummaryCellContent alertSummary={row.alerts_summary} />
     case 'token_usage':
       return <TableAlertTokenUsage usage={row.token_usage_agg} />
 

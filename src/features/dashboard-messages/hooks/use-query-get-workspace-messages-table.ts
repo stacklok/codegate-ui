@@ -7,6 +7,7 @@ export function useQueryGetWorkspaceMessagesTable() {
   return useQueryGetWorkspaceMessages({
     query: {
       page: state.page,
+      page_size: 10,
       filter_by_alert_trigger_types:
         state.view === 'all' || state.view == null ? undefined : [state.view],
     },

@@ -79,10 +79,11 @@ export default tseslint.config(
       ...tseslint.configs.recommended,
       ...tailwindPlugin.configs['flat/recommended'],
     ],
-    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ['*.js'],
+        },
         tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
           jsx: true,
@@ -237,6 +238,13 @@ export default tseslint.config(
           ],
         },
       ],
+    },
+  },
+  {
+    files: ['src/api/generated/**/*'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
     },
   }
 )
