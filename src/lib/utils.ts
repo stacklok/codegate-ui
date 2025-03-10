@@ -73,17 +73,17 @@ export function sanitizeQuestionPrompt({
 }
 
 export function getAppConfig(): AppConfig {
-  const baseApiUrl = window.APP_CONFIG?.BASE_API_URL
+  const baseApiUrl = window.APP_CONFIG?.DASHBOARD_API_BASE_URL
 
-  if (!baseApiUrl || baseApiUrl === '${BASE_API_URL}') {
+  if (!baseApiUrl || baseApiUrl === '${DASHBOARD_API_BASE_URL}') {
     return {
       ...window.APP_CONFIG,
-      BASE_API_URL: import.meta.env.VITE_BASE_API_URL,
+      DASHBOARD_API_BASE_URL: import.meta.env.VITE_BASE_API_URL,
     }
   }
 
   return {
     ...window.APP_CONFIG,
-    BASE_API_URL: baseApiUrl,
+    DASHBOARD_API_BASE_URL: baseApiUrl,
   }
 }
