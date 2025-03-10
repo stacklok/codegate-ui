@@ -1,10 +1,12 @@
-import { MuxMatcherType, MuxRule } from '@/api/generated'
+import { MuxMatcherType, MuxRule, ProviderType } from '@/api/generated'
 import { useFormState } from '@/hooks/useFormState'
 import { isEqual } from 'lodash'
 import { useCallback, useEffect, useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-export type PreferredMuxRule = MuxRule & { id: string }
+export type PreferredMuxRule = Omit<MuxRule, 'provider_type'> & {
+  provider_type: ProviderType | undefined
+} & { id: string }
 
 type MuxingRulesFormState = {
   rules: PreferredMuxRule[]
@@ -12,7 +14,8 @@ type MuxingRulesFormState = {
 
 const DEFAULT_STATE: PreferredMuxRule = {
   id: uuidv4(),
-  provider_id: '',
+  provider_name: '',
+  provider_type: undefined,
   model: '',
   matcher: '',
   matcher_type: MuxMatcherType.CATCH_ALL,

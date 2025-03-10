@@ -1,4 +1,5 @@
 import {
+  v1GetWorkspaceByNameQueryKey,
   v1GetWorkspaceCustomInstructionsQueryKey,
   v1GetWorkspaceMuxesQueryKey,
   v1UpdateWorkspaceMutation,
@@ -20,6 +21,7 @@ export function useMutationUpdateWorkspace() {
         queryKeyFns: [
           v1GetWorkspaceMuxesQueryKey,
           v1GetWorkspaceCustomInstructionsQueryKey,
+          v1GetWorkspaceByNameQueryKey,
         ],
       })
       await invalidate()

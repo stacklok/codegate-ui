@@ -57,8 +57,12 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
     <ConfirmContext.Provider value={{ confirm }}>
       {children}
 
-      <DialogModalOverlay isDismissable={false} isOpen={isOpen}>
-        <DialogModal>
+      <DialogModalOverlay
+        isDismissable
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+      >
+        <DialogModal isDismissable>
           <Dialog>
             <DialogHeader>
               <DialogTitle>{activeQuestion?.config.title}</DialogTitle>
@@ -70,6 +74,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
                   {activeQuestion?.config.buttons.no ?? '&nbsp;'}
                 </Button>
                 <Button
+                  autoFocus
                   isDestructive={activeQuestion?.config.isDestructive}
                   variant="primary"
                   onPress={() => handleAnswer(true)}
