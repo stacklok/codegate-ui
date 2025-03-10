@@ -716,12 +716,12 @@
         }
       }
     },
-    "/api/v1/workspaces/{workspace_name}/messages": {
+    "/api/v1/workspaces/{workspace_name}/alerts-summary": {
       "get": {
         "tags": ["CodeGate API", "Workspaces"],
-        "summary": "Get Workspace Messages",
-        "description": "Get messages for a workspace.",
-        "operationId": "v1_get_workspace_messages",
+        "summary": "Get Workspace Alerts Summary",
+        "description": "Get alert summary for a workspace.",
+        "operationId": "v1_get_workspace_alerts_summary",
         "parameters": [
           {
             "name": "workspace_name",
@@ -739,11 +739,159 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/AlertSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces/{workspace_name}/messages": {
+      "get": {
+        "tags": ["CodeGate API", "Workspaces"],
+        "summary": "Get Workspace Messages",
+        "description": "Get messages for a workspace.",
+        "operationId": "v1_get_workspace_messages",
+        "parameters": [
+          {
+            "name": "workspace_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace Name"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "filter_by_ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Conversation"
-                  },
-                  "title": "Response V1 Get Workspace Messages"
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Filter By Ids"
+            }
+          },
+          {
+            "name": "filter_by_alert_trigger_types",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlertTriggerType"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Filter By Alert Trigger Types"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedMessagesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces/{workspace_name}/messages/{prompt_id}": {
+      "get": {
+        "tags": ["CodeGate API", "Workspaces"],
+        "summary": "Get Messages By Prompt Id",
+        "description": "Get messages for a workspace.",
+        "operationId": "v1_get_messages_by_prompt_id",
+        "parameters": [
+          {
+            "name": "workspace_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace Name"
+            }
+          },
+          {
+            "name": "prompt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Prompt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conversation"
                 }
               }
             }
@@ -1086,6 +1234,190 @@
           }
         }
       }
+    },
+    "/api/v1/personas": {
+      "get": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "List Personas",
+        "description": "List all personas.",
+        "operationId": "v1_list_personas",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Persona"
+                  },
+                  "type": "array",
+                  "title": "Response V1 List Personas"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Create Persona",
+        "description": "Create a new persona.",
+        "operationId": "v1_create_persona",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/personas/{persona_name}": {
+      "get": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Get Persona",
+        "description": "Get a persona by name.",
+        "operationId": "v1_get_persona",
+        "parameters": [
+          {
+            "name": "persona_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Persona Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Update Persona",
+        "description": "Update an existing persona.",
+        "operationId": "v1_update_persona",
+        "parameters": [
+          {
+            "name": "persona_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Persona Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonaUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["CodeGate API", "Personas"],
+        "summary": "Delete Persona",
+        "description": "Delete a persona.",
+        "operationId": "v1_delete_persona",
+        "parameters": [
+          {
+            "name": "persona_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Persona Name"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1303,6 +1635,39 @@
         "enum": ["info", "critical"],
         "title": "AlertSeverity"
       },
+      "AlertSummary": {
+        "properties": {
+          "malicious_packages": {
+            "type": "integer",
+            "title": "Malicious Packages"
+          },
+          "pii": {
+            "type": "integer",
+            "title": "Pii"
+          },
+          "secrets": {
+            "type": "integer",
+            "title": "Secrets"
+          },
+          "total_alerts": {
+            "type": "integer",
+            "title": "Total Alerts"
+          }
+        },
+        "type": "object",
+        "required": ["malicious_packages", "pii", "secrets", "total_alerts"],
+        "title": "AlertSummary",
+        "description": "Represents a set of summary alerts"
+      },
+      "AlertTriggerType": {
+        "type": "string",
+        "enum": [
+          "codegate-pii",
+          "codegate-context-retriever",
+          "codegate-secrets"
+        ],
+        "title": "AlertTriggerType"
+      },
       "ChatMessage": {
         "properties": {
           "message": {
@@ -1461,6 +1826,61 @@
         ],
         "title": "Conversation",
         "description": "Represents a conversation."
+      },
+      "ConversationSummary": {
+        "properties": {
+          "chat_id": {
+            "type": "string",
+            "title": "Chat Id"
+          },
+          "prompt": {
+            "$ref": "#/components/schemas/ChatMessage"
+          },
+          "alerts_summary": {
+            "$ref": "#/components/schemas/AlertSummary"
+          },
+          "token_usage_agg": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TokenUsageAggregate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider"
+          },
+          "type": {
+            "$ref": "#/components/schemas/QuestionType"
+          },
+          "conversation_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Conversation Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "chat_id",
+          "prompt",
+          "alerts_summary",
+          "token_usage_agg",
+          "provider",
+          "type",
+          "conversation_timestamp"
+        ],
+        "title": "ConversationSummary",
+        "description": "Represents a conversation summary."
       },
       "CustomInstructions": {
         "properties": {
@@ -1627,6 +2047,84 @@
         "required": ["provider_id", "model", "matcher_type"],
         "title": "MuxRule",
         "description": "Represents a mux rule for a provider."
+      },
+      "PaginatedMessagesResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ConversationSummary"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": ["data", "limit", "offset", "total"],
+        "title": "PaginatedMessagesResponse"
+      },
+      "Persona": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": ["id", "name", "description"],
+        "title": "Persona",
+        "description": "Represents a persona object."
+      },
+      "PersonaRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": ["name", "description"],
+        "title": "PersonaRequest",
+        "description": "Model for creating a new Persona."
+      },
+      "PersonaUpdateRequest": {
+        "properties": {
+          "new_name": {
+            "type": "string",
+            "title": "New Name"
+          },
+          "new_description": {
+            "type": "string",
+            "title": "New Description"
+          }
+        },
+        "type": "object",
+        "required": ["new_name", "new_description"],
+        "title": "PersonaUpdateRequest",
+        "description": "Model for updating a Persona."
       },
       "ProviderAuthType": {
         "type": "string",

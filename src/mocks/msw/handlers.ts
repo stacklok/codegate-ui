@@ -3,9 +3,9 @@ import mockedAlerts from '@/mocks/msw/fixtures/GET_ALERTS.json'
 import mockedWorkspaces from '@/mocks/msw/fixtures/GET_WORKSPACES.json'
 import mockedProviders from '@/mocks/msw/fixtures/GET_PROVIDERS.json'
 import mockedProvidersModels from '@/mocks/msw/fixtures/GET_PROVIDERS_MODELS.json'
-import { ProviderType } from '@/api/generated'
-import { mockConversation } from './mockers/conversation.mock'
+import { AlertSummary, ProviderType } from '@/api/generated'
 import { mswEndpoint } from '@/test/msw-endpoint'
+import { buildFilterablePaginatedMessagesHandler } from './mockers/paginated-messages-response.mock'
 
 export const handlers = [
   http.get(mswEndpoint('/health'), () =>
@@ -30,14 +30,25 @@ export const handlers = [
       ],
     })
   ),
-  http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-    return HttpResponse.json(
-      Array.from({ length: 10 }).map(() => mockConversation())
-    )
-  }),
+  http.get(
+    mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
+    buildFilterablePaginatedMessagesHandler()
+  ),
   http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/alerts'), () => {
     return HttpResponse.json(mockedAlerts)
   }),
+  http.get(
+    mswEndpoint('/api/v1/workspaces/:workspace_name/alerts-summary'),
+    () => {
+      const response: AlertSummary = {
+        malicious_packages: 13,
+        pii: 9,
+        secrets: 10,
+        total_alerts: 32,
+      }
+      return HttpResponse.json(response)
+    }
+  ),
   http.get(mswEndpoint('/api/v1/workspaces'), () => {
     return HttpResponse.json(mockedWorkspaces)
   }),

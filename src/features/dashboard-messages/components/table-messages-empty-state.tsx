@@ -1,9 +1,7 @@
 import {
-  Button,
   IllustrationAlert,
   IllustrationDone,
   IllustrationDragAndDrop,
-  IllustrationNoSearchResults,
   LinkButton,
   Loader,
 } from '@stacklok/ui-kit'
@@ -14,13 +12,11 @@ import { EmptyState } from '@/components/empty-state'
 import { hrefs } from '@/lib/hrefs'
 import { LinkExternal02 } from '@untitled-ui/icons-react'
 import { useListAllWorkspaces } from '@/hooks/use-query-list-all-workspaces'
-import {
-  AlertsFilterView,
-  useMessagesFilterSearchParams,
-} from '../hooks/use-messages-filter-search-params'
+import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
 import { match, P } from 'ts-pattern'
-import { useQueryGetWorkspaceMessages } from '@/hooks/use-query-get-workspace-messages'
 import { twMerge } from 'tailwind-merge'
+import { AlertTriggerType } from '@/api/generated'
+import { useQueryGetWorkspaceMessagesTable } from '../hooks/use-query-get-workspace-messages-table'
 
 function EmptyStateLoading() {
   return (
@@ -56,26 +52,26 @@ function EmptyStateGetStarted() {
   )
 }
 
-function EmptyStateSearch({
-  search,
-  setSearch,
-}: {
-  search: string
-  setSearch: (v: string | null) => void
-}) {
-  return (
-    <EmptyState
-      illustration={IllustrationNoSearchResults}
-      title={emptyStateStrings.title.noSearchResultsFor(search)}
-      body={emptyStateStrings.body.tryChangingSearch}
-      actions={[
-        <Button key="clear-search" onPress={() => setSearch(null)}>
-          Clear search
-        </Button>,
-      ]}
-    />
-  )
-}
+// function EmptyStateSearch({
+//   search,
+//   setSearch,
+// }: {
+//   search: string
+//   setSearch: (v: string | null) => void
+// }) {
+//   return (
+//     <EmptyState
+//       illustration={IllustrationNoSearchResults}
+//       title={emptyStateStrings.title.noSearchResultsFor(search)}
+//       body={emptyStateStrings.body.tryChangingSearch}
+//       actions={[
+//         <Button key="clear-search" onPress={() => setSearch(null)}>
+//           Clear search
+//         </Button>,
+//       ]}
+//     />
+//   )
+// }
 
 function EmptyStateNoMessagesInWorkspace() {
   return (
@@ -167,84 +163,73 @@ type MatchInput = {
   isLoading: boolean
   hasWorkspaceMessages: boolean
   hasMultipleWorkspaces: boolean
-  search: string | null
-  view: AlertsFilterView | null
+  view: AlertTriggerType | 'all'
 }
 
 export function TableMessagesEmptyState() {
-  const { state, setSearch } = useMessagesFilterSearchParams()
+  const { state } = useMessagesFilterSearchParams()
 
-  const { data: messages = [], isLoading: isMessagesLoading } =
-    useQueryGetWorkspaceMessages()
+  const { data: response, isLoading: isMessagesLoading } =
+    useQueryGetWorkspaceMessagesTable()
 
   const { data: workspaces = [], isLoading: isWorkspacesLoading } =
     useListAllWorkspaces()
 
   const isLoading = isMessagesLoading || isWorkspacesLoading
 
+  const hasMultipleWorkspaces: boolean =
+    workspaces.filter((w) => w.name !== 'default').length > 0
+
+  const hasWorkspaceMessages: boolean = Boolean(response && response.total > 0)
+
   return match<MatchInput, ReactNode>({
+    hasMultipleWorkspaces,
+    hasWorkspaceMessages,
     isLoading,
-    hasWorkspaceMessages: messages.length > 0,
-    hasMultipleWorkspaces:
-      workspaces.filter((w) => w.name !== 'default').length > 0,
-    search: state.search || null,
-    view: state.view,
+    view: state.view ?? 'all',
   })
     .with(
       {
-        hasWorkspaceMessages: false,
         hasMultipleWorkspaces: false,
-        search: P.any,
-        view: P.any,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: P.any,
       },
       () => <EmptyStateGetStarted />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
-        hasMultipleWorkspaces: P.any,
-        search: P.string.select(),
-        view: P.any,
-        isLoading: false,
-      },
-      (search) => <EmptyStateSearch search={search} setSearch={setSearch} />
-    )
-    .with(
-      {
+        hasMultipleWorkspaces: true,
         hasWorkspaceMessages: false,
-        hasMultipleWorkspaces: P.any,
-        search: P.any,
-        view: P.any,
         isLoading: false,
+        view: 'all',
       },
       () => <EmptyStateNoMessagesInWorkspace />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        view: AlertsFilterView.PII,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: AlertTriggerType.CODEGATE_PII,
       },
       () => <EmptyStatePII />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        search: P.any,
-        view: AlertsFilterView.MALICIOUS,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER,
       },
       () => <EmptyStateMalicious />
     )
     .with(
       {
-        hasWorkspaceMessages: true,
         hasMultipleWorkspaces: P.any,
-        view: AlertsFilterView.SECRETS,
+        hasWorkspaceMessages: false,
         isLoading: false,
+        view: AlertTriggerType.CODEGATE_SECRETS,
       },
       () => <EmptyStateSecrets />
     )

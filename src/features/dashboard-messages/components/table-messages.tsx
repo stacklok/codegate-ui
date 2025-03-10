@@ -10,22 +10,22 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@stacklok/ui-kit'
-import { Alert, Conversation, QuestionType } from '@/api/generated'
+import {
+  AlertSummary,
+  ConversationSummary,
+  QuestionType,
+} from '@/api/generated'
 import { remark } from 'remark'
 import strip from 'strip-markdown'
 
-import { useClientSidePagination } from '@/hooks/useClientSidePagination'
 import { TableAlertTokenUsage } from './table-alert-token-usage'
 
-import { useMessagesFilterSearchParams } from '../hooks/use-messages-filter-search-params'
-import { Key01, PackageX, Passport } from '@untitled-ui/icons-react'
+import { Key01, PackageX, User01 } from '@untitled-ui/icons-react'
 import {
   EmptyStateError,
   TableMessagesEmptyState,
 } from './table-messages-empty-state'
 import { hrefs } from '@/lib/hrefs'
-import { isAlertMalicious } from '../../../lib/is-alert-malicious'
-import { isAlertSecret } from '../../../lib/is-alert-secret'
 import { twMerge } from 'tailwind-merge'
 import { useQueryGetWorkspaceMessagesTable } from '../hooks/use-query-get-workspace-messages-table'
 import {
@@ -33,11 +33,11 @@ import {
   TableMessagesColumn,
 } from '../constants/table-messages-columns'
 import { formatTime } from '@/lib/format-time'
-import { isAlertPii } from '@/lib/is-alert-pii'
+import { TableMessagesPagination } from './table-messages-pagination'
+import { useQueryActiveWorkspaceName } from '@/hooks/use-query-active-workspace-name'
 
-const getPromptText = (conversation: Conversation) => {
-  const markdownSource =
-    conversation.question_answers[0]?.question?.message ?? 'N/A'
+const getPromptText = (conversation: ConversationSummary) => {
+  const markdownSource = conversation.prompt.message ?? 'N/A'
   const fullText = remark().use(strip).processSync(markdownSource)
 
   return fullText.toString().trim().slice(0, 200) // arbitrary slice to prevent long prompts
@@ -51,18 +51,6 @@ function getTypeText(type: QuestionType) {
       return 'Fill in the middle (FIM)'
     default:
       return 'Unknown'
-  }
-}
-
-function countAlerts(alerts: Alert[]): {
-  secrets: number
-  malicious: number
-  pii: number
-} {
-  return {
-    secrets: alerts.filter(isAlertSecret).length,
-    malicious: alerts.filter(isAlertMalicious).length,
-    pii: alerts.filter(isAlertPii).length,
   }
 }
 
@@ -99,9 +87,11 @@ function AlertsSummaryCount({
   )
 }
 
-function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
-  const { malicious, secrets, pii } = countAlerts(alerts)
-
+function AlertsSummaryCellContent({
+  alertSummary,
+}: {
+  alertSummary: AlertSummary
+}) {
   return (
     <div className="flex items-center gap-2">
       <AlertsSummaryCount
@@ -109,7 +99,7 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
           singular: 'malicious package',
           plural: 'malicious packages',
         }}
-        count={malicious}
+        count={alertSummary.malicious_packages}
         icon={PackageX}
       />
       <AlertsSummaryCount
@@ -117,7 +107,7 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
           singular: 'secret',
           plural: 'secrets',
         }}
-        count={secrets}
+        count={alertSummary.secrets}
         icon={Key01}
       />
       <AlertsSummaryCount
@@ -125,8 +115,8 @@ function AlertsSummaryCellContent({ alerts }: { alerts: Alert[] }) {
           singular: 'personally identifiable information (PII)',
           plural: 'personally identifiable information (PII)',
         }}
-        count={pii}
-        icon={Passport}
+        count={alertSummary.pii}
+        icon={User01}
       />
     </div>
   )
@@ -137,7 +127,7 @@ function CellRenderer({
   row,
 }: {
   column: TableMessagesColumn
-  row: Conversation
+  row: ConversationSummary
 }) {
   switch (column.id) {
     case 'time':
@@ -151,7 +141,7 @@ function CellRenderer({
     case 'prompt':
       return getPromptText(row)
     case 'alerts':
-      return <AlertsSummaryCellContent alerts={row.alerts ?? []} />
+      return <AlertsSummaryCellContent alertSummary={row.alerts_summary} />
     case 'token_usage':
       return <TableAlertTokenUsage usage={row.token_usage_agg} />
 
@@ -161,19 +151,18 @@ function CellRenderer({
 }
 
 export function TableMessages() {
-  const { state, prevPage, nextPage } = useMessagesFilterSearchParams()
+  const { data: activeWorkspaceName } = useQueryActiveWorkspaceName()
 
-  const { data = [], isError } = useQueryGetWorkspaceMessagesTable()
-  const { dataView, hasNextPage, hasPreviousPage } = useClientSidePagination(
-    data,
-    state.page,
-    15
-  )
+  const { data: response, isError } = useQueryGetWorkspaceMessagesTable()
 
   return (
     <>
       <ResizableTableContainer>
-        <Table data-testid="messages-table" aria-label="Alerts table">
+        <Table
+          key={activeWorkspaceName}
+          data-testid="messages-table"
+          aria-label="Alerts table"
+        >
           <TableHeader columns={TABLE_MESSAGES_COLUMNS}>
             {(column) => <Column {...column} id={column.id} />}
           </TableHeader>
@@ -183,7 +172,7 @@ export function TableMessages() {
 
               return <TableMessagesEmptyState />
             }}
-            items={dataView}
+            items={response?.data}
           >
             {(row) => (
               <Row
@@ -207,26 +196,7 @@ export function TableMessages() {
         </Table>
       </ResizableTableContainer>
 
-      {hasNextPage || hasPreviousPage ? (
-        <div className="flex w-full justify-center p-4">
-          <div className="grid grid-cols-2 gap-2">
-            <Button
-              variant="secondary"
-              isDisabled={!hasPreviousPage}
-              onPress={prevPage}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="secondary"
-              isDisabled={!hasNextPage}
-              onPress={nextPage}
-            >
-              Next
-            </Button>
-          </div>
-        </div>
-      ) : null}
+      <TableMessagesPagination />
     </>
   )
 }

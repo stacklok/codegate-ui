@@ -12,8 +12,8 @@ function AlertsSummaryStatistic({
   Icon: (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element
 }) {
   return (
-    <div data-testid={id} className="flex items-center gap-1 text-5xl">
-      <Icon className="size-11" />
+    <div data-testid={id} className="-ml-1 flex items-center gap-0.5 text-3xl">
+      <Icon className="size-8" />
       {formatNumberCompact(count)}
     </div>
   )
@@ -40,7 +40,7 @@ export function AlertsSummary({
             <Skeleton className="h-10 w-16" />
           </div>
         ) : (
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4">
             {statistics.map((props) => (
               <AlertsSummaryStatistic {...props} key={props.id} />
             ))}

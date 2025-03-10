@@ -1,17 +1,21 @@
 import { PackageX } from '@untitled-ui/icons-react'
 
-import { useQueryGetWorkspaceAlertsMaliciousPkg } from '../hooks/use-query-get-workspace-alerts-malicious-pkg'
 import { AlertsSummary } from './alerts-summary'
+import { useQueryGetWorkspaceAlertsSummary } from '@/hooks/use-query-get-workspace-alerts-summary'
 
 export function AlertsSummaryMaliciousPkg() {
-  const { data = [], isPending } = useQueryGetWorkspaceAlertsMaliciousPkg()
+  const { data: alertsSummary, isPending } = useQueryGetWorkspaceAlertsSummary()
 
   return (
     <AlertsSummary
       isPending={isPending}
       title="Malicious packages"
       statistics={[
-        { count: data.length, id: 'malicious-count', Icon: PackageX },
+        {
+          count: alertsSummary?.malicious_packages ?? 0,
+          id: 'malicious-count',
+          Icon: PackageX,
+        },
       ]}
     />
   )

@@ -5,13 +5,22 @@ import { render, waitFor } from '@/lib/test-utils'
 import { AlertsSummaryMaliciousPkg } from '../alerts-summary-malicious-pkg'
 
 import { mswEndpoint } from '@/test/msw-endpoint'
-import { mockAlert } from '@/mocks/msw/mockers/alert.mock'
+import { AlertSummary } from '@/api/generated'
 
 test('shows correct count when there is a malicious alert', async () => {
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/alerts'), () => {
-      return HttpResponse.json([mockAlert({ type: 'malicious' })])
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/alerts-summary'),
+      () => {
+        const response: AlertSummary = {
+          malicious_packages: 1,
+          pii: 0,
+          secrets: 0,
+          total_alerts: 1,
+        }
+        return HttpResponse.json(response)
+      }
+    )
   )
 
   const { getByTestId } = render(<AlertsSummaryMaliciousPkg />)
@@ -23,9 +32,18 @@ test('shows correct count when there is a malicious alert', async () => {
 
 test('shows correct count when there is no malicious alert', async () => {
   server.use(
-    http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/alerts'), () => {
-      return HttpResponse.json([mockAlert({ type: 'secret' })])
-    })
+    http.get(
+      mswEndpoint('/api/v1/workspaces/:workspace_name/alerts-summary'),
+      () => {
+        const response: AlertSummary = {
+          malicious_packages: 0,
+          pii: 0,
+          secrets: 0,
+          total_alerts: 0,
+        }
+        return HttpResponse.json(response)
+      }
+    )
   )
 
   const { getByTestId } = render(<AlertsSummaryMaliciousPkg />)

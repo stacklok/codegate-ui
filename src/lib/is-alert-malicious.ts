@@ -1,10 +1,4 @@
-import { Alert, AlertConversation, Conversation } from '@/api/generated'
-
-export function isConversationWithMaliciousAlerts(
-  conversation: Conversation | null
-): boolean {
-  return conversation?.alerts?.some(isAlertMalicious) ?? false
-}
+import { Alert, AlertConversation } from '@/api/generated'
 
 export function isAlertMalicious(alert: Alert | AlertConversation | null) {
   return (

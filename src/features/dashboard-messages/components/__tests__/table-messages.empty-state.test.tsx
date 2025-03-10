@@ -4,11 +4,11 @@ import { server } from '@/mocks/msw/node'
 import { emptyStateStrings } from '../../../../constants/empty-state-strings'
 import { useSearchParams } from 'react-router-dom'
 import { delay, http, HttpHandler, HttpResponse } from 'msw'
-import { mockAlert } from '../../../../mocks/msw/mockers/alert.mock'
-import { AlertsFilterView } from '../../hooks/use-messages-filter-search-params'
 import { hrefs } from '@/lib/hrefs'
 import { mswEndpoint } from '@/test/msw-endpoint'
 import { TableMessagesEmptyState } from '../table-messages-empty-state'
+import { AlertTriggerType, PaginatedMessagesResponse } from '@/api/generated'
+import { buildFilterablePaginatedMessagesHandler } from '@/mocks/msw/mockers/paginated-messages-response.mock'
 
 enum IllustrationTestId {
   ALERT = 'illustration-alert',
@@ -34,7 +34,7 @@ type TestCase = {
   testDescription: string
   handlers: HttpHandler[]
   searchParams: {
-    view: AlertsFilterView
+    view: AlertTriggerType | 'all' | null
     search: string | null
   }
   expected: {
@@ -81,7 +81,7 @@ const TEST_CASES: TestCase[] = [
     ],
     searchParams: {
       search: null,
-      view: AlertsFilterView.ALL,
+      view: 'all',
     },
     expected: {
       title: emptyStateStrings.title.loading,
@@ -91,7 +91,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Only 1 workspace, no alerts',
+    testDescription: 'Only 1 workspace, no messages',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -111,13 +111,20 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json([])
+          const responsePayload: PaginatedMessagesResponse = {
+            data: [],
+            limit: 50,
+            offset: 0,
+            total: 0,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
     searchParams: {
       search: null,
-      view: AlertsFilterView.ALL,
+      view: 'all',
     },
     expected: {
       body: emptyStateStrings.body.getStartedDesc,
@@ -133,47 +140,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'No search results',
-    handlers: [
-      http.get(mswEndpoint('/api/v1/workspaces'), () => {
-        return HttpResponse.json({
-          workspaces: [
-            {
-              name: 'default',
-              is_active: true,
-            },
-          ],
-        })
-      }),
-      http.get(mswEndpoint('/api/v1/workspaces/archive'), () => {
-        return HttpResponse.json({
-          workspaces: [],
-        })
-      }),
-      http.get(
-        mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }, () => mockAlert({ type: 'malicious' }))
-          )
-        }
-      ),
-    ],
-    searchParams: { search: 'foo-bar', view: AlertsFilterView.ALL },
-    expected: {
-      title: emptyStateStrings.title.noSearchResultsFor('foo-bar'),
-      body: emptyStateStrings.body.tryChangingSearch,
-      illustrationTestId: IllustrationTestId.NO_SEARCH_RESULTS,
-      actions: [
-        {
-          role: 'button',
-          name: 'Clear search',
-        },
-      ],
-    },
-  },
-  {
-    testDescription: 'No alerts, multiple workspaces',
+    testDescription: 'No messages, multiple workspaces',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -197,13 +164,20 @@ const TEST_CASES: TestCase[] = [
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
         () => {
-          return HttpResponse.json([])
+          const responsePayload: PaginatedMessagesResponse = {
+            data: [],
+            limit: 50,
+            offset: 0,
+            total: 0,
+          }
+
+          return HttpResponse.json(responsePayload)
         }
       ),
     ],
     searchParams: {
       search: null,
-      view: AlertsFilterView.ALL,
+      view: 'all',
     },
     expected: {
       title: emptyStateStrings.title.noMessagesWorkspace,
@@ -219,7 +193,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Has alerts, view is "malicious"',
+    testDescription: 'View is "malicious", no messages with "malicious" alerts',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -242,15 +216,18 @@ const TEST_CASES: TestCase[] = [
       }),
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }).map(() => mockAlert({ type: 'secret' }))
-          )
-        }
+        buildFilterablePaginatedMessagesHandler({
+          include: {
+            'codegate-context-retriever': false,
+            'codegate-pii': true,
+            'codegate-secrets': true,
+            no_alerts: true,
+          },
+        })
       ),
     ],
     searchParams: {
-      view: AlertsFilterView.MALICIOUS,
+      view: AlertTriggerType.CODEGATE_CONTEXT_RETRIEVER,
       search: null,
     },
     expected: {
@@ -261,7 +238,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Has alerts, view is "secret"',
+    testDescription: 'View is "secret", no messages with "secret" alerts',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -284,17 +261,18 @@ const TEST_CASES: TestCase[] = [
       }),
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }).map(() =>
-              mockAlert({ type: 'malicious' })
-            )
-          )
-        }
+        buildFilterablePaginatedMessagesHandler({
+          include: {
+            'codegate-context-retriever': true,
+            'codegate-pii': true,
+            'codegate-secrets': false,
+            no_alerts: true,
+          },
+        })
       ),
     ],
     searchParams: {
-      view: AlertsFilterView.SECRETS,
+      view: AlertTriggerType.CODEGATE_SECRETS,
       search: null,
     },
     expected: {
@@ -305,7 +283,7 @@ const TEST_CASES: TestCase[] = [
     },
   },
   {
-    testDescription: 'Has alerts, view is "pii"',
+    testDescription: 'View is "pii", no messages with "pii" alerts',
     handlers: [
       http.get(mswEndpoint('/api/v1/workspaces'), () => {
         return HttpResponse.json({
@@ -328,15 +306,18 @@ const TEST_CASES: TestCase[] = [
       }),
       http.get(
         mswEndpoint('/api/v1/workspaces/:workspace_name/messages'),
-        () => {
-          return HttpResponse.json(
-            Array.from({ length: 10 }).map(() => mockAlert({ type: 'pii' }))
-          )
-        }
+        buildFilterablePaginatedMessagesHandler({
+          include: {
+            'codegate-context-retriever': true,
+            'codegate-pii': false,
+            'codegate-secrets': true,
+            no_alerts: true,
+          },
+        })
       ),
     ],
     searchParams: {
-      view: AlertsFilterView.PII,
+      view: AlertTriggerType.CODEGATE_PII,
       search: null,
     },
     expected: {
@@ -354,7 +335,7 @@ test.each(TEST_CASES)('$testDescription', async (testCase) => {
   vi.mocked(useSearchParams).mockReturnValue([
     new URLSearchParams({
       search: testCase.searchParams.search ?? '',
-      view: testCase.searchParams.view,
+      view: testCase.searchParams.view ?? 'all',
     }),
     () => {},
   ])

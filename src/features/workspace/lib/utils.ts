@@ -1,13 +1,13 @@
 import { MuxMatcherType } from '@/api/generated'
 
-export const MUX_MATCHER_TYPE_MAP = {
+const MUX_MATCHER_TYPE_MAP = {
   [MuxMatcherType.CHAT_FILENAME]: 'Chat',
   [MuxMatcherType.FIM_FILENAME]: 'FIM',
   [MuxMatcherType.FILENAME_MATCH]: 'FIM & Chat',
   [MuxMatcherType.CATCH_ALL]: 'All types',
 }
 
-export function getRequestType() {
+function getRequestType() {
   return Object.values(MuxMatcherType)
     .filter((item) => item !== MuxMatcherType.CATCH_ALL)
     .map((textValue) => ({

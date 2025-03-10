@@ -1,10 +1,4 @@
-import { Alert, AlertConversation, Conversation } from '@/api/generated'
-
-export function isConversationWithPII(
-  conversation: Conversation | null
-): boolean {
-  return conversation?.alerts?.some(isAlertPii) ?? false
-}
+import { Alert, AlertConversation } from '@/api/generated'
 
 export function isAlertPii(alert: Alert | AlertConversation | null) {
   return (

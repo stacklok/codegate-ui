@@ -6,13 +6,12 @@ import {
   TabPanel,
   Badge,
 } from '@stacklok/ui-kit'
-import { AlertsFilterView } from '../hooks/use-messages-filter-search-params'
 
 import {
   ConversationView,
   useConversationSearchParams,
 } from '../hooks/use-conversation-search-params'
-import { useConversationById } from '../hooks/use-conversation-by-id'
+import { useQueryGetWorkspaceMessageById } from '../hooks/use-query-get-workspace-message-by-id'
 
 function Tab({
   id,
@@ -48,7 +47,7 @@ export function TabsConversation({
 }) {
   const { state, setView } = useConversationSearchParams()
 
-  const { data } = useConversationById(id)
+  const { data } = useQueryGetWorkspaceMessageById({ id })
 
   const secretsCount = data?.alerts?.filter(isAlertSecret).length ?? 0
 
@@ -56,7 +55,7 @@ export function TabsConversation({
     <Tabs
       onSelectionChange={(key) => setView(key.toString() as ConversationView)}
       selectedKey={state.view}
-      defaultSelectedKey={AlertsFilterView.ALL}
+      defaultSelectedKey={ConversationView.OVERVIEW}
     >
       <TabList>
         <Tab title="Overview" id={ConversationView.OVERVIEW} />
