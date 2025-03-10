@@ -154,7 +154,6 @@ export function TableMessages() {
   const { data: activeWorkspaceName } = useQueryActiveWorkspaceName()
 
   const { data: response, isError } = useQueryGetWorkspaceMessagesTable()
-  console.debug('👉 response:', response)
 
   return (
     <>
