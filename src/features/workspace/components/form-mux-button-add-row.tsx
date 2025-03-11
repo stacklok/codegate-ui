@@ -12,8 +12,7 @@ export function FormMuxButtonAddRow() {
       variant="tertiary"
       onPress={() =>
         prepend({
-          // @ts-expect-error - intentionally prepended with invalid state
-          model: undefined,
+          model: '',
           matcher: '',
           matcher_type: MuxMatcherType.FILENAME_MATCH,
         })

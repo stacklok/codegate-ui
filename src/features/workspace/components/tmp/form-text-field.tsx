@@ -28,6 +28,7 @@ export function FormTextField({
   return (
     <TextField
       {...props}
+      defaultValue={value}
       isDisabled={isDisabledByForm || props.isDisabled}
       isInvalid={invalid}
       name={name}
@@ -37,8 +38,8 @@ export function FormTextField({
         props.onChange?.(v)
       }}
       ref={ref}
-      validationBehavior="aria" // Let React Hook Form handle validation instead of the browser.
-      value={value}
+      value={undefined} // react-hook-form relies on uncontrolled component
+      validationBehavior="aria" // Let react-hook-form handle validation
     >
       {(renderProps) => {
         return (

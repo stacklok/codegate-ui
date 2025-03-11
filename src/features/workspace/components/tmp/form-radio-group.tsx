@@ -34,6 +34,7 @@ export function FormRadioGroup({
   return (
     <RadioGroup
       {...props}
+      defaultValue={value}
       isDisabled={isDisabledByForm || props.isDisabled}
       isInvalid={invalid}
       name={name}
@@ -43,8 +44,8 @@ export function FormRadioGroup({
         props.onChange?.(k)
       }}
       ref={ref}
-      value={value}
-      validationBehavior="aria" // Let React Hook Form handle validation instead of the browser.
+      value={undefined} // react-hook-form relies on uncontrolled component
+      validationBehavior="aria" // Let react-hook-form handle validation
     >
       {(renderProps) => {
         return (

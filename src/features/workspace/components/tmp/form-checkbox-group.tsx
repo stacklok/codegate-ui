@@ -17,14 +17,7 @@ export function FormCheckboxGroup({
   const { control } = useFormContext()
 
   const {
-    field: {
-      disabled: isDisabledByForm,
-      name,
-      onBlur,
-      onChange,
-      ref,
-      value = '',
-    },
+    field: { disabled: isDisabledByForm, name, onBlur, onChange, ref, value },
     fieldState: { error, invalid },
   } = useController({
     control,
@@ -44,7 +37,7 @@ export function FormCheckboxGroup({
         props.onChange?.(k)
       }}
       ref={ref}
-      value={value}
+      defaultValue={value}
       validationBehavior="aria" // Let React Hook Form handle validation instead of the browser.
     >
       {(renderProps) => {

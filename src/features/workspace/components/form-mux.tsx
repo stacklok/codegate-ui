@@ -12,7 +12,7 @@ import {
 import { twMerge } from 'tailwind-merge'
 import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
 import { MuxMatcherType, V1GetWorkspaceMuxesResponse } from '@/api/generated'
-import { LinkExternal01 } from '@untitled-ui/icons-react'
+import { LayersThree01, LinkExternal01 } from '@untitled-ui/icons-react'
 import { useQueryListAllModelsForAllProviders } from '@/hooks/use-query-list-all-models-for-all-providers'
 import { useQueryMuxingRulesWorkspace } from '../hooks/use-query-muxing-rules-workspace'
 import { FormMuxFieldsArray } from './form-mux-fields-array'
@@ -26,6 +26,7 @@ import { FormMuxRulesContextProvider } from './form-mux-context-provider'
 import { deserializeMuxModel, serializeMuxModel } from '../lib/mux-model-serde'
 import { SubmitHandler } from 'react-hook-form'
 import { handleMuxFormErrors } from '../lib/handle-mux-form-errors'
+import { FormDiscardChangesButton } from './tmp/form-discard-changes-button'
 
 const DEFAULT_VALUES: WorkspaceConfigFieldValues = {
   muxing_rules: [
@@ -157,8 +158,16 @@ export function WorkspaceMuxingModel({
           </CardBody>
 
           <CardFooter className="justify-between">
-            <FormMuxButtonAddRow />
-            <FormSubmitButton />
+            <div className="flex gap-2">
+              <FormMuxButtonAddRow />
+              <LinkButton variant="tertiary" href="/providers">
+                <LayersThree01 /> Manage providers
+              </LinkButton>
+            </div>
+            <div className="flex gap-2">
+              <FormDiscardChangesButton defaultValues={defaultValues} />
+              <FormSubmitButton>Save</FormSubmitButton>
+            </div>
           </CardFooter>
         </Card>
       </FormMuxRulesContextProvider>

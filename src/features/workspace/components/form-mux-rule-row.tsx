@@ -39,7 +39,7 @@ export function FormMuxRuleRow({
       <FormMuxButtonDragToReorder row={row} />
       <FormSelectMatcherType row={row} index={index} />
       <FormMuxTextFieldMatcher row={row} index={index} />
-      <FormMuxComboboxModel row={row} index={index} />
+      <FormMuxComboboxModel index={index} />
       <FormMuxButtonDeleteRow row={row} index={index} />
     </li>
   )

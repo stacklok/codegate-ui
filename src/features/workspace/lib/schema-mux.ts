@@ -19,5 +19,5 @@ export const schemaWorkspaceConfig = z.object({
 
 export type WorkspaceConfigFieldValues = z.infer<typeof schemaWorkspaceConfig>
 
-export const WORKSPACE_CONFIG_FIELD_NAME = schemaWorkspaceConfig.keyof().Enum
-export const MUX_FIELD_NAME = schemaMuxRow.keyof().Enum
+export const WorkspaceConfigFieldName = schemaWorkspaceConfig.keyof().Enum
+export const MuxFieldName = schemaMuxRow.keyof().Enum

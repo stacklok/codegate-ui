@@ -32,6 +32,7 @@ export function FormComboBox<
   return (
     <ComboBox
       {...props}
+      defaultSelectedKey={value}
       isDisabled={isDisabledByForm || props.isDisabled}
       isInvalid={invalid}
       name={name}
@@ -41,8 +42,8 @@ export function FormComboBox<
         props.onSelectionChange?.(k)
       }}
       ref={ref}
-      selectedKey={value}
-      validationBehavior="aria" // Let React Hook Form handle validation instead of the browser.
+      selectedKey={undefined} // react-hook-form relies on uncontrolled component
+      validationBehavior="aria" // Let react-hook-form handle validation
     >
       {(rp) => {
         return (
