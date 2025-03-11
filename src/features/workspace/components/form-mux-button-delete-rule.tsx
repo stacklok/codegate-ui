@@ -18,7 +18,6 @@ export function FormMuxButtonDeleteRow({
       aria-label="Delete"
       isIcon
       isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL}
-      isDestructive
       variant="secondary"
       onPress={() => remove(index)}
     >

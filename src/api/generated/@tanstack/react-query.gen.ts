@@ -17,11 +17,13 @@ import {
   v1CreateWorkspace,
   v1ListActiveWorkspaces,
   v1ActivateWorkspace,
+  v1UpdateWorkspace,
   v1DeleteWorkspace,
   v1ListArchivedWorkspaces,
   v1RecoverWorkspace,
   v1HardDeleteWorkspace,
   v1GetWorkspaceAlerts,
+  v1GetWorkspaceAlertsSummary,
   v1GetWorkspaceMessages,
   v1GetWorkspaceCustomInstructions,
   v1SetWorkspaceCustomInstructions,
@@ -32,6 +34,11 @@ import {
   v1StreamSse,
   v1VersionCheck,
   v1GetWorkspaceTokenUsage,
+  v1ListPersonas,
+  v1CreatePersona,
+  v1GetPersona,
+  v1UpdatePersona,
+  v1DeletePersona,
 } from '../sdk.gen'
 import type {
   V1ListProviderEndpointsData,
@@ -55,6 +62,9 @@ import type {
   V1ActivateWorkspaceData,
   V1ActivateWorkspaceError,
   V1ActivateWorkspaceResponse,
+  V1UpdateWorkspaceData,
+  V1UpdateWorkspaceError,
+  V1UpdateWorkspaceResponse,
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
@@ -65,6 +75,7 @@ import type {
   V1HardDeleteWorkspaceError,
   V1HardDeleteWorkspaceResponse,
   V1GetWorkspaceAlertsData,
+  V1GetWorkspaceAlertsSummaryData,
   V1GetWorkspaceMessagesData,
   V1GetWorkspaceCustomInstructionsData,
   V1SetWorkspaceCustomInstructionsData,
@@ -79,6 +90,16 @@ import type {
   V1SetWorkspaceMuxesResponse,
   V1ListWorkspacesByProviderData,
   V1GetWorkspaceTokenUsageData,
+  V1CreatePersonaData,
+  V1CreatePersonaError,
+  V1CreatePersonaResponse,
+  V1GetPersonaData,
+  V1UpdatePersonaData,
+  V1UpdatePersonaError,
+  V1UpdatePersonaResponse,
+  V1DeletePersonaData,
+  V1DeletePersonaError,
+  V1DeletePersonaResponse,
 } from '../types.gen'
 
 type QueryKey<TOptions extends OptionsLegacyParser> = [
@@ -441,6 +462,26 @@ export const v1ActivateWorkspaceMutation = (
   return mutationOptions
 }
 
+export const v1UpdateWorkspaceMutation = (
+  options?: Partial<OptionsLegacyParser<V1UpdateWorkspaceData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1UpdateWorkspaceResponse,
+    V1UpdateWorkspaceError,
+    OptionsLegacyParser<V1UpdateWorkspaceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1UpdateWorkspace({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      })
+      return data
+    },
+  }
+  return mutationOptions
+}
+
 export const v1DeleteWorkspaceMutation = (
   options?: Partial<OptionsLegacyParser<V1DeleteWorkspaceData>>
 ) => {
@@ -561,6 +602,27 @@ export const v1GetWorkspaceAlertsOptions = (
       return data
     },
     queryKey: v1GetWorkspaceAlertsQueryKey(options),
+  })
+}
+
+export const v1GetWorkspaceAlertsSummaryQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsSummaryData>
+) => [createQueryKey('v1GetWorkspaceAlertsSummary', options)]
+
+export const v1GetWorkspaceAlertsSummaryOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsSummaryData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetWorkspaceAlertsSummary({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      })
+      return data
+    },
+    queryKey: v1GetWorkspaceAlertsSummaryQueryKey(options),
   })
 }
 
@@ -767,4 +829,125 @@ export const v1GetWorkspaceTokenUsageOptions = (
     },
     queryKey: v1GetWorkspaceTokenUsageQueryKey(options),
   })
+}
+
+export const v1ListPersonasQueryKey = (options?: OptionsLegacyParser) => [
+  createQueryKey('v1ListPersonas', options),
+]
+
+export const v1ListPersonasOptions = (options?: OptionsLegacyParser) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1ListPersonas({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      })
+      return data
+    },
+    queryKey: v1ListPersonasQueryKey(options),
+  })
+}
+
+export const v1CreatePersonaQueryKey = (
+  options: OptionsLegacyParser<V1CreatePersonaData>
+) => [createQueryKey('v1CreatePersona', options)]
+
+export const v1CreatePersonaOptions = (
+  options: OptionsLegacyParser<V1CreatePersonaData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1CreatePersona({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      })
+      return data
+    },
+    queryKey: v1CreatePersonaQueryKey(options),
+  })
+}
+
+export const v1CreatePersonaMutation = (
+  options?: Partial<OptionsLegacyParser<V1CreatePersonaData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1CreatePersonaResponse,
+    V1CreatePersonaError,
+    OptionsLegacyParser<V1CreatePersonaData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1CreatePersona({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      })
+      return data
+    },
+  }
+  return mutationOptions
+}
+
+export const v1GetPersonaQueryKey = (
+  options: OptionsLegacyParser<V1GetPersonaData>
+) => [createQueryKey('v1GetPersona', options)]
+
+export const v1GetPersonaOptions = (
+  options: OptionsLegacyParser<V1GetPersonaData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetPersona({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      })
+      return data
+    },
+    queryKey: v1GetPersonaQueryKey(options),
+  })
+}
+
+export const v1UpdatePersonaMutation = (
+  options?: Partial<OptionsLegacyParser<V1UpdatePersonaData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1UpdatePersonaResponse,
+    V1UpdatePersonaError,
+    OptionsLegacyParser<V1UpdatePersonaData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1UpdatePersona({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      })
+      return data
+    },
+  }
+  return mutationOptions
+}
+
+export const v1DeletePersonaMutation = (
+  options?: Partial<OptionsLegacyParser<V1DeletePersonaData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    V1DeletePersonaResponse,
+    V1DeletePersonaError,
+    OptionsLegacyParser<V1DeletePersonaData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await v1DeletePersona({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      })
+      return data
+    },
+  }
+  return mutationOptions
 }

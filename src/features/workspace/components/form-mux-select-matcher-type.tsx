@@ -16,16 +16,20 @@ export function FormSelectMatcherType({
       aria-label="Matcher type"
       items={[
         {
+          id: MuxMatcherType.FILENAME_MATCH,
+          textValue: 'FIM & Chat',
+        },
+        {
+          id: MuxMatcherType.FIM_FILENAME,
+          textValue: 'FIM',
+        },
+        {
+          id: MuxMatcherType.CHAT_FILENAME,
+          textValue: 'Chat',
+        },
+        {
           id: MuxMatcherType.CATCH_ALL,
           textValue: 'Catch-all',
-        },
-        {
-          id: MuxMatcherType.FILENAME_MATCH,
-          textValue: 'Filename',
-        },
-        {
-          id: MuxMatcherType.REQUEST_TYPE_MATCH,
-          textValue: 'Request type',
         },
       ]}
       name={getMuxFieldName({

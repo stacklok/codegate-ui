@@ -77,11 +77,9 @@ function MissingProviderBanner() {
 export function WorkspaceMuxingModel({
   className,
   workspaceName,
-  isArchived,
 }: {
   className?: string
   workspaceName: string
-  isArchived: boolean | undefined
 }) {
   const { data: muxRulesFromApi, isPending } =
     useQueryMuxingRulesWorkspace(workspaceName)
@@ -158,7 +156,7 @@ export function WorkspaceMuxingModel({
             <FormMuxFieldsArray />
           </CardBody>
 
-          <CardFooter className="justify-end">
+          <CardFooter className="justify-between">
             <FormMuxButtonAddRow />
             <FormSubmitButton />
           </CardFooter>

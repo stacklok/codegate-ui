@@ -65,6 +65,15 @@ export enum AlertSeverity {
 }
 
 /**
+ * Represents a set of summary alerts
+ */
+export type AlertSummary = {
+  malicious_packages: number
+  pii: number
+  secrets: number
+}
+
+/**
  * Represents a chat message.
  */
 export type ChatMessage = {
@@ -109,14 +118,18 @@ export type Conversation = {
   alerts?: Array<Alert>
 }
 
-export type CreateOrRenameWorkspaceRequest = {
-  name: string
-  config?: WorkspaceConfig | null
-  rename_to?: string | null
-}
-
 export type CustomInstructions = {
   prompt: string
+}
+
+export type FullWorkspace_Input = {
+  name: string
+  config?: WorkspaceConfig_Input | null
+}
+
+export type FullWorkspace_Output = {
+  name: string
+  config?: WorkspaceConfig_Output | null
 }
 
 export type HTTPValidationError = {
@@ -144,11 +157,23 @@ export type ModelByProvider = {
 
 /**
  * Represents the different types of matchers we support.
+ *
+ * The 3 rules present match filenames and request types. They're used in conjunction with the
+ * matcher field in the MuxRule model.
+ * E.g.
+ * - catch_all-> Always match
+ * - filename_match and match: requests.py -> Match the request if the filename is requests.py
+ * - fim_filename and match: main.py -> Match the request if the request type is fim
+ * and the filename is main.py
+ *
+ * NOTE: Removing or updating fields from this enum will require a migration.
+ * Adding new fields is safe.
  */
 export enum MuxMatcherType {
   CATCH_ALL = 'catch_all',
   FILENAME_MATCH = 'filename_match',
-  REQUEST_TYPE_MATCH = 'request_type_match',
+  FIM_FILENAME = 'fim_filename',
+  CHAT_FILENAME = 'chat_filename',
 }
 
 /**
@@ -160,6 +185,31 @@ export type MuxRule = {
   model: string
   matcher_type: MuxMatcherType
   matcher?: string | null
+}
+
+/**
+ * Represents a persona object.
+ */
+export type Persona = {
+  id: string
+  name: string
+  description: string
+}
+
+/**
+ * Model for creating a new Persona.
+ */
+export type PersonaRequest = {
+  name: string
+  description: string
+}
+
+/**
+ * Model for updating a Persona.
+ */
+export type PersonaUpdateRequest = {
+  new_name: string
+  new_description: string
 }
 
 /**
@@ -253,8 +303,13 @@ export type Workspace = {
   is_active: boolean
 }
 
-export type WorkspaceConfig = {
-  system_prompt: string
+export type WorkspaceConfig_Input = {
+  custom_instructions: string
+  muxing_rules: Array<MuxRule>
+}
+
+export type WorkspaceConfig_Output = {
+  custom_instructions: string
   muxing_rules: Array<MuxRule>
 }
 
@@ -350,10 +405,10 @@ export type V1ListWorkspacesResponse = ListWorkspacesResponse
 export type V1ListWorkspacesError = unknown
 
 export type V1CreateWorkspaceData = {
-  body: CreateOrRenameWorkspaceRequest
+  body: FullWorkspace_Input
 }
 
-export type V1CreateWorkspaceResponse = Workspace
+export type V1CreateWorkspaceResponse = FullWorkspace_Output
 
 export type V1CreateWorkspaceError = HTTPValidationError
 
@@ -371,6 +426,17 @@ export type V1ActivateWorkspaceData = {
 export type V1ActivateWorkspaceResponse = unknown
 
 export type V1ActivateWorkspaceError = HTTPValidationError
+
+export type V1UpdateWorkspaceData = {
+  body: FullWorkspace_Input
+  path: {
+    workspace_name: string
+  }
+}
+
+export type V1UpdateWorkspaceResponse = FullWorkspace_Output
+
+export type V1UpdateWorkspaceError = HTTPValidationError
 
 export type V1DeleteWorkspaceData = {
   path: {
@@ -415,6 +481,16 @@ export type V1GetWorkspaceAlertsData = {
 export type V1GetWorkspaceAlertsResponse = Array<AlertConversation | null>
 
 export type V1GetWorkspaceAlertsError = HTTPValidationError
+
+export type V1GetWorkspaceAlertsSummaryData = {
+  path: {
+    workspace_name: string
+  }
+}
+
+export type V1GetWorkspaceAlertsSummaryResponse = AlertSummary
+
+export type V1GetWorkspaceAlertsSummaryError = HTTPValidationError
 
 export type V1GetWorkspaceMessagesData = {
   path: {
@@ -505,3 +581,46 @@ export type V1GetWorkspaceTokenUsageData = {
 export type V1GetWorkspaceTokenUsageResponse = TokenUsageAggregate
 
 export type V1GetWorkspaceTokenUsageError = HTTPValidationError
+
+export type V1ListPersonasResponse = Array<Persona>
+
+export type V1ListPersonasError = unknown
+
+export type V1CreatePersonaData = {
+  body: PersonaRequest
+}
+
+export type V1CreatePersonaResponse = Persona
+
+export type V1CreatePersonaError = HTTPValidationError
+
+export type V1GetPersonaData = {
+  path: {
+    persona_name: string
+  }
+}
+
+export type V1GetPersonaResponse = Persona
+
+export type V1GetPersonaError = HTTPValidationError
+
+export type V1UpdatePersonaData = {
+  body: PersonaUpdateRequest
+  path: {
+    persona_name: string
+  }
+}
+
+export type V1UpdatePersonaResponse = Persona
+
+export type V1UpdatePersonaError = HTTPValidationError
+
+export type V1DeletePersonaData = {
+  path: {
+    persona_name: string
+  }
+}
+
+export type V1DeletePersonaResponse = void
+
+export type V1DeletePersonaError = HTTPValidationError

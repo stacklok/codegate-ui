@@ -12,6 +12,7 @@ import { getMuxFieldName } from '../lib/get-mux-field-name'
 import { SearchMd } from '@untitled-ui/icons-react'
 import { FormComboBox } from './tmp/form-combobox'
 import { serializeMuxModel } from '../lib/mux-model-serde'
+import { FieldValuesMuxRow } from '../lib/schema-mux'
 
 function groupModels(
   models: ModelByProvider[] = []
@@ -26,7 +27,13 @@ function groupModels(
   }))
 }
 
-export function FormMuxComboboxModel({ index }: { index: number }) {
+export function FormMuxComboboxModel({
+  index,
+  row,
+}: {
+  index: number
+  row: FieldValuesMuxRow & { id: string }
+}) {
   const { data: models = [] } = useQueryListAllModelsForAllProviders({
     select: groupModels,
   })
@@ -39,6 +46,7 @@ export function FormMuxComboboxModel({ index }: { index: number }) {
         field: 'model',
         index,
       })}
+      key={row.id}
       shouldShowValidationError={false}
     >
       <ComboBoxFieldGroup>

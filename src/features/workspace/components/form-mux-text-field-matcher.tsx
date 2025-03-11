@@ -15,17 +15,13 @@ export function FormMuxTextFieldMatcher({
     <FormTextField
       aria-label="Matcher"
       isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL}
-      defaultValue={row.matcher}
       name={getMuxFieldName({
         field: 'matcher',
         index,
       })}
       shouldShowValidationError={false}
     >
-      <Input
-        className="font-code"
-        placeholder="e.g. file glob patterns like *.py"
-      />
+      <Input placeholder="e.g. file glob patterns like *.py" />
     </FormTextField>
   )
 }

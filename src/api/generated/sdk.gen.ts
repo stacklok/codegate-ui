@@ -41,6 +41,9 @@ import type {
   V1ActivateWorkspaceData,
   V1ActivateWorkspaceError,
   V1ActivateWorkspaceResponse,
+  V1UpdateWorkspaceData,
+  V1UpdateWorkspaceError,
+  V1UpdateWorkspaceResponse,
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
@@ -55,6 +58,9 @@ import type {
   V1GetWorkspaceAlertsData,
   V1GetWorkspaceAlertsError,
   V1GetWorkspaceAlertsResponse,
+  V1GetWorkspaceAlertsSummaryData,
+  V1GetWorkspaceAlertsSummaryError,
+  V1GetWorkspaceAlertsSummaryResponse,
   V1GetWorkspaceMessagesData,
   V1GetWorkspaceMessagesError,
   V1GetWorkspaceMessagesResponse,
@@ -83,6 +89,20 @@ import type {
   V1GetWorkspaceTokenUsageData,
   V1GetWorkspaceTokenUsageError,
   V1GetWorkspaceTokenUsageResponse,
+  V1ListPersonasError,
+  V1ListPersonasResponse,
+  V1CreatePersonaData,
+  V1CreatePersonaError,
+  V1CreatePersonaResponse,
+  V1GetPersonaData,
+  V1GetPersonaError,
+  V1GetPersonaResponse,
+  V1UpdatePersonaData,
+  V1UpdatePersonaError,
+  V1UpdatePersonaResponse,
+  V1DeletePersonaData,
+  V1DeletePersonaError,
+  V1DeletePersonaResponse,
 } from './types.gen'
 
 export const client = createClient(createConfig())
@@ -313,6 +333,23 @@ export const v1ActivateWorkspace = <ThrowOnError extends boolean = false>(
 }
 
 /**
+ * Update Workspace
+ * Update a workspace.
+ */
+export const v1UpdateWorkspace = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1UpdateWorkspaceData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    V1UpdateWorkspaceResponse,
+    V1UpdateWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/workspaces/{workspace_name}',
+  })
+}
+
+/**
  * Delete Workspace
  * Delete a workspace by name.
  */
@@ -394,6 +431,25 @@ export const v1GetWorkspaceAlerts = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/workspaces/{workspace_name}/alerts',
+  })
+}
+
+/**
+ * Get Workspace Alerts Summary
+ * Get alert summary for a workspace.
+ */
+export const v1GetWorkspaceAlertsSummary = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<V1GetWorkspaceAlertsSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceAlertsSummaryResponse,
+    V1GetWorkspaceAlertsSummaryError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/workspaces/{workspace_name}/alerts-summary',
   })
 }
 
@@ -581,5 +637,90 @@ export const v1GetWorkspaceTokenUsage = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/workspaces/{workspace_name}/token-usage',
+  })
+}
+
+/**
+ * List Personas
+ * List all personas.
+ */
+export const v1ListPersonas = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    V1ListPersonasResponse,
+    V1ListPersonasError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/personas',
+  })
+}
+
+/**
+ * Create Persona
+ * Create a new persona.
+ */
+export const v1CreatePersona = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1CreatePersonaData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    V1CreatePersonaResponse,
+    V1CreatePersonaError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/personas',
+  })
+}
+
+/**
+ * Get Persona
+ * Get a persona by name.
+ */
+export const v1GetPersona = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetPersonaData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    V1GetPersonaResponse,
+    V1GetPersonaError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/personas/{persona_name}',
+  })
+}
+
+/**
+ * Update Persona
+ * Update an existing persona.
+ */
+export const v1UpdatePersona = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1UpdatePersonaData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    V1UpdatePersonaResponse,
+    V1UpdatePersonaError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/personas/{persona_name}',
+  })
+}
+
+/**
+ * Delete Persona
+ * Delete a persona.
+ */
+export const v1DeletePersona = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1DeletePersonaData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    V1DeletePersonaResponse,
+    V1DeletePersonaError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/personas/{persona_name}',
   })
 }

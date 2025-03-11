@@ -41,7 +41,7 @@ export function FormComboBox<
         props.onSelectionChange?.(k)
       }}
       ref={ref}
-      selectedKey={value ?? ''}
+      selectedKey={value}
       validationBehavior="aria" // Let React Hook Form handle validation instead of the browser.
     >
       {(rp) => {
