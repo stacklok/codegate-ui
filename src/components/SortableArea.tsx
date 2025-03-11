@@ -34,8 +34,15 @@ function ItemWrapper({
   id: UniqueIdentifier
   hasDragDisabled: boolean
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id })
+  const {
+    attributes,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - type declaration appears to be incorrect
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id })
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

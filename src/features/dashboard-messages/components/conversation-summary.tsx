@@ -173,8 +173,8 @@ export function ConversationSummary({
           value={
             <AlertsSummaryCount
               type={{
-                singular: 'personally identifiable information',
-                plural: 'personally identifiable information',
+                singular: 'PII',
+                plural: 'PII',
               }}
               count={pii}
             />

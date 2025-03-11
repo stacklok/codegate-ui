@@ -1,19 +1,19 @@
-import { Key01 } from '@untitled-ui/icons-react'
+import { User01 } from '@untitled-ui/icons-react'
 import { AlertsSummary } from './alerts-summary'
 import { useQueryGetWorkspaceAlertsSummary } from '@/hooks/use-query-get-workspace-alerts-summary'
 
-export function AlertsSummaryMaliciousSecrets() {
+export function AlertsSummaryPii() {
   const { data: alertsSummary, isPending } = useQueryGetWorkspaceAlertsSummary()
 
   return (
     <AlertsSummary
       isPending={isPending}
-      title="Secrets redacted"
+      title="PII redacted"
       statistics={[
         {
-          count: alertsSummary?.secrets ?? 0,
-          id: 'secrets-count',
-          Icon: Key01,
+          count: alertsSummary?.pii ?? 0,
+          id: 'pii-count',
+          Icon: User01,
         },
       ]}
     />

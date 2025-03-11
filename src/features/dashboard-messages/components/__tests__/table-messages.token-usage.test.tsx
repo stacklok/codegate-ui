@@ -6,7 +6,8 @@ import { http, HttpResponse } from 'msw'
 import { TOKEN_USAGE_AGG } from '../../../../mocks/msw/mockers/token-usage.mock'
 import { formatNumberCompact } from '@/lib/format-number'
 import { mswEndpoint } from '@/test/msw-endpoint'
-import { mockConversation } from '@/mocks/msw/mockers/conversation.mock'
+import { PaginatedMessagesResponse } from '@/api/generated'
+import { mockConversationSummary } from '@/mocks/msw/mockers/conversation-summary.mock'
 
 vi.mock('@untitled-ui/icons-react', async () => {
   const original = await vi.importActual<
@@ -30,7 +31,24 @@ const OUTPUT_TOKENS =
 test('renders token usage cell correctly', async () => {
   server.use(
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      return HttpResponse.json([mockConversation({ withTokenUsage: true })])
+      const responsePayload: PaginatedMessagesResponse = {
+        data: [
+          mockConversationSummary({
+            alertsSummary: {
+              malicious_packages: 0,
+              pii: 0,
+              secrets: 0,
+              total_alerts: 0,
+            },
+            withTokenUsage: true,
+          }),
+        ],
+        limit: 50,
+        offset: 0,
+        total: 1,
+      }
+
+      return HttpResponse.json(responsePayload)
     })
   )
 
@@ -53,7 +71,24 @@ test('renders token usage cell correctly', async () => {
 test('renders N/A when token usage is missing', async () => {
   server.use(
     http.get(mswEndpoint('/api/v1/workspaces/:workspace_name/messages'), () => {
-      return HttpResponse.json([mockConversation({ withTokenUsage: false })])
+      const responsePayload: PaginatedMessagesResponse = {
+        data: [
+          mockConversationSummary({
+            alertsSummary: {
+              malicious_packages: 0,
+              pii: 0,
+              secrets: 0,
+              total_alerts: 0,
+            },
+            withTokenUsage: false,
+          }),
+        ],
+        limit: 50,
+        offset: 0,
+        total: 1,
+      }
+
+      return HttpResponse.json(responsePayload)
     })
   )
 
