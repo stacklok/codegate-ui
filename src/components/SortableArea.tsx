@@ -36,7 +36,8 @@ function ItemWrapper({
 }) {
   const {
     attributes,
-    // @ts-expect-error - this type is incorrectly declared
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - type declaration appears to be incorrect
     listeners,
     setNodeRef,
     transform,
