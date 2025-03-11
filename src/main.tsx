@@ -4,7 +4,6 @@ import './index.css'
 import './code.css'
 import '@stacklok/ui-kit/style'
 import App from './App.tsx'
-
 import ErrorBoundary from './components/ErrorBoundary.tsx'
 import { Error } from './components/Error.tsx'
 import { DarkModeProvider, Toaster } from '@stacklok/ui-kit'
@@ -14,10 +13,11 @@ import { BrowserRouter } from 'react-router-dom'
 import { UiKitClientSideRoutingProvider } from './lib/ui-kit-client-side-routing.tsx'
 import { ConfirmProvider } from './context/confirm-context.tsx'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { getAppConfig } from './lib/utils.ts'
 
 // Initialize the API client
 client.setConfig({
-  baseUrl: import.meta.env.VITE_BASE_API_URL,
+  baseUrl: getAppConfig().DASHBOARD_API_BASE_URL,
 })
 
 createRoot(document.getElementById('root')!).render(
@@ -27,7 +27,6 @@ createRoot(document.getElementById('root')!).render(
         <DarkModeProvider>
           <QueryClientProvider>
             <ErrorBoundary fallback={<Error />}>
-              <ReactQueryDevtools />
               <ConfirmProvider>
                 <Toaster />
                 <App />
