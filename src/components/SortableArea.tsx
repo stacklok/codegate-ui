@@ -34,8 +34,14 @@ function ItemWrapper({
   id: UniqueIdentifier
   hasDragDisabled: boolean
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id })
+  const {
+    attributes,
+    // @ts-expect-error - this type is incorrectly declared
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id })
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

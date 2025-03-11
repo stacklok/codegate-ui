@@ -1807,10 +1807,17 @@
             ]
           },
           "alerts": {
-            "items": {
-              "$ref": "#/components/schemas/Alert"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Alert"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Alerts",
             "default": []
           }

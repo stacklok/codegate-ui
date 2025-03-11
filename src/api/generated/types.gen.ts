@@ -122,7 +122,7 @@ export type Conversation = {
   chat_id: string
   conversation_timestamp: string
   token_usage_agg: TokenUsageAggregate | null
-  alerts?: Array<Alert>
+  alerts?: Array<Alert> | null
 }
 
 /**
