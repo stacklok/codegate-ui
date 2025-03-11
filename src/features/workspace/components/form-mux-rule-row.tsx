@@ -8,7 +8,6 @@ import { FormSelectMatcherType } from './form-mux-select-matcher-type'
 import { FormMuxButtonDragToReorder } from './form-mux-button-drag-to-reorder'
 import { muxRowGridStyles } from '../lib/mux-row-grid-styles'
 import { FormMuxButtonDeleteRow } from './form-mux-button-delete-rule'
-import { useWatch } from 'react-hook-form'
 export function FormMuxRuleRow({
   index,
   row,
@@ -26,9 +25,6 @@ export function FormMuxRuleRow({
     }),
     transition,
   }
-
-  const watched = useWatch()
-  console.debug('👉 watched:', watched)
 
   return (
     <li
