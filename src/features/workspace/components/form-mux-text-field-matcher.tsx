@@ -22,7 +22,10 @@ export function FormMuxTextFieldMatcher({
       })}
       shouldShowValidationError={false}
     >
-      <Input className="font-code" placeholder="Enter a glob pattern..." />
+      <Input
+        className="font-code"
+        placeholder="e.g. file glob patterns like *.py"
+      />
     </FormTextField>
   )
 }
