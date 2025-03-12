@@ -68,6 +68,9 @@ import type {
   V1GetWorkspaceMessagesData,
   V1GetWorkspaceMessagesError,
   V1GetWorkspaceMessagesResponse,
+  V1GetMessagesByPromptIdData,
+  V1GetMessagesByPromptIdError,
+  V1GetMessagesByPromptIdResponse,
   V1GetWorkspaceCustomInstructionsData,
   V1GetWorkspaceCustomInstructionsError,
   V1GetWorkspaceCustomInstructionsResponse,
@@ -493,6 +496,23 @@ export const v1GetWorkspaceMessages = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/workspaces/{workspace_name}/messages',
+  })
+}
+
+/**
+ * Get Messages By Prompt Id
+ * Get messages for a workspace.
+ */
+export const v1GetMessagesByPromptId = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetMessagesByPromptIdData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    V1GetMessagesByPromptIdResponse,
+    V1GetMessagesByPromptIdError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/workspaces/{workspace_name}/messages/{prompt_id}',
   })
 }
 

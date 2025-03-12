@@ -3,19 +3,19 @@ import { test } from 'vitest'
 import { http, HttpResponse } from 'msw'
 import { render, waitFor } from '@/lib/test-utils'
 
-import { AlertsSummaryMaliciousSecrets } from '../alerts-summary-secrets'
 import { mswEndpoint } from '@/test/msw-endpoint'
 import { AlertSummary } from '@/api/generated'
+import { AlertsSummaryPii } from '../alerts-summary-pii'
 
-test('shows correct count when there is a secret alert', async () => {
+test('shows correct count when there is a pii alert', async () => {
   server.use(
     http.get(
       mswEndpoint('/api/v1/workspaces/:workspace_name/alerts-summary'),
       () => {
         const response: AlertSummary = {
           malicious_packages: 0,
-          pii: 0,
-          secrets: 1,
+          pii: 1,
+          secrets: 0,
           total_alerts: 1,
         }
         return HttpResponse.json(response)
@@ -23,14 +23,14 @@ test('shows correct count when there is a secret alert', async () => {
     )
   )
 
-  const { getByTestId } = render(<AlertsSummaryMaliciousSecrets />)
+  const { getByTestId } = render(<AlertsSummaryPii />)
 
   await waitFor(() => {
-    expect(getByTestId('secrets-count')).toHaveTextContent('1')
+    expect(getByTestId('pii-count')).toHaveTextContent('1')
   })
 })
 
-test('shows correct count when there is no malicious alert', async () => {
+test('shows correct count when there is no pii alert', async () => {
   server.use(
     http.get(
       mswEndpoint('/api/v1/workspaces/:workspace_name/alerts-summary'),
@@ -46,9 +46,9 @@ test('shows correct count when there is no malicious alert', async () => {
     )
   )
 
-  const { getByTestId } = render(<AlertsSummaryMaliciousSecrets />)
+  const { getByTestId } = render(<AlertsSummaryPii />)
 
   await waitFor(() => {
-    expect(getByTestId('secrets-count')).toHaveTextContent('0')
+    expect(getByTestId('pii-count')).toHaveTextContent('0')
   })
 })

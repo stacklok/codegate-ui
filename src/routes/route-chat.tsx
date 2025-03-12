@@ -12,10 +12,10 @@ import { TabsConversation } from '@/features/dashboard-messages/components/tabs-
 import { SectionConversationTranscript } from '@/features/dashboard-messages/components/section-conversation-transcript'
 import { SectionConversationSecrets } from '@/features/dashboard-messages/components/section-conversation-secrets'
 import { ErrorFallbackContent } from '@/components/Error'
-import { useConversationById } from '@/features/dashboard-messages/hooks/use-conversation-by-id'
 import { getConversationTitle } from '@/features/dashboard-messages/lib/get-conversation-title'
 import { formatTime } from '@/lib/format-time'
 import { Conversation } from '@/api/generated'
+import { useQueryGetWorkspaceMessageById } from '@/features/dashboard-messages/hooks/use-query-get-workspace-message-by-id'
 
 function ConversationContent({
   view,
@@ -47,7 +47,9 @@ export function RouteChat() {
   const { id } = useParams<'id'>()
   const { state } = useConversationSearchParams()
 
-  const { data: conversation, isLoading } = useConversationById(id ?? '')
+  const { data: conversation, isLoading } = useQueryGetWorkspaceMessageById({
+    id: id ?? '',
+  })
 
   const title =
     conversation === undefined ||

@@ -71,6 +71,13 @@ export type AlertSummary = {
   malicious_packages: number
   pii: number
   secrets: number
+  total_alerts: number
+}
+
+export enum AlertTriggerType {
+  CODEGATE_PII = 'codegate-pii',
+  CODEGATE_CONTEXT_RETRIEVER = 'codegate-context-retriever',
+  CODEGATE_SECRETS = 'codegate-secrets',
 }
 
 /**
@@ -115,7 +122,20 @@ export type Conversation = {
   chat_id: string
   conversation_timestamp: string
   token_usage_agg: TokenUsageAggregate | null
-  alerts?: Array<Alert>
+  alerts?: Array<Alert> | null
+}
+
+/**
+ * Represents a conversation summary.
+ */
+export type ConversationSummary = {
+  chat_id: string
+  prompt: ChatMessage
+  alerts_summary: AlertSummary
+  token_usage_agg: TokenUsageAggregate | null
+  provider: string | null
+  type: QuestionType
+  conversation_timestamp: string
 }
 
 export type CustomInstructions = {
@@ -185,6 +205,38 @@ export type MuxRule = {
   model: string
   matcher_type: MuxMatcherType
   matcher?: string | null
+}
+
+export type PaginatedMessagesResponse = {
+  data: Array<ConversationSummary>
+  limit: number
+  offset: number
+  total: number
+}
+
+/**
+ * Represents a persona object.
+ */
+export type Persona = {
+  id: string
+  name: string
+  description: string
+}
+
+/**
+ * Model for creating a new Persona.
+ */
+export type PersonaRequest = {
+  name: string
+  description: string
+}
+
+/**
+ * Model for updating a Persona.
+ */
+export type PersonaUpdateRequest = {
+  new_name: string
+  new_description: string
 }
 
 /**
@@ -503,11 +555,28 @@ export type V1GetWorkspaceMessagesData = {
   path: {
     workspace_name: string
   }
+  query?: {
+    filter_by_alert_trigger_types?: Array<AlertTriggerType> | null
+    filter_by_ids?: Array<string> | null
+    page?: number
+    page_size?: number
+  }
 }
 
-export type V1GetWorkspaceMessagesResponse = Array<Conversation>
+export type V1GetWorkspaceMessagesResponse = PaginatedMessagesResponse
 
 export type V1GetWorkspaceMessagesError = HTTPValidationError
+
+export type V1GetMessagesByPromptIdData = {
+  path: {
+    prompt_id: string
+    workspace_name: string
+  }
+}
+
+export type V1GetMessagesByPromptIdResponse = Conversation
+
+export type V1GetMessagesByPromptIdError = HTTPValidationError
 
 export type V1GetWorkspaceCustomInstructionsData = {
   path: {
