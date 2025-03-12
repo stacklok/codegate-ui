@@ -240,31 +240,6 @@ export type PersonaUpdateRequest = {
 }
 
 /**
- * Represents a persona object.
- */
-export type Persona = {
-  id: string
-  name: string
-  description: string
-}
-
-/**
- * Model for creating a new Persona.
- */
-export type PersonaRequest = {
-  name: string
-  description: string
-}
-
-/**
- * Model for updating a Persona.
- */
-export type PersonaUpdateRequest = {
-  new_name: string
-  new_description: string
-}
-
-/**
  * Represents the different types of auth we support for providers.
  */
 export enum ProviderAuthType {
