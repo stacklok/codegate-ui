@@ -171,7 +171,7 @@ export type ListWorkspacesResponse = {
  */
 export type ModelByProvider = {
   name: string
-  provider_id: string
+  provider_type: ProviderType
   provider_name: string
 }
 
@@ -200,8 +200,8 @@ export enum MuxMatcherType {
  * Represents a mux rule for a provider.
  */
 export type MuxRule = {
-  provider_name?: string | null
-  provider_id: string
+  provider_name: string
+  provider_type: ProviderType
   model: string
   matcher_type: MuxMatcherType
   matcher?: string | null
@@ -340,15 +340,6 @@ export type WorkspaceConfig_Output = {
   muxing_rules: Array<MuxRule>
 }
 
-/**
- * Returns a workspace ID with model name
- */
-export type WorkspaceWithModel = {
-  id: string
-  name: string
-  provider_model_name: string
-}
-
 export type HealthCheckHealthGetResponse = unknown
 
 export type HealthCheckHealthGetError = unknown
@@ -377,7 +368,7 @@ export type V1ListAllModelsForAllProvidersError = unknown
 
 export type V1ListModelsByProviderData = {
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -387,7 +378,7 @@ export type V1ListModelsByProviderError = HTTPValidationError
 
 export type V1GetProviderEndpointData = {
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -398,7 +389,7 @@ export type V1GetProviderEndpointError = HTTPValidationError
 export type V1UpdateProviderEndpointData = {
   body: ProviderEndpoint
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -408,7 +399,7 @@ export type V1UpdateProviderEndpointError = HTTPValidationError
 
 export type V1DeleteProviderEndpointData = {
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -419,7 +410,7 @@ export type V1DeleteProviderEndpointError = HTTPValidationError
 export type V1ConfigureAuthMaterialData = {
   body: ConfigureAuthMaterial
   path: {
-    provider_id: string
+    provider_name: string
   }
 }
 
@@ -427,9 +418,15 @@ export type V1ConfigureAuthMaterialResponse = void
 
 export type V1ConfigureAuthMaterialError = HTTPValidationError
 
+export type V1ListWorkspacesData = {
+  query?: {
+    provider_name?: string | null
+  }
+}
+
 export type V1ListWorkspacesResponse = ListWorkspacesResponse
 
-export type V1ListWorkspacesError = unknown
+export type V1ListWorkspacesError = HTTPValidationError
 
 export type V1CreateWorkspaceData = {
   body: FullWorkspace_Input
@@ -474,6 +471,16 @@ export type V1DeleteWorkspaceData = {
 export type V1DeleteWorkspaceResponse = unknown
 
 export type V1DeleteWorkspaceError = HTTPValidationError
+
+export type V1GetWorkspaceByNameData = {
+  path: {
+    workspace_name: string
+  }
+}
+
+export type V1GetWorkspaceByNameResponse = FullWorkspace_Output
+
+export type V1GetWorkspaceByNameError = HTTPValidationError
 
 export type V1ListArchivedWorkspacesResponse = ListWorkspacesResponse
 
@@ -597,16 +604,6 @@ export type V1SetWorkspaceMuxesData = {
 export type V1SetWorkspaceMuxesResponse = void
 
 export type V1SetWorkspaceMuxesError = HTTPValidationError
-
-export type V1ListWorkspacesByProviderData = {
-  path: {
-    provider_id: string
-  }
-}
-
-export type V1ListWorkspacesByProviderResponse = Array<WorkspaceWithModel>
-
-export type V1ListWorkspacesByProviderError = HTTPValidationError
 
 export type V1StreamSseResponse = unknown
 

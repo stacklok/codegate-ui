@@ -7,16 +7,16 @@ import { DialogContent, Form } from '@stacklok/ui-kit'
 import { useParams } from 'react-router-dom'
 
 export function RouteProviderUpdate() {
-  const { id } = useParams()
-  if (id === undefined) {
-    throw new Error('Provider id is required')
+  const { name } = useParams()
+  if (name === undefined) {
+    throw new Error('Provider name is required')
   }
-  const { setProvider, provider } = useProvider(id)
+  const { setProvider, provider } = useProvider(name)
   const { mutateAsync } = useMutationUpdateProvider()
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    mutateAsync(provider)
+    mutateAsync({ ...provider, oldName: name })
   }
 
   // TODO add empty state and loading in a next step
