@@ -55,7 +55,7 @@ export const useMessagesFilterSearchParams = () => {
 
   const goToNextPage = useCallback(() => {
     setSearchParams((prev) => {
-      const page = Number(prev.get('page') ?? 0)
+      const page = Number(prev.get('page') ?? 1)
       prev.set('page', Math.max(page + 1, 1).toString())
       return prev
     })
@@ -63,7 +63,7 @@ export const useMessagesFilterSearchParams = () => {
 
   const goToPrevPage = useCallback(() => {
     setSearchParams((prev) => {
-      const page = Number(prev.get('page') ?? 0)
+      const page = Number(prev.get('page') ?? 1)
       prev.set('page', Math.max(page - 1, 1).toString())
       return prev
     })
