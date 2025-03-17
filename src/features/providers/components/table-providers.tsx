@@ -55,7 +55,7 @@ function CellRenderer({
   column: Column
   row: ProviderEndpoint
 }) {
-  const deleteProvider = useConfirmDeleteProvider(row.id)
+  const deleteProvider = useConfirmDeleteProvider(row.name)
 
   return match(column.id)
     .with(COLUMN_MAP.provider, () => (
@@ -83,7 +83,7 @@ function CellRenderer({
         <LinkButton
           variant="tertiary"
           className="flex items-center gap-2"
-          href={`/providers/${row.id}`}
+          href={`/providers/${row.name}`}
         >
           <Tool01 className="size-4" /> Manage
         </LinkButton>
@@ -95,7 +95,7 @@ function CellRenderer({
         variant="tertiary"
         onPress={() =>
           deleteProvider({
-            path: { provider_id: row.id as string },
+            path: { provider_name: row.name as string },
           })
         }
       >

@@ -10,6 +10,7 @@ import { WorkspaceCustomInstructions } from '@/features/workspace/components/wor
 import { WorkspaceMuxingModel } from '@/features/workspace/components/form-mux'
 import { PageContainer } from '@/components/page-container'
 import { WorkspaceActivateButton } from '@/features/workspace/components/workspace-activate-button'
+import { WorkspaceDownloadButton } from '@/features/workspace/components/workspace-download-button'
 
 function WorkspaceArchivedBanner({ name }: { name: string }) {
   const restoreButtonProps = useRestoreWorkspaceButton({ workspaceName: name })
@@ -46,7 +47,13 @@ export function RouteWorkspace() {
       </Breadcrumbs>
 
       <PageHeading level={1} title={`Workspace settings for ${name}`}>
-        <WorkspaceActivateButton isArchived={isArchived} workspaceName={name} />
+        <div className="flex gap-2">
+          <WorkspaceDownloadButton workspaceName={name} />
+          <WorkspaceActivateButton
+            isArchived={isArchived}
+            workspaceName={name}
+          />
+        </div>
       </PageHeading>
 
       {isArchived ? <WorkspaceArchivedBanner name={name} /> : null}

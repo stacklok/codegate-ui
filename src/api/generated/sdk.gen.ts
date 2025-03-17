@@ -31,6 +31,7 @@ import type {
   V1ConfigureAuthMaterialData,
   V1ConfigureAuthMaterialError,
   V1ConfigureAuthMaterialResponse,
+  V1ListWorkspacesData,
   V1ListWorkspacesError,
   V1ListWorkspacesResponse,
   V1CreateWorkspaceData,
@@ -47,6 +48,9 @@ import type {
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
+  V1GetWorkspaceByNameData,
+  V1GetWorkspaceByNameError,
+  V1GetWorkspaceByNameResponse,
   V1ListArchivedWorkspacesError,
   V1ListArchivedWorkspacesResponse,
   V1RecoverWorkspaceData,
@@ -82,9 +86,6 @@ import type {
   V1SetWorkspaceMuxesData,
   V1SetWorkspaceMuxesError,
   V1SetWorkspaceMuxesResponse,
-  V1ListWorkspacesByProviderData,
-  V1ListWorkspacesByProviderError,
-  V1ListWorkspacesByProviderResponse,
   V1StreamSseError,
   V1StreamSseResponse,
   V1VersionCheckError,
@@ -192,13 +193,13 @@ export const v1ListModelsByProvider = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}/models',
+    url: '/api/v1/provider-endpoints/{provider_name}/models',
   })
 }
 
 /**
  * Get Provider Endpoint
- * Get a provider endpoint by ID.
+ * Get a provider endpoint by name.
  */
 export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
   options: OptionsLegacyParser<V1GetProviderEndpointData, ThrowOnError>
@@ -209,13 +210,13 @@ export const v1GetProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}',
+    url: '/api/v1/provider-endpoints/{provider_name}',
   })
 }
 
 /**
  * Update Provider Endpoint
- * Update a provider endpoint by ID.
+ * Update a provider endpoint by name.
  */
 export const v1UpdateProviderEndpoint = <ThrowOnError extends boolean = false>(
   options: OptionsLegacyParser<V1UpdateProviderEndpointData, ThrowOnError>
@@ -226,13 +227,13 @@ export const v1UpdateProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}',
+    url: '/api/v1/provider-endpoints/{provider_name}',
   })
 }
 
 /**
  * Delete Provider Endpoint
- * Delete a provider endpoint by id.
+ * Delete a provider endpoint by name.
  */
 export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
   options: OptionsLegacyParser<V1DeleteProviderEndpointData, ThrowOnError>
@@ -243,7 +244,7 @@ export const v1DeleteProviderEndpoint = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}',
+    url: '/api/v1/provider-endpoints/{provider_name}',
   })
 }
 
@@ -260,16 +261,24 @@ export const v1ConfigureAuthMaterial = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/api/v1/provider-endpoints/{provider_id}/auth-material',
+    url: '/api/v1/provider-endpoints/{provider_name}/auth-material',
   })
 }
 
 /**
  * List Workspaces
  * List all workspaces.
+ *
+ * Args:
+ * provider_name (Optional[str]): Filter workspaces by provider name. If provided,
+ * will return workspaces where models from the specified provider (e.g., OpenAI,
+ * Anthropic) have been used in workspace muxing rules.
+ *
+ * Returns:
+ * ListWorkspacesResponse: A response object containing the list of workspaces.
  */
 export const v1ListWorkspaces = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>
+  options?: OptionsLegacyParser<V1ListWorkspacesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     V1ListWorkspacesResponse,
@@ -362,6 +371,23 @@ export const v1DeleteWorkspace = <ThrowOnError extends boolean = false>(
   return (options?.client ?? client).delete<
     V1DeleteWorkspaceResponse,
     V1DeleteWorkspaceError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/api/v1/workspaces/{workspace_name}',
+  })
+}
+
+/**
+ * Get Workspace By Name
+ * List workspaces by provider ID.
+ */
+export const v1GetWorkspaceByName = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<V1GetWorkspaceByNameData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    V1GetWorkspaceByNameResponse,
+    V1GetWorkspaceByNameError,
     ThrowOnError
   >({
     ...options,
@@ -588,25 +614,6 @@ export const v1SetWorkspaceMuxes = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: '/api/v1/workspaces/{workspace_name}/muxes',
-  })
-}
-
-/**
- * List Workspaces By Provider
- * List workspaces by provider ID.
- */
-export const v1ListWorkspacesByProvider = <
-  ThrowOnError extends boolean = false,
->(
-  options: OptionsLegacyParser<V1ListWorkspacesByProviderData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
-    V1ListWorkspacesByProviderResponse,
-    V1ListWorkspacesByProviderError,
-    ThrowOnError
-  >({
-    ...options,
-    url: '/api/v1/workspaces/{provider_id}',
   })
 }
 

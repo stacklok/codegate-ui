@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.20.0](https://github.com/stacklok/codegate-ui/compare/v0.19.1...v0.20.0) (2025-03-17)
+
+
+### Features
+
+* shareable workspaces MVP (frontend) ([#379](https://github.com/stacklok/codegate-ui/issues/379)) ([6baf15c](https://github.com/stacklok/codegate-ui/commit/6baf15c5b51ff58882975148183e90abdade1f2b))
+
+
+### Bug Fixes
+
+* use package.json overrides to bump `@babel/runtime` & `prismjs` to fix npm audit warnings ([#396](https://github.com/stacklok/codegate-ui/issues/396)) ([79041a1](https://github.com/stacklok/codegate-ui/commit/79041a1aa7635a1539aec3618cb56d2133a48cf3))
+
+## [0.19.1](https://github.com/stacklok/codegate-ui/compare/v0.19.0...v0.19.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* implement server side pagination in frontend ([#368](https://github.com/stacklok/codegate-ui/issues/368)) ([b730c4a](https://github.com/stacklok/codegate-ui/commit/b730c4aada89c102f89d553a0c00d5eb45378fdb))
+* pagination bug ([#388](https://github.com/stacklok/codegate-ui/issues/388)) ([0fb0ba7](https://github.com/stacklok/codegate-ui/commit/0fb0ba74f80dcff2ac789d245dcd01cf8ea6466c))
+
 ## [0.19.0](https://github.com/stacklok/codegate-ui/compare/v0.18.1...v0.19.0) (2025-03-05)
 
 

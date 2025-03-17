@@ -5,17 +5,18 @@ import { useQueryWorkspacesByProvider } from './use-query-workspaces-by-provider
 import { WorkspacesByProvider } from '../components/workspaces-by-provider'
 
 export function useConfirmDeleteProvider(
-  providerId: string | undefined | null
+  providerName: string | undefined | null
 ) {
   const { mutateAsync: deleteProvider } = useMutationDeleteProvider()
-  const { data: workspaces } = useQueryWorkspacesByProvider(providerId)
+  const { data: workspacesByProvider } =
+    useQueryWorkspacesByProvider(providerName)
   const { confirm } = useConfirm()
 
   return useCallback(
     async (...params: Parameters<typeof deleteProvider>) => {
       const answer = await confirm(
         <>
-          <WorkspacesByProvider workspaces={workspaces} />
+          <WorkspacesByProvider workspaces={workspacesByProvider?.workspaces} />
           <p>Are you sure you want to permanently delete this provider?</p>
         </>,
         {
@@ -31,6 +32,6 @@ export function useConfirmDeleteProvider(
         return deleteProvider(...params)
       }
     },
-    [confirm, deleteProvider, workspaces]
+    [confirm, deleteProvider, workspacesByProvider]
   )
 }

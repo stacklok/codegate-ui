@@ -29,7 +29,7 @@ export default function Page() {
       <Route path="providers">
         <Route index element={<RouteProvider />} />
         <Route element={<RouteProvider />}>
-          <Route path=":id" element={<RouteProviderUpdate />} />
+          <Route path=":name" element={<RouteProviderUpdate />} />
           <Route path="new" element={<RouteProviderCreate />} />
         </Route>
       </Route>

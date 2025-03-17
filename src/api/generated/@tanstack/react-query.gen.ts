@@ -24,6 +24,7 @@ import {
   v1ActivateWorkspace,
   v1UpdateWorkspace,
   v1DeleteWorkspace,
+  v1GetWorkspaceByName,
   v1ListArchivedWorkspaces,
   v1RecoverWorkspace,
   v1HardDeleteWorkspace,
@@ -36,7 +37,6 @@ import {
   v1DeleteWorkspaceCustomInstructions,
   v1GetWorkspaceMuxes,
   v1SetWorkspaceMuxes,
-  v1ListWorkspacesByProvider,
   v1StreamSse,
   v1VersionCheck,
   v1GetWorkspaceTokenUsage,
@@ -62,6 +62,7 @@ import type {
   V1ConfigureAuthMaterialData,
   V1ConfigureAuthMaterialError,
   V1ConfigureAuthMaterialResponse,
+  V1ListWorkspacesData,
   V1CreateWorkspaceData,
   V1CreateWorkspaceError,
   V1CreateWorkspaceResponse,
@@ -74,6 +75,7 @@ import type {
   V1DeleteWorkspaceData,
   V1DeleteWorkspaceError,
   V1DeleteWorkspaceResponse,
+  V1GetWorkspaceByNameData,
   V1RecoverWorkspaceData,
   V1RecoverWorkspaceError,
   V1RecoverWorkspaceResponse,
@@ -97,7 +99,6 @@ import type {
   V1SetWorkspaceMuxesData,
   V1SetWorkspaceMuxesError,
   V1SetWorkspaceMuxesResponse,
-  V1ListWorkspacesByProviderData,
   V1GetWorkspaceTokenUsageData,
   V1CreatePersonaData,
   V1CreatePersonaError,
@@ -349,11 +350,13 @@ export const v1ConfigureAuthMaterialMutation = (
   return mutationOptions
 }
 
-export const v1ListWorkspacesQueryKey = (options?: OptionsLegacyParser) => [
-  createQueryKey('v1ListWorkspaces', options),
-]
+export const v1ListWorkspacesQueryKey = (
+  options?: OptionsLegacyParser<V1ListWorkspacesData>
+) => [createQueryKey('v1ListWorkspaces', options)]
 
-export const v1ListWorkspacesOptions = (options?: OptionsLegacyParser) => {
+export const v1ListWorkspacesOptions = (
+  options?: OptionsLegacyParser<V1ListWorkspacesData>
+) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
       const { data } = await v1ListWorkspaces({
@@ -509,6 +512,27 @@ export const v1DeleteWorkspaceMutation = (
     },
   }
   return mutationOptions
+}
+
+export const v1GetWorkspaceByNameQueryKey = (
+  options: OptionsLegacyParser<V1GetWorkspaceByNameData>
+) => [createQueryKey('v1GetWorkspaceByName', options)]
+
+export const v1GetWorkspaceByNameOptions = (
+  options: OptionsLegacyParser<V1GetWorkspaceByNameData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await v1GetWorkspaceByName({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      })
+      return data
+    },
+    queryKey: v1GetWorkspaceByNameQueryKey(options),
+  })
 }
 
 export const v1ListArchivedWorkspacesQueryKey = (
@@ -865,27 +889,6 @@ export const v1SetWorkspaceMuxesMutation = (
     },
   }
   return mutationOptions
-}
-
-export const v1ListWorkspacesByProviderQueryKey = (
-  options: OptionsLegacyParser<V1ListWorkspacesByProviderData>
-) => [createQueryKey('v1ListWorkspacesByProvider', options)]
-
-export const v1ListWorkspacesByProviderOptions = (
-  options: OptionsLegacyParser<V1ListWorkspacesByProviderData>
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await v1ListWorkspacesByProvider({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      })
-      return data
-    },
-    queryKey: v1ListWorkspacesByProviderQueryKey(options),
-  })
 }
 
 export const v1StreamSseQueryKey = (options?: OptionsLegacyParser) => [
