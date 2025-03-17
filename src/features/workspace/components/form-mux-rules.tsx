@@ -12,7 +12,11 @@ import {
 import { twMerge } from 'tailwind-merge'
 import { useMutationPreferredModelWorkspace } from '../hooks/use-mutation-preferred-model-workspace'
 import { MuxMatcherType, V1GetWorkspaceMuxesResponse } from '@/api/generated'
-import { LayersThree01, LinkExternal01 } from '@untitled-ui/icons-react'
+import {
+  FlipBackward,
+  LayersThree01,
+  LinkExternal01,
+} from '@untitled-ui/icons-react'
 import { useQueryListAllModelsForAllProviders } from '@/hooks/use-query-list-all-models-for-all-providers'
 import { useQueryMuxingRulesWorkspace } from '../hooks/use-query-muxing-rules-workspace'
 import { FormMuxFieldsArray } from './form-mux-fields-array'
@@ -44,10 +48,10 @@ const fromApiMuxingRules = (
 ): WorkspaceConfigFieldValues => {
   return {
     muxing_rules: rules.map(
-      ({ matcher_type, model, matcher, provider_name, provider_id }) => ({
+      ({ matcher_type, model, matcher, provider_name, provider_type }) => ({
         model: serializeMuxModel({
           name: model,
-          provider_id,
+          provider_type,
           provider_name: provider_name as string,
         }),
         matcher_type,
@@ -75,12 +79,14 @@ function MissingProviderBanner() {
   )
 }
 
-export function WorkspaceMuxingModel({
+export function FormMuxRules({
   className,
   workspaceName,
+  isDisabled,
 }: {
   className?: string
   workspaceName: string
+  isDisabled: boolean
 }) {
   const { data: muxRulesFromApi, isPending } =
     useQueryMuxingRulesWorkspace(workspaceName)
@@ -95,13 +101,13 @@ export function WorkspaceMuxingModel({
       body: data.muxing_rules.map(({ matcher, matcher_type, model }) => {
         const {
           name: modelName,
-          provider_id,
           provider_name,
+          provider_type,
         } = deserializeMuxModel(model)
         return {
           matcher_type,
           model: modelName,
-          provider_id,
+          provider_type,
           matcher,
           provider_name,
         }
@@ -154,19 +160,28 @@ export function WorkspaceMuxingModel({
               </Text>
             </div>
 
-            <FormMuxFieldsArray />
+            <FormMuxFieldsArray isDisabled={isDisabled} />
           </CardBody>
 
           <CardFooter className="justify-between">
             <div className="flex gap-2">
-              <FormMuxButtonAddRow />
+              <FormMuxButtonAddRow isDisabled={isDisabled} />
               <LinkButton variant="tertiary" href="/providers">
                 <LayersThree01 /> Manage providers
               </LinkButton>
             </div>
             <div className="flex gap-2">
-              <FormDiscardChangesButton defaultValues={defaultValues} />
-              <FormSubmitButton>Save</FormSubmitButton>
+              <FormDiscardChangesButton
+                aria-label="Revert changes"
+                isDisabled={isDisabled}
+                defaultValues={defaultValues}
+              >
+                <FlipBackward />
+                Revert changes
+              </FormDiscardChangesButton>
+              <FormSubmitButton aria-label="Save" isDisabled={isDisabled}>
+                Save
+              </FormSubmitButton>
             </div>
           </CardFooter>
         </Card>

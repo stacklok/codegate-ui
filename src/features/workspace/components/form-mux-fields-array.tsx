@@ -24,7 +24,7 @@ function getIndicesOnDragEnd(event: DragEndEvent): {
   }
 }
 
-export function FormMuxFieldsArray() {
+export function FormMuxFieldsArray({ isDisabled }: { isDisabled: boolean }) {
   const { fields, move } = useFormMuxRulesContext()
 
   const onDragEnd = useCallback(
@@ -38,10 +38,19 @@ export function FormMuxFieldsArray() {
   return (
     <>
       <FormMuxFieldsLabels />
-      <DndSortProvider items={fields} onDragEnd={onDragEnd}>
+      <DndSortProvider
+        isDisabled={isDisabled}
+        items={fields}
+        onDragEnd={onDragEnd}
+      >
         <ul>
           {fields.map((item, index) => (
-            <FormMuxRuleRow index={index} key={item.id} row={item} />
+            <FormMuxRuleRow
+              index={index}
+              key={item.id}
+              row={item}
+              isDisabled={isDisabled}
+            />
           ))}
         </ul>
       </DndSortProvider>

@@ -5,10 +5,13 @@ import { twMerge } from 'tailwind-merge'
 
 export function FormMuxButtonDragToReorder({
   row,
+  isDisabled: controlledIsDisabled,
 }: {
   row: FieldValuesMuxRow & { id: string }
+  isDisabled: boolean
 }) {
-  const isDisabled = row.matcher === 'Catch-all'
+  const isDisabled: boolean =
+    row.matcher === 'Catch-all' || controlledIsDisabled
 
   const {
     attributes,

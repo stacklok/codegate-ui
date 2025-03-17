@@ -7,9 +7,11 @@ import { MuxMatcherType } from '@/api/generated'
 export function FormMuxButtonDeleteRow({
   index,
   row,
+  isDisabled,
 }: {
   index: number
   row: FieldValuesMuxRow & { id: string }
+  isDisabled: boolean
 }) {
   const { remove } = useFormMuxRulesContext()
 
@@ -17,7 +19,7 @@ export function FormMuxButtonDeleteRow({
     <Button
       aria-label="Delete"
       isIcon
-      isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL}
+      isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL || isDisabled}
       variant="secondary"
       onPress={() => remove(index)}
     >

@@ -7,9 +7,11 @@ import { FieldValuesMuxRow } from '../lib/schema-mux'
 export function FormSelectMatcherType({
   index,
   row,
+  isDisabled,
 }: {
   index: number
   row: FieldValuesMuxRow & { id: string }
+  isDisabled: boolean
 }) {
   return (
     <FormSelect
@@ -36,7 +38,7 @@ export function FormSelectMatcherType({
         field: 'matcher_type',
         index,
       })}
-      isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL}
+      isDisabled={row.matcher_type === MuxMatcherType.CATCH_ALL || isDisabled}
       disabledKeys={[MuxMatcherType.CATCH_ALL]}
       shouldShowValidationError={false}
     >

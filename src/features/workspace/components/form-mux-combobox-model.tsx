@@ -26,19 +26,26 @@ function groupModels(
   }))
 }
 
-export function FormMuxComboboxModel({ index }: { index: number }) {
+export function FormMuxComboboxModel({
+  index,
+  isDisabled,
+}: {
+  index: number
+  isDisabled: boolean
+}) {
   const { data: models = [] } = useQueryListAllModelsForAllProviders({
     select: groupModels,
   })
 
   return (
     <FormComboBox
-      aria-label="Matcher"
+      aria-label="Model"
       items={models}
       name={getMuxFieldName({
         field: 'model',
         index,
       })}
+      isDisabled={isDisabled}
       shouldShowValidationError={false}
     >
       <ComboBoxFieldGroup>

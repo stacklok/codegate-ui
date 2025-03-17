@@ -8,12 +8,15 @@ import { FormSelectMatcherType } from './form-mux-select-matcher-type'
 import { FormMuxButtonDragToReorder } from './form-mux-button-drag-to-reorder'
 import { muxRowGridStyles } from '../lib/mux-row-grid-styles'
 import { FormMuxButtonDeleteRow } from './form-mux-button-delete-rule'
+
 export function FormMuxRuleRow({
   index,
   row,
+  isDisabled,
 }: {
   index: number
   row: FieldValuesMuxRow & { id: string }
+  isDisabled: boolean
 }) {
   const { transform, transition, setNodeRef } = useSortable({ id: row.id })
   const style = {
@@ -32,11 +35,15 @@ export function FormMuxRuleRow({
       className={twMerge(muxRowGridStyles(), 'mb-2')}
       style={style}
     >
-      <FormMuxButtonDragToReorder row={row} />
-      <FormSelectMatcherType row={row} index={index} />
-      <FormMuxTextFieldMatcher row={row} index={index} />
-      <FormMuxComboboxModel index={index} />
-      <FormMuxButtonDeleteRow row={row} index={index} />
+      <FormMuxButtonDragToReorder row={row} isDisabled={isDisabled} />
+      <FormSelectMatcherType row={row} index={index} isDisabled={isDisabled} />
+      <FormMuxTextFieldMatcher
+        row={row}
+        index={index}
+        isDisabled={isDisabled}
+      />
+      <FormMuxComboboxModel index={index} isDisabled={isDisabled} />
+      <FormMuxButtonDeleteRow row={row} index={index} isDisabled={isDisabled} />
     </li>
   )
 }

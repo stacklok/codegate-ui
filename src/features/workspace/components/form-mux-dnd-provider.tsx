@@ -19,10 +19,12 @@ export function DndSortProvider<T extends { id: UniqueIdentifier }>({
   children,
   onDragEnd,
   items,
+  isDisabled,
 }: {
   children: ReactNode
   onDragEnd: (event: DragEndEvent) => void
   items: T[]
+  isDisabled: boolean
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -37,7 +39,11 @@ export function DndSortProvider<T extends { id: UniqueIdentifier }>({
       collisionDetection={closestCenter}
       onDragEnd={onDragEnd}
     >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        disabled={isDisabled}
+        items={items}
+        strategy={verticalListSortingStrategy}
+      >
         {children}
       </SortableContext>
     </DndContext>
