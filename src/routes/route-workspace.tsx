@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import { useArchivedWorkspaces } from '@/features/workspace/hooks/use-archived-workspaces'
 import { useRestoreWorkspaceButton } from '@/features/workspace/hooks/use-restore-workspace-button'
 import { WorkspaceCustomInstructions } from '@/features/workspace/components/workspace-custom-instructions'
-import { WorkspaceMuxingModel } from '@/features/workspace/components/workspace-muxing-model'
+import { FormMuxRules } from '@/features/workspace/components/form-mux-rules'
 import { PageContainer } from '@/components/page-container'
 import { WorkspaceActivateButton } from '@/features/workspace/components/workspace-activate-button'
 import { WorkspaceDownloadButton } from '@/features/workspace/components/workspace-download-button'
@@ -63,9 +63,9 @@ export function RouteWorkspace() {
         className="mb-4"
         workspaceName={name}
       />
-      <WorkspaceMuxingModel
+      <FormMuxRules
         className="mb-4"
-        isArchived={isArchived}
+        isDisabled={isArchived === true}
         workspaceName={name}
       />
       <WorkspaceCustomInstructions
