@@ -1,4 +1,5 @@
 import {
+  v1GetWorkspaceByNameQueryKey,
   v1GetWorkspaceMuxesQueryKey,
   v1ListArchivedWorkspacesQueryKey,
   v1ListWorkspacesQueryKey,
@@ -15,6 +16,7 @@ export function useInvalidateWorkspaceQueries() {
       v1ListWorkspacesQueryKey,
       v1ListArchivedWorkspacesQueryKey,
       v1GetWorkspaceMuxesQueryKey,
+      v1GetWorkspaceByNameQueryKey,
     ])
   }, [queryClient])
 
