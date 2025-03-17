@@ -15,7 +15,8 @@ export function FormMuxButtonDragToReorder({
 
   const {
     attributes,
-    // @ts-expect-error - typedefs say `eventListeners` it is actually `listeners`
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - typedefs say `eventListeners` it is actually `listeners`
     listeners,
   } = useSortable({ id: row.id, disabled: isDisabled })
   return (
