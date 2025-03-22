@@ -83,7 +83,7 @@
     "jsdom": "^26.0.0",
     "knip": "^5.43.6",
     "lint-staged": "^15.5.0",
-    "msw": "^2.7.0",
+    "msw": "^2.7.3",
     "postcss": "^8.4.49",
     "prettier": "3.5.3",
     "prettier-plugin-classnames": "^0.7.6",
