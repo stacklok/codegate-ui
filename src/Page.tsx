@@ -11,6 +11,7 @@ import { RouteNotFound } from './routes/route-not-found'
 import { RouteProvider } from './routes/route-providers'
 import { RouteProviderCreate } from './routes/route-provider-create'
 import { RouteProviderUpdate } from './routes/route-provider-update'
+import { RouteMuxes } from './routes/route-mux-config'
 
 export default function Page() {
   return (
@@ -20,6 +21,7 @@ export default function Page() {
       <Route path="/certificates" element={<RouteCertificates />} />
       <Route path="/workspace/:name" element={<RouteWorkspace />} />
       <Route path="/workspaces" element={<RouteWorkspaces />} />
+      <Route path="/muxes" element={<RouteMuxes />} />
       <Route path="/workspace/create" element={<RouteWorkspaceCreation />} />
       <Route
         path="/certificates/security"
